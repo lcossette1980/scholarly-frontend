@@ -1,0 +1,125 @@
+// tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        // Brand Colors
+        charcoal: {
+          DEFAULT: '#2A2A2A',
+          50: '#F7F7F7',
+          100: '#E8E8E8',
+          200: '#D1D1D1',
+          300: '#B0B0B0',
+          400: '#888888',
+          500: '#6D6D6D',
+          600: '#5D5D5D',
+          700: '#4F4F4F',
+          800: '#454545',
+          900: '#2A2A2A',
+          950: '#1A1A1A',
+        },
+        chestnut: {
+          DEFAULT: '#A44A3F',
+          50: '#F9F2F1',
+          100: '#F2E2E0',
+          200: '#E7C9C4',
+          300: '#D7A69D',
+          400: '#C47B6F',
+          500: '#B0594A',
+          600: '#A44A3F',
+          700: '#893D34',
+          800: '#72352E',
+          900: '#5F302A',
+          950: '#321713',
+        },
+        khaki: {
+          DEFAULT: '#A59E8C',
+          50: '#F8F7F4',
+          100: '#F0EDE6',
+          200: '#E2DCCD',
+          300: '#D1C7B0',
+          400: '#BEB090',
+          500: '#A59E8C',
+          600: '#9A9080',
+          700: '#81796B',
+          800: '#6B665A',
+          900: '#57544B',
+          950: '#2E2C26',
+        },
+        pearl: {
+          DEFAULT: '#D7CEB2',
+          50: '#FCFBF8',
+          100: '#F9F6EE',
+          200: '#F2EBDB',
+          300: '#E8DBC1',
+          400: '#DCC8A3',
+          500: '#D7CEB2',
+          600: '#C4B591',
+          700: '#A89B78',
+          800: '#8A7F64',
+          900: '#716851',
+          950: '#3A3529',
+        },
+        bone: {
+          DEFAULT: '#F5F2EA',
+          50: '#FEFDFB',
+          100: '#F5F2EA',
+          200: '#EBE4D4',
+          300: '#DDD3BC',
+          400: '#CCBD9E',
+          500: '#B8A582',
+          600: '#A18E6A',
+          700: '#867656',
+          800: '#6E6048',
+          900: '#5A4F3D',
+          950: '#2F291F',
+        },
+      },
+      fontFamily: {
+        'playfair': ['Playfair Display', 'serif'],
+        'lato': ['Lato', 'sans-serif'],
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'pulse-gentle': 'pulseGentle 2s ease-in-out infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        pulseGentle: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
+      },
+      backgroundImage: {
+        'gradient-brand': 'linear-gradient(135deg, #F5F2EA 0%, #D7CEB2 50%, #A59E8C 100%)',
+        'gradient-chestnut': 'linear-gradient(135deg, #A44A3F 0%, #2A2A2A 100%)',
+        'gradient-overlay': 'linear-gradient(90deg, rgba(164, 74, 63, 0.9) 0%, rgba(42, 42, 42, 0.9) 100%)',
+      },
+      boxShadow: {
+        'soft': '0 2px 15px rgba(0, 0, 0, 0.08)',
+        'medium': '0 4px 25px rgba(0, 0, 0, 0.12)',
+        'large': '0 8px 40px rgba(0, 0, 0, 0.15)',
+        'brand': '0 4px 20px rgba(164, 74, 63, 0.15)',
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+}
