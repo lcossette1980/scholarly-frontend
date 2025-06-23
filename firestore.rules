@@ -1,0 +1,141 @@
+// Firestore Security Rules for ScholarlyAI
+// Deploy these rules to your Firebase project:
+// firebase deploy --only firestore:rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidUserData() {
+      return request.resource.data.keys().hasAll(['displayName', 'email', 'subscription', 'preferences']) &&
+             request.resource.data.displayName is string &&
+             request.resource.data.email is string &&
+             request.resource.data.subscription is map &&
+             request.resource.data.preferences is map;
+    }
+    
+    function isValidSubscriptionData() {
+      let subscription = request.resource.data.subscription;
+      return subscription.keys().hasAll(['plan', 'status', 'entriesUsed', 'entriesLimit', 'entriesRemaining']) &&
+             subscription.plan in ['trial', 'student', 'researcher', 'institution'] &&
+             subscription.status in ['active', 'canceled', 'past_due', 'incomplete'] &&
+             subscription.entriesUsed is int &&
+             subscription.entriesLimit is int &&
+             subscription.entriesRemaining is int &&
+             subscription.entriesUsed >= 0 &&
+             subscription.entriesLimit > 0 &&
+             subscription.entriesRemaining >= 0;
+    }
+    
+    function isValidBibliographyEntry() {
+      return request.resource.data.keys().hasAll(['userId', 'researchFocus', 'citation']) &&
+             request.resource.data.userId is string &&
+             request.resource.data.researchFocus is string &&
+             request.resource.data.citation is string &&
+             request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Users can read and write their own documents
+      allow read, write: if isOwner(userId);
+      
+      // Additional validation for writes
+      allow write: if isOwner(userId) && 
+                      isValidUserData() && 
+                      isValidSubscriptionData();
+      
+      // Create operation - allow user to create their own document
+      allow create: if isOwner(userId) && 
+                       isValidUserData() && 
+                       isValidSubscriptionData();
+      
+      // Update operation - users can update their own data
+      allow update: if isOwner(userId) && 
+                       isValidUserData() && 
+                       isValidSubscriptionData() &&
+                       // Ensure userId cannot be changed
+                       request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['displayName', 'subscription', 'preferences', 'updatedAt']);
+    }
+    
+    // Bibliography entries collection
+    match /bibliography/{entryId} {
+      // Users can only access their own bibliography entries
+      allow read, write: if isAuthenticated() && 
+                            resource.data.userId == request.auth.uid;
+      
+      // Create operation - validate entry structure
+      allow create: if isAuthenticated() && 
+                       isValidBibliographyEntry();
+      
+      // Update operation - ensure userId cannot be changed
+      allow update: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid &&
+                       request.resource.data.userId == request.auth.uid &&
+                       // Prevent changing userId
+                       request.resource.data.userId == resource.data.userId;
+      
+      // Delete operation
+      allow delete: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid;
+    }
+    
+    // Usage logs collection (for analytics and monitoring)
+    match /usage_logs/{logId} {
+      // Only allow creating usage logs for authenticated users
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid;
+      
+      // No read, update, or delete permissions for users
+      // These should be managed server-side only
+      allow read, update, delete: if false;
+    }
+    
+    // Error logs collection (for error monitoring)
+    match /error_logs/{logId} {
+      // Only allow creating error logs for authenticated users
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid;
+      
+      // No read, update, or delete permissions for users
+      allow read, update, delete: if false;
+    }
+    
+    // Admin collection (for admin-only operations)
+    match /admin/{document=**} {
+      // Deny all access to admin collection from client
+      // Admin operations should be performed server-side only
+      allow read, write: if false;
+    }
+    
+    // System configuration (read-only for clients)
+    match /config/{document} {
+      // Allow reading system configuration
+      allow read: if isAuthenticated();
+      
+      // Deny all write operations from client
+      allow write: if false;
+    }
+    
+    // Stripe webhook logs (server-side only)
+    match /stripe_logs/{logId} {
+      // Deny all client access
+      allow read, write: if false;
+    }
+    
+    // Default deny rule for any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

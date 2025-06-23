@@ -17,8 +17,11 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry, incrementEntriesUsed } from '../services/stripe';
-import axios from 'axios';
+import { saveBibliographyEntry } from '../services/bibliography';
+import { sanitizeResearchFocus, sanitizeBibliographyContent, cleanMarkdownFormatting } from '../utils/sanitization';
+import { bibliographyAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { exportToBibliography } from '../utils/exportUtils';
 
 const CreateEntryPage = () => {
   const [currentStep, setCurrentStep] = useState('upload');
@@ -69,27 +72,24 @@ const CreateEntryPage = () => {
       return;
     }
 
+    if (!currentUser) {
+      toast.error('Please sign in to upload documents');
+      navigate('/login');
+      return;
+    }
+
     setUploadedFile(file);
     setCurrentStep('processing');
     setIsLoading(true);
 
     try {
-      // Upload file to backend
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('research_focus', researchFocus);
+      // Sanitize research focus before sending
+      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
+      
+      // Upload file to backend using the API service
+      const response = await bibliographyAPI.uploadDocument(file, sanitizedResearchFocus);
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/upload`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-
-      const { task_id } = response.data;
+      const { task_id } = response;
       setTaskId(task_id);
 
       // Start polling for progress
@@ -97,7 +97,9 @@ const CreateEntryPage = () => {
 
     } catch (error) {
       console.error('Error uploading file:', error);
-      toast.error('Failed to upload file. Please try again.');
+      console.error('Error details:', error.response?.data || error.message);
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to upload file. Please try again.';
+      toast.error(errorMessage);
       setCurrentStep('upload');
       setIsLoading(false);
     }
@@ -106,11 +108,9 @@ const CreateEntryPage = () => {
   const pollProcessingStatus = async (taskId) => {
     const interval = setInterval(async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/status/${taskId}`
-        );
+        const response = await bibliographyAPI.getProcessingStatus(taskId);
 
-        const { status, progress } = response.data;
+        const { status, progress } = response;
         
         setProcessingProgress(progress);
         setCurrentProcessingStep(Math.floor(progress / 17));
@@ -146,22 +146,31 @@ const CreateEntryPage = () => {
 
   const fetchResult = async (taskId) => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/result/${taskId}`
-      );
+      const response = await bibliographyAPI.getResult(taskId);
 
-      setBibliographyEntry(response.data);
+      setBibliographyEntry(response);
       
-      // Increment user's entries used
-      await incrementEntriesUsed(currentUser.uid);
+      // Save to Firestore
+      const saveResult = await saveBibliographyEntry(
+        currentUser.uid,
+        response,
+        researchFocus
+      );
       
-      setCurrentStep('preview');
-      setIsLoading(false);
-      
-      toast.success('Bibliography entry generated successfully!');
+      if (saveResult.success) {
+        // Increment user's entries used
+        await incrementEntriesUsed(currentUser.uid);
+        
+        setCurrentStep('preview');
+        setIsLoading(false);
+        
+        toast.success('Bibliography entry generated and saved successfully!');
+      } else {
+        throw new Error(saveResult.error || 'Failed to save entry');
+      }
     } catch (error) {
-      console.error('Error fetching result:', error);
-      toast.error('Failed to fetch result. Please try again.');
+      console.error('Error fetching or saving result:', error);
+      toast.error('Failed to save bibliography entry. Please try again.');
       setCurrentStep('upload');
       setIsLoading(false);
     }
@@ -190,42 +199,8 @@ const CreateEntryPage = () => {
     if (!bibliographyEntry) return;
 
     try {
-      // Create Word document content
-      const content = `
-${bibliographyEntry.citation}
-
-Narrative Overview
-${bibliographyEntry.narrative_overview}
-
-Key Research Components
-Research Purpose: ${bibliographyEntry.research_components.research_purpose || ''}
-Methodology: ${bibliographyEntry.research_components.methodology || ''}
-Theoretical Framework: ${bibliographyEntry.research_components.theoretical_framework || ''}
-
-Core Findings & Key Statistics
-${bibliographyEntry.core_findings}
-
-Methodological Value
-Strengths: ${bibliographyEntry.methodological_value.strengths || ''}
-Limitations: ${bibliographyEntry.methodological_value.limitations || ''}
-
-Key Quotes
-${bibliographyEntry.key_quotes?.map((quote, index) => 
-  `${index + 1}. "${quote.text}" (p. ${quote.page})`
-).join('\n') || 'No quotes available'}
-      `;
-
-      // Create and download file
-      const blob = new Blob([content], { type: 'application/msword' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `bibliography-entry-${Date.now()}.doc`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
+      // Use the centralized export function with a single entry array
+      await exportToBibliography([bibliographyEntry], 'word');
       toast.success('Document exported successfully!');
     } catch (error) {
       console.error('Error exporting document:', error);
@@ -244,11 +219,11 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
   };
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <div className="min-h-screen py-4 md:py-8">
+      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <button
               onClick={() => navigate('/dashboard')}
               className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
@@ -256,10 +231,10 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-4xl font-bold text-charcoal font-playfair">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-charcoal font-playfair">
                 Create Bibliography Entry
               </h1>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-sm sm:text-base text-charcoal/70 font-lato hidden sm:block">
                 Upload an academic paper and generate a comprehensive annotated bibliography entry
               </p>
             </div>
@@ -299,7 +274,8 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
                   className="form-input"
                   placeholder="e.g., AI Leadership, Digital Transformation, Machine Learning Ethics"
                   value={researchFocus}
-                  onChange={(e) => setResearchFocus(e.target.value)}
+                  onChange={(e) => setResearchFocus(sanitizeResearchFocus(e.target.value))}
+                  maxLength={200}
                 />
                 <p className="text-sm text-charcoal/60 font-lato">
                   This helps our AI tailor the analysis to your specific research interests.
@@ -323,24 +299,27 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                onClick={() => document.getElementById('file-input').click()}
               >
                 <input
                   id="file-input"
                   type="file"
                   accept=".pdf"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  onChange={(e) => handleFileUpload(e.target.files[0])}
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleFileUpload(e.target.files[0]);
+                    }
+                  }}
                 />
                 <div className="space-y-4">
                   <div className="w-16 h-16 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto">
                     <Upload className="w-8 h-8 text-chestnut" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-charcoal mb-2 font-lato">
+                    <h3 className="text-base sm:text-lg font-semibold text-charcoal mb-2 font-lato">
                       Drop your PDF here or click to browse
                     </h3>
-                    <p className="text-charcoal/60 font-lato mb-2">
+                    <p className="text-sm sm:text-base text-charcoal/60 font-lato mb-2">
                       Supports research articles, journal papers, and academic reports
                     </p>
                     <p className="text-sm text-charcoal/50 font-lato">
@@ -385,7 +364,7 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
               </div>
 
               {/* Processing Steps */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
                 {processingSteps.map((step, index) => {
                   const Icon = step.icon;
                   const isActive = index === currentProcessingStep;
@@ -444,16 +423,10 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
                     Preview & Edit Your Entry
                   </h2>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <button className="btn btn-outline">
-                    <Edit className="w-4 h-4 mr-2" />
-                    Edit Entry
-                  </button>
-                  <button onClick={handleExportToWord} className="btn btn-primary">
-                    <FileDown className="w-4 h-4 mr-2" />
-                    Export to Word
-                  </button>
-                </div>
+                <button onClick={handleExportToWord} className="btn btn-primary">
+                  <FileDown className="w-4 h-4 mr-2" />
+                  Export to Word
+                </button>
               </div>
 
               {/* Bibliography Entry Preview */}
@@ -461,7 +434,7 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
                 <div className="space-y-6">
                   {/* Citation */}
                   <div className="font-bold text-charcoal leading-relaxed">
-                    {bibliographyEntry.citation}
+                    {cleanMarkdownFormatting(bibliographyEntry.citation)}
                   </div>
 
                   {/* Narrative Overview */}
@@ -470,7 +443,7 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
                       Narrative Overview
                     </h3>
                     <p className="text-charcoal/90 leading-relaxed">
-                      {bibliographyEntry.narrative_overview}
+                      {cleanMarkdownFormatting(bibliographyEntry.narrative_overview)}
                     </p>
                   </div>
 
@@ -483,17 +456,62 @@ ${bibliographyEntry.key_quotes?.map((quote, index) =>
                       {bibliographyEntry.research_components?.research_purpose && (
                         <div>
                           <span className="font-semibold text-charcoal">Research Purpose:</span>
-                          <p className="text-charcoal/90 mt-1">{bibliographyEntry.research_components.research_purpose}</p>
+                          <p className="text-charcoal/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.research_purpose)}</p>
                         </div>
                       )}
                       {bibliographyEntry.research_components?.methodology && (
                         <div>
                           <span className="font-semibold text-charcoal">Methodology:</span>
-                          <p className="text-charcoal/90 mt-1">{bibliographyEntry.research_components.methodology}</p>
+                          <p className="text-charcoal/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.methodology)}</p>
+                        </div>
+                      )}
+                      {bibliographyEntry.research_components?.theoretical_framework && (
+                        <div>
+                          <span className="font-semibold text-charcoal">Theoretical Framework:</span>
+                          <p className="text-charcoal/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.theoretical_framework)}</p>
                         </div>
                       )}
                     </div>
                   </div>
+
+                  {/* Core Findings & Key Statistics */}
+                  {bibliographyEntry.core_findings && (
+                    <div>
+                      <h3 className="font-bold text-charcoal mb-3 text-lg font-playfair">
+                        Core Findings & Key Statistics
+                      </h3>
+                      <div className="text-charcoal/90 leading-relaxed whitespace-pre-wrap">
+                        {cleanMarkdownFormatting(bibliographyEntry.core_findings)}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Methodological Value */}
+                  {(bibliographyEntry.methodological_value?.strengths || bibliographyEntry.methodological_value?.limitations) && (
+                    <div>
+                      <h3 className="font-bold text-charcoal mb-3 text-lg font-playfair">
+                        Methodological Value
+                      </h3>
+                      <div className="space-y-3">
+                        {bibliographyEntry.methodological_value?.strengths && (
+                          <div>
+                            <span className="font-semibold text-charcoal">Strengths:</span>
+                            <div className="text-charcoal/90 mt-1 whitespace-pre-wrap">
+                              {cleanMarkdownFormatting(bibliographyEntry.methodological_value.strengths)}
+                            </div>
+                          </div>
+                        )}
+                        {bibliographyEntry.methodological_value?.limitations && (
+                          <div>
+                            <span className="font-semibold text-charcoal">Limitations:</span>
+                            <div className="text-charcoal/90 mt-1 whitespace-pre-wrap">
+                              {cleanMarkdownFormatting(bibliographyEntry.methodological_value.limitations)}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Key Quotes */}
                   {bibliographyEntry.key_quotes && bibliographyEntry.key_quotes.length > 0 && (

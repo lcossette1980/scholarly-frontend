@@ -1,6 +1,7 @@
 // src/context/AuthContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChange, getUserDocument, handleRedirectResult } from '../services/auth';
+import { setUserContext, clearUserContext, logError } from '../services/errorMonitoring';
 
 const AuthContext = createContext();
 

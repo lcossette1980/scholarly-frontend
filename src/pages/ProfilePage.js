@@ -2,10 +2,7 @@
 import React, { useState } from 'react';
 import { 
   User, 
-  Mail, 
-  Calendar, 
   CreditCard, 
-  Bell, 
   Shield, 
   Trash2, 
   Edit,
@@ -13,14 +10,13 @@ import {
   X,
   Settings,
   Crown,
-  Download
+  RefreshCw
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { createCustomerPortalSession } from '../services/stripe';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
-import { debugUserDocument, fixUserSubscription } from '../services/auth';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
@@ -89,34 +85,9 @@ const ProfilePage = () => {
     setIsEditing(false);
   };
 
-  const handleDebugCredits = async () => {
-    setIsLoading(true);
-    try {
-      await debugUserDocument(currentUser.uid);
-      toast.success('Check console for debug information');
-    } catch (error) {
-      console.error('Debug error:', error);
-      toast.error('Debug failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const handleFixCredits = async () => {
-    setIsLoading(true);
-    try {
-      const result = await fixUserSubscription(currentUser.uid);
-      if (result) {
-        toast.success('Credits fixed! Please refresh the page.');
-      } else {
-        toast.error('Failed to fix credits');
-      }
-    } catch (error) {
-      console.error('Fix error:', error);
-      toast.error('Failed to fix credits');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleFixCredits = () => {
+    window.location.reload();
   };
 
   const formatDate = (date) => {
@@ -285,27 +256,6 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            {/* Data Export */}
-            <div className="card">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                  <Download className="w-5 h-5 text-chestnut" />
-                </div>
-                <h2 className="text-xl font-bold text-charcoal font-playfair">
-                  Data Export
-                </h2>
-              </div>
-
-              <div className="space-y-4">
-                <p className="text-charcoal/70 font-lato">
-                  Download all your bibliography entries and account data.
-                </p>
-                <button className="btn btn-outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export My Data
-                </button>
-              </div>
-            </div>
 
             {/* Danger Zone */}
             <div className="card border-red-200 bg-red-50">
@@ -423,30 +373,16 @@ const ProfilePage = () => {
 
               <div className="space-y-3">
                 <p className="text-sm text-charcoal/70 font-lato">
-                  If you're not seeing your 5 free credits, use these tools to diagnose and fix the issue:
+                  If you're not seeing your credits, click the button below to refresh:
                 </p>
                 
                 <button 
-                  onClick={handleDebugCredits}
-                  disabled={isLoading}
-                  className="btn btn-outline w-full text-sm"
-                >
-                  <Settings className="w-4 h-4 mr-2" />
-                  Debug Credits (Check Console)
-                </button>
-                
-                <button 
                   onClick={handleFixCredits}
-                  disabled={isLoading}
-                  className="btn btn-primary w-full text-sm"
+                  className="btn bg-red-600 hover:bg-red-700 text-white w-full"
                 >
-                  <Settings className="w-4 h-4 mr-2" />
+                  <RefreshCw className="w-4 h-4 mr-2" />
                   Fix Missing Credits
                 </button>
-                
-                <div className="text-xs text-charcoal/60 font-lato p-2 bg-khaki/10 rounded">
-                  Note: After fixing, refresh the page to see updated credits.
-                </div>
               </div>
             </div>
 

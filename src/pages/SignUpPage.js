@@ -56,7 +56,7 @@ const SignUpPage = () => {
     setIsLoading(true);
 
     try {
-      const { error } = await signUp(
+      const { error, emailVerificationSent } = await signUp(
         formData.email, 
         formData.password, 
         formData.displayName
@@ -65,12 +65,17 @@ const SignUpPage = () => {
       if (error) {
         toast.error(error);
       } else {
-        toast.success('Welcome to ScholarlyAI!');
-        // Wait a moment for Firestore to commit the user document
-        await new Promise(resolve => setTimeout(resolve, 500));
-        // Refresh user document to get latest credit data
-        await refreshUserDocument();
-        navigate('/dashboard', { replace: true });
+        if (emailVerificationSent) {
+          toast.success('Account created! Please verify your email to continue.');
+          navigate('/verify-email', { replace: true });
+        } else {
+          toast.success('Welcome to ScholarlyAI!');
+          // Wait a moment for Firestore to commit the user document
+          await new Promise(resolve => setTimeout(resolve, 500));
+          // Refresh user document to get latest credit data
+          await refreshUserDocument();
+          navigate('/dashboard', { replace: true });
+        }
       }
     } catch (error) {
       toast.error('An unexpected error occurred');

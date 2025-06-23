@@ -27,19 +27,19 @@ const HomePage = () => {
 
   const testimonials = [
     {
-      quote: "ScholarlyAI has revolutionized my research workflow. What used to take hours now takes minutes.",
+      quote: "ScholarlyAI has revolutionized my research workflow. What used to take a few hours or days now takes minutes.",
       author: "Dr. Sarah Chen",
-      role: "Research Professor, Stanford University"
+      role: "Research Professor"
     },
     {
-      quote: "The AI analysis is incredibly accurate and captures nuances I might have missed.",
+      quote: "The AI analysis is incredibly accurate and captures nuances I might have missed. It is truly my partner.",
       author: "Michael Rodriguez",
-      role: "PhD Candidate, MIT"
+      role: "PhD Candidate"
     },
     {
-      quote: "Perfect for our graduate students. The time savings are substantial.",
-      author: "Prof. Emily Watson",
-      role: "Department Head, Harvard University"
+      quote: "Perfect for my research projects and papers!! The time savings are substantial, and my productivity has increased.",
+      author: "Emily Watson",
+      role: "Undergraduate Student"
     }
   ];
 
@@ -50,11 +50,7 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-gradient-overlay opacity-10"></div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-8">
-              <Brain className="w-5 h-5 text-chestnut" />
-              <span className="text-sm font-medium text-charcoal">AI-Powered Research Assistant</span>
-            </div>
-            
+                       
             <h1 className="text-5xl lg:text-7xl font-bold text-charcoal font-playfair mb-6 text-shadow-lg">
               Transform Research Papers into{' '}
               <span className="text-gradient">Scholarly Annotations</span>

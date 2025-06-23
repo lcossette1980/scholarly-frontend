@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
+  sendEmailVerification,
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult
@@ -57,6 +58,9 @@ export const signUp = async (email, password, displayName) => {
     // Update profile with display name
     await updateProfile(user, { displayName });
     
+    // Send email verification
+    await sendEmailVerification(user);
+    
     // Wait for auth state to be fully propagated
     console.log('Waiting for auth state to propagate...');
     await waitForAuth();
@@ -74,10 +78,10 @@ export const signUp = async (email, password, displayName) => {
       }
     }
     
-    return { user, error: null };
+    return { user, error: null, emailVerificationSent: true };
   } catch (error) {
     console.error('Signup error:', error);
-    return { user: null, error: error.message };
+    return { user: null, error: error.message, emailVerificationSent: false };
   }
 };
 
@@ -151,8 +155,33 @@ export const resetPassword = async (email) => {
     await sendPasswordResetEmail(auth, email);
     return { error: null };
   } catch (error) {
-    return { error: error.message };
+    throw error; // Let the calling component handle specific errors
   }
+};
+
+// Send email verification
+export const sendEmailVerificationToUser = async () => {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('No user is currently signed in');
+    }
+    
+    if (user.emailVerified) {
+      return { error: 'Email is already verified' };
+    }
+    
+    await sendEmailVerification(user);
+    return { error: null };
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Check if email is verified
+export const isEmailVerified = () => {
+  const user = auth.currentUser;
+  return user ? user.emailVerified : false;
 };
 
 // Create user document in Firestore

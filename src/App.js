@@ -4,17 +4,24 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
+import { initErrorMonitoring } from './services/errorMonitoring';
+import { validateEnvironment } from './config/environment';
 
 // Pages
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import EmailVerificationPage from './pages/EmailVerificationPage';
 import DashboardPage from './pages/DashboardPage';
 import PricingPage from './pages/PricingPage';
 import ProfilePage from './pages/ProfilePage';
 import CreateEntryPage from './pages/CreateEntryPage';
+import BibliographyPage from './pages/BibliographyPage';
 import FeaturesPage from './pages/FeaturesPage';
 import DocumentationPage from './pages/DocumentationPage';
+import DocsPage from './pages/DocsPage';
 import HelpCenterPage from './pages/HelpCenterPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsofServicePage from './pages/TermsofServicePage';
@@ -25,21 +32,38 @@ import NotFoundPage from './pages/NotFoundPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
+// Validate environment variables
+try {
+  const validation = validateEnvironment();
+  if (!validation.isValid) {
+    console.error('⚠️ App starting with environment issues. Check console for details.');
+  }
+} catch (error) {
+  console.error('❌ Critical environment validation failed:', error.message);
+}
+
+// Initialize error monitoring
+initErrorMonitoring();
+
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-gradient-brand">
-          <Navbar />
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <div className="min-h-screen bg-gradient-brand">
+            <Navbar />
           <main className="flex-1">
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/features" element={<FeaturesPage />} />
               <Route path="/documentation" element={<DocumentationPage />} />
+              <Route path="/docs" element={<DocsPage />} />
               <Route path="/help" element={<HelpCenterPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsofServicePage />} />
@@ -59,6 +83,11 @@ function App() {
               <Route path="/profile" element={
                 <ProtectedRoute>
                   <ProfilePage />
+                </ProtectedRoute>
+              } />
+              <Route path="/bibliography" element={
+                <ProtectedRoute>
+                  <BibliographyPage />
                 </ProtectedRoute>
               } />
               
@@ -92,9 +121,10 @@ function App() {
               },
             }}
           />
-        </div>
-      </Router>
-    </AuthProvider>
+          </div>
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -58,20 +58,17 @@ const Footer = () => {
             <h4 className="font-semibold font-playfair mb-4">Product</h4>
             <ul className="space-y-3 text-white/70 font-lato">
               <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-              <li><Link to="/features" className="hover:text-white transition-colors">Features</Link></li>
-              <li><Link to="/demo" className="hover:text-white transition-colors">Demo</Link></li>
-              <li><Link to="/api" className="hover:text-white transition-colors">API</Link></li>
+              <li><Link to="/create" className="hover:text-white transition-colors">Create Entry</Link></li>
+              <li><Link to="/bibliography" className="hover:text-white transition-colors">Manage Bibliography</Link></li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Resources */}
           <div>
-            <h4 className="font-semibold font-playfair mb-4">Company</h4>
+            <h4 className="font-semibold font-playfair mb-4">Resources</h4>
             <ul className="space-y-3 text-white/70 font-lato">
-              <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-              <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
-              <li><Link to="/careers" className="hover:text-white transition-colors">Careers</Link></li>
-              <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+              <li><Link to="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
+              <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
             </ul>
           </div>
 
@@ -79,14 +76,17 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold font-playfair mb-4">Support</h4>
             <ul className="space-y-3 text-white/70 font-lato">
-              <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-              <li><Link to="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
-              <li><Link to="/status" className="hover:text-white transition-colors">Status</Link></li>
               <li>
-                <a href="mailto:support@scholarlyai.com" className="hover:text-white transition-colors flex items-center space-x-2">
+                <a href="mailto:support@scholarlyaiapp.com" className="hover:text-white transition-colors flex items-center space-x-2">
                   <Mail className="w-4 h-4" />
-                  <span>Support</span>
+                  <span>Email Support</span>
                 </a>
+              </li>
+              <li className="text-sm">
+                <p>Monday - Friday: 9 AM - 6 PM EST</p>
+              </li>
+              <li className="text-sm">
+                <p>Response time: Within 24 hours</p>
               </li>
             </ul>
           </div>

@@ -8,7 +8,6 @@ import toast from 'react-hot-toast';
 
 const PricingPage = () => {
   const [isLoading, setIsLoading] = useState(null);
-  const [billingPeriod, setBillingPeriod] = useState('monthly');
   const { currentUser, userDocument } = useAuth();
   const navigate = useNavigate();
 
@@ -45,7 +44,7 @@ const PricingPage = () => {
     const isCurrent = isCurrentPlan(planId);
 
     return (
-      <div className={`relative card card-hover ${featured ? 'ring-2 ring-chestnut border-chestnut/30' : ''} ${isPopular ? 'scale-105' : ''}`}>
+      <div className={`relative card card-hover ${featured ? 'ring-2 ring-chestnut border-chestnut/30' : ''} ${isPopular ? 'md:scale-105' : ''}`}>
         {isPopular && (
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
             <div className="bg-gradient-chestnut text-white px-4 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
@@ -78,25 +77,21 @@ const PricingPage = () => {
             )}
           </div>
 
-          {plan.entriesLimit === -1 ? (
+          {planId === 'free' ? (
             <p className="text-sm text-charcoal/70 font-lato">
-              Unlimited entries per month
+              5 lifetime uses
+            </p>
+          ) : planId === 'student' ? (
+            <p className="text-sm text-charcoal/70 font-lato">
+              20 per month
             </p>
           ) : (
             <p className="text-sm text-charcoal/70 font-lato">
-              {plan.entriesLimit} entries per month
+              50 per month
             </p>
           )}
         </div>
 
-        <ul className="space-y-3 mb-8">
-          {plan.features.map((feature, index) => (
-            <li key={index} className="flex items-start space-x-3">
-              <Check className="w-5 h-5 text-chestnut flex-shrink-0 mt-0.5" />
-              <span className="text-charcoal/80 font-lato">{feature}</span>
-            </li>
-          ))}
-        </ul>
 
         <button
           onClick={() => handleSubscribe(planId)}
@@ -131,53 +126,24 @@ const PricingPage = () => {
   };
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="container mx-auto px-6">
+    <div className="min-h-screen py-6 md:py-12">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl lg:text-6xl font-bold text-charcoal font-playfair mb-6">
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-charcoal font-playfair mb-6">
             Choose Your <span className="text-chestnut">Research Plan</span>
           </h1>
-          <p className="text-xl text-charcoal/70 max-w-3xl mx-auto font-lato leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-charcoal/70 max-w-3xl mx-auto font-lato leading-relaxed">
             From individual researchers to large institutions, we have a plan that fits your bibliography generation needs.
           </p>
         </div>
 
-        {/* Billing Toggle */}
-        <div className="flex justify-center mb-12">
-          <div className="bg-white/70 backdrop-blur-sm border border-khaki/30 rounded-lg p-1">
-            <button
-              onClick={() => setBillingPeriod('monthly')}
-              className={`px-6 py-2 rounded-md transition-all font-medium ${
-                billingPeriod === 'monthly'
-                  ? 'bg-chestnut text-white'
-                  : 'text-charcoal hover:text-chestnut'
-              }`}
-            >
-              Monthly
-            </button>
-            <button
-              onClick={() => setBillingPeriod('yearly')}
-              className={`px-6 py-2 rounded-md transition-all font-medium ${
-                billingPeriod === 'yearly'
-                  ? 'bg-chestnut text-white'
-                  : 'text-charcoal hover:text-chestnut'
-              }`}
-            >
-              Yearly
-              <span className="ml-2 bg-chestnut/10 text-chestnut px-2 py-1 rounded text-xs">
-                Save 20%
-              </span>
-            </button>
-          </div>
-        </div>
 
         {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8 max-w-7xl mx-auto mb-16">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
           <PlanCard plan={SUBSCRIPTION_PLANS.free} planId="free" />
           <PlanCard plan={SUBSCRIPTION_PLANS.student} planId="student" />
           <PlanCard plan={SUBSCRIPTION_PLANS.researcher} planId="researcher" featured={true} />
-          <PlanCard plan={SUBSCRIPTION_PLANS.institution} planId="institution" />
         </div>
 
         {/* Current Plan Status */}

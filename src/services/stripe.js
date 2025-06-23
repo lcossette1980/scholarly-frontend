@@ -26,7 +26,7 @@ export const SUBSCRIPTION_PLANS = {
     price: 0,
     entriesLimit: 5,
     features: [
-      '5 bibliography entries per month',
+      '5 bibliography entries (lifetime)',
       'Basic AI analysis',
       'Standard export format',
       'Email support'

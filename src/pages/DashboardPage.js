@@ -6,16 +6,18 @@ import {
   FileText, 
   Calendar, 
   TrendingUp, 
-  Download, 
   Search, 
   Filter,
-  MoreVertical,
-  Edit,
   Eye,
-  Clock
+  Clock,
+  BookOpen,
+  ChevronLeft,
+  Quote
   } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry } from '../services/stripe';
+import { getUserBibliographyEntries } from '../services/bibliography';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 import toast from 'react-hot-toast';
 
 const DashboardPage = () => {
@@ -25,51 +27,86 @@ const DashboardPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterBy, setFilterBy] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
+  const [selectedEntry, setSelectedEntry] = useState(null);
 
-  // Mock data - replace with actual Firestore queries
-  const mockEntries = [
-    {
-      id: '1',
-      title: 'The Digital Transformation Leadership Framework',
-      authors: 'Weber, E., Krehl, E., & Büttgen, M.',
-      journal: 'Journal of Leadership Studies',
-      year: '2022',
-      researchFocus: 'AI Leadership',
-      createdAt: new Date('2024-01-15'),
-      status: 'completed',
-      type: 'journal-article'
-    },
-    {
-      id: '2',
-      title: 'Machine Learning Ethics in Academic Research',
-      authors: 'Smith, J., Johnson, A.',
-      journal: 'AI Ethics Review',
-      year: '2023',
-      researchFocus: 'AI Ethics',
-      createdAt: new Date('2024-01-10'),
-      status: 'processing',
-      type: 'journal-article'
-    },
-    {
-      id: '3',
-      title: 'Digital Innovation in Higher Education',
-      authors: 'Brown, K., Davis, L., Wilson, M.',
-      journal: 'Education Technology Research',
-      year: '2023',
-      researchFocus: 'Digital Transformation',
-      createdAt: new Date('2024-01-05'),
-      status: 'completed',
-      type: 'journal-article'
-    }
-  ];
-
+  // Fetch user's bibliography entries from Firestore
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => {
-      setEntries(mockEntries);
-      setLoading(false);
-    }, 1000);
-  }, []);
+    const fetchEntries = async () => {
+      if (!currentUser) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const result = await getUserBibliographyEntries(currentUser.uid, 20);
+        
+        if (result.success) {
+          // Transform the entries to match the display format
+          const transformedEntries = result.entries.map(entry => {
+            // Parse citation to extract author, year, title, journal
+            const citationParts = parseCitation(entry.citation);
+            
+            return {
+              id: entry.id,
+              title: citationParts.title || 'Untitled',
+              authors: citationParts.authors || 'Unknown Authors',
+              journal: citationParts.journal || 'Unknown Journal',
+              year: citationParts.year || 'N/A',
+              researchFocus: entry.researchFocus,
+              createdAt: entry.createdAt?.toDate ? entry.createdAt.toDate() : new Date(),
+              status: 'completed',
+              type: 'journal-article',
+              // Store full entry data for viewing/editing
+              fullData: entry
+            };
+          });
+          
+          setEntries(transformedEntries);
+        } else {
+          toast.error('Failed to load bibliography entries');
+        }
+      } catch (error) {
+        console.error('Error fetching entries:', error);
+        toast.error('Failed to load bibliography entries');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEntries();
+  }, [currentUser]);
+
+  // Helper function to parse citation
+  const parseCitation = (citation) => {
+    if (!citation) return {};
+    
+    try {
+      // Example citation format: "Arslan, A., Cooper, C., Khan, Z., Golgeci, I., & Ali, I. (2020). Artificial intelligence and human workers interaction at team level: A conceptual assessment of the challenges and potential HRM strategies. International Journal of Management, 43. https://doi.org/10.1108/IJM-01-2021-0052"
+      
+      // Extract authors (everything before the year in parentheses)
+      const yearMatch = citation.match(/\((\d{4})\)/);
+      const year = yearMatch ? yearMatch[1] : null;
+      
+      const authorsEndIndex = yearMatch ? citation.indexOf(yearMatch[0]) : -1;
+      const authors = authorsEndIndex > 0 ? citation.substring(0, authorsEndIndex).trim() : '';
+      
+      // Extract title (after year, before journal name - usually ends with a period)
+      const afterYear = yearMatch ? citation.substring(citation.indexOf(yearMatch[0]) + yearMatch[0].length).trim() : '';
+      const titleMatch = afterYear.match(/^(.+?)\.\s*([^,]+)/);
+      const title = titleMatch ? titleMatch[1] : '';
+      const journal = titleMatch ? titleMatch[2] : '';
+      
+      return {
+        authors,
+        year,
+        title,
+        journal
+      };
+    } catch (error) {
+      console.error('Error parsing citation:', error);
+      return {};
+    }
+  };
 
   const filteredEntries = entries.filter(entry => {
     const matchesSearch = entry.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -160,18 +197,13 @@ const DashboardPage = () => {
           </p>
         </div>
         
-        <div className="flex items-center space-x-2 ml-4">
-          <button className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors">
-            <Eye className="w-4 h-4" />
-          </button>
-          <button className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors">
-            <Edit className="w-4 h-4" />
-          </button>
-          <button className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors">
-            <Download className="w-4 h-4" />
-          </button>
-          <button className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors">
-            <MoreVertical className="w-4 h-4" />
+        <div className="flex items-center ml-4">
+          <button 
+            className="p-2 text-charcoal/60 hover:text-chestnut hover:bg-chestnut/10 rounded-lg transition-colors"
+            onClick={() => setSelectedEntry(entry)}
+            title="View entry details"
+          >
+            <Eye className="w-5 h-5" />
           </button>
         </div>
       </div>
@@ -189,34 +221,191 @@ const DashboardPage = () => {
     </div>
   );
 
-  return (
-    <div className="min-h-screen py-8">
-      <div className="container mx-auto px-6">
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-charcoal font-playfair mb-2">
-              Welcome back, {currentUser?.displayName || 'Researcher'}!
-            </h1>
-            <p className="text-charcoal/70 font-lato">
-              Manage your bibliography entries and track your research progress.
-            </p>
-          </div>
+  const EntryView = ({ entry, onBack }) => {
+    const entryData = entry.fullData;
+    
+    return (
+      <div>
+        {/* Header with back button */}
+        <div className="flex items-center mb-6">
+          <button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-chestnut hover:text-chestnut/80 transition-colors mr-4"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span className="font-lato">Back to Dashboard</span>
+          </button>
           
-          <div className="mt-4 lg:mt-0">
-            <Link
-              to="/create"
-              onClick={handleCreateNew}
-              className={`btn ${canCreate ? 'btn-primary' : 'btn-outline opacity-50 cursor-not-allowed'}`}
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Create New Entry
-            </Link>
+          <div className="flex items-center space-x-2">
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+              entry.status === 'completed' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-yellow-100 text-yellow-800'
+            }`}>
+              {entry.status === 'completed' ? 'Completed' : 'Processing'}
+            </span>
+            <span className="px-2 py-1 bg-chestnut/10 text-chestnut rounded-full text-xs font-medium">
+              {entry.researchFocus}
+            </span>
           </div>
         </div>
 
+        {/* Entry Details */}
+        <div className="space-y-6">
+          {/* Citation */}
+          <div className="card">
+            <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">Citation</h2>
+            <div className="bg-bone/50 border border-khaki/30 rounded-lg p-4">
+              <p className="text-charcoal font-lato leading-relaxed">
+                {entryData.citation}
+              </p>
+            </div>
+          </div>
+
+          {/* Summary */}
+          {entryData.summary && (
+            <div className="card">
+              <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">Summary</h2>
+              <p className="text-charcoal/80 font-lato leading-relaxed whitespace-pre-line">
+                {entryData.summary}
+              </p>
+            </div>
+          )}
+
+          {/* Key Findings */}
+          {entryData.keyFindings && (
+            <div className="card">
+              <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">Key Findings</h2>
+              <p className="text-charcoal/80 font-lato leading-relaxed whitespace-pre-line">
+                {entryData.keyFindings}
+              </p>
+            </div>
+          )}
+
+          {/* Methodology */}
+          {entryData.methodology && (
+            <div className="card">
+              <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">Methodology</h2>
+              <p className="text-charcoal/80 font-lato leading-relaxed whitespace-pre-line">
+                {entryData.methodology}
+              </p>
+            </div>
+          )}
+
+          {/* Quotes */}
+          {entryData.quotes && entryData.quotes.length > 0 && (
+            <div className="card">
+              <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">Key Quotes</h2>
+              <div className="space-y-4">
+                {entryData.quotes.map((quote, index) => (
+                  <div key={index} className="border-l-4 border-chestnut pl-4">
+                    <div className="flex items-start space-x-2">
+                      <Quote className="w-4 h-4 text-chestnut mt-1 flex-shrink-0" />
+                      <div>
+                        <p className="text-charcoal/80 font-lato italic leading-relaxed mb-2">
+                          "{quote.text}"
+                        </p>
+                        <p className="text-charcoal/60 text-sm font-lato">
+                          Page {quote.page}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Research Focus */}
+          <div className="card">
+            <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">Research Focus</h2>
+            <p className="text-charcoal/80 font-lato leading-relaxed">
+              {entry.researchFocus}
+            </p>
+          </div>
+
+          {/* Entry Metadata */}
+          <div className="card">
+            <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">Entry Details</h2>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="text-charcoal/60 font-lato">Created:</span>
+                <span className="ml-2 text-charcoal font-lato">
+                  {new Date(entry.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+              <div>
+                <span className="text-charcoal/60 font-lato">Type:</span>
+                <span className="ml-2 text-charcoal font-lato capitalize">
+                  {entry.type.replace('-', ' ')}
+                </span>
+              </div>
+              <div>
+                <span className="text-charcoal/60 font-lato">Status:</span>
+                <span className="ml-2 text-charcoal font-lato capitalize">
+                  {entry.status}
+                </span>
+              </div>
+              {entryData.citationStyle && (
+                <div>
+                  <span className="text-charcoal/60 font-lato">Citation Style:</span>
+                  <span className="ml-2 text-charcoal font-lato">
+                    {entryData.citationStyle}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen py-8">
+      <div className="container mx-auto px-6">
+        {selectedEntry ? (
+          <EntryView 
+            entry={selectedEntry} 
+            onBack={() => setSelectedEntry(null)} 
+          />
+        ) : (
+          <>
+            {/* Header */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+              <div>
+                <h1 className="text-4xl font-bold text-charcoal font-playfair mb-2">
+                  Welcome back, {currentUser?.displayName || 'Researcher'}!
+                </h1>
+                <p className="text-charcoal/70 font-lato">
+                  Manage your bibliography entries and track your research progress.
+                </p>
+              </div>
+              
+              <div className="mt-4 lg:mt-0 flex items-center space-x-3">
+                <Link
+                  to="/bibliography"
+                  className="btn btn-outline"
+                >
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  Manage Bibliography
+                </Link>
+                <Link
+                  to="/create"
+                  onClick={handleCreateNew}
+                  className={`btn ${canCreate ? 'btn-primary' : 'btn-outline opacity-50 cursor-not-allowed'}`}
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Create New Entry
+                </Link>
+              </div>
+            </div>
+
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {loading ? (
+          <LoadingSkeleton variant="dashboard-stats" />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             icon={FileText}
             title="Total Entries"
@@ -242,7 +431,8 @@ const DashboardPage = () => {
             change="85% completion rate"
             color="green-600"
           />
-        </div>
+          </div>
+        )}
 
         {/* Usage Progress */}
         {userDocument?.subscription && (
@@ -389,6 +579,8 @@ const DashboardPage = () => {
             </div>
           )}
         </div>
+          </>
+        )}
       </div>
     </div>
   );
