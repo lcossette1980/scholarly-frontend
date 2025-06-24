@@ -111,33 +111,57 @@ export const signIn = async (email, password) => {
   }
 };
 
-// Sign in with Google (Redirect method) - Enhanced with better error handling
+// Sign in with Google - Try popup first, fallback to redirect
 export const signInWithGoogle = async () => {
   try {
-    console.log('Starting Google sign-in with redirect...');
-    console.log('Current domain:', window.location.hostname);
-    console.log('Auth instance:', auth);
-    console.log('Google provider:', googleProvider);
+    console.log('Starting Google sign-in...');
     
-    // Check if we're in a secure context
-    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
-      throw new Error('Google Sign-In requires HTTPS in production');
+    // Check sessionStorage availability
+    try {
+      sessionStorage.setItem('test', 'test');
+      sessionStorage.removeItem('test');
+    } catch (storageError) {
+      console.warn('SessionStorage not available, trying popup method');
+      return await signInWithGooglePopup();
     }
     
-    // Add error event listener to catch redirect errors
-    window.addEventListener('error', (event) => {
-      console.error('Window error during Google sign-in:', event);
-    }, { once: true });
-    
-    await signInWithRedirect(auth, googleProvider);
-    
-    console.log('Redirect initiated - user will be redirected to Google');
-    return { user: null, error: null }; // User will be available after redirect
+    // Try popup method first (better UX)
+    try {
+      console.log('Attempting popup sign-in...');
+      const result = await signInWithPopup(auth, googleProvider);
+      
+      if (result && result.user) {
+        const user = result.user;
+        console.log('Google popup sign-in successful:', user.email);
+        
+        // Create user document if it doesn't exist
+        const userRef = await createUserDocument(user);
+        
+        if (userRef) {
+          const userData = await waitForDocumentReadable(user.uid);
+          if (userData) {
+            console.log('Google popup user document verified');
+          }
+        }
+        
+        return { user, error: null };
+      }
+      
+      return { user: null, error: 'No user returned from popup' };
+    } catch (popupError) {
+      console.log('Popup failed, trying redirect:', popupError.code);
+      
+      // If popup fails, fall back to redirect
+      if (popupError.code === 'auth/popup-blocked' || 
+          popupError.code === 'auth/popup-closed-by-user') {
+        console.log('Falling back to redirect method...');
+        return await signInWithGoogleRedirect();
+      }
+      
+      throw popupError;
+    }
   } catch (error) {
     console.error('Google sign-in error:', error);
-    console.error('Error code:', error.code);
-    console.error('Error message:', error.message);
-    console.error('Error details:', error);
     
     // Provide specific error messages for common issues
     let userFriendlyMessage = error.message;
@@ -149,18 +173,32 @@ export const signInWithGoogle = async () => {
       case 'auth/unauthorized-domain':
         userFriendlyMessage = 'This domain is not authorized for Google sign-in.';
         break;
-      case 'auth/popup-blocked':
-        userFriendlyMessage = 'Popup was blocked. Please allow popups and try again.';
-        break;
-      case 'auth/cancelled-popup-request':
-        userFriendlyMessage = 'Sign-in was cancelled.';
-        break;
       case 'auth/network-request-failed':
         userFriendlyMessage = 'Network error. Please check your connection and try again.';
         break;
     }
     
     return { user: null, error: userFriendlyMessage };
+  }
+};
+
+// Sign in with Google using redirect method
+export const signInWithGoogleRedirect = async () => {
+  try {
+    console.log('Starting Google sign-in with redirect...');
+    
+    // Check if we're in a secure context
+    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+      throw new Error('Google Sign-In requires HTTPS in production');
+    }
+    
+    await signInWithRedirect(auth, googleProvider);
+    
+    console.log('Redirect initiated - user will be redirected to Google');
+    return { user: null, error: null }; // User will be available after redirect
+  } catch (error) {
+    console.error('Google redirect sign-in error:', error);
+    return { user: null, error: error.message };
   }
 };
 

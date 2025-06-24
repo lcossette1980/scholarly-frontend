@@ -21,6 +21,21 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase services
 export const auth = getAuth(app);
+
+// Configure auth persistence to handle sessionStorage issues
+auth.setPersistence = (() => {
+  try {
+    // Test if sessionStorage is available
+    sessionStorage.setItem('test', 'test');
+    sessionStorage.removeItem('test');
+    return auth.setPersistence;
+  } catch (error) {
+    console.warn('SessionStorage not available, using local persistence');
+    // Return a no-op function if sessionStorage is blocked
+    return () => Promise.resolve();
+  }
+})();
+
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const functions = getFunctions(app);

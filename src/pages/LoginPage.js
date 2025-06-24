@@ -72,8 +72,12 @@ const LoginPage = () => {
         console.error('Google sign-in error in LoginPage:', error);
         toast.error(error);
         setIsLoading(false);
+      } else if (user) {
+        // Popup method succeeded - user is available immediately
+        toast.success('Welcome!');
+        navigate(from, { replace: true });
       } else {
-        // Don't show success message or navigate yet - wait for redirect to complete
+        // Redirect method initiated - don't set loading to false yet
         console.log('Google sign-in initiated, waiting for redirect...');
         // Note: isLoading will remain true during redirect
       }
