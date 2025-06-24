@@ -36,11 +36,29 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // Enhanced error handling for better user experience
     if (error.response?.status === 401) {
       // Handle unauthorized access
       console.error('Unauthorized access - redirecting to login');
       // You could dispatch a logout action here
+    } else if (error.response?.status === 502 || error.response?.status === 503) {
+      // Backend is down or unavailable
+      console.error('Backend service unavailable:', error.response?.data?.message || error.message);
+      error.userMessage = 'Our service is temporarily unavailable. Please try again in a few minutes.';
+    } else if (error.code === 'ERR_NETWORK' || !error.response) {
+      // Network error or no response
+      console.error('Network error:', error.message);
+      error.userMessage = 'Unable to connect to our servers. Please check your internet connection and try again.';
+    } else if (error.response?.status >= 500) {
+      // Server errors
+      console.error('Server error:', error.response?.status, error.response?.data);
+      error.userMessage = 'A server error occurred. Please try again later.';
+    } else if (error.response?.status >= 400 && error.response?.status < 500) {
+      // Client errors
+      console.error('Client error:', error.response?.status, error.response?.data);
+      error.userMessage = error.response?.data?.message || 'There was an issue with your request.';
     }
+    
     return Promise.reject(error);
   }
 );
@@ -115,14 +133,41 @@ export const bibliographyAPI = {
   }
 };
 
-// Health check
+// Health check with enhanced error reporting
 export const healthCheck = async () => {
   try {
-    const response = await api.get('/health');
-    return response.data;
+    const response = await api.get('/health', { timeout: 10000 }); // 10 second timeout for health check
+    return { 
+      status: 'healthy', 
+      message: 'Service is operational',
+      data: response.data 
+    };
   } catch (error) {
     console.error('Health check failed:', error);
-    return { status: 'error', message: error.message };
+    
+    const healthStatus = {
+      status: 'error',
+      message: error.userMessage || error.message,
+      details: {
+        code: error.code,
+        statusCode: error.response?.status,
+        timestamp: new Date().toISOString()
+      }
+    };
+    
+    // Specific health check responses
+    if (error.response?.status === 502) {
+      healthStatus.message = 'Backend service is currently down for maintenance';
+      healthStatus.details.issue = 'Service deployment or restart in progress';
+    } else if (error.code === 'ERR_NETWORK') {
+      healthStatus.message = 'Cannot reach backend servers';
+      healthStatus.details.issue = 'Network connectivity or DNS resolution problem';
+    } else if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+      healthStatus.message = 'Backend service is responding slowly';
+      healthStatus.details.issue = 'Service overload or performance issues';
+    }
+    
+    return healthStatus;
   }
 };
 
