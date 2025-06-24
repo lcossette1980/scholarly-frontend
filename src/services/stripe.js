@@ -99,46 +99,35 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
 
     console.log('Using price ID:', finalPriceId);
 
-    // Create checkout session document in Firestore
-    const checkoutSessionRef = await addDoc(
-      collection(db, 'users', userId, 'checkout_sessions'),
-      {
-        price: finalPriceId,
+    // Use backend API to create checkout session
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${apiUrl}/create-checkout-session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        plan: planId,
         success_url: `${window.location.origin}/dashboard?success=true`,
-        cancel_url: `${window.location.origin}/pricing?canceled=true`,
-        metadata: {
-          planId: planId
-        },
-        created: serverTimestamp()
-      }
-    );
-    
-    // Wait for checkout session to be created by Cloud Function
-    return new Promise((resolve, reject) => {
-      const unsubscribe = onSnapshot(checkoutSessionRef, (snap) => {
-        const data = snap.data();
-        
-        if (data?.error) {
-          console.error('Checkout session error:', data.error);
-          unsubscribe();
-          reject(new Error(data.error.message));
-        }
-        
-        if (data?.url) {
-          console.log('Checkout session created successfully:', data.url);
-          unsubscribe();
-          // Redirect to Stripe Checkout
-          window.location.assign(data.url);
-          resolve(data.url);
-        }
-      });
-      
-      // Timeout after 10 seconds
-      setTimeout(() => {
-        unsubscribe();
-        reject(new Error('Timeout creating checkout session'));
-      }, 10000);
+        cancel_url: `${window.location.origin}/pricing?canceled=true`
+      })
     });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ detail: 'Failed to create checkout session' }));
+      throw new Error(errorData.detail || 'Failed to create checkout session');
+    }
+
+    const data = await response.json();
+    
+    if (data.checkout_url) {
+      console.log('Checkout session created successfully:', data.checkout_url);
+      // Redirect to Stripe Checkout
+      window.location.assign(data.checkout_url);
+      return data.checkout_url;
+    } else {
+      throw new Error('No checkout URL received from server');
+    }
   } catch (error) {
     console.error('Error creating checkout session:', error);
     throw error;
