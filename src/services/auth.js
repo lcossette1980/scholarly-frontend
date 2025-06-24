@@ -9,13 +9,16 @@ import {
   sendEmailVerification,
   GoogleAuthProvider,
   signInWithRedirect,
-  getRedirectResult
+  getRedirectResult,
+  signInWithPopup
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
-// Google Auth Provider
+// Enhanced Google Auth Provider with specific scopes
 const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope('email');
+googleProvider.addScope('profile');
 
 // Helper function to wait for auth state
 const waitForAuth = () => {
@@ -47,6 +50,19 @@ const waitForDocumentReadable = async (uid, maxRetries = 5, delay = 1000) => {
   }
   console.warn('Document not readable after all retries');
   return null;
+};
+
+// Debug function to check Firebase configuration
+export const debugFirebaseConfig = () => {
+  console.log('Firebase Configuration Debug:', {
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY ? 'Set' : 'Missing',
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    currentDomain: window.location.hostname,
+    protocol: window.location.protocol,
+    authInstance: !!auth,
+    currentUser: auth.currentUser?.email || 'None'
+  });
 };
 
 // Sign up with email and password
@@ -95,12 +111,23 @@ export const signIn = async (email, password) => {
   }
 };
 
-// Sign in with Google
+// Sign in with Google (Redirect method) - Enhanced with better error handling
 export const signInWithGoogle = async () => {
   try {
     console.log('Starting Google sign-in with redirect...');
+    console.log('Current domain:', window.location.hostname);
     console.log('Auth instance:', auth);
     console.log('Google provider:', googleProvider);
+    
+    // Check if we're in a secure context
+    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+      throw new Error('Google Sign-In requires HTTPS in production');
+    }
+    
+    // Add error event listener to catch redirect errors
+    window.addEventListener('error', (event) => {
+      console.error('Window error during Google sign-in:', event);
+    }, { once: true });
     
     await signInWithRedirect(auth, googleProvider);
     
@@ -110,20 +137,93 @@ export const signInWithGoogle = async () => {
     console.error('Google sign-in error:', error);
     console.error('Error code:', error.code);
     console.error('Error message:', error.message);
+    console.error('Error details:', error);
+    
+    // Provide specific error messages for common issues
+    let userFriendlyMessage = error.message;
+    
+    switch (error.code) {
+      case 'auth/operation-not-allowed':
+        userFriendlyMessage = 'Google sign-in is not enabled. Please contact support.';
+        break;
+      case 'auth/unauthorized-domain':
+        userFriendlyMessage = 'This domain is not authorized for Google sign-in.';
+        break;
+      case 'auth/popup-blocked':
+        userFriendlyMessage = 'Popup was blocked. Please allow popups and try again.';
+        break;
+      case 'auth/cancelled-popup-request':
+        userFriendlyMessage = 'Sign-in was cancelled.';
+        break;
+      case 'auth/network-request-failed':
+        userFriendlyMessage = 'Network error. Please check your connection and try again.';
+        break;
+    }
+    
+    return { user: null, error: userFriendlyMessage };
+  }
+};
+
+// Alternative: Try popup-based Google sign-in as fallback
+export const signInWithGooglePopup = async () => {
+  try {
+    console.log('Attempting Google sign-in with popup...');
+    
+    const result = await signInWithPopup(auth, googleProvider);
+    
+    if (result && result.user) {
+      const user = result.user;
+      console.log('Google popup sign-in successful:', user.email);
+      
+      // Create user document if it doesn't exist
+      const userRef = await createUserDocument(user);
+      
+      if (userRef) {
+        const userData = await waitForDocumentReadable(user.uid);
+        if (userData) {
+          console.log('Google popup user document verified');
+        }
+      }
+      
+      return { user, error: null };
+    }
+    
+    return { user: null, error: 'No user returned from popup' };
+  } catch (error) {
+    console.error('Google popup sign-in error:', error);
+    
+    if (error.code === 'auth/popup-blocked') {
+      return { user: null, error: 'Popup was blocked. Please allow popups and try again.' };
+    }
+    
+    if (error.code === 'auth/popup-closed-by-user') {
+      return { user: null, error: 'Sign-in was cancelled.' };
+    }
+    
     return { user: null, error: error.message };
   }
 };
 
-// Handle redirect result (call this on app initialization)
+// Enhanced redirect result handler with better logging
 export const handleRedirectResult = async () => {
   try {
     console.log('Checking for redirect result...');
+    console.log('Current URL:', window.location.href);
+    console.log('Current auth state:', auth.currentUser?.email || 'No user');
+    
     const result = await getRedirectResult(auth);
     console.log('Redirect result:', result);
     
     if (result && result.user) {
       const user = result.user;
       console.log('Google sign-in successful for user:', user.email);
+      console.log('User details:', {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        emailVerified: user.emailVerified
+      });
       
       // Wait for auth state to be fully propagated
       console.log('Google sign-in successful, waiting for auth state...');
@@ -143,13 +243,22 @@ export const handleRedirectResult = async () => {
       }
       
       return { user, error: null };
+    } else {
+      console.log('No redirect result found');
+      return { user: null, error: null };
     }
-    console.log('No redirect result found');
-    return { user: null, error: null };
   } catch (error) {
     console.error('Google redirect result error:', error);
     console.error('Error code:', error.code);
     console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    
+    // Check for specific redirect errors
+    if (error.code === 'auth/unauthorized-domain') {
+      console.error('Domain not authorized:', window.location.hostname);
+      console.error('Make sure this domain is added to Firebase Console → Authentication → Settings → Authorized domains');
+    }
+    
     return { user: null, error: error.message };
   }
 };
