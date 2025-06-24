@@ -1,6 +1,6 @@
 // src/pages/DashboardPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { 
   Plus, 
   FileText, 
@@ -21,13 +21,68 @@ import LoadingSkeleton from '../components/LoadingSkeleton';
 import toast from 'react-hot-toast';
 
 const DashboardPage = () => {
-  const { currentUser, userDocument } = useAuth();
+  const { currentUser, userDocument, refreshUserDocument } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterBy, setFilterBy] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
   const [selectedEntry, setSelectedEntry] = useState(null);
+  const [refreshingSubscription, setRefreshingSubscription] = useState(false);
+
+  // Handle successful payment redirect
+  useEffect(() => {
+    const handlePaymentSuccess = async () => {
+      const success = searchParams.get('success');
+      if (success === 'true' && currentUser) {
+        console.log('Payment success detected, refreshing subscription data...');
+        setRefreshingSubscription(true);
+        
+        // Show success message
+        toast.success('Payment successful! Your subscription has been activated.');
+        
+        // Wait a moment for webhook to process, then refresh subscription data
+        const refreshWithRetry = async (maxRetries = 10, delay = 2000) => {
+          for (let i = 0; i < maxRetries; i++) {
+            try {
+              await refreshUserDocument();
+              const updatedUser = await new Promise(resolve => {
+                setTimeout(() => resolve(userDocument), delay);
+              });
+              
+              // Check if subscription has been updated
+              if (userDocument?.subscription?.plan !== 'trial' && 
+                  userDocument?.subscription?.plan !== 'free') {
+                console.log('Subscription successfully updated:', userDocument.subscription);
+                toast.success(`Your ${userDocument.subscription.plan} plan is now active with ${userDocument.subscription.entriesLimit} monthly entries!`);
+                break;
+              }
+              
+              if (i < maxRetries - 1) {
+                console.log(`Subscription not updated yet, retrying in ${delay}ms... (${i + 1}/${maxRetries})`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+              }
+            } catch (error) {
+              console.error('Error refreshing subscription:', error);
+              if (i === maxRetries - 1) {
+                toast.error('There was an issue updating your subscription. Please contact support if you continue to see this message.');
+              }
+            }
+          }
+        };
+        
+        await refreshWithRetry();
+        setRefreshingSubscription(false);
+        
+        // Clean up URL
+        searchParams.delete('success');
+        setSearchParams(searchParams);
+      }
+    };
+
+    handlePaymentSuccess();
+  }, [searchParams, currentUser, refreshUserDocument, setSearchParams, userDocument]);
 
   // Fetch user's bibliography entries from Firestore
   useEffect(() => {
@@ -446,25 +501,61 @@ const DashboardPage = () => {
                   {userDocument.subscription.plan.charAt(0).toUpperCase() + userDocument.subscription.plan.slice(1)} Plan
                 </p>
               </div>
-              <Link to="/pricing" className="btn btn-outline">
-                Upgrade Plan
-              </Link>
+              <div className="flex space-x-2">
+                <button
+                  onClick={async () => {
+                    setRefreshingSubscription(true);
+                    try {
+                      await refreshUserDocument();
+                      toast.success('Subscription data refreshed!');
+                    } catch (error) {
+                      toast.error('Failed to refresh subscription data');
+                    } finally {
+                      setRefreshingSubscription(false);
+                    }
+                  }}
+                  disabled={refreshingSubscription}
+                  className="btn btn-outline btn-sm"
+                  title="Refresh subscription data"
+                >
+                  {refreshingSubscription ? (
+                    <div className="w-4 h-4 border-2 border-chestnut/30 border-t-chestnut rounded-full animate-spin" />
+                  ) : (
+                    'Refresh'
+                  )}
+                </button>
+                <Link to="/pricing" className="btn btn-outline">
+                  Upgrade Plan
+                </Link>
+              </div>
             </div>
             
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-charcoal/70">
-                  {userDocument.subscription.entriesUsed} of {
-                    userDocument.subscription.entriesLimit === -1 
-                      ? 'unlimited' 
-                      : userDocument.subscription.entriesLimit
-                  } entries used
+                  {refreshingSubscription ? (
+                    <span className="flex items-center">
+                      <div className="w-4 h-4 border-2 border-chestnut/30 border-t-chestnut rounded-full animate-spin mr-2" />
+                      Updating subscription...
+                    </span>
+                  ) : (
+                    <>
+                      {userDocument.subscription.entriesUsed} of {
+                        userDocument.subscription.entriesLimit === -1 
+                          ? 'unlimited' 
+                          : userDocument.subscription.entriesLimit
+                      } entries used
+                    </>
+                  )}
                 </span>
                 <span className="text-chestnut font-medium">
-                  {userDocument.subscription.entriesLimit === -1 
-                    ? '∞' 
-                    : Math.round((userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100)
-                  }%
+                  {refreshingSubscription ? (
+                    '...'
+                  ) : (
+                    userDocument.subscription.entriesLimit === -1 
+                      ? '∞' 
+                      : Math.round((userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100)
+                  )}%
                 </span>
               </div>
               
