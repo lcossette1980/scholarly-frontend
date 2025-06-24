@@ -88,21 +88,21 @@ const SignUpPage = () => {
     setIsLoading(true);
     
     try {
+      console.log('Starting Google sign-up from SignUpPage');
       const { error } = await signInWithGoogle();
       
       if (error) {
+        console.error('Google sign-up error in SignUpPage:', error);
         toast.error(error);
+        setIsLoading(false);
       } else {
-        toast.success('Welcome to ScholarlyAI!');
-        // Wait a moment for Firestore to commit the user document
-        await new Promise(resolve => setTimeout(resolve, 500));
-        // Refresh user document to get latest credit data
-        await refreshUserDocument();
-        navigate('/dashboard', { replace: true });
+        // Don't show success message or navigate yet - wait for redirect to complete
+        console.log('Google sign-up initiated, waiting for redirect...');
+        // Note: isLoading will remain true during redirect
       }
     } catch (error) {
+      console.error('Unexpected error in handleGoogleSignUp:', error);
       toast.error('An unexpected error occurred');
-    } finally {
       setIsLoading(false);
     }
   };
