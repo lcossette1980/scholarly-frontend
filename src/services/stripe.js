@@ -63,32 +63,17 @@ export const SUBSCRIPTION_PLANS = {
       'Citation style options',
       'Research collaboration tools'
     ]
-  },
-  institution: {
-    id: 'institution',
-    name: 'Institution',
-    price: 99.99,
-    priceId: process.env.REACT_APP_STRIPE_INSTITUTION_PRICE_ID,
-    entriesLimit: -1,
-    features: [
-      'Unlimited bibliography entries',
-      'Premium AI analysis',
-      'All export formats',
-      'Dedicated support',
-      'Advanced customization',
-      'Batch processing',
-      'All citation styles',
-      'Team collaboration',
-      'Admin dashboard',
-      'Usage analytics',
-      'Priority API access'
-    ]
   }
 };
 
 // Create checkout session
 export const createCheckoutSession = async (userId, priceId, planId) => {
   try {
+    // Validate that priceId is not undefined or null
+    if (!priceId) {
+      throw new Error(`Invalid price ID for plan ${planId}. Please check your environment configuration.`);
+    }
+
     // Create checkout session document in Firestore
     const checkoutSessionRef = await addDoc(
       collection(db, 'users', userId, 'checkout_sessions'),
