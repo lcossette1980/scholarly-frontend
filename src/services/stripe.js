@@ -69,6 +69,14 @@ export const SUBSCRIPTION_PLANS = {
 // Create checkout session
 export const createCheckoutSession = async (userId, priceId, planId) => {
   try {
+    // Debug: Log environment variables
+    console.log('Environment check:', {
+      studentPriceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID,
+      researcherPriceId: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID,
+      planId,
+      priceId
+    });
+
     // Validate that priceId is not undefined or null
     if (!priceId) {
       throw new Error(`Invalid price ID for plan ${planId}. Please check your environment configuration.`);
