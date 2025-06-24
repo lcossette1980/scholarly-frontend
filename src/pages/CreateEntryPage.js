@@ -19,7 +19,7 @@ import { useAuth } from '../context/AuthContext';
 import { canCreateEntry, incrementEntriesUsed } from '../services/stripe';
 import { saveBibliographyEntry } from '../services/bibliography';
 import { sanitizeResearchFocus, sanitizeBibliographyContent, cleanMarkdownFormatting } from '../utils/sanitization';
-import { bibliographyAPI } from '../services/api';
+import { bibliographyAPI, healthCheck } from '../services/api';
 import toast from 'react-hot-toast';
 import { exportToBibliography } from '../utils/exportUtils';
 
@@ -83,10 +83,16 @@ const CreateEntryPage = () => {
     setIsLoading(true);
 
     try {
+      // Test backend connectivity first
+      console.log('Testing backend connectivity...');
+      await healthCheck();
+      console.log('Backend is accessible');
+      
       // Sanitize research focus before sending
       const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
       
       // Upload file to backend using the API service
+      console.log('Starting file upload...');
       const response = await bibliographyAPI.uploadDocument(file, sanitizedResearchFocus);
 
       const { task_id } = response;
