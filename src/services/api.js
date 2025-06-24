@@ -57,6 +57,7 @@ export const bibliographyAPI = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      timeout: 120000, // 2 minutes for file upload
     });
     
     return response.data;
