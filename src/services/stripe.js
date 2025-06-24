@@ -36,7 +36,7 @@ export const SUBSCRIPTION_PLANS = {
     id: 'student',
     name: 'Student',
     price: 9.99,
-    priceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID,
+    priceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID || 'price_1RdJyPCfEsnTPNpVUZVs6OU1',
     entriesLimit: 50,
     features: [
       '50 bibliography entries per month',
@@ -51,7 +51,7 @@ export const SUBSCRIPTION_PLANS = {
     id: 'researcher',
     name: 'Researcher',
     price: 19.99,
-    priceId: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID,
+    priceId: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID || 'price_1RdK3ACfEsnTPNpVG9GjSJNH',
     entriesLimit: 200,
     features: [
       '200 bibliography entries per month',
