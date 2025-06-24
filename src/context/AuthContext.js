@@ -33,24 +33,48 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Handle redirect result first
-    handleRedirectResult();
-    
-    const unsubscribe = onAuthStateChange(async (user) => {
-      setCurrentUser(user);
-      
-      if (user) {
-        // Get user document from Firestore
-        const userData = await getUserDocument(user.uid);
-        setUserDocument(userData);
-      } else {
-        setUserDocument(null);
+    const initializeAuth = async () => {
+      try {
+        // Handle redirect result first and await completion
+        console.log('Checking for redirect result...');
+        const redirectResult = await handleRedirectResult();
+        
+        if (redirectResult && redirectResult.user) {
+          console.log('Redirect result processed successfully:', redirectResult.user.email);
+        }
+      } catch (error) {
+        console.error('Error handling redirect result:', error);
       }
       
-      setLoading(false);
+      // Set up auth state listener after redirect handling
+      const unsubscribe = onAuthStateChange(async (user) => {
+        console.log('Auth state changed:', user?.email || 'No user');
+        setCurrentUser(user);
+        
+        if (user) {
+          // Get user document from Firestore
+          const userData = await getUserDocument(user.uid);
+          setUserDocument(userData);
+        } else {
+          setUserDocument(null);
+        }
+        
+        setLoading(false);
+      });
+
+      return unsubscribe;
+    };
+
+    let unsubscribe;
+    initializeAuth().then((unsub) => {
+      unsubscribe = unsub;
     });
 
-    return unsubscribe;
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, []);
 
   const value = {
