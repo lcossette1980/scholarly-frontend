@@ -20,10 +20,17 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const { currentUser, refreshUserDocument } = useAuth();
 
-  // Redirect if already logged in
+  // Redirect if already logged in (but not during Google OAuth redirect processing)
   React.useEffect(() => {
-    if (currentUser) {
-      navigate('/dashboard', { replace: true });
+    if (currentUser && !window.location.search.includes('code=')) {
+      // Only redirect if we're not in the middle of processing a Google OAuth redirect
+      const isGoogleRedirect = window.location.search.includes('code=') || 
+                              window.location.search.includes('state=') ||
+                              document.referrer.includes('accounts.google.com');
+      
+      if (!isGoogleRedirect) {
+        navigate('/dashboard', { replace: true });
+      }
     }
   }, [currentUser, navigate]);
 

@@ -41,6 +41,17 @@ export const AuthProvider = ({ children }) => {
         
         if (redirectResult && redirectResult.user) {
           console.log('Redirect result processed successfully:', redirectResult.user.email);
+          // Set user immediately to prevent redirect loops
+          setCurrentUser(redirectResult.user);
+          const userData = await getUserDocument(redirectResult.user.uid);
+          setUserDocument(userData);
+          setLoading(false);
+          
+          // Navigate to dashboard after successful Google auth
+          if (window.location.pathname === '/signup' || window.location.pathname === '/login') {
+            window.location.href = '/dashboard';
+            return;
+          }
         }
       } catch (error) {
         console.error('Error handling redirect result:', error);
