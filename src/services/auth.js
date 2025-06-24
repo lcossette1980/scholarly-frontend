@@ -98,10 +98,18 @@ export const signIn = async (email, password) => {
 // Sign in with Google
 export const signInWithGoogle = async () => {
   try {
+    console.log('Starting Google sign-in with redirect...');
+    console.log('Auth instance:', auth);
+    console.log('Google provider:', googleProvider);
+    
     await signInWithRedirect(auth, googleProvider);
+    
+    console.log('Redirect initiated - user will be redirected to Google');
     return { user: null, error: null }; // User will be available after redirect
   } catch (error) {
     console.error('Google sign-in error:', error);
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
     return { user: null, error: error.message };
   }
 };
@@ -109,9 +117,13 @@ export const signInWithGoogle = async () => {
 // Handle redirect result (call this on app initialization)
 export const handleRedirectResult = async () => {
   try {
+    console.log('Checking for redirect result...');
     const result = await getRedirectResult(auth);
-    if (result) {
+    console.log('Redirect result:', result);
+    
+    if (result && result.user) {
       const user = result.user;
+      console.log('Google sign-in successful for user:', user.email);
       
       // Wait for auth state to be fully propagated
       console.log('Google sign-in successful, waiting for auth state...');
@@ -132,9 +144,12 @@ export const handleRedirectResult = async () => {
       
       return { user, error: null };
     }
+    console.log('No redirect result found');
     return { user: null, error: null };
   } catch (error) {
     console.error('Google redirect result error:', error);
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
     return { user: null, error: error.message };
   }
 };

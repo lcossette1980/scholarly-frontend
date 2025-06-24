@@ -58,17 +58,21 @@ const LoginPage = () => {
     setIsLoading(true);
     
     try {
+      console.log('Starting Google sign-in from LoginPage');
       const { user, error } = await signInWithGoogle();
       
       if (error) {
+        console.error('Google sign-in error in LoginPage:', error);
         toast.error(error);
+        setIsLoading(false);
       } else {
-        toast.success('Welcome back!');
-        navigate(from, { replace: true });
+        // Don't show success message or navigate yet - wait for redirect to complete
+        console.log('Google sign-in initiated, waiting for redirect...');
+        // Note: isLoading will remain true during redirect
       }
     } catch (error) {
+      console.error('Unexpected error in handleGoogleSignIn:', error);
       toast.error('An unexpected error occurred');
-    } finally {
       setIsLoading(false);
     }
   };
