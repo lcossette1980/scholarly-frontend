@@ -69,24 +69,41 @@ export const SUBSCRIPTION_PLANS = {
 // Create checkout session
 export const createCheckoutSession = async (userId, priceId, planId) => {
   try {
-    // Debug: Log environment variables
-    console.log('Environment check:', {
+    // Debug: Log ALL environment variables to see what's happening
+    console.log('Full environment check:', {
+      allEnvVars: process.env,
       studentPriceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID,
       researcherPriceId: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID,
       planId,
-      priceId
+      priceIdPassed: priceId,
+      priceIdType: typeof priceId,
+      priceIdFromPlan: SUBSCRIPTION_PLANS[planId]?.priceId
     });
 
-    // Validate that priceId is not undefined or null
-    if (!priceId) {
-      throw new Error(`Invalid price ID for plan ${planId}. Please check your environment configuration.`);
+    // Get the price ID from the plan if not provided
+    const finalPriceId = priceId || SUBSCRIPTION_PLANS[planId]?.priceId;
+    
+    // Enhanced validation
+    if (!finalPriceId || finalPriceId === 'undefined' || finalPriceId === '') {
+      console.error('Price ID validation failed:', {
+        finalPriceId,
+        planId,
+        planData: SUBSCRIPTION_PLANS[planId],
+        environmentVars: {
+          student: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID,
+          researcher: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID
+        }
+      });
+      throw new Error(`Invalid price ID for plan ${planId}. Price ID: "${finalPriceId}". Please check your environment configuration.`);
     }
+
+    console.log('Using price ID:', finalPriceId);
 
     // Create checkout session document in Firestore
     const checkoutSessionRef = await addDoc(
       collection(db, 'users', userId, 'checkout_sessions'),
       {
-        price: priceId,
+        price: finalPriceId,
         success_url: `${window.location.origin}/dashboard?success=true`,
         cancel_url: `${window.location.origin}/pricing?canceled=true`,
         metadata: {
@@ -102,11 +119,13 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
         const data = snap.data();
         
         if (data?.error) {
+          console.error('Checkout session error:', data.error);
           unsubscribe();
           reject(new Error(data.error.message));
         }
         
         if (data?.url) {
+          console.log('Checkout session created successfully:', data.url);
           unsubscribe();
           // Redirect to Stripe Checkout
           window.location.assign(data.url);
