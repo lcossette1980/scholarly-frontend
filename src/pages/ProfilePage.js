@@ -13,7 +13,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { createCustomerPortalSession } from '../services/stripe';
+import { createCustomerPortalSession, manuallyActivateSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
@@ -334,6 +334,51 @@ const ProfilePage = () => {
                     <CreditCard className="w-4 h-4 mr-2" />
                     Manage Billing
                   </button>
+                  
+                  {/* Temporary manual activation for debugging */}
+                  {process.env.NODE_ENV === 'development' && userDocument.subscription.plan === 'trial' && (
+                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-sm text-yellow-800 mb-2">Debug: Manual Subscription Activation</p>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={async () => {
+                            try {
+                              setIsLoading(true);
+                              await manuallyActivateSubscription(currentUser.uid, 'student');
+                              toast.success('Student subscription activated!');
+                              window.location.reload();
+                            } catch (error) {
+                              toast.error('Failed to activate subscription');
+                            } finally {
+                              setIsLoading(false);
+                            }
+                          }}
+                          className="btn btn-sm btn-outline"
+                          disabled={isLoading}
+                        >
+                          Activate Student
+                        </button>
+                        <button
+                          onClick={async () => {
+                            try {
+                              setIsLoading(true);
+                              await manuallyActivateSubscription(currentUser.uid, 'researcher');
+                              toast.success('Researcher subscription activated!');
+                              window.location.reload();
+                            } catch (error) {
+                              toast.error('Failed to activate subscription');
+                            } finally {
+                              setIsLoading(false);
+                            }
+                          }}
+                          className="btn btn-sm btn-outline"
+                          disabled={isLoading}
+                        >
+                          Activate Researcher
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

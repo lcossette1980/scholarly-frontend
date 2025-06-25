@@ -107,8 +107,9 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        user_id: userId,
         plan: planId,
-        success_url: `${window.location.origin}/dashboard?success=true`,
+        success_url: `${window.location.origin}/dashboard?success=true&plan=${planId}`,
         cancel_url: `${window.location.origin}/pricing?canceled=true`
       })
     });
@@ -186,6 +187,64 @@ export const updateUserSubscription = async (userId, subscriptionData) => {
     });
   } catch (error) {
     console.error('Error updating user subscription:', error);
+    throw error;
+  }
+};
+
+// Check subscription status from backend
+export const checkSubscriptionStatus = async (userId) => {
+  try {
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${apiUrl}/check-subscription/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to check subscription status');
+    }
+
+    const data = await response.json();
+    console.log('Subscription status from backend:', data);
+    
+    // If backend returns subscription data, update Firestore
+    if (data.subscription) {
+      await updateUserSubscription(userId, data.subscription);
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Error checking subscription status:', error);
+    // Don't throw - return null to allow fallback to Firestore check
+    return null;
+  }
+};
+
+// Manually activate subscription after successful payment (temporary fix for webhook issues)
+export const manuallyActivateSubscription = async (userId, planId) => {
+  try {
+    const plan = SUBSCRIPTION_PLANS[planId];
+    if (!plan) throw new Error('Invalid plan');
+    
+    const subscriptionData = {
+      plan: planId,
+      status: 'active',
+      entriesUsed: 0,
+      entriesLimit: plan.entriesLimit,
+      entriesRemaining: plan.entriesLimit,
+      isLifetime: false,
+      periodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+      updatedAt: new Date().toISOString()
+    };
+    
+    console.log('Manually activating subscription:', subscriptionData);
+    await updateUserSubscription(userId, subscriptionData);
+    
+    return subscriptionData;
+  } catch (error) {
+    console.error('Error manually activating subscription:', error);
     throw error;
   }
 };
