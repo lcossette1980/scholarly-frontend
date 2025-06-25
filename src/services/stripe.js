@@ -1,6 +1,6 @@
 // src/services/stripe.js (FIXED VERSION)
 import { loadStripe } from '@stripe/stripe-js';
-import { doc, updateDoc, collection, addDoc, serverTimestamp, onSnapshot, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
 // Initialize Stripe
@@ -138,39 +138,34 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
 // Create customer portal session
 export const createCustomerPortalSession = async (userId) => {
   try {
-    // Create portal session document in Firestore
-    const portalSessionRef = await addDoc(
-      collection(db, 'users', userId, 'portal_sessions'),
-      {
-        return_url: `${window.location.origin}/dashboard`,
-        created: serverTimestamp()
-      }
-    );
-    
-    // Wait for portal session to be created by Cloud Function
-    return new Promise((resolve, reject) => {
-      const unsubscribe = onSnapshot(portalSessionRef, (snap) => {
-        const data = snap.data();
-        
-        if (data?.error) {
-          unsubscribe();
-          reject(new Error(data.error.message));
-        }
-        
-        if (data?.url) {
-          unsubscribe();
-          // Redirect to Customer Portal
-          window.location.assign(data.url);
-          resolve(data.url);
-        }
-      });
-      
-      // Timeout after 10 seconds
-      setTimeout(() => {
-        unsubscribe();
-        reject(new Error('Timeout creating portal session'));
-      }, 10000);
+    // Use backend API to create portal session
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${apiUrl}/create-portal-session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        return_url: `${window.location.origin}/dashboard`
+      })
     });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({ detail: 'Failed to create portal session' }));
+      throw new Error(errorData.detail || 'Failed to create portal session');
+    }
+
+    const data = await response.json();
+    
+    if (data.url) {
+      console.log('Portal session created successfully:', data.url);
+      // Redirect to Customer Portal
+      window.location.assign(data.url);
+      return data.url;
+    } else {
+      throw new Error('No portal URL received from server');
+    }
   } catch (error) {
     console.error('Error creating portal session:', error);
     throw error;
