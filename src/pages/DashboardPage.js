@@ -35,38 +35,71 @@ const DashboardPage = () => {
   useEffect(() => {
     const handlePaymentSuccess = async () => {
       const success = searchParams.get('success');
-      if (success === 'true' && currentUser) {
-        console.log('Payment success detected, refreshing subscription data...');
+      const planId = searchParams.get('plan');
+      if (success === 'true' && currentUser && !refreshingSubscription) {
+        console.log('Payment success detected for plan:', planId);
         setRefreshingSubscription(true);
         
-        // Show success message
-        toast.success('Payment successful! Your subscription has been activated.');
+        // Show initial success message with plan info
+        const planName = planId ? planId.charAt(0).toUpperCase() + planId.slice(1) : 'your';
+        toast.success(`Payment successful! Activating your ${planName} plan...`);
+        
+        // Clean up URL immediately to prevent re-triggering
+        searchParams.delete('success');
+        searchParams.delete('plan');
+        setSearchParams(searchParams);
         
         // Wait a moment for webhook to process, then refresh subscription data
-        const refreshWithRetry = async (maxRetries = 10, delay = 2000) => {
+        const refreshWithRetry = async (maxRetries = 20, delay = 1500) => {
+          let previousPlan = userDocument?.subscription?.plan;
+          let previousLimit = userDocument?.subscription?.entriesLimit;
+          
           for (let i = 0; i < maxRetries; i++) {
             try {
+              console.log(`Refresh attempt ${i + 1}/${maxRetries}`);
               await refreshUserDocument();
-              const updatedUser = await new Promise(resolve => {
-                setTimeout(() => resolve(userDocument), delay);
-              });
+              
+              // Wait a bit for the state to update
+              await new Promise(resolve => setTimeout(resolve, 500));
+              
+              // First try to check subscription status from backend
+              const { checkSubscriptionStatus } = await import('../services/stripe');
+              const backendStatus = await checkSubscriptionStatus(currentUser.uid);
+              
+              // Force a re-check by getting the latest user document
+              const { getUserDocument } = await import('../services/auth');
+              const latestUserData = await getUserDocument(currentUser.uid);
+              
+              console.log('Backend subscription status:', backendStatus);
+              console.log('Latest user data:', latestUserData);
               
               // Check if subscription has been updated
-              if (userDocument?.subscription?.plan !== 'trial' && 
-                  userDocument?.subscription?.plan !== 'free') {
-                console.log('Subscription successfully updated:', userDocument.subscription);
-                toast.success(`Your ${userDocument.subscription.plan} plan is now active with ${userDocument.subscription.entriesLimit} monthly entries!`);
+              if (latestUserData?.subscription && 
+                  (latestUserData.subscription.plan !== previousPlan || 
+                   latestUserData.subscription.entriesLimit !== previousLimit) &&
+                  latestUserData.subscription.plan !== 'trial' && 
+                  latestUserData.subscription.plan !== 'free') {
+                console.log('Subscription successfully updated:', latestUserData.subscription);
+                toast.success(`Your ${latestUserData.subscription.plan} plan is now active with ${latestUserData.subscription.entriesLimit} monthly entries!`);
+                
+                // Force refresh the auth context
+                await refreshUserDocument();
                 break;
               }
               
               if (i < maxRetries - 1) {
-                console.log(`Subscription not updated yet, retrying in ${delay}ms... (${i + 1}/${maxRetries})`);
+                console.log(`Subscription not updated yet (plan: ${latestUserData?.subscription?.plan}, limit: ${latestUserData?.subscription?.entriesLimit}), retrying in ${delay}ms...`);
                 await new Promise(resolve => setTimeout(resolve, delay));
+              } else {
+                // Final attempt - show manual refresh option
+                toast.error('Subscription update is taking longer than expected. Please use the Refresh button to check your subscription status.', {
+                  duration: 8000
+                });
               }
             } catch (error) {
               console.error('Error refreshing subscription:', error);
               if (i === maxRetries - 1) {
-                toast.error('There was an issue updating your subscription. Please contact support if you continue to see this message.');
+                toast.error('There was an issue updating your subscription. Please use the Refresh button or contact support.');
               }
             }
           }
@@ -74,15 +107,11 @@ const DashboardPage = () => {
         
         await refreshWithRetry();
         setRefreshingSubscription(false);
-        
-        // Clean up URL
-        searchParams.delete('success');
-        setSearchParams(searchParams);
       }
     };
 
     handlePaymentSuccess();
-  }, [searchParams, currentUser, refreshUserDocument, setSearchParams, userDocument]);
+  }, [searchParams, currentUser, setSearchParams]); // Remove userDocument and refreshUserDocument from deps to prevent loops
 
   // Fetch user's bibliography entries from Firestore
   useEffect(() => {
@@ -506,9 +535,28 @@ const DashboardPage = () => {
                   onClick={async () => {
                     setRefreshingSubscription(true);
                     try {
+                      // Try to sync with backend first
+                      const { checkSubscriptionStatus } = await import('../services/stripe');
+                      const backendStatus = await checkSubscriptionStatus(currentUser.uid);
+                      
+                      if (backendStatus?.subscription) {
+                        console.log('Synced subscription from backend:', backendStatus.subscription);
+                      }
+                      
+                      // Then refresh from Firestore
                       await refreshUserDocument();
-                      toast.success('Subscription data refreshed!');
+                      
+                      // Get the latest data to verify
+                      const { getUserDocument } = await import('../services/auth');
+                      const latestData = await getUserDocument(currentUser.uid);
+                      
+                      if (latestData?.subscription) {
+                        toast.success(`Subscription refreshed! ${latestData.subscription.plan} plan with ${latestData.subscription.entriesLimit} entries/month`);
+                      } else {
+                        toast.success('Subscription data refreshed!');
+                      }
                     } catch (error) {
+                      console.error('Error refreshing subscription:', error);
                       toast.error('Failed to refresh subscription data');
                     } finally {
                       setRefreshingSubscription(false);
