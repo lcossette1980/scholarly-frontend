@@ -222,6 +222,44 @@ export const checkSubscriptionStatus = async (userId) => {
   }
 };
 
+// Force sync subscription from Stripe (for webhook failures)
+export const forceSyncSubscription = async (userId) => {
+  try {
+    console.log('Force syncing subscription for user:', userId);
+    
+    // First try the backend sync endpoint
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${apiUrl}/force-sync-subscription/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Force sync response:', data);
+      
+      if (data.subscription) {
+        // Update Firestore with the synced data
+        await updateUserSubscription(userId, data.subscription);
+        return { success: true, subscription: data.subscription };
+      }
+    }
+
+    // If backend sync fails, try checking subscription status
+    const statusCheck = await checkSubscriptionStatus(userId);
+    if (statusCheck?.subscription) {
+      return { success: true, subscription: statusCheck.subscription };
+    }
+
+    return { success: false, error: 'No active subscription found' };
+  } catch (error) {
+    console.error('Error force syncing subscription:', error);
+    return { success: false, error: error.message };
+  }
+};
+
 // Manually activate subscription after successful payment (temporary fix for webhook issues)
 export const manuallyActivateSubscription = async (userId, planId) => {
   try {

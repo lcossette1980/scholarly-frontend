@@ -535,41 +535,70 @@ const DashboardPage = () => {
                   onClick={async () => {
                     setRefreshingSubscription(true);
                     try {
-                      // Try to sync with backend first
-                      const { checkSubscriptionStatus } = await import('../services/stripe');
-                      const backendStatus = await checkSubscriptionStatus(currentUser.uid);
+                      // Show loading toast
+                      const loadingToast = toast.loading('Syncing subscription with payment provider...');
                       
-                      if (backendStatus?.subscription) {
-                        console.log('Synced subscription from backend:', backendStatus.subscription);
-                      }
+                      // Try force sync first (this will check Stripe directly)
+                      const { forceSyncSubscription } = await import('../services/stripe');
+                      const syncResult = await forceSyncSubscription(currentUser.uid);
                       
-                      // Then refresh from Firestore
-                      await refreshUserDocument();
-                      
-                      // Get the latest data to verify
-                      const { getUserDocument } = await import('../services/auth');
-                      const latestData = await getUserDocument(currentUser.uid);
-                      
-                      if (latestData?.subscription) {
-                        toast.success(`Subscription refreshed! ${latestData.subscription.plan} plan with ${latestData.subscription.entriesLimit} entries/month`);
+                      if (syncResult.success) {
+                        console.log('Force sync successful:', syncResult.subscription);
+                        
+                        // Refresh user document to get latest data
+                        await refreshUserDocument();
+                        
+                        // Dismiss loading toast and show success
+                        toast.dismiss(loadingToast);
+                        toast.success(
+                          `Subscription synced! ${syncResult.subscription.plan} plan with ${syncResult.subscription.entriesLimit} entries/month`,
+                          { duration: 5000 }
+                        );
                       } else {
-                        toast.success('Subscription data refreshed!');
+                        // If force sync fails, try regular check
+                        const { checkSubscriptionStatus } = await import('../services/stripe');
+                        const backendStatus = await checkSubscriptionStatus(currentUser.uid);
+                        
+                        if (backendStatus?.subscription) {
+                          console.log('Synced subscription from backend:', backendStatus.subscription);
+                        }
+                        
+                        // Then refresh from Firestore
+                        await refreshUserDocument();
+                        
+                        // Get the latest data to verify
+                        const { getUserDocument } = await import('../services/auth');
+                        const latestData = await getUserDocument(currentUser.uid);
+                        
+                        toast.dismiss(loadingToast);
+                        
+                        if (latestData?.subscription && latestData.subscription.plan !== 'trial') {
+                          toast.success(
+                            `Subscription refreshed! ${latestData.subscription.plan} plan with ${latestData.subscription.entriesLimit} entries/month`,
+                            { duration: 5000 }
+                          );
+                        } else {
+                          toast.error(
+                            'No active subscription found. If you just made a payment, please wait a moment and try again.',
+                            { duration: 8000 }
+                          );
+                        }
                       }
                     } catch (error) {
                       console.error('Error refreshing subscription:', error);
-                      toast.error('Failed to refresh subscription data');
+                      toast.error('Failed to sync subscription. Please contact support if the issue persists.');
                     } finally {
                       setRefreshingSubscription(false);
                     }
                   }}
                   disabled={refreshingSubscription}
                   className="btn btn-outline btn-sm"
-                  title="Refresh subscription data"
+                  title="Force sync subscription with payment provider"
                 >
                   {refreshingSubscription ? (
                     <div className="w-4 h-4 border-2 border-chestnut/30 border-t-chestnut rounded-full animate-spin" />
                   ) : (
-                    'Refresh'
+                    'Sync Subscription'
                   )}
                 </button>
                 <Link to="/pricing" className="btn btn-outline">
