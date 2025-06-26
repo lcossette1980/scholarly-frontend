@@ -10,16 +10,21 @@
    - Add the following variables:
 
 ```
-REACT_APP_FIREBASE_API_KEY=AIzaSyDbwZkpRxosjn9SjKo99ssSjl8cjtl7C8M
-REACT_APP_FIREBASE_AUTH_DOMAIN=scholarlyai-33fca.firebaseapp.com
-REACT_APP_FIREBASE_PROJECT_ID=scholarlyai-33fca
-REACT_APP_FIREBASE_STORAGE_BUCKET=scholarlyai-33fca.firebasestorage.app
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=800076445479
-REACT_APP_FIREBASE_APP_ID=1:800076445479:web:eac32e9b87b114a67c1b02
-REACT_APP_FIREBASE_MEASUREMENT_ID=G-ZBH0D3MR6T
-REACT_APP_API_URL=https://scholarlyai-backend-production.up.railway.app
-REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_51QoKdGKEqKU5U2BaF0YNuxU8xBDBqDQrJu51Gl0LnNBvtOLBCMl3yXNhjJBq5v97kVc0K2O7W9xlBGiZu2rL4xhO00v0tLN7eG
+REACT_APP_FIREBASE_API_KEY=<your-firebase-api-key>
+REACT_APP_FIREBASE_AUTH_DOMAIN=<your-project-id>.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=<your-project-id>
+REACT_APP_FIREBASE_STORAGE_BUCKET=<your-project-id>.firebasestorage.app
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=<your-sender-id>
+REACT_APP_FIREBASE_APP_ID=<your-app-id>
+REACT_APP_FIREBASE_MEASUREMENT_ID=<your-measurement-id>
+REACT_APP_API_URL=<your-backend-api-url>
+REACT_APP_STRIPE_PUBLISHABLE_KEY=<your-stripe-publishable-key>
 ```
+
+**Note:** Replace the placeholders above with your actual values from:
+- Firebase Console → Project Settings
+- Stripe Dashboard → API Keys
+- Your deployed backend URL
 
 2. **Important:** Make sure to set these for all environments (Production, Preview, Development) if needed
 
