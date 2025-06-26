@@ -49,11 +49,8 @@ export const AuthProvider = ({ children }) => {
           
           // Navigate to dashboard after successful Google auth
           if (window.location.pathname === '/signup' || window.location.pathname === '/login') {
-            // Use React Router navigation instead of window.location
-            setTimeout(() => {
-              window.history.replaceState(null, '', '/dashboard');
-              window.location.reload();
-            }, 100);
+            // Use history API without forcing reload
+            window.history.replaceState(null, '', '/dashboard');
             return;
           }
         }

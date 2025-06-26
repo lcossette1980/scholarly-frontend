@@ -77,10 +77,12 @@ const SignUpPage = () => {
           navigate('/verify-email', { replace: true });
         } else {
           toast.success('Welcome to ScholarlyAI!');
-          // Wait a moment for Firestore to commit the user document
-          await new Promise(resolve => setTimeout(resolve, 500));
           // Refresh user document to get latest credit data
-          await refreshUserDocument();
+          try {
+            await refreshUserDocument();
+          } catch (refreshError) {
+            console.warn('Could not refresh user document immediately, will retry later:', refreshError);
+          }
           navigate('/dashboard', { replace: true });
         }
       }

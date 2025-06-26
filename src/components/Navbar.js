@@ -1,6 +1,6 @@
 // src/components/Navbar.js
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Brain, Menu, X, User, LogOut, Settings, FileText } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { logOut } from '../services/auth';
@@ -9,11 +9,44 @@ import toast from 'react-hot-toast';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const profileRef = useRef(null);
   const { currentUser, userDocument } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setIsProfileOpen(false);
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isProfileOpen || isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isProfileOpen, isMenuOpen]);
+
+  useEffect(() => {
+    setIsProfileOpen(false);
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     try {
+      setIsProfileOpen(false);
       await logOut();
       toast.success('Logged out successfully');
       navigate('/');
@@ -54,7 +87,7 @@ const Navbar = () => {
                 </Link>
                 
                 {/* Profile Dropdown */}
-                <div className="relative">
+                <div className="relative" ref={profileRef}>
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
                     className="flex items-center space-x-2 text-charcoal hover:text-chestnut transition-colors"
