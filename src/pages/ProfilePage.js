@@ -20,7 +20,7 @@ import { auth, db } from '../services/firebase';
 import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
-  const { currentUser, userDocument } = useAuth();
+  const { currentUser, userDocument, refreshUserDocument } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -86,8 +86,17 @@ const ProfilePage = () => {
   };
 
 
-  const handleFixCredits = () => {
-    window.location.reload();
+  const handleFixCredits = async () => {
+    setIsLoading(true);
+    try {
+      await refreshUserDocument();
+      toast.success('Credits refreshed successfully!');
+    } catch (error) {
+      console.error('Error refreshing credits:', error);
+      toast.error('Failed to refresh credits');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const formatDate = (date) => {
@@ -345,8 +354,8 @@ const ProfilePage = () => {
                             try {
                               setIsLoading(true);
                               await manuallyActivateSubscription(currentUser.uid, 'student');
+                              await refreshUserDocument();
                               toast.success('Student subscription activated!');
-                              window.location.reload();
                             } catch (error) {
                               toast.error('Failed to activate subscription');
                             } finally {
@@ -363,8 +372,8 @@ const ProfilePage = () => {
                             try {
                               setIsLoading(true);
                               await manuallyActivateSubscription(currentUser.uid, 'researcher');
+                              await refreshUserDocument();
                               toast.success('Researcher subscription activated!');
-                              window.location.reload();
                             } catch (error) {
                               toast.error('Failed to activate subscription');
                             } finally {
@@ -423,6 +432,7 @@ const ProfilePage = () => {
                 
                 <button 
                   onClick={handleFixCredits}
+                  disabled={isLoading}
                   className="btn bg-red-600 hover:bg-red-700 text-white w-full"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
