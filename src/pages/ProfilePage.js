@@ -10,7 +10,6 @@ import {
   X,
   Settings,
   Crown,
-  RefreshCw
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { createCustomerPortalSession, manuallyActivateSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
@@ -86,18 +85,6 @@ const ProfilePage = () => {
   };
 
 
-  const handleFixCredits = async () => {
-    setIsLoading(true);
-    try {
-      await refreshUserDocument();
-      toast.success('Credits refreshed successfully!');
-    } catch (error) {
-      console.error('Error refreshing credits:', error);
-      toast.error('Failed to refresh credits');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const formatDate = (date) => {
     if (!date) return 'N/A';
@@ -414,32 +401,6 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            {/* Credit Debug Tools */}
-            <div className="card">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-yellow-500/10 rounded-lg flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-yellow-600" />
-                </div>
-                <h3 className="text-lg font-bold text-charcoal font-playfair">
-                  Credit Debug
-                </h3>
-              </div>
-
-              <div className="space-y-3">
-                <p className="text-sm text-charcoal/70 font-lato">
-                  If you're not seeing your credits, click the button below to refresh:
-                </p>
-                
-                <button 
-                  onClick={handleFixCredits}
-                  disabled={isLoading}
-                  className="btn bg-red-600 hover:bg-red-700 text-white w-full"
-                >
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Fix Missing Credits
-                </button>
-              </div>
-            </div>
 
             {/* Account Security */}
             <div className="card">

@@ -91,7 +91,11 @@ export const signUp = async (email, password, displayName) => {
       const userData = await waitForDocumentReadable(user.uid);
       if (userData) {
         console.log('User document verified and readable');
+      } else {
+        console.warn('User document created but not immediately readable - will retry later');
       }
+    } else {
+      throw new Error('Failed to create user document');
     }
     
     return { user, error: null, emailVerificationSent: true };
@@ -141,7 +145,11 @@ export const signInWithGoogle = async () => {
           const userData = await waitForDocumentReadable(user.uid);
           if (userData) {
             console.log('Google popup user document verified');
+          } else {
+            console.warn('Google popup user document created but not immediately readable - will retry later');
           }
+        } else {
+          throw new Error('Failed to create Google popup user document');
         }
         
         return { user, error: null };
@@ -277,7 +285,11 @@ export const handleRedirectResult = async () => {
         const userData = await waitForDocumentReadable(user.uid);
         if (userData) {
           console.log('Google user document verified and readable');
+        } else {
+          console.warn('Google user document created but not immediately readable - will retry later');
         }
+      } else {
+        throw new Error('Failed to create Google user document');
       }
       
       return { user, error: null };

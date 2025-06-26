@@ -22,10 +22,24 @@ export const AuthProvider = ({ children }) => {
     if (currentUser) {
       let userData = await getUserDocument(currentUser.uid);
       
-      // If user document doesn't exist yet (race condition), retry up to 3 times
-      for (let retries = 0; !userData && retries < 3; retries++) {
-        await new Promise(resolve => setTimeout(resolve, 300 * (retries + 1)));
+      // If user document doesn't exist yet (race condition), retry up to 5 times with exponential backoff
+      for (let retries = 0; !userData && retries < 5; retries++) {
+        const delay = Math.min(1000 * Math.pow(2, retries), 5000); // Exponential backoff, max 5s
+        console.log(`User document not found, retrying in ${delay}ms... (attempt ${retries + 1}/5)`);
+        await new Promise(resolve => setTimeout(resolve, delay));
         userData = await getUserDocument(currentUser.uid);
+      }
+      
+      // If still no user document after retries, try to fix/create it
+      if (!userData && currentUser) {
+        console.log('User document still not found, attempting to fix...');
+        try {
+          const { fixUserSubscription } = await import('../services/auth');
+          await fixUserSubscription(currentUser.uid);
+          userData = await getUserDocument(currentUser.uid);
+        } catch (error) {
+          console.error('Failed to fix user subscription:', error);
+        }
       }
       
       setUserDocument(userData);
@@ -65,7 +79,27 @@ export const AuthProvider = ({ children }) => {
         
         if (user) {
           // Get user document from Firestore
-          const userData = await getUserDocument(user.uid);
+          let userData = await getUserDocument(user.uid);
+          
+          // If user document doesn't exist, create it automatically
+          if (!userData) {
+            console.log('User document not found, creating it...');
+            try {
+              const { createUserDocument } = await import('../services/auth');
+              await createUserDocument(user);
+              userData = await getUserDocument(user.uid);
+              
+              // If still not found after creation, try fixing it
+              if (!userData) {
+                const { fixUserSubscription } = await import('../services/auth');
+                await fixUserSubscription(user.uid);
+                userData = await getUserDocument(user.uid);
+              }
+            } catch (error) {
+              console.error('Failed to create/fix user document:', error);
+            }
+          }
+          
           setUserDocument(userData);
         } else {
           setUserDocument(null);
