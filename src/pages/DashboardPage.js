@@ -63,8 +63,50 @@ const DashboardPage = () => {
               await new Promise(resolve => setTimeout(resolve, 500));
               
               // First try to check subscription status from backend
-              const { checkSubscriptionStatus } = await import('../services/stripe');
-              const backendStatus = await checkSubscriptionStatus(currentUser.uid);
+              const { checkSubscriptionStatus, forceSyncSubscription, manuallyActivateSubscription } = await import('../services/stripe');
+              
+              // Try different methods to sync subscription
+              let backendStatus = await checkSubscriptionStatus(currentUser.uid);
+              
+              // If backend check fails, try force sync
+              if (!backendStatus?.subscription) {
+                console.log('Backend check failed, trying force sync...');
+                const syncResult = await forceSyncSubscription(currentUser.uid);
+                if (syncResult.success) {
+                  backendStatus = { subscription: syncResult.subscription };
+                }
+              }
+              
+              // If still no subscription, check localStorage for pending subscription
+              if (!backendStatus?.subscription) {
+                const pendingSubStr = localStorage.getItem('pendingSubscription');
+                if (pendingSubStr) {
+                  try {
+                    const pendingSub = JSON.parse(pendingSubStr);
+                    // Check if it's recent (within last hour) and matches current user
+                    if (pendingSub.userId === currentUser.uid && 
+                        Date.now() - pendingSub.timestamp < 3600000) {
+                      planId = planId || pendingSub.planId;
+                    }
+                  } catch (e) {
+                    console.error('Error parsing pending subscription:', e);
+                  }
+                }
+              }
+              
+              // If still no subscription and we have a planId, manually activate as last resort
+              if (!backendStatus?.subscription && planId && i === maxRetries - 1) {
+                console.log('All sync methods failed, manually activating subscription...');
+                try {
+                  const manualSubscription = await manuallyActivateSubscription(currentUser.uid, planId);
+                  backendStatus = { subscription: manualSubscription };
+                  // Clear pending subscription from localStorage
+                  localStorage.removeItem('pendingSubscription');
+                  toast.warning('Subscription activated manually. If this persists, please contact support.');
+                } catch (manualError) {
+                  console.error('Manual activation failed:', manualError);
+                }
+              }
               
               // Force a re-check by getting the latest user document
               const { getUserDocument } = await import('../services/auth');

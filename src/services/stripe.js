@@ -101,6 +101,13 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
 
     // Use backend API to create checkout session
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    console.log('Creating checkout session with:', {
+      apiUrl,
+      userId,
+      planId,
+      priceId: finalPriceId
+    });
+    
     const response = await fetch(`${apiUrl}/create-checkout-session`, {
       method: 'POST',
       headers: {
@@ -109,7 +116,8 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
       body: JSON.stringify({
         user_id: userId,
         plan: planId,
-        success_url: `${window.location.origin}/dashboard?success=true&plan=${planId}`,
+        price_id: finalPriceId, // Add price_id to the request
+        success_url: `${window.location.origin}/dashboard?success=true&plan=${planId}&userId=${userId}`,
         cancel_url: `${window.location.origin}/pricing?canceled=true`
       })
     });
@@ -123,6 +131,15 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
     
     if (data.checkout_url) {
       console.log('Checkout session created successfully:', data.checkout_url);
+      
+      // Store pending subscription info in localStorage as backup
+      localStorage.setItem('pendingSubscription', JSON.stringify({
+        userId,
+        planId,
+        priceId: finalPriceId,
+        timestamp: Date.now()
+      }));
+      
       // Redirect to Stripe Checkout
       window.location.assign(data.checkout_url);
       return data.checkout_url;
@@ -187,7 +204,7 @@ export const updateUserSubscription = async (userId, subscriptionData) => {
 };
 
 // Check subscription status from backend
-export const checkSubscriptionStatus = async (userId) => {
+export const checkSubscriptionStatus = async (userId, skipFallback = false) => {
   try {
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
     const response = await fetch(`${apiUrl}/check-subscription/${userId}`, {
@@ -198,6 +215,7 @@ export const checkSubscriptionStatus = async (userId) => {
     });
 
     if (!response.ok) {
+      console.warn(`Subscription check returned ${response.status}`);
       throw new Error('Failed to check subscription status');
     }
 
@@ -212,7 +230,7 @@ export const checkSubscriptionStatus = async (userId) => {
     return data;
   } catch (error) {
     console.error('Error checking subscription status:', error);
-    // Don't throw - return null to allow fallback to Firestore check
+    // Don't throw - return null to allow fallback
     return null;
   }
 };
@@ -240,12 +258,6 @@ export const forceSyncSubscription = async (userId) => {
         await updateUserSubscription(userId, data.subscription);
         return { success: true, subscription: data.subscription };
       }
-    }
-
-    // If backend sync fails, try checking subscription status
-    const statusCheck = await checkSubscriptionStatus(userId);
-    if (statusCheck?.subscription) {
-      return { success: true, subscription: statusCheck.subscription };
     }
 
     return { success: false, error: 'No active subscription found' };
