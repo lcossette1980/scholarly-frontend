@@ -188,13 +188,13 @@ const AnalyzePage = () => {
             <div className="w-12 h-12 bg-chestnut/20 rounded-lg flex items-center justify-center">
               <FileText className="w-6 h-6 text-chestnut" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
                 Selected Entries ({selectedEntryData.length})
               </h3>
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {selectedEntryData.map((entry, idx) => (
-                  <div key={idx} className="text-sm text-charcoal/70 truncate">
+                  <div key={idx} className="text-sm text-charcoal/70 truncate break-words">
                     • {entry.citation}
                   </div>
                 ))}
