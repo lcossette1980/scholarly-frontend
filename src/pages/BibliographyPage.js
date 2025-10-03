@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  FileText, 
-  Download, 
+import {
+  FileText,
+  Download,
   Filter,
   Check,
   Square,
@@ -13,7 +13,8 @@ import {
   FileDown,
   Search,
   X,
-  Trash2
+  Trash2,
+  Brain
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getUserBibliographyEntries, deleteBibliographyEntry } from '../services/bibliography';
@@ -313,8 +314,26 @@ const BibliographyPage = () => {
               </select>
             </div>
 
-            {/* Right side - Export Buttons */}
+            {/* Right side - Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+              <button
+                onClick={() => {
+                  if (selectedEntries.size < 2) {
+                    toast.error('Please select at least 2 entries to analyze');
+                    return;
+                  }
+                  const selectedData = entries.filter(e => selectedEntries.has(e.id));
+                  navigate('/analyze', { state: { selectedEntries: selectedData } });
+                }}
+                disabled={selectedEntries.size < 2}
+                className={`btn ${
+                  selectedEntries.size >= 2 ? 'btn-primary' : 'btn-outline opacity-50 cursor-not-allowed'
+                }`}
+                title={selectedEntries.size < 2 ? 'Select at least 2 entries to analyze' : 'Generate topics and outlines'}
+              >
+                <Brain className="w-4 h-4 mr-2" />
+                Analyze Selected
+              </button>
               <button
                 onClick={exportReferencesList}
                 disabled={selectedEntries.size === 0}
@@ -328,7 +347,7 @@ const BibliographyPage = () => {
               <button
                 onClick={exportAnnotatedBibliography}
                 disabled={selectedEntries.size === 0}
-                className={`btn btn-primary ${
+                className={`btn btn-outline ${
                   selectedEntries.size === 0 ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >
@@ -394,20 +413,39 @@ const BibliographyPage = () => {
           </div>
         )}
 
-        {/* Future Feature Teaser */}
+        {/* AI Analysis Feature Highlight */}
         <div className="mt-12 card bg-gradient-to-br from-chestnut/10 to-khaki/10">
           <div className="flex items-start space-x-4">
             <div className="w-12 h-12 bg-chestnut/20 rounded-lg flex items-center justify-center">
-              <FileDown className="w-6 h-6 text-chestnut" />
+              <Brain className="w-6 h-6 text-chestnut" />
             </div>
-            <div>
+            <div className="flex-1">
               <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
-                Coming Soon: Cohesive Analysis
+                🚀 NEW: AI Research Assistant
               </h3>
-              <p className="text-charcoal/70 font-lato">
-                Generate a comprehensive analysis across selected bibliography entries, 
-                identifying common themes, contradictions, and research gaps.
-              </p>
+              <ul className="text-charcoal/70 font-lato space-y-1 list-disc ml-4">
+                <li>Generate article topics & detailed outlines from your selected entries</li>
+                <li>AI synthesizes your research to suggest compelling angles</li>
+                <li>Maps evidence to outline sections automatically</li>
+                <li>Export publication-ready outlines to Word</li>
+              </ul>
+              {selectedEntries.size >= 2 && (
+                <div className="mt-4 p-3 bg-chestnut/10 rounded-lg">
+                  <p className="text-chestnut font-medium flex items-center">
+                    <Brain className="w-4 h-4 mr-2" />
+                    You have {selectedEntries.size} entries selected - perfect for analysis!
+                    <button
+                      onClick={() => {
+                        const selectedData = entries.filter(e => selectedEntries.has(e.id));
+                        navigate('/analyze', { state: { selectedEntries: selectedData } });
+                      }}
+                      className="ml-auto btn btn-primary btn-sm"
+                    >
+                      Try It Now
+                    </button>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
