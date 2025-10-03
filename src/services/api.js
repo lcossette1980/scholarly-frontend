@@ -133,6 +133,44 @@ export const bibliographyAPI = {
   }
 };
 
+// Analysis & Topic Generation API calls
+export const analysisAPI = {
+  // Generate topic suggestions from selected entries
+  generateTopics: async (entryIds, userId, options = {}) => {
+    const {
+      outputType = 'article',
+      numTopics = 5,
+      focusArea = null
+    } = options;
+
+    const response = await api.post('/analyze/generate-topics', {
+      entry_ids: entryIds,
+      user_id: userId,
+      output_type: outputType,
+      num_topics: numTopics,
+      focus_area: focusArea
+    }, {
+      timeout: 90000 // 90 seconds for analysis
+    });
+
+    return response.data;
+  },
+
+  // Generate detailed outline for a topic
+  generateOutline: async (entryIds, userId, topicTitle, depth = 'detailed') => {
+    const response = await api.post('/analyze/generate-outline', {
+      entry_ids: entryIds,
+      user_id: userId,
+      topic_title: topicTitle,
+      depth: depth
+    }, {
+      timeout: 90000 // 90 seconds for outline generation
+    });
+
+    return response.data;
+  }
+};
+
 // Health check with enhanced error reporting
 export const healthCheck = async () => {
   try {

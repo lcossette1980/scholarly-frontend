@@ -19,6 +19,7 @@ import PricingPage from './pages/PricingPage';
 import ProfilePage from './pages/ProfilePage';
 import CreateEntryPage from './pages/CreateEntryPage';
 import BibliographyPage from './pages/BibliographyPage';
+import AnalyzePage from './pages/AnalyzePage';
 import FeaturesPage from './pages/FeaturesPage';
 import DocumentationPage from './pages/DocumentationPage';
 import DocsPage from './pages/DocsPage';
@@ -90,7 +91,12 @@ function App() {
                   <BibliographyPage />
                 </ProtectedRoute>
               } />
-              
+              <Route path="/analyze" element={
+                <ProtectedRoute>
+                  <AnalyzePage />
+                </ProtectedRoute>
+              } />
+
               {/* 404 Page */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
