@@ -1,22 +1,60 @@
 // src/pages/HelpCenterPage.js
 import React, { useState } from 'react';
-import { 
-  Search, 
-  Book, 
-  MessageCircle, 
-  Mail, 
+import {
+  Search,
+  Book,
+  MessageCircle,
+  Mail,
   ChevronDown,
   ChevronRight,
   FileText,
   CreditCard,
   Settings,
-  Users
+  Users,
+  Send
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { submitSupportMessage } from '../services/support';
+import toast from 'react-hot-toast';
 
 const HelpCenterPage = () => {
+  const { currentUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [openFAQ, setOpenFAQ] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [contactForm, setContactForm] = useState({
+    subject: '',
+    category: 'general',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+      toast.error('Please sign in to send a support message');
+      return;
+    }
+
+    if (!contactForm.subject || !contactForm.message) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await submitSupportMessage(contactForm);
+      toast.success('Message sent! We\'ll respond within 24 hours.');
+      setContactForm({ subject: '', category: 'general', message: '' });
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const helpContent = {
     "Creating your first entry": {
@@ -462,19 +500,79 @@ const HelpCenterPage = () => {
               </div>
             </div>
 
-            <div className="card">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-8 h-8 text-chestnut" />
+            <div className="card lg:col-span-2">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-chestnut/10 rounded-lg flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-chestnut" />
                 </div>
-                <h3 className="font-semibold text-charcoal font-playfair mb-2">Email Support</h3>
-                <p className="text-charcoal/70 font-lato mb-4 text-sm">
-                  Send us a detailed message
-                </p>
-                <a href="mailto:support@scholarlyaiapp.com" className="btn btn-outline w-full">
-                  Send Email
-                </a>
+                <div>
+                  <h3 className="font-semibold text-charcoal font-playfair">Contact Support</h3>
+                  <p className="text-sm text-charcoal/70 font-lato">We'll respond within 24 hours</p>
+                </div>
               </div>
+
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                <div>
+                  <label className="form-label">Subject</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="Brief description of your issue"
+                    value={contactForm.subject}
+                    onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="form-label">Category</label>
+                  <select
+                    className="form-select"
+                    value={contactForm.category}
+                    onChange={(e) => setContactForm({ ...contactForm, category: e.target.value })}
+                  >
+                    <option value="general">General Question</option>
+                    <option value="bug">Bug Report</option>
+                    <option value="feature">Feature Request</option>
+                    <option value="billing">Billing Issue</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="form-label">Message</label>
+                  <textarea
+                    className="form-input min-h-[150px]"
+                    placeholder="Describe your issue or question in detail..."
+                    value={contactForm.message}
+                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !currentUser}
+                  className="btn btn-primary w-full"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Send Message
+                    </>
+                  )}
+                </button>
+
+                {!currentUser && (
+                  <p className="text-sm text-charcoal/60 text-center">
+                    Please sign in to send a support message
+                  </p>
+                )}
+              </form>
             </div>
 
             <div className="card">
