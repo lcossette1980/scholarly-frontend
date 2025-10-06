@@ -1,9 +1,10 @@
 // src/components/Navbar.js
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Brain, Menu, X, User, LogOut, Settings, FileText } from 'lucide-react';
+import { Brain, Menu, X, User, LogOut, Settings, FileText, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { logOut } from '../services/auth';
+import { isAdmin } from '../services/admin';
 import toast from 'react-hot-toast';
 
 const Navbar = () => {
@@ -129,9 +130,19 @@ const Navbar = () => {
                         <FileText className="w-4 h-4" />
                         <span>My Entries</span>
                       </Link>
+                      {isAdmin(currentUser) && (
+                        <Link
+                          to="/admin"
+                          className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors border-t border-white/20"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <Shield className="w-4 h-4" />
+                          <span>Admin Dashboard</span>
+                        </Link>
+                      )}
                       <button
                         onClick={handleLogout}
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors w-full text-left"
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors w-full text-left border-t border-white/20"
                       >
                         <LogOut className="w-4 h-4" />
                         <span>Logout</span>
