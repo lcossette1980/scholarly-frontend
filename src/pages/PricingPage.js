@@ -79,15 +79,11 @@ const PricingPage = () => {
 
           {planId === 'free' ? (
             <p className="text-sm text-charcoal/70 font-lato">
-              5 lifetime uses
-            </p>
-          ) : planId === 'student' ? (
-            <p className="text-sm text-charcoal/70 font-lato">
-              20 per month
+              5 lifetime entries
             </p>
           ) : (
             <p className="text-sm text-charcoal/70 font-lato">
-              50 per month
+              Unlimited entries
             </p>
           )}
         </div>
@@ -160,29 +156,36 @@ const PricingPage = () => {
                 </span>{' '}
                 plan
               </p>
-              <div className="bg-white/50 rounded-lg p-4 inline-block">
-                <p className="text-sm text-charcoal/70 mb-1">Usage this month</p>
-                <div className="flex items-center space-x-2">
-                  <div className="flex-1 bg-khaki/30 rounded-full h-2">
-                    <div
-                      className="bg-chestnut h-2 rounded-full transition-all"
-                      style={{
-                        width: `${Math.min(
-                          (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
-                          100
-                        )}%`
-                      }}
-                    />
+
+              {/* Only show usage bar for Free/Trial users */}
+              {(userDocument.subscription.plan === 'free' || userDocument.subscription.plan === 'trial') ? (
+                <div className="bg-white/50 rounded-lg p-4 inline-block">
+                  <p className="text-sm text-charcoal/70 mb-1">Lifetime usage</p>
+                  <div className="flex items-center space-x-2">
+                    <div className="flex-1 bg-khaki/30 rounded-full h-2 min-w-[200px]">
+                      <div
+                        className="bg-chestnut h-2 rounded-full transition-all"
+                        style={{
+                          width: `${Math.min(
+                            (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
+                            100
+                          )}%`
+                        }}
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-charcoal">
+                      {userDocument.subscription.entriesUsed} / {userDocument.subscription.entriesLimit}
+                    </span>
                   </div>
-                  <span className="text-sm font-medium text-charcoal">
-                    {userDocument.subscription.entriesUsed} / {
-                      userDocument.subscription.entriesLimit === -1 
-                        ? '∞' 
-                        : userDocument.subscription.entriesLimit
-                    }
-                  </span>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-white/50 rounded-lg p-4 inline-block">
+                  <p className="text-lg font-semibold text-chestnut">✓ Unlimited Bibliography Entries</p>
+                  {userDocument.subscription.plan === 'researcher' && (
+                    <p className="text-sm text-charcoal/70 mt-1">+ Topic & Outline Generator</p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -205,10 +208,10 @@ const PricingPage = () => {
             
             <div className="card">
               <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
-                What happens if I exceed my entry limit?
+                What's the difference between Student and Researcher plans?
               </h3>
               <p className="text-charcoal/70 font-lato">
-                You'll be prompted to upgrade your plan. Don't worry - your work is saved and you can continue once you upgrade.
+                Both plans include unlimited bibliography entries. The Researcher plan adds our powerful Topic & Outline Generator, which uses AI to synthesize your research into organized topics and outlines.
               </p>
             </div>
             

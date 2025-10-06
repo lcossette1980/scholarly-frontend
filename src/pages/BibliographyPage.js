@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   FileText,
   Download,
@@ -14,17 +14,19 @@ import {
   Search,
   X,
   Trash2,
-  Brain
+  Brain,
+  Lock
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getUserBibliographyEntries, deleteBibliographyEntry } from '../services/bibliography';
+import { canAccessFeature } from '../services/stripe';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import toast from 'react-hot-toast';
 import { exportToBibliography } from '../utils/exportUtils';
 import { Document, Packer, Paragraph, TextRun, AlignmentType } from 'docx';
 
 const BibliographyPage = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, userDocument } = useAuth();
   const navigate = useNavigate();
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -316,24 +318,43 @@ const BibliographyPage = () => {
 
             {/* Right side - Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-              <button
-                onClick={() => {
-                  if (selectedEntries.size < 2) {
-                    toast.error('Please select at least 2 entries to analyze');
-                    return;
-                  }
-                  const selectedData = entries.filter(e => selectedEntries.has(e.id));
-                  navigate('/analyze', { state: { selectedEntries: selectedData } });
-                }}
-                disabled={selectedEntries.size < 2}
-                className={`btn ${
-                  selectedEntries.size >= 2 ? 'btn-primary' : 'btn-outline opacity-50 cursor-not-allowed'
-                }`}
-                title={selectedEntries.size < 2 ? 'Select at least 2 entries to analyze' : 'Generate topics and outlines'}
-              >
-                <Brain className="w-4 h-4 mr-2" />
-                Analyze Selected
-              </button>
+              {canAccessFeature(userDocument, 'topic_outline') ? (
+                <button
+                  onClick={() => {
+                    if (selectedEntries.size < 2) {
+                      toast.error('Please select at least 2 entries to analyze');
+                      return;
+                    }
+                    const selectedData = entries.filter(e => selectedEntries.has(e.id));
+                    navigate('/analyze', { state: { selectedEntries: selectedData } });
+                  }}
+                  disabled={selectedEntries.size < 2}
+                  className={`btn ${
+                    selectedEntries.size >= 2 ? 'btn-primary' : 'btn-outline opacity-50 cursor-not-allowed'
+                  }`}
+                  title={selectedEntries.size < 2 ? 'Select at least 2 entries to analyze' : 'Generate topics and outlines'}
+                >
+                  <Brain className="w-4 h-4 mr-2" />
+                  Analyze Selected
+                </button>
+              ) : (
+                <div className="relative group">
+                  <button
+                    disabled
+                    className="btn btn-outline opacity-50 cursor-not-allowed"
+                  >
+                    <Lock className="w-4 h-4 mr-2" />
+                    Analyze Selected
+                  </button>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-charcoal text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                    Topic & Outline Generator requires Researcher plan
+                    <br />
+                    <Link to="/pricing" className="text-chestnut hover:underline underline">
+                      Upgrade now →
+                    </Link>
+                  </div>
+                </div>
+              )}
               <button
                 onClick={exportReferencesList}
                 disabled={selectedEntries.size === 0}

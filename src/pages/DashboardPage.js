@@ -14,7 +14,9 @@ import {
   ChevronLeft,
   Quote,
   Brain,
-  Sparkles
+  Sparkles,
+  CheckCircle,
+  Lock
   } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry } from '../services/stripe';
@@ -641,138 +643,129 @@ const DashboardPage = () => {
           </Link>
         </div>
 
-        {/* Usage Progress */}
+        {/* Usage Progress / Plan Features */}
         {userDocument?.subscription && (
           <div className="card mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-charcoal font-playfair">
-                  Monthly Usage
-                </h3>
-                <p className="text-charcoal/60 text-sm font-lato">
-                  {userDocument.subscription.plan.charAt(0).toUpperCase() + userDocument.subscription.plan.slice(1)} Plan
-                </p>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={async () => {
-                    setRefreshingSubscription(true);
-                    try {
-                      // Show loading toast
-                      const loadingToast = toast.loading('Syncing subscription with payment provider...');
-                      
-                      // Try force sync first (this will check Stripe directly)
-                      const { forceSyncSubscription } = await import('../services/stripe');
-                      const syncResult = await forceSyncSubscription(currentUser.uid);
-                      
-                      if (syncResult.success) {
-                        console.log('Force sync successful:', syncResult.subscription);
-                        
-                        // Refresh user document to get latest data
-                        await refreshUserDocument();
-                        
-                        // Dismiss loading toast and show success
-                        toast.dismiss(loadingToast);
-                        toast.success(
-                          `Subscription synced! ${syncResult.subscription.plan} plan with ${syncResult.subscription.entriesLimit} entries/month`,
-                          { duration: 5000 }
-                        );
-                      } else {
-                        // If force sync fails, try regular check
-                        const { checkSubscriptionStatus } = await import('../services/stripe');
-                        const backendStatus = await checkSubscriptionStatus(currentUser.uid);
-                        
-                        if (backendStatus?.subscription) {
-                          console.log('Synced subscription from backend:', backendStatus.subscription);
-                        }
-                        
-                        // Then refresh from Firestore
-                        await refreshUserDocument();
-                        
-                        // Get the latest data to verify
-                        const { getUserDocument } = await import('../services/auth');
-                        const latestData = await getUserDocument(currentUser.uid);
-                        
-                        toast.dismiss(loadingToast);
-                        
-                        if (latestData?.subscription && latestData.subscription.plan !== 'trial') {
-                          toast.success(
-                            `Subscription refreshed! ${latestData.subscription.plan} plan with ${latestData.subscription.entriesLimit} entries/month`,
-                            { duration: 5000 }
-                          );
-                        } else {
-                          toast.error(
-                            'No active subscription found. If you just made a payment, please wait a moment and try again.',
-                            { duration: 8000 }
-                          );
-                        }
-                      }
-                    } catch (error) {
-                      console.error('Error refreshing subscription:', error);
-                      toast.error('Failed to sync subscription. Please contact support if the issue persists.');
-                    } finally {
-                      setRefreshingSubscription(false);
-                    }
-                  }}
-                  disabled={refreshingSubscription}
-                  className="btn btn-outline btn-sm"
-                  title="Force sync subscription with payment provider"
-                >
-                  {refreshingSubscription ? (
-                    <div className="w-4 h-4 border-2 border-chestnut/30 border-t-chestnut rounded-full animate-spin" />
-                  ) : (
-                    'Sync Subscription'
-                  )}
-                </button>
-                <Link to="/pricing" className="btn btn-outline">
-                  Upgrade Plan
-                </Link>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-charcoal/70">
-                  {refreshingSubscription ? (
-                    <span className="flex items-center">
-                      <div className="w-4 h-4 border-2 border-chestnut/30 border-t-chestnut rounded-full animate-spin mr-2" />
-                      Updating subscription...
-                    </span>
-                  ) : (
-                    <>
-                      {userDocument.subscription.entriesUsed} of {
-                        userDocument.subscription.entriesLimit === -1 
-                          ? 'unlimited' 
-                          : userDocument.subscription.entriesLimit
-                      } entries used
-                    </>
-                  )}
-                </span>
-                <span className="text-chestnut font-medium">
-                  {refreshingSubscription ? (
-                    '...'
-                  ) : (
-                    userDocument.subscription.entriesLimit === -1 
-                      ? '∞' 
-                      : Math.round((userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100)
-                  )}%
-                </span>
-              </div>
-              
-              {userDocument.subscription.entriesLimit !== -1 && (
-                <div className="w-full bg-khaki/30 rounded-full h-2">
-                  <div
-                    className="bg-chestnut h-2 rounded-full transition-all"
-                    style={{
-                      width: `${Math.min(
-                        (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
-                        100
-                      )}%`
-                    }}
-                  />
+            {userDocument.subscription.plan === 'free' || userDocument.subscription.plan === 'trial' ? (
+              // Free users: Show usage bar
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-charcoal font-playfair">
+                      Lifetime Usage
+                    </h3>
+                    <p className="text-charcoal/60 text-sm font-lato">
+                      Free Plan
+                    </p>
+                  </div>
+                  <Link to="/pricing" className="btn btn-primary btn-sm">
+                    Upgrade
+                  </Link>
                 </div>
-              )}
-            </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-charcoal/70">
+                      {userDocument.subscription.entriesUsed} of {userDocument.subscription.entriesLimit} entries used
+                    </span>
+                    <span className="text-chestnut font-medium">
+                      {Math.round((userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100)}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-khaki/30 rounded-full h-2">
+                    <div
+                      className="bg-chestnut h-2 rounded-full transition-all"
+                      style={{
+                        width: `${Math.min(
+                          (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
+                          100
+                        )}%`
+                      }}
+                    />
+                  </div>
+                  {userDocument.subscription.entriesUsed >= userDocument.subscription.entriesLimit && (
+                    <p className="text-sm text-chestnut mt-2">
+                      You've reached your limit. Upgrade for unlimited entries!
+                    </p>
+                  )}
+                </div>
+              </>
+            ) : (
+              // Paid users: Show features
+              <>
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-charcoal font-playfair">
+                      Your Plan Features
+                    </h3>
+                    <p className="text-charcoal/60 text-sm font-lato capitalize">
+                      {userDocument.subscription.plan} Plan
+                    </p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={async () => {
+                        setRefreshingSubscription(true);
+                        try {
+                          const loadingToast = toast.loading('Syncing subscription...');
+                          const { forceSyncSubscription } = await import('../services/stripe');
+                          const syncResult = await forceSyncSubscription(currentUser.uid);
+
+                          if (syncResult.success) {
+                            await refreshUserDocument();
+                            toast.dismiss(loadingToast);
+                            toast.success('Subscription synced successfully!');
+                          } else {
+                            toast.dismiss(loadingToast);
+                            toast.error('No active subscription found.');
+                          }
+                        } catch (error) {
+                          console.error('Error refreshing subscription:', error);
+                          toast.error('Failed to sync subscription.');
+                        } finally {
+                          setRefreshingSubscription(false);
+                        }
+                      }}
+                      disabled={refreshingSubscription}
+                      className="btn btn-outline btn-sm"
+                    >
+                      {refreshingSubscription ? (
+                        <div className="w-4 h-4 border-2 border-chestnut/30 border-t-chestnut rounded-full animate-spin" />
+                      ) : (
+                        'Sync'
+                      )}
+                    </button>
+                    {userDocument.subscription.plan === 'student' && (
+                      <Link to="/pricing" className="btn btn-outline btn-sm">
+                        Upgrade to Researcher
+                      </Link>
+                    )}
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {/* Bibliography Generator - Always unlimited for paid */}
+                  <div className="flex items-center space-x-3">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <span className="text-charcoal font-lato">Bibliography Generator (Unlimited)</span>
+                  </div>
+
+                  {/* Topic & Outline Generator - Researcher only */}
+                  {userDocument.subscription.plan === 'researcher' ? (
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <span className="text-charcoal font-lato">Topic & Outline Generator (Unlimited)</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-3">
+                      <Lock className="w-5 h-5 text-gray-400" />
+                      <span className="text-charcoal/60 font-lato">
+                        Topic & Outline Generator
+                        <Link to="/pricing" className="text-chestnut ml-2 hover:underline">Upgrade to unlock</Link>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
 
