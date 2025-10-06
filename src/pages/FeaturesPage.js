@@ -58,18 +58,18 @@ const FeaturesPage = () => {
   const plans = [
     {
       name: "Free",
-      entries: "5 entries/month",
+      entries: "5 lifetime entries",
       features: ["Basic AI analysis", "Standard citations", "Word export"]
     },
     {
       name: "Student",
-      entries: "50 entries/month", 
+      entries: "Unlimited entries",
       features: ["Advanced analysis", "Multiple citation styles", "Priority support"]
     },
     {
       name: "Researcher",
-      entries: "200 entries/month",
-      features: ["Premium analysis", "All features", "Research collaboration"]
+      entries: "Unlimited + Topic Generator",
+      features: ["Topic & Outline Generator", "Premium analysis", "Research synthesis"]
     }
   ];
 

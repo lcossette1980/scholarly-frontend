@@ -18,7 +18,8 @@ export const SUBSCRIPTION_PLANS = {
       'Basic AI analysis',
       'Standard export format',
       'Email support'
-    ]
+    ],
+    allowedFeatures: ['bibliography']
   },
   free: {
     id: 'free',
@@ -30,39 +31,42 @@ export const SUBSCRIPTION_PLANS = {
       'Basic AI analysis',
       'Standard export format',
       'Email support'
-    ]
+    ],
+    allowedFeatures: ['bibliography']
   },
   student: {
     id: 'student',
     name: 'Student',
     price: 9.99,
     priceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID || 'price_1RdJyPCfEsnTPNpVUZVs6OU1',
-    entriesLimit: 20,
+    entriesLimit: -1,
     features: [
-      '20 bibliography entries per month',
+      'Unlimited bibliography entries',
       'Advanced AI analysis',
       'Multiple export formats',
       'Priority support',
       'Research focus customization',
       'Batch processing'
-    ]
+    ],
+    allowedFeatures: ['bibliography']
   },
   researcher: {
     id: 'researcher',
     name: 'Researcher',
     price: 19.99,
     priceId: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID || 'price_1RdK3ACfEsnTPNpVG9GjSJNH',
-    entriesLimit: 50,
+    entriesLimit: -1,
     features: [
-      '50 bibliography entries per month',
+      'Unlimited bibliography entries',
+      'Topic & Outline Generator',
       'Premium AI analysis',
       'All export formats',
       'Priority support',
       'Advanced customization',
       'Batch processing',
-      'Citation style options',
-      'Research collaboration tools'
-    ]
+      'Citation style options'
+    ],
+    allowedFeatures: ['bibliography', 'topic_outline']
   }
 };
 
@@ -297,19 +301,31 @@ export const manuallyActivateSubscription = async (userId, planId) => {
 // Check if user can create more entries
 export const canCreateEntry = (user) => {
   if (!user?.subscription) return false;
-  
-  const { entriesUsed, entriesLimit, plan, isLifetime } = user.subscription;
-  
-  // Unlimited plan
+
+  const { entriesUsed, entriesLimit, plan } = user.subscription;
+
+  // Unlimited plan (Student, Researcher)
   if (entriesLimit === -1) return true;
-  
-  // For lifetime trial plans, check against total lifetime usage
-  if (plan === 'trial' && isLifetime) {
+
+  // Free/trial users have 5 lifetime limit
+  if (plan === 'trial' || plan === 'free') {
     return entriesUsed < entriesLimit;
   }
-  
+
   // Check if within limit
   return entriesUsed < entriesLimit;
+};
+
+// Check if user has access to a specific feature
+export const canAccessFeature = (user, feature) => {
+  if (!user?.subscription) return false;
+
+  const plan = user.subscription.plan || 'free';
+  const planConfig = SUBSCRIPTION_PLANS[plan];
+
+  if (!planConfig) return false;
+
+  return planConfig.allowedFeatures?.includes(feature) || false;
 };
 
 // Increment user's entries used
