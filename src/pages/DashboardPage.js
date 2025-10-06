@@ -1,18 +1,20 @@
 // src/pages/DashboardPage.js
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { 
-  Plus, 
-  FileText, 
-  Calendar, 
-  TrendingUp, 
-  Search, 
+import {
+  Plus,
+  FileText,
+  Calendar,
+  TrendingUp,
+  Search,
   Filter,
   Eye,
   Clock,
   BookOpen,
   ChevronLeft,
-  Quote
+  Quote,
+  Brain,
+  Sparkles
   } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry } from '../services/stripe';
@@ -255,16 +257,42 @@ const DashboardPage = () => {
     }
   });
 
-  const stats = {
-    totalEntries: entries.length,
-    thisMonth: entries.filter(entry => {
+  // Calculate real stats from actual data
+  const calculateRealStats = () => {
+    const now = new Date();
+
+    const thisMonth = entries.filter(entry => {
       const entryDate = new Date(entry.createdAt);
-      const now = new Date();
       return entryDate.getMonth() === now.getMonth() && entryDate.getFullYear() === now.getFullYear();
-    }).length,
-    inProgress: entries.filter(entry => entry.status === 'processing').length,
-    completed: entries.filter(entry => entry.status === 'completed').length
+    }).length;
+
+    const lastMonth = entries.filter(entry => {
+      const entryDate = new Date(entry.createdAt);
+      const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1);
+      return entryDate.getMonth() === lastMonthDate.getMonth() &&
+             entryDate.getFullYear() === lastMonthDate.getFullYear();
+    }).length;
+
+    const thisWeek = entries.filter(entry => {
+      const entryDate = new Date(entry.createdAt);
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      return entryDate >= weekAgo;
+    }).length;
+
+    const growthPercent = lastMonth > 0
+      ? Math.round(((thisMonth - lastMonth) / lastMonth) * 100)
+      : thisMonth > 0 ? 100 : 0;
+
+    return {
+      totalEntries: entries.length,
+      thisMonth,
+      thisWeek,
+      growthPercent,
+      completed: entries.filter(entry => entry.status === 'completed').length
+    };
   };
+
+  const stats = calculateRealStats();
 
   const canCreate = canCreateEntry(userDocument);
 
@@ -536,29 +564,82 @@ const DashboardPage = () => {
             icon={FileText}
             title="Total Entries"
             value={stats.totalEntries}
-            change="+12% from last month"
+            change={stats.growthPercent !== 0 ? `${stats.growthPercent > 0 ? '+' : ''}${stats.growthPercent}% from last month` : null}
           />
           <StatCard
             icon={Calendar}
             title="This Month"
             value={stats.thisMonth}
-            change="+3 this week"
+            change={stats.thisWeek > 0 ? `${stats.thisWeek} this week` : null}
           />
           <StatCard
-            icon={Clock}
-            title="In Progress"
-            value={stats.inProgress}
-            color="yellow-600"
+            icon={BookOpen}
+            title="Bibliography"
+            value={stats.totalEntries}
+            change="View & Analyze"
+            color="blue-600"
           />
           <StatCard
             icon={TrendingUp}
             title="Completed"
             value={stats.completed}
-            change="85% completion rate"
+            change={stats.completed > 0 ? `${Math.round((stats.completed / stats.totalEntries) * 100)}% processed` : null}
             color="green-600"
           />
           </div>
         )}
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Link
+            to="/bibliography"
+            className="card card-hover group"
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Brain className="w-6 h-6 text-purple-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-charcoal font-playfair">AI Topic Generator</h3>
+                <p className="text-sm text-charcoal/60 font-lato">Synthesize your research</p>
+              </div>
+              <Sparkles className="w-5 h-5 text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </Link>
+
+          <Link
+            to="/bibliography"
+            className="card card-hover group"
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                <BookOpen className="w-6 h-6 text-blue-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-charcoal font-playfair">Bibliography</h3>
+                <p className="text-sm text-charcoal/60 font-lato">{stats.totalEntries} entries</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            to="/create"
+            onClick={handleCreateNew}
+            className={`card group ${canCreate ? 'card-hover' : 'opacity-50 cursor-not-allowed'}`}
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Plus className="w-6 h-6 text-green-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-charcoal font-playfair">Create Entry</h3>
+                <p className="text-sm text-charcoal/60 font-lato">
+                  {canCreate ? 'Add to bibliography' : 'Limit reached'}
+                </p>
+              </div>
+            </div>
+          </Link>
+        </div>
 
         {/* Usage Progress */}
         {userDocument?.subscription && (
