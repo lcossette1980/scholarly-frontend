@@ -143,6 +143,18 @@ const ProfilePage = () => {
     });
   };
 
+  // Show loading state while userDocument is loading
+  if (!userDocument) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-chestnut/30 border-t-chestnut rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-charcoal/70 font-lato">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen py-8">
       <div className="container mx-auto px-6 max-w-4xl">
