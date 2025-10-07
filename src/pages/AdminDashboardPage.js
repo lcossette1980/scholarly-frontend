@@ -10,7 +10,10 @@ import {
   Clock,
   AlertCircle,
   RefreshCw,
-  ArrowLeft
+  ArrowLeft,
+  Search,
+  Eye,
+  BookOpen
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adminAPI, isAdmin } from '../services/admin';
@@ -24,9 +27,13 @@ const AdminDashboardPage = () => {
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [entries, setEntries] = useState([]);
+  const [selectedEntry, setSelectedEntry] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [entriesLoading, setEntriesLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Check admin access
   useEffect(() => {
@@ -102,6 +109,27 @@ const AdminDashboardPage = () => {
     return () => unsubscribe();
   }, [currentUser]);
 
+  // Fetch all entries
+  useEffect(() => {
+    const fetchEntries = async () => {
+      if (!currentUser || !isAdmin(currentUser)) return;
+      if (activeTab !== 'entries') return;
+
+      setEntriesLoading(true);
+      try {
+        const data = await adminAPI.getAllEntries(currentUser.email, 100, 0, searchQuery || null);
+        setEntries(data.entries || []);
+      } catch (error) {
+        console.error('Error fetching entries:', error);
+        toast.error('Failed to load entries');
+      } finally {
+        setEntriesLoading(false);
+      }
+    };
+
+    fetchEntries();
+  }, [currentUser, activeTab, searchQuery]);
+
   const handleMarkRead = async (messageId) => {
     try {
       await adminAPI.markMessageRead(currentUser.email, messageId);
@@ -109,6 +137,16 @@ const AdminDashboardPage = () => {
     } catch (error) {
       console.error('Error marking message as read:', error);
       toast.error('Failed to mark message as read');
+    }
+  };
+
+  const handleViewEntry = async (entryId) => {
+    try {
+      const data = await adminAPI.getEntryDetails(currentUser.email, entryId);
+      setSelectedEntry(data);
+    } catch (error) {
+      console.error('Error fetching entry details:', error);
+      toast.error('Failed to load entry details');
     }
   };
 
@@ -206,6 +244,16 @@ const AdminDashboardPage = () => {
                 {unreadCount}
               </span>
             )}
+          </button>
+          <button
+            onClick={() => setActiveTab('entries')}
+            className={`pb-3 px-4 font-semibold transition-colors ${
+              activeTab === 'entries'
+                ? 'text-chestnut border-b-2 border-chestnut'
+                : 'text-charcoal/60 hover:text-charcoal'
+            }`}
+          >
+            All Entries
           </button>
         </div>
 
@@ -382,6 +430,249 @@ const AdminDashboardPage = () => {
                 <p className="text-charcoal/60 font-lato">
                   Messages from users will appear here
                 </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Entries Tab */}
+        {activeTab === 'entries' && (
+          <div className="space-y-6">
+            {/* Search Bar */}
+            <div className="card">
+              <div className="flex items-center space-x-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-charcoal/40" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by title or subject..."
+                    className="w-full pl-10 pr-4 py-3 border border-khaki/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-chestnut/20"
+                  />
+                </div>
+                <div className="text-sm text-charcoal/60 whitespace-nowrap">
+                  {entries.length} entries
+                </div>
+              </div>
+            </div>
+
+            {/* Entries Table */}
+            {entriesLoading ? (
+              <div className="card text-center py-12">
+                <RefreshCw className="w-8 h-8 text-chestnut animate-spin mx-auto mb-4" />
+                <p className="text-charcoal/70">Loading entries...</p>
+              </div>
+            ) : (
+              <>
+                <div className="card overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-bone/50 border-b border-khaki/30">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                            Title
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                            Subject
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                            User
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                            Date
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                            Citation Type
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-khaki/20">
+                        {entries.map((entry) => (
+                          <tr key={entry.id} className="hover:bg-bone/30 transition-colors">
+                            <td className="px-4 py-3">
+                              <div className="flex items-center space-x-2">
+                                <BookOpen className="w-4 h-4 text-chestnut flex-shrink-0" />
+                                <span className="text-sm text-charcoal font-medium line-clamp-2">
+                                  {entry.title}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className="text-sm text-charcoal/70">
+                                {entry.subject}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="text-sm">
+                                <div className="text-charcoal font-medium">{entry.userEmail}</div>
+                                <div className="text-charcoal/60 text-xs">{entry.userId.substring(0, 8)}...</div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className="text-sm text-charcoal/70">
+                                {entry.date ? new Date(entry.date.toDate ? entry.date.toDate() : entry.date).toLocaleDateString() : 'N/A'}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-chestnut/10 text-chestnut">
+                                {entry.citationType}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3">
+                              <button
+                                onClick={() => handleViewEntry(entry.id)}
+                                className="btn btn-sm btn-outline"
+                              >
+                                <Eye className="w-4 h-4 mr-1" />
+                                View
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {entries.length === 0 && !searchQuery && (
+                  <div className="card text-center py-12">
+                    <FileText className="w-16 h-16 text-charcoal/20 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-charcoal font-playfair mb-2">
+                      No entries found
+                    </h3>
+                    <p className="text-charcoal/60 font-lato">
+                      Bibliography entries will appear here
+                    </p>
+                  </div>
+                )}
+
+                {entries.length === 0 && searchQuery && (
+                  <div className="card text-center py-12">
+                    <Search className="w-16 h-16 text-charcoal/20 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-charcoal font-playfair mb-2">
+                      No results for "{searchQuery}"
+                    </h3>
+                    <p className="text-charcoal/60 font-lato">
+                      Try a different search term
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Entry Details Modal */}
+            {selectedEntry && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedEntry(null)}>
+                <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                  <div className="sticky top-0 bg-white border-b border-khaki/30 px-6 py-4 flex items-center justify-between">
+                    <h3 className="text-2xl font-bold text-charcoal font-playfair">Entry Details</h3>
+                    <button
+                      onClick={() => setSelectedEntry(null)}
+                      className="p-2 hover:bg-khaki/10 rounded-lg transition-colors"
+                    >
+                      <ArrowLeft className="w-6 h-6 text-charcoal" />
+                    </button>
+                  </div>
+
+                  <div className="p-6 space-y-6">
+                    {/* User Info */}
+                    {selectedEntry.userInfo && (
+                      <div className="bg-bone/30 rounded-lg p-4">
+                        <h4 className="text-sm font-semibold text-charcoal mb-2">User Information</h4>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="text-charcoal/60">Email:</span>
+                            <span className="ml-2 text-charcoal font-medium">{selectedEntry.userInfo.email}</span>
+                          </div>
+                          <div>
+                            <span className="text-charcoal/60">Name:</span>
+                            <span className="ml-2 text-charcoal font-medium">{selectedEntry.userInfo.displayName}</span>
+                          </div>
+                          <div>
+                            <span className="text-charcoal/60">Plan:</span>
+                            <span className="ml-2 text-charcoal font-medium capitalize">{selectedEntry.userInfo.plan}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Citation */}
+                    {selectedEntry.citation && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-charcoal mb-2">Citation ({selectedEntry.citation.type})</h4>
+                        <div className="bg-bone/30 rounded-lg p-4">
+                          <p className="text-charcoal font-lato">{selectedEntry.citation.formatted}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Summary */}
+                    {selectedEntry.summary && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-charcoal mb-2">Summary</h4>
+                        <div className="bg-bone/30 rounded-lg p-4">
+                          <p className="text-charcoal/80 font-lato whitespace-pre-line">{selectedEntry.summary}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Key Findings */}
+                    {selectedEntry.keyFindings && selectedEntry.keyFindings.length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-charcoal mb-2">Key Findings</h4>
+                        <div className="bg-bone/30 rounded-lg p-4">
+                          <ul className="space-y-2">
+                            {selectedEntry.keyFindings.map((finding, index) => (
+                              <li key={index} className="flex items-start space-x-2">
+                                <CheckCircle className="w-4 h-4 text-chestnut flex-shrink-0 mt-0.5" />
+                                <span className="text-charcoal/80 font-lato">{finding}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Methodology */}
+                    {selectedEntry.methodology && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-charcoal mb-2">Methodology</h4>
+                        <div className="bg-bone/30 rounded-lg p-4">
+                          <p className="text-charcoal/80 font-lato whitespace-pre-line">{selectedEntry.methodology}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Quotes */}
+                    {selectedEntry.quotes && selectedEntry.quotes.length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-charcoal mb-2">Quotes</h4>
+                        <div className="space-y-3">
+                          {selectedEntry.quotes.map((quote, index) => (
+                            <div key={index} className="bg-bone/30 rounded-lg p-4 border-l-4 border-chestnut">
+                              <p className="text-charcoal/80 font-lato italic mb-2">"{quote.text}"</p>
+                              <p className="text-sm text-charcoal/60">— Page {quote.page}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Research Focus */}
+                    {selectedEntry.researchFocus && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-charcoal mb-2">Research Focus</h4>
+                        <div className="bg-bone/30 rounded-lg p-4">
+                          <p className="text-charcoal/80 font-lato">{selectedEntry.researchFocus}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
