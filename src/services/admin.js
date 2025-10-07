@@ -46,6 +46,22 @@ export const adminAPI = {
     const api = createAdminRequest(userEmail);
     const response = await api.post(`/admin/support-messages/${messageId}/mark-read`);
     return response.data;
+  },
+
+  // Get all entries (admin only)
+  getAllEntries: async (userEmail, limit = 50, offset = 0, search = null) => {
+    const api = createAdminRequest(userEmail);
+    const response = await api.get('/admin/entries', {
+      params: { limit, offset, search }
+    });
+    return response.data;
+  },
+
+  // Get entry details (admin only)
+  getEntryDetails: async (userEmail, entryId) => {
+    const api = createAdminRequest(userEmail);
+    const response = await api.get(`/admin/entries/${entryId}`);
+    return response.data;
   }
 };
 
