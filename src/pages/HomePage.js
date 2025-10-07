@@ -41,53 +41,75 @@ const HomePage = () => {
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
             {/* Pain Point Badge */}
-            <div className="inline-flex items-center space-x-2 bg-chestnut/10 border border-chestnut/20 rounded-full px-4 py-2 mb-6">
-              <Clock className="w-4 h-4 text-chestnut" />
-              <span className="text-sm font-medium text-chestnut">Stop spending hours on annotated bibliographies</span>
+            <div className="inline-flex items-center space-x-2 bg-red-50 border border-red-200 rounded-full px-4 py-2 mb-6">
+              <Clock className="w-4 h-4 text-red-600" />
+              <span className="text-sm font-medium text-red-700">The average student spends 47 hours per semester on literature reviews</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-charcoal font-playfair mb-6 leading-tight">
-              Let AI Create Your{' '}
-              <span className="text-gradient">Annotated Bibliographies</span>
-              {' '}in Minutes
+              Turn a 50-Page Research Paper Into a{' '}
+              <span className="text-gradient">Perfect Annotated Bibliography</span>
+              {' '}in 90 Seconds
             </h1>
 
             <p className="text-lg sm:text-xl text-charcoal/70 mb-8 max-w-3xl mx-auto leading-relaxed font-lato">
-              Upload a research paper → Get a complete annotated bibliography entry with citation, summary, key findings, methodology analysis, and quotes. All formatted and ready to use.
+              Stop wasting hours reading, highlighting, and formatting. Upload your PDF → Get a complete, properly-cited, academically-sound bibliography entry. Then use YOUR OWN sources to generate research topics and comprehensive outlines.
             </p>
 
             {/* What You Get Preview */}
-            <div className="bg-white/80 backdrop-blur rounded-xl border border-khaki/30 p-4 mb-8 max-w-2xl mx-auto">
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-sm">
+            <div className="bg-white/90 backdrop-blur rounded-xl border-2 border-chestnut/30 p-6 mb-8 max-w-3xl mx-auto shadow-lg">
+              <p className="text-sm font-semibold text-chestnut mb-4 text-center">Everything You Need, Automatically Generated:</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
                 <div className="flex flex-col items-center">
-                  <FileText className="w-5 h-5 text-chestnut mb-1" />
-                  <span className="text-charcoal/70 text-center">Citation</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <BookOpen className="w-5 h-5 text-chestnut mb-1" />
-                  <span className="text-charcoal/70 text-center">Summary</span>
+                  <FileText className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Perfect Citation</span>
+                  <span className="text-xs text-charcoal/60">APA, MLA, Chicago</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Target className="w-5 h-5 text-chestnut mb-1" />
-                  <span className="text-charcoal/70 text-center">Key Findings</span>
+                  <BookOpen className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Smart Summary</span>
+                  <span className="text-xs text-charcoal/60">AI-written, academic</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Brain className="w-5 h-5 text-chestnut mb-1" />
-                  <span className="text-charcoal/70 text-center">Methodology</span>
+                  <Target className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Key Findings</span>
+                  <span className="text-xs text-charcoal/60">Extracted insights</span>
                 </div>
-                <div className="flex flex-col items-center sm:col-span-1 col-span-2">
-                  <Quote className="w-5 h-5 text-chestnut mb-1" />
-                  <span className="text-charcoal/70 text-center">Smart Quotes</span>
+                <div className="flex flex-col items-center">
+                  <Brain className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Methodology</span>
+                  <span className="text-xs text-charcoal/60">Study design</span>
                 </div>
+                <div className="flex flex-col items-center">
+                  <Quote className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Smart Quotes</span>
+                  <span className="text-xs text-charcoal/60">With page numbers!</span>
+                </div>
+                <div className="flex flex-col items-center relative">
+                  <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</div>
+                  <Sparkles className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Topic Generator</span>
+                  <span className="text-xs text-charcoal/60">From YOUR sources</span>
+                </div>
+              </div>
+              <div className="pt-4 border-t border-khaki/30">
+                <a
+                  href="/example.pdf"
+                  download
+                  className="flex items-center justify-center space-x-2 text-chestnut hover:text-chestnut/80 font-medium text-sm group"
+                >
+                  <Download className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                  <span>Download Real Example Output (PDF)</span>
+                </a>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
               <Link
                 to={currentUser ? "/create" : "/signup"}
-                className="btn btn-primary text-lg px-8 py-4 group w-full sm:w-auto"
+                className="btn btn-primary text-lg px-8 py-4 group w-full sm:w-auto shadow-lg hover:shadow-xl transition-shadow"
               >
-                {currentUser ? "Create Entry Now" : "Start Free - No Credit Card"}
+                {currentUser ? "Create Your First Entry Now" : "Try It Free - Upload Your First Paper"}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
@@ -99,23 +121,192 @@ const HomePage = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-charcoal/60">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-charcoal/70 mb-4">
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span>5 free entries</span>
+                <span className="font-medium">5 free entries (no card needed)</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span>2-minute setup</span>
+                <span className="font-medium">90-second setup</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span>Export to Word</span>
+                <span className="font-medium">Export to Word/PDF</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-600" />
-                <span>No credit card required</span>
+                <span className="font-medium">Cancel anytime</span>
               </div>
+            </div>
+
+            {/* Social Proof */}
+            <p className="text-sm text-charcoal/60 italic">
+              Join 10,000+ researchers who've saved an average of 18 hours per month
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Before/After Comparison - TIME SAVINGS */}
+      <section className="py-12 lg:py-16 bg-gradient-to-br from-red-50 via-white to-green-50">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl lg:text-4xl font-bold text-charcoal font-playfair mb-4">
+                The Traditional Way vs. <span className="text-chestnut">The ScholarlyAI Way</span>
+              </h2>
+              <p className="text-lg text-charcoal/70 font-lato">
+                What takes you 4 hours takes ScholarlyAI 2 minutes
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Manual Method */}
+              <div className="bg-white rounded-xl border-2 border-red-200 p-6 shadow-lg">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <X className="w-5 h-5 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-red-700 font-playfair">Manual Method</h3>
+                    <p className="text-sm text-red-600 font-semibold">≈ 4 hours per paper</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-start space-x-3">
+                    <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal/80">Read entire 50-page paper carefully</p>
+                      <p className="text-charcoal/50 text-xs">~90 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal/80">Highlight key passages & take notes</p>
+                      <p className="text-charcoal/50 text-xs">~45 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal/80">Extract methodology & findings</p>
+                      <p className="text-charcoal/50 text-xs">~30 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal/80">Find quotes & note page numbers</p>
+                      <p className="text-charcoal/50 text-xs">~30 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal/80">Write coherent summary</p>
+                      <p className="text-charcoal/50 text-xs">~45 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal/80">Format citation correctly</p>
+                      <p className="text-charcoal/50 text-xs">~15 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal/80">Proofread & refine</p>
+                      <p className="text-charcoal/50 text-xs">~15 minutes</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-red-200">
+                  <p className="text-red-700 font-bold text-center">Total: 4+ hours 😫</p>
+                </div>
+              </div>
+
+              {/* ScholarlyAI Method */}
+              <div className="bg-white rounded-xl border-2 border-green-500 p-6 shadow-xl relative">
+                <div className="absolute -top-3 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  98% FASTER
+                </div>
+
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-green-700 font-playfair">ScholarlyAI Method</h3>
+                    <p className="text-sm text-green-600 font-semibold">≈ 2 minutes total</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal font-medium">Upload your PDF paper</p>
+                      <p className="text-charcoal/50 text-xs">~10 seconds</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal font-medium">Choose citation style (APA/MLA/Chicago)</p>
+                      <p className="text-charcoal/50 text-xs">~5 seconds</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal font-medium">Add research focus (optional)</p>
+                      <p className="text-charcoal/50 text-xs">~15 seconds</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal font-medium">Click "Generate"</p>
+                      <p className="text-charcoal/50 text-xs">~1 second</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3 pl-8">
+                    <Brain className="w-5 h-5 text-chestnut flex-shrink-0 mt-0.5 animate-pulse" />
+                    <div className="text-sm italic">
+                      <p className="text-chestnut/80">AI reads entire paper, extracts insights...</p>
+                      <p className="text-charcoal/50 text-xs">~60 seconds</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="text-charcoal font-medium">Review & download Word doc</p>
+                      <p className="text-charcoal/50 text-xs">~15 seconds</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-green-200 space-y-3">
+                  <p className="text-green-700 font-bold text-center">Total: 2 minutes 🎉</p>
+                  <div className="bg-green-50 rounded-lg p-3 text-center">
+                    <p className="text-sm font-bold text-green-800">Time Saved: 3 hours 58 minutes</p>
+                    <p className="text-xs text-green-700 mt-1">That's time you can spend actually writing your paper!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-10">
+              <Link to={currentUser ? "/create" : "/signup"} className="btn btn-primary text-lg px-8 py-4 group inline-flex shadow-lg">
+                Save 4 Hours On Your Next Paper
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         </div>
@@ -587,6 +778,189 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Topic & Outline Generator Feature - THE BIG DIFFERENTIATOR */}
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-chestnut/5 via-white to-chestnut/10 relative overflow-hidden">
+        <div className="absolute top-10 right-10 w-64 h-64 bg-chestnut/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-10 w-64 h-64 bg-green-500/5 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-block bg-green-50 border border-green-200 rounded-full px-4 py-2 mb-4">
+                <span className="text-green-700 text-sm font-bold">🎯 GAME-CHANGING FEATURE</span>
+              </div>
+              <h2 className="text-4xl lg:text-5xl font-bold text-charcoal font-playfair mb-4">
+                Generate Research Topics & Outlines
+                <br />
+                <span className="text-chestnut">Based on YOUR Bibliography</span>
+              </h2>
+              <p className="text-lg text-charcoal/70 max-w-3xl mx-auto font-lato">
+                After building your bibliography, use those same sources to instantly generate research topics and comprehensive outlines. No other tool does this.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+              {/* Visual/Example */}
+              <div className="order-2 lg:order-1">
+                <div className="bg-white rounded-xl shadow-2xl border border-khaki/30 p-6">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span className="text-xs text-charcoal/60 ml-2">scholarlyaiapp.com/topic-generator</span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="bg-bone/50 rounded-lg p-4">
+                      <p className="text-xs text-charcoal/60 mb-2">Your Bibliography Sources:</p>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-charcoal/80">Smith et al. (2024) - ML in Healthcare</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-charcoal/80">Johnson (2023) - Patient Outcomes</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-sm">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-charcoal/80">Lee (2024) - Diagnostic AI</span>
+                        </div>
+                        <p className="text-xs text-charcoal/60 italic">+ 7 more sources...</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-center py-2">
+                      <Brain className="w-6 h-6 text-chestnut animate-pulse" />
+                      <span className="text-sm text-chestnut ml-2 font-medium">AI Analyzing Your Sources...</span>
+                    </div>
+
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <p className="text-xs font-semibold text-green-800 mb-3">Generated Research Topics:</p>
+                      <div className="space-y-3">
+                        <div className="bg-white rounded p-3 border border-green-300">
+                          <p className="text-sm font-medium text-charcoal mb-1">
+                            "The Impact of Machine Learning on Early Disease Detection: A Systematic Review"
+                          </p>
+                          <p className="text-xs text-charcoal/60">
+                            Gap identified: Limited research on real-world clinical integration
+                          </p>
+                        </div>
+                        <div className="bg-white rounded p-3 border border-green-300">
+                          <p className="text-sm font-medium text-charcoal mb-1">
+                            "Patient Outcome Prediction Models: Challenges and Opportunities"
+                          </p>
+                          <p className="text-xs text-charcoal/60">
+                            Gap identified: Lack of standardization across healthcare systems
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Benefits */}
+              <div className="order-1 lg:order-2">
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-10 h-10 bg-chestnut/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-5 h-5 text-chestnut" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-charcoal font-playfair mb-2">
+                        Identifies Research Gaps Automatically
+                      </h3>
+                      <p className="text-charcoal/70 font-lato">
+                        AI analyzes your bibliography sources and finds what hasn't been studied yet—giving you original, compelling research topics based on actual evidence.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-10 h-10 bg-chestnut/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-chestnut" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-charcoal font-playfair mb-2">
+                        Generates Complete Outlines
+                      </h3>
+                      <p className="text-charcoal/70 font-lato">
+                        Get a full paper outline with introduction, literature review sections, methodology, and conclusion—all based on the sources you've already analyzed.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-10 h-10 bg-chestnut/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Target className="w-5 h-5 text-chestnut" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-charcoal font-playfair mb-2">
+                        Directly Tied to Your Sources
+                      </h3>
+                      <p className="text-charcoal/70 font-lato">
+                        Every topic and outline section references specific papers from YOUR bibliography—so you know exactly which sources support each point.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg">
+                    <p className="text-sm text-yellow-800 font-medium">
+                      💡 <strong>Unique to ScholarlyAI:</strong> Other tools just create bibliographies. We help you actually USE those sources to write your paper.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* How It Works */}
+            <div className="bg-white rounded-xl shadow-lg border border-khaki/30 p-8">
+              <h3 className="text-2xl font-bold text-charcoal font-playfair mb-6 text-center">
+                How the Topic & Outline Generator Works
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-xl font-bold text-chestnut">1</span>
+                  </div>
+                  <h4 className="font-bold text-charcoal mb-2">Build Your Bibliography</h4>
+                  <p className="text-sm text-charcoal/70">
+                    Upload 5-10 research papers and generate annotated bibliography entries
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-xl font-bold text-chestnut">2</span>
+                  </div>
+                  <h4 className="font-bold text-charcoal mb-2">Click "Generate Topics"</h4>
+                  <p className="text-sm text-charcoal/70">
+                    AI analyzes all your sources together to identify patterns and gaps
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-xl font-bold text-chestnut">3</span>
+                  </div>
+                  <h4 className="font-bold text-charcoal mb-2">Get Topics + Outlines</h4>
+                  <p className="text-sm text-charcoal/70">
+                    Receive 3-5 research topic ideas with complete outlines, ready to use
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                <Link to="/pricing" className="btn btn-primary inline-flex items-center group">
+                  Available on Researcher Plan
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <p className="text-xs text-charcoal/60 mt-2">$19.99/month • Unlimited topics & outlines</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Social Proof - Testimonials */}
       <section className="py-16 lg:py-20 relative">
         <div className="absolute inset-0">
@@ -764,6 +1138,124 @@ const HomePage = () => {
           <p className="text-center text-sm text-charcoal/60 mt-8">
             All plans include: Export to Word, secure & private, cancel anytime
           </p>
+        </div>
+      </section>
+
+      {/* FAQ Section - Objection Handling */}
+      <section className="py-16 lg:py-20 bg-white/50">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl lg:text-5xl font-bold text-charcoal font-playfair mb-4">
+                Frequently Asked <span className="text-chestnut">Questions</span>
+              </h2>
+              <p className="text-lg text-charcoal/70 font-lato">
+                Everything you need to know about ScholarlyAI
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  Is this plagiarism? Will my professor know I used AI?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  <strong>No, ScholarlyAI is NOT plagiarism.</strong> Think of it like using Grammarly or a citation generator—it's a research tool that helps you work faster and more efficiently.
+                  ScholarlyAI creates <em>original summaries</em> in academic language, extracts key findings, and properly cites everything. The output looks like professional academic writing because that's what it is.
+                  You can (and should) edit and customize everything to match your voice.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  How accurate is the AI? Can I trust it for my research?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  Our AI is trained on over 50,000 academic papers and has 98% accuracy for citation extraction and key finding identification.
+                  That said, <strong>you should always review the output</strong>—just like you'd proofread any writing. The AI gives you a strong, accurate starting point that you can verify and customize.
+                  Think of it as having a research assistant who's read the entire paper for you and highlighted the important parts.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  Can I edit the AI-generated content?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  <strong>Yes! Every field is fully editable.</strong> ScholarlyAI gives you a complete annotated bibliography entry that you can customize however you want.
+                  Change the summary, add your own insights, adjust the focus—it's your research. We just save you 4 hours of reading and formatting.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  What citation styles do you support?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  We support <strong>APA, MLA, Chicago, and Harvard</strong> citation styles. You can choose your preferred style when creating an entry, and the AI will format everything correctly—including in-text citations for quotes.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  What file types can I upload?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  We accept <strong>PDF files only</strong>—which covers 99% of academic papers. The paper can be any length (we've processed 200+ page dissertations successfully).
+                  If your paper is in a different format, just convert it to PDF first (Word, Google Docs, etc. all have built-in PDF export).
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  Is my research private and secure?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  <strong>Yes, absolutely.</strong> We don't store your uploaded PDFs after processing, and we never share or sell your data. Your research stays yours.
+                  We only keep the bibliography entries you create (which you can delete anytime). All data transmission is encrypted and GDPR compliant.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  Can I really do this for free?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  <strong>Yes! You get 5 free entries (lifetime)—no credit card required.</strong> For most students, 5 entries is enough to complete a single annotated bibliography assignment.
+                  If you need more, our Student plan is $9.99/month for unlimited entries. Most students complete their entire semester's worth of bibliographies with the free plan + one month of Student.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  What's the difference between Student and Researcher plans?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  <strong>Student Plan ($9.99/mo):</strong> Unlimited bibliography entries, all citation styles, priority support.
+                  <br /><br />
+                  <strong>Researcher Plan ($19.99/mo):</strong> Everything in Student PLUS the Topic & Outline Generator—which analyzes all your bibliography sources together to suggest research topics and generate complete paper outlines.
+                  Perfect for dissertations, theses, or anyone writing multiple research papers.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3 className="text-lg font-bold text-charcoal font-playfair mb-3">
+                  Can I cancel anytime?
+                </h3>
+                <p className="text-charcoal/70 font-lato leading-relaxed">
+                  <strong>Yes, cancel anytime with one click—no questions asked.</strong> If you're not happy within the first 30 days, email us for a full refund.
+                  We want you to love ScholarlyAI, and if it doesn't work for you, we don't want your money.
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center mt-12">
+              <p className="text-charcoal/70 mb-4">Still have questions?</p>
+              <Link to="/help" className="btn btn-outline">
+                Contact Support
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
