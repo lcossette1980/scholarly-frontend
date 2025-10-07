@@ -23,7 +23,6 @@ import AnalyzePage from './pages/AnalyzePage';
 import OutlineViewPage from './pages/OutlineViewPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import FeaturesPage from './pages/FeaturesPage';
-import DocumentationPage from './pages/DocumentationPage';
 import DocsPage from './pages/DocsPage';
 import HelpCenterPage from './pages/HelpCenterPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
@@ -65,7 +64,6 @@ function App() {
               <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/features" element={<FeaturesPage />} />
-              <Route path="/documentation" element={<DocumentationPage />} />
               <Route path="/docs" element={<DocsPage />} />
               <Route path="/help" element={<HelpCenterPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />

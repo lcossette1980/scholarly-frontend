@@ -27,7 +27,7 @@ const NotFoundPage = () => {
             Back to Home
           </Link>
           <div className="text-sm text-charcoal/60 font-lato">
-            Need help? <Link to="/contact" className="text-chestnut hover:text-chestnut/80">Contact support</Link>
+            Need help? <Link to="/help" className="text-chestnut hover:text-chestnut/80">Contact support</Link>
           </div>
         </div>
       </div>

@@ -83,6 +83,9 @@ const Navbar = () => {
                 <Link to="/create" className="text-charcoal hover:text-chestnut transition-colors font-medium">
                   Create Entry
                 </Link>
+                <Link to="/features" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                  Features
+                </Link>
                 <Link to="/pricing" className="text-charcoal hover:text-chestnut transition-colors font-medium">
                   Pricing
                 </Link>
@@ -153,6 +156,9 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                <Link to="/features" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                  Features
+                </Link>
                 <Link to="/pricing" className="text-charcoal hover:text-chestnut transition-colors font-medium">
                   Pricing
                 </Link>
@@ -196,6 +202,13 @@ const Navbar = () => {
                     Create Entry
                   </Link>
                   <Link
+                    to="/features"
+                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Features
+                  </Link>
+                  <Link
                     to="/pricing"
                     className="block text-charcoal hover:text-chestnut transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
@@ -218,6 +231,13 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
+                  <Link
+                    to="/features"
+                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Features
+                  </Link>
                   <Link
                     to="/pricing"
                     className="block text-charcoal hover:text-chestnut transition-colors font-medium"

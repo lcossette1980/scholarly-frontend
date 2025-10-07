@@ -1,13 +1,14 @@
 // src/pages/FeaturesPage.js
 import React from 'react';
-import { 
-  Brain, 
-  Sparkles, 
-  Quote, 
-  FileDown, 
-  Target, 
-  Zap, 
-  Shield, 
+import { Link } from 'react-router-dom';
+import {
+  Brain,
+  Sparkles,
+  Quote,
+  FileDown,
+  Target,
+  Zap,
+  Shield,
   Users,
   BarChart3,
   Search,
@@ -169,9 +170,9 @@ const FeaturesPage = () => {
           <p className="text-xl text-white/90 mb-8 font-lato">
             Join thousands of researchers using ScholarlyAI to streamline their bibliography workflow.
           </p>
-          <button className="bg-white text-chestnut hover:bg-bone transition-colors px-8 py-4 rounded-lg font-semibold text-lg">
+          <Link to="/signup" className="inline-block bg-white text-chestnut hover:bg-bone transition-colors px-8 py-4 rounded-lg font-semibold text-lg">
             Start Free Trial
-          </button>
+          </Link>
         </div>
       </div>
     </div>
