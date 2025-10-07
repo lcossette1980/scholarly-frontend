@@ -12,7 +12,7 @@ import {
   Crown,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { createCustomerPortalSession, manuallyActivateSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
+import { createCustomerPortalSession, manuallyActivateSubscription, fixSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
 import { getUserBibliographyEntries } from '../services/bibliography';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -96,6 +96,28 @@ const ProfilePage = () => {
     } catch (error) {
       console.error('Error opening billing portal:', error);
       toast.error('Failed to open billing portal');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFixSubscription = async () => {
+    setIsLoading(true);
+    try {
+      const result = await fixSubscription(currentUser.uid);
+
+      if (result.status === 'fixed') {
+        toast.success('Subscription fixed! Refreshing...');
+        await refreshUserDocument();
+        window.location.reload(); // Force page reload to show updated data
+      } else if (result.status === 'already_fixed') {
+        toast.success('Subscription already has unlimited entries!');
+      } else {
+        toast.info(result.message);
+      }
+    } catch (error) {
+      console.error('Error fixing subscription:', error);
+      toast.error('Failed to fix subscription');
     } finally {
       setIsLoading(false);
     }
@@ -356,7 +378,25 @@ const ProfilePage = () => {
                     <CreditCard className="w-4 h-4 mr-2" />
                     Manage Billing
                   </button>
-                  
+
+                  {/* Fix Subscription Button - for paid users with old limits */}
+                  {(userDocument.subscription.plan === 'student' || userDocument.subscription.plan === 'researcher') &&
+                   userDocument.subscription.entriesLimit !== -1 && (
+                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-sm text-yellow-800 mb-2 font-semibold">⚠️ Subscription Limit Issue Detected</p>
+                      <p className="text-xs text-yellow-700 mb-3">
+                        Your paid plan should have unlimited entries, but it's showing a limit. Click below to fix this.
+                      </p>
+                      <button
+                        onClick={handleFixSubscription}
+                        disabled={isLoading}
+                        className="btn btn-sm bg-yellow-600 hover:bg-yellow-700 text-white w-full"
+                      >
+                        {isLoading ? 'Fixing...' : 'Fix My Subscription'}
+                      </button>
+                    </div>
+                  )}
+
                   {/* Temporary manual activation for debugging */}
                   {process.env.NODE_ENV === 'development' && userDocument.subscription.plan === 'trial' && (
                     <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">

@@ -328,6 +328,30 @@ export const canAccessFeature = (user, feature) => {
   return planConfig.allowedFeatures?.includes(feature) || false;
 };
 
+// Fix subscription for existing paid users with old limits
+export const fixSubscription = async (userId) => {
+  try {
+    const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${API_URL}/fix-subscription/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.detail || 'Failed to fix subscription');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error fixing subscription:', error);
+    throw error;
+  }
+};
+
 // Increment user's entries used
 export const incrementEntriesUsed = async (userId) => {
   try {
