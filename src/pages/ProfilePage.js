@@ -1,10 +1,10 @@
 // src/pages/ProfilePage.js
-import React, { useState } from 'react';
-import { 
-  User, 
-  CreditCard, 
-  Shield, 
-  Trash2, 
+import React, { useState, useEffect } from 'react';
+import {
+  User,
+  CreditCard,
+  Shield,
+  Trash2,
   Edit,
   Save,
   X,
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { createCustomerPortalSession, manuallyActivateSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
+import { getUserBibliographyEntries } from '../services/bibliography';
 import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
@@ -22,11 +23,31 @@ const ProfilePage = () => {
   const { currentUser, userDocument, refreshUserDocument } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [entries, setEntries] = useState([]);
+  const [statsLoading, setStatsLoading] = useState(true);
   const [formData, setFormData] = useState({
     displayName: currentUser?.displayName || '',
     researchFocus: userDocument?.preferences?.researchFocus || '',
     notificationsEnabled: userDocument?.preferences?.notificationsEnabled ?? true
   });
+
+  // Fetch user entries for stats
+  useEffect(() => {
+    const fetchEntries = async () => {
+      if (!currentUser) return;
+
+      try {
+        const userEntries = await getUserBibliographyEntries(currentUser.uid);
+        setEntries(userEntries);
+      } catch (error) {
+        console.error('Error fetching entries:', error);
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    fetchEntries();
+  }, [currentUser]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -384,21 +405,63 @@ const ProfilePage = () => {
               <h3 className="text-lg font-bold text-charcoal font-playfair mb-4">
                 Quick Stats
               </h3>
-              
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-charcoal/70 font-lato">Total Entries</span>
-                  <span className="font-semibold text-charcoal">12</span>
+
+              {statsLoading ? (
+                <div className="space-y-3 animate-pulse">
+                  <div className="flex justify-between">
+                    <div className="h-4 bg-khaki/20 rounded w-24"></div>
+                    <div className="h-4 bg-khaki/20 rounded w-8"></div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="h-4 bg-khaki/20 rounded w-24"></div>
+                    <div className="h-4 bg-khaki/20 rounded w-8"></div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="h-4 bg-khaki/20 rounded w-24"></div>
+                    <div className="h-4 bg-khaki/20 rounded w-16"></div>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-charcoal/70 font-lato">This Month</span>
-                  <span className="font-semibold text-charcoal">4</span>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-charcoal/70 font-lato">Total Entries</span>
+                    <span className="font-semibold text-charcoal">{entries.length}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-charcoal/70 font-lato">This Month</span>
+                    <span className="font-semibold text-charcoal">
+                      {entries.filter(entry => {
+                        const entryDate = new Date(entry.createdAt);
+                        const now = new Date();
+                        return entryDate.getMonth() === now.getMonth() &&
+                               entryDate.getFullYear() === now.getFullYear();
+                      }).length}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-charcoal/70 font-lato">Last Entry</span>
+                    <span className="font-semibold text-charcoal">
+                      {entries.length > 0
+                        ? (() => {
+                            const sortedEntries = [...entries].sort((a, b) =>
+                              new Date(b.createdAt) - new Date(a.createdAt)
+                            );
+                            const lastEntry = sortedEntries[0];
+                            const daysDiff = Math.floor(
+                              (new Date() - new Date(lastEntry.createdAt)) / (1000 * 60 * 60 * 24)
+                            );
+                            if (daysDiff === 0) return 'Today';
+                            if (daysDiff === 1) return 'Yesterday';
+                            if (daysDiff < 7) return `${daysDiff} days ago`;
+                            if (daysDiff < 30) return `${Math.floor(daysDiff / 7)} weeks ago`;
+                            return `${Math.floor(daysDiff / 30)} months ago`;
+                          })()
+                        : 'No entries'
+                      }
+                    </span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-charcoal/70 font-lato">Last Entry</span>
-                  <span className="font-semibold text-charcoal">2 days ago</span>
-                </div>
-              </div>
+              )}
             </div>
 
 
