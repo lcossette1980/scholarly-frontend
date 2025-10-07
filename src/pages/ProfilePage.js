@@ -382,13 +382,6 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  {/* Debug info - show raw limit value */}
-                  <div className="text-xs text-charcoal/40 font-mono">
-                    Debug: limit={userDocument.subscription.entriesLimit} |
-                    used={userDocument.subscription.entriesUsed} |
-                    plan={userDocument.subscription.plan}
-                  </div>
-
                   <button
                     onClick={handleManageBilling}
                     disabled={isLoading}
