@@ -30,8 +30,14 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section - The 5-Second Pitch */}
-      <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-bone via-khaki/20 to-bone">
-        <div className="absolute inset-0 bg-gradient-overlay opacity-5"></div>
+      <section className="relative py-16 lg:py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/images/hero-background.png"
+            alt="Abstract academic background"
+            className="w-full h-full object-cover opacity-30"
+          />
+        </div>
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
             {/* Pain Point Badge */}
@@ -167,37 +173,25 @@ const HomePage = () => {
                   </div>
                 </div>
 
-                {/* Image Placeholder - Problem */}
+                {/* Image - Problem - Mobile */}
                 <div className="mt-8 lg:hidden">
-                  <div className="aspect-video bg-gradient-to-br from-red-50 to-red-100 rounded-xl border-2 border-red-200 flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-10">
-                      <div className="absolute top-4 left-4 w-16 h-20 bg-red-400 rounded transform -rotate-12"></div>
-                      <div className="absolute top-8 right-8 w-16 h-20 bg-red-400 rounded transform rotate-6"></div>
-                      <div className="absolute bottom-6 left-1/3 w-16 h-20 bg-red-400 rounded transform rotate-12"></div>
-                    </div>
-                    <div className="text-center z-10">
-                      <Clock className="w-16 h-16 text-red-400 mx-auto mb-2" />
-                      <p className="text-sm text-red-600 font-medium">Image: problem-manual-work.png</p>
-                    </div>
-                  </div>
+                  <img
+                    src="/images/problem-manual-work.png"
+                    alt="Researcher overwhelmed with manual bibliography work - stacks of papers, late hours, and stress"
+                    className="w-full h-auto rounded-xl shadow-lg"
+                    loading="lazy"
+                  />
                 </div>
               </div>
 
               {/* Problem Image - Desktop */}
               <div className="hidden lg:block order-1 lg:order-2">
-                <div className="aspect-video bg-gradient-to-br from-red-50 to-red-100 rounded-xl border-2 border-red-200 flex items-center justify-center relative overflow-hidden shadow-lg">
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-8 left-8 w-20 h-24 bg-red-400 rounded transform -rotate-12"></div>
-                    <div className="absolute top-12 right-12 w-20 h-24 bg-red-400 rounded transform rotate-6"></div>
-                    <div className="absolute bottom-8 left-1/3 w-20 h-24 bg-red-400 rounded transform rotate-12"></div>
-                    <div className="absolute bottom-12 right-1/4 w-16 h-12 bg-red-400 rounded"></div>
-                  </div>
-                  <div className="text-center z-10">
-                    <Clock className="w-20 h-20 text-red-400 mx-auto mb-3" />
-                    <p className="text-sm text-red-600 font-medium">Image: problem-manual-work.png</p>
-                    <p className="text-xs text-red-500 mt-1">Overwhelmed researcher with papers</p>
-                  </div>
-                </div>
+                <img
+                  src="/images/problem-manual-work.png"
+                  alt="Researcher overwhelmed with manual bibliography work - stacks of papers, late hours, and stress"
+                  className="w-full h-auto rounded-xl shadow-lg"
+                  loading="eager"
+                />
               </div>
             </div>
 
@@ -205,17 +199,12 @@ const HomePage = () => {
             <div className="grid lg:grid-cols-2 gap-12 items-center mt-16">
               {/* Solution Image */}
               <div className="order-1">
-                <div className="aspect-video bg-gradient-to-br from-green-50 to-green-100 rounded-xl border-2 border-green-200 flex items-center justify-center relative overflow-hidden shadow-lg">
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-green-400 rounded-full"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-green-400 rounded-full"></div>
-                  </div>
-                  <div className="text-center z-10">
-                    <Brain className="w-20 h-20 text-green-600 mx-auto mb-3" />
-                    <p className="text-sm text-green-600 font-medium">Image: solution-ai-powered.png</p>
-                    <p className="text-xs text-green-500 mt-1">Relaxed researcher with AI assistant</p>
-                  </div>
-                </div>
+                <img
+                  src="/images/solution-ai-powered.png"
+                  alt="Relaxed researcher using ScholarlyAI with AI assistant - calm, organized workspace"
+                  className="w-full h-auto rounded-xl shadow-lg"
+                  loading="lazy"
+                />
               </div>
 
               {/* Solution */}
@@ -296,17 +285,12 @@ const HomePage = () => {
             <div className="grid md:grid-cols-3 gap-8">
               {/* Step 1 */}
               <div className="card text-center group hover:shadow-xl transition-shadow">
-                {/* Image Placeholder */}
-                <div className="aspect-[4/3] bg-gradient-to-br from-bone to-khaki/30 rounded-xl border-2 border-khaki/30 flex items-center justify-center mb-6 relative overflow-hidden">
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-1/4 left-1/4 w-20 h-24 bg-chestnut rounded transform rotate-12"></div>
-                    <div className="absolute bottom-1/4 right-1/3 w-8 h-8 bg-chestnut rounded-full"></div>
-                  </div>
-                  <div className="text-center z-10">
-                    <Upload className="w-16 h-16 text-chestnut mx-auto mb-2" />
-                    <p className="text-xs text-charcoal/60 font-medium">step-1-upload.png</p>
-                  </div>
-                </div>
+                <img
+                  src="/images/step-1-upload.png"
+                  alt="Step 1: Upload your PDF research paper to ScholarlyAI"
+                  className="w-full h-auto rounded-xl mb-6"
+                  loading="lazy"
+                />
 
                 <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-chestnut">1</span>
@@ -319,19 +303,12 @@ const HomePage = () => {
 
               {/* Step 2 */}
               <div className="card text-center group hover:shadow-xl transition-shadow">
-                {/* Image Placeholder */}
-                <div className="aspect-[4/3] bg-gradient-to-br from-bone to-khaki/30 rounded-xl border-2 border-khaki/30 flex items-center justify-center mb-6 relative overflow-hidden">
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-1/3 left-1/3 w-24 h-24 bg-chestnut rounded-full"></div>
-                    <div className="absolute top-1/4 right-1/4 w-4 h-4 bg-chestnut rounded-full"></div>
-                    <div className="absolute bottom-1/3 left-1/4 w-4 h-4 bg-chestnut rounded-full"></div>
-                    <div className="absolute bottom-1/4 right-1/3 w-4 h-4 bg-chestnut rounded-full"></div>
-                  </div>
-                  <div className="text-center z-10">
-                    <Brain className="w-16 h-16 text-chestnut mx-auto mb-2" />
-                    <p className="text-xs text-charcoal/60 font-medium">step-2-analyze.png</p>
-                  </div>
-                </div>
+                <img
+                  src="/images/step-2-analyze.png"
+                  alt="Step 2: AI analyzes your paper and extracts key information"
+                  className="w-full h-auto rounded-xl mb-6"
+                  loading="lazy"
+                />
 
                 <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-chestnut">2</span>
@@ -344,17 +321,12 @@ const HomePage = () => {
 
               {/* Step 3 */}
               <div className="card text-center group hover:shadow-xl transition-shadow">
-                {/* Image Placeholder */}
-                <div className="aspect-[4/3] bg-gradient-to-br from-bone to-khaki/30 rounded-xl border-2 border-khaki/30 flex items-center justify-center mb-6 relative overflow-hidden">
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-1/3 left-1/3 w-20 h-24 bg-chestnut rounded"></div>
-                    <div className="absolute bottom-1/4 right-1/4 w-6 h-6 bg-green-500 rounded-full"></div>
-                  </div>
-                  <div className="text-center z-10">
-                    <Download className="w-16 h-16 text-chestnut mx-auto mb-2" />
-                    <p className="text-xs text-charcoal/60 font-medium">step-3-download.png</p>
-                  </div>
-                </div>
+                <img
+                  src="/images/step-3-download.png"
+                  alt="Step 3: Download your formatted annotated bibliography entry"
+                  className="w-full h-auto rounded-xl mb-6"
+                  loading="lazy"
+                />
 
                 <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-chestnut">3</span>
@@ -608,8 +580,15 @@ const HomePage = () => {
       </section>
 
       {/* Social Proof - Testimonials */}
-      <section className="py-16 lg:py-20 bg-white/50">
-        <div className="container mx-auto px-6">
+      <section className="py-16 lg:py-20 relative">
+        <div className="absolute inset-0">
+          <img
+            src="/images/testimonials-bg.png"
+            alt=""
+            className="w-full h-full object-cover opacity-30"
+          />
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold text-charcoal font-playfair mb-4">
               Trusted by <span className="text-chestnut">10,000+ Researchers</span>
@@ -781,8 +760,15 @@ const HomePage = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 lg:py-20 bg-gradient-chestnut">
-        <div className="container mx-auto px-6">
+      <section className="py-16 lg:py-20 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/images/cta-background.png"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="text-3xl lg:text-5xl font-bold font-playfair mb-6">
               Ready to Save Hours on Every Paper?
