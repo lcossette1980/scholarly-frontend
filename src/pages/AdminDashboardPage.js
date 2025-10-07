@@ -50,10 +50,19 @@ const AdminDashboardPage = () => {
 
       try {
         const data = await adminAPI.getStats(currentUser.email);
-        setStats(data);
+        console.log('Admin stats received:', data);
+
+        // Ensure stats has the expected structure
+        if (data && typeof data === 'object') {
+          setStats(data);
+        } else {
+          console.error('Invalid stats data structure:', data);
+          setStats(null);
+        }
       } catch (error) {
         console.error('Error fetching admin stats:', error);
         toast.error('Failed to load admin stats');
+        setStats(null);
       } finally {
         setLoading(false);
       }
@@ -258,29 +267,29 @@ const AdminDashboardPage = () => {
         </div>
 
         {/* Overview Tab */}
-        {activeTab === 'overview' && stats && (
+        {activeTab === 'overview' && stats && stats.users && stats.revenue && stats.entries && (
           <>
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <StatCard
                 icon={Users}
                 title="Total Users"
-                value={stats.users.total}
-                subtitle={`${stats.users.active} active (${stats.users.active_percent}%)`}
+                value={stats.users?.total || 0}
+                subtitle={`${stats.users?.active || 0} active (${stats.users?.active_percent || 0}%)`}
                 color="blue-600"
               />
               <StatCard
                 icon={DollarSign}
                 title="Monthly Revenue"
-                value={`$${stats.revenue.mrr}`}
-                subtitle={`${stats.revenue.total_subscriptions} subscriptions`}
+                value={`$${stats.revenue?.mrr || 0}`}
+                subtitle={`${stats.revenue?.total_subscriptions || 0} subscriptions`}
                 color="green-600"
               />
               <StatCard
                 icon={FileText}
                 title="Total Entries"
-                value={stats.entries.total}
-                subtitle={`${stats.entries.last_30_days} last 30 days`}
+                value={stats.entries?.total || 0}
+                subtitle={`${stats.entries?.last_30_days || 0} last 30 days`}
                 color="purple-600"
               />
               <StatCard
@@ -301,11 +310,11 @@ const AdminDashboardPage = () => {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-charcoal/70 font-lato">Student Plan</span>
-                    <span className="text-xl font-bold text-charcoal">${stats.revenue.by_plan.student}</span>
+                    <span className="text-xl font-bold text-charcoal">${stats.revenue?.by_plan?.student || 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-charcoal/70 font-lato">Researcher Plan</span>
-                    <span className="text-xl font-bold text-charcoal">${stats.revenue.by_plan.researcher}</span>
+                    <span className="text-xl font-bold text-charcoal">${stats.revenue?.by_plan?.researcher || 0}</span>
                   </div>
                 </div>
               </div>
