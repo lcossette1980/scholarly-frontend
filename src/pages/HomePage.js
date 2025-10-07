@@ -120,10 +120,10 @@ const HomePage = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Problem */}
-              <div>
+              {/* Problem - with image */}
+              <div className="order-2 lg:order-1">
                 <div className="inline-block bg-red-50 border border-red-200 rounded-lg px-3 py-1 mb-4">
-                  <span className="text-red-700 text-sm font-medium">📚 The Problem Every Researcher Faces</span>
+                  <span className="text-red-700 text-sm font-medium">The Problem Every Researcher Faces</span>
                 </div>
                 <h2 className="text-3xl font-bold text-charcoal font-playfair mb-6">
                   Writing Annotated Bibliographies Is Painful
@@ -166,12 +166,62 @@ const HomePage = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Image Placeholder - Problem */}
+                <div className="mt-8 lg:hidden">
+                  <div className="aspect-video bg-gradient-to-br from-red-50 to-red-100 rounded-xl border-2 border-red-200 flex items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-10">
+                      <div className="absolute top-4 left-4 w-16 h-20 bg-red-400 rounded transform -rotate-12"></div>
+                      <div className="absolute top-8 right-8 w-16 h-20 bg-red-400 rounded transform rotate-6"></div>
+                      <div className="absolute bottom-6 left-1/3 w-16 h-20 bg-red-400 rounded transform rotate-12"></div>
+                    </div>
+                    <div className="text-center z-10">
+                      <Clock className="w-16 h-16 text-red-400 mx-auto mb-2" />
+                      <p className="text-sm text-red-600 font-medium">Image: problem-manual-work.png</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Problem Image - Desktop */}
+              <div className="hidden lg:block order-1 lg:order-2">
+                <div className="aspect-video bg-gradient-to-br from-red-50 to-red-100 rounded-xl border-2 border-red-200 flex items-center justify-center relative overflow-hidden shadow-lg">
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-8 left-8 w-20 h-24 bg-red-400 rounded transform -rotate-12"></div>
+                    <div className="absolute top-12 right-12 w-20 h-24 bg-red-400 rounded transform rotate-6"></div>
+                    <div className="absolute bottom-8 left-1/3 w-20 h-24 bg-red-400 rounded transform rotate-12"></div>
+                    <div className="absolute bottom-12 right-1/4 w-16 h-12 bg-red-400 rounded"></div>
+                  </div>
+                  <div className="text-center z-10">
+                    <Clock className="w-20 h-20 text-red-400 mx-auto mb-3" />
+                    <p className="text-sm text-red-600 font-medium">Image: problem-manual-work.png</p>
+                    <p className="text-xs text-red-500 mt-1">Overwhelmed researcher with papers</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Solution Row */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center mt-16">
+              {/* Solution Image */}
+              <div className="order-1">
+                <div className="aspect-video bg-gradient-to-br from-green-50 to-green-100 rounded-xl border-2 border-green-200 flex items-center justify-center relative overflow-hidden shadow-lg">
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-green-400 rounded-full"></div>
+                    <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-green-400 rounded-full"></div>
+                  </div>
+                  <div className="text-center z-10">
+                    <Brain className="w-20 h-20 text-green-600 mx-auto mb-3" />
+                    <p className="text-sm text-green-600 font-medium">Image: solution-ai-powered.png</p>
+                    <p className="text-xs text-green-500 mt-1">Relaxed researcher with AI assistant</p>
+                  </div>
+                </div>
               </div>
 
               {/* Solution */}
-              <div>
+              <div className="order-2">
                 <div className="inline-block bg-green-50 border border-green-200 rounded-lg px-3 py-1 mb-4">
-                  <span className="text-green-700 text-sm font-medium">✨ ScholarlyAI Solves This</span>
+                  <span className="text-green-700 text-sm font-medium">ScholarlyAI Solves This</span>
                 </div>
                 <h2 className="text-3xl font-bold text-charcoal font-playfair mb-6">
                   Get Perfect Bibliographies in Minutes
@@ -246,9 +296,18 @@ const HomePage = () => {
             <div className="grid md:grid-cols-3 gap-8">
               {/* Step 1 */}
               <div className="card text-center group hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-gradient-chestnut rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Upload className="w-8 h-8 text-white" />
+                {/* Image Placeholder */}
+                <div className="aspect-[4/3] bg-gradient-to-br from-bone to-khaki/30 rounded-xl border-2 border-khaki/30 flex items-center justify-center mb-6 relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-1/4 left-1/4 w-20 h-24 bg-chestnut rounded transform rotate-12"></div>
+                    <div className="absolute bottom-1/4 right-1/3 w-8 h-8 bg-chestnut rounded-full"></div>
+                  </div>
+                  <div className="text-center z-10">
+                    <Upload className="w-16 h-16 text-chestnut mx-auto mb-2" />
+                    <p className="text-xs text-charcoal/60 font-medium">step-1-upload.png</p>
+                  </div>
                 </div>
+
                 <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-chestnut">1</span>
                 </div>
@@ -260,9 +319,20 @@ const HomePage = () => {
 
               {/* Step 2 */}
               <div className="card text-center group hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-gradient-chestnut rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Brain className="w-8 h-8 text-white" />
+                {/* Image Placeholder */}
+                <div className="aspect-[4/3] bg-gradient-to-br from-bone to-khaki/30 rounded-xl border-2 border-khaki/30 flex items-center justify-center mb-6 relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-1/3 left-1/3 w-24 h-24 bg-chestnut rounded-full"></div>
+                    <div className="absolute top-1/4 right-1/4 w-4 h-4 bg-chestnut rounded-full"></div>
+                    <div className="absolute bottom-1/3 left-1/4 w-4 h-4 bg-chestnut rounded-full"></div>
+                    <div className="absolute bottom-1/4 right-1/3 w-4 h-4 bg-chestnut rounded-full"></div>
+                  </div>
+                  <div className="text-center z-10">
+                    <Brain className="w-16 h-16 text-chestnut mx-auto mb-2" />
+                    <p className="text-xs text-charcoal/60 font-medium">step-2-analyze.png</p>
+                  </div>
                 </div>
+
                 <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-chestnut">2</span>
                 </div>
@@ -274,9 +344,18 @@ const HomePage = () => {
 
               {/* Step 3 */}
               <div className="card text-center group hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-gradient-chestnut rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Download className="w-8 h-8 text-white" />
+                {/* Image Placeholder */}
+                <div className="aspect-[4/3] bg-gradient-to-br from-bone to-khaki/30 rounded-xl border-2 border-khaki/30 flex items-center justify-center mb-6 relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-1/3 left-1/3 w-20 h-24 bg-chestnut rounded"></div>
+                    <div className="absolute bottom-1/4 right-1/4 w-6 h-6 bg-green-500 rounded-full"></div>
+                  </div>
+                  <div className="text-center z-10">
+                    <Download className="w-16 h-16 text-chestnut mx-auto mb-2" />
+                    <p className="text-xs text-charcoal/60 font-medium">step-3-download.png</p>
+                  </div>
                 </div>
+
                 <div className="w-12 h-12 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-chestnut">3</span>
                 </div>
@@ -322,10 +401,10 @@ const HomePage = () => {
             {/* Tab Navigation */}
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {[
-                { id: 'summary', label: '📝 Citation & Summary', icon: FileText },
-                { id: 'findings', label: '🔑 Key Findings', icon: Target },
-                { id: 'methodology', label: '🔬 Methodology', icon: Brain },
-                { id: 'quotes', label: '💬 Smart Quotes', icon: Quote }
+                { id: 'summary', label: 'Citation & Summary', icon: FileText },
+                { id: 'findings', label: 'Key Findings', icon: Target },
+                { id: 'methodology', label: 'Methodology', icon: Brain },
+                { id: 'quotes', label: 'Smart Quotes', icon: Quote }
               ].map(tab => (
                 <button
                   key={tab.id}
@@ -696,7 +775,7 @@ const HomePage = () => {
           </div>
 
           <p className="text-center text-sm text-charcoal/60 mt-8">
-            💳 All plans include: Export to Word, secure & private, cancel anytime
+            All plans include: Export to Word, secure & private, cancel anytime
           </p>
         </div>
       </section>
@@ -743,7 +822,7 @@ const HomePage = () => {
             </div>
 
             <p className="text-white/70 text-sm mt-6">
-              👥 1,247 researchers signed up this week
+              1,247 researchers signed up this week
             </p>
           </div>
         </div>
