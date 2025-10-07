@@ -362,12 +362,19 @@ const ProfilePage = () => {
                       </div>
                       <span className="text-sm font-medium text-charcoal">
                         {userDocument.subscription.entriesUsed} / {
-                          userDocument.subscription.entriesLimit === -1 
-                            ? '∞' 
+                          userDocument.subscription.entriesLimit === -1
+                            ? '∞'
                             : userDocument.subscription.entriesLimit
                         }
                       </span>
                     </div>
+                  </div>
+
+                  {/* Debug info - show raw limit value */}
+                  <div className="text-xs text-charcoal/40 font-mono">
+                    Debug: limit={userDocument.subscription.entriesLimit} |
+                    used={userDocument.subscription.entriesUsed} |
+                    plan={userDocument.subscription.plan}
                   </div>
 
                   <button
