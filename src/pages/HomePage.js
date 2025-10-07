@@ -489,12 +489,20 @@ const HomePage = () => {
               )}
 
               <div className="mt-8 pt-6 border-t border-khaki/30">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-charcoal/60">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-charcoal/60">
                     <div className="flex items-center space-x-1">
                       <Download className="w-4 h-4" />
                       <span>Export to Word, PDF, or Copy</span>
                     </div>
+                    <a
+                      href="/example.pdf"
+                      download
+                      className="flex items-center space-x-1 text-chestnut hover:text-chestnut/80 font-medium"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>Download Sample Output</span>
+                    </a>
                   </div>
                   <Link to={currentUser ? "/create" : "/signup"} className="btn btn-primary btn-sm">
                     Create Yours →
