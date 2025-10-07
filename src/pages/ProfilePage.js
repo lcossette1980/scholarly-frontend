@@ -37,10 +37,15 @@ const ProfilePage = () => {
       if (!currentUser) return;
 
       try {
-        const userEntries = await getUserBibliographyEntries(currentUser.uid);
-        setEntries(userEntries);
+        const response = await getUserBibliographyEntries(currentUser.uid, 100); // Get up to 100 for accurate stats
+        if (response?.success && response?.entries) {
+          setEntries(response.entries);
+        } else {
+          setEntries([]);
+        }
       } catch (error) {
         console.error('Error fetching entries:', error);
+        setEntries([]);
       } finally {
         setStatsLoading(false);
       }
