@@ -78,9 +78,23 @@ const AdminDashboardPage = () => {
 
       try {
         const data = await adminAPI.getUsers(currentUser.email, 50);
-        setUsers(data.users || []);
+        console.log('Users data received:', data);
+
+        // Ensure data has the expected structure
+        if (data && typeof data === 'object' && Array.isArray(data.users)) {
+          setUsers(data.users);
+        } else if (Array.isArray(data)) {
+          // In case the API returns the array directly
+          setUsers(data);
+        } else {
+          console.error('Invalid users data structure:', data);
+          setUsers([]);
+          toast.error('Failed to load users - invalid data format');
+        }
       } catch (error) {
         console.error('Error fetching users:', error);
+        setUsers([]);
+        toast.error('Failed to load users');
       }
     };
 
@@ -378,7 +392,22 @@ const AdminDashboardPage = () => {
                         {user.subscription?.entriesUsed || 0} / {user.subscription?.entriesLimit === -1 ? '∞' : user.subscription?.entriesLimit || 5}
                       </td>
                       <td className="py-3 px-4 text-sm text-charcoal/60">
-                        {user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A'}
+                        {user.createdAt ? (() => {
+                          try {
+                            // Handle Firestore Timestamp, Date object, or ISO string
+                            if (user.createdAt.toDate && typeof user.createdAt.toDate === 'function') {
+                              return new Date(user.createdAt.toDate()).toLocaleDateString();
+                            } else if (user.createdAt.seconds) {
+                              // Firestore Timestamp as plain object
+                              return new Date(user.createdAt.seconds * 1000).toLocaleDateString();
+                            } else {
+                              // Already a date string or Date object
+                              return new Date(user.createdAt).toLocaleDateString();
+                            }
+                          } catch (e) {
+                            return 'N/A';
+                          }
+                        })() : 'N/A'}
                       </td>
                     </tr>
                   ))}
