@@ -9,7 +9,10 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!jobId) return;
+    if (!jobId) {
+      setError('No job ID provided. Please go back and try again.');
+      return;
+    }
 
     // Poll for status every 3 seconds
     const pollInterval = setInterval(async () => {
