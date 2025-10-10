@@ -54,12 +54,33 @@ const ContentGenerationPage = () => {
     const loadEntries = async () => {
       try {
         setLoading(true);
-        const userEntries = await getUserBibliographyEntries(currentUser.uid);
-        setEntries(userEntries);
+        const result = await getUserBibliographyEntries(currentUser.uid, 100);
 
-        if (userEntries.length === 0) {
-          toast.error('You need to create bibliography entries first');
-          navigate('/create');
+        if (result.success) {
+          // Transform entries to include parsed citation data
+          const transformedEntries = result.entries.map(entry => {
+            const citation = entry.citation || {};
+            return {
+              id: entry.id,
+              title: typeof citation === 'string' ? citation : (citation.title || 'Untitled'),
+              authors: typeof citation === 'string' ? '' : (citation.authors || 'Unknown Author'),
+              year: typeof citation === 'string' ? '' : (citation.year || ''),
+              journal: entry.researchFocus || '',
+              researchFocus: entry.researchFocus || '',
+              narrativeOverview: entry.narrative_overview || '',
+              coreFindingsSummary: entry.core_findings || '',
+              createdAt: entry.createdAt
+            };
+          });
+
+          setEntries(transformedEntries);
+
+          if (transformedEntries.length === 0) {
+            toast.error('You need to create bibliography entries first');
+            navigate('/create');
+          }
+        } else {
+          throw new Error(result.error || 'Failed to load entries');
         }
       } catch (error) {
         console.error('Error loading entries:', error);
