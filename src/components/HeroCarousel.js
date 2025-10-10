@@ -111,7 +111,7 @@ const HeroCarousel = () => {
                 {slide.title}
               </h2>
 
-              <p className="text-lg text-charcoal/70 mb-6 leading-relaxed font-lato">
+              <p className="text-lg text-charcoal/80 mb-6 leading-relaxed font-lato">
                 {slide.description}
               </p>
 
@@ -147,14 +147,14 @@ const HeroCarousel = () => {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10"
+          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2"
           aria-label="Previous slide"
         >
           <ChevronLeft className="w-6 h-6 text-charcoal" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10"
+          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2"
           aria-label="Next slide"
         >
           <ChevronRight className="w-6 h-6 text-charcoal" />
@@ -167,13 +167,19 @@ const HeroCarousel = () => {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`transition-all ${
+            className={`p-2 transition-all focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2 rounded-full ${
+              index === currentSlide
+                ? ''
+                : ''
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          >
+            <div className={`transition-all ${
               index === currentSlide
                 ? 'w-8 h-2 bg-chestnut rounded-full'
                 : 'w-2 h-2 bg-charcoal/30 rounded-full hover:bg-charcoal/50'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
+            }`} />
+          </button>
         ))}
       </div>
 
@@ -185,7 +191,7 @@ const HeroCarousel = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2 ${
                 index === currentSlide
                   ? 'bg-chestnut text-white'
                   : 'bg-white text-charcoal/60 hover:bg-bone border border-khaki/30'

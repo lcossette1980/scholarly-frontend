@@ -21,16 +21,6 @@ const HomePage = () => {
       {/* Hero Section with Carousel */}
       <section className="relative py-12 lg:py-20 overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
-          {/* Pain Point Badge */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center space-x-2 bg-red-50 border border-red-200 rounded-full px-4 py-2">
-              <Clock className="w-4 h-4 text-red-600" />
-              <span className="text-sm font-medium text-red-700">
-                Stop spending 40+ hours per paper on research and writing
-              </span>
-            </div>
-          </div>
-
           {/* Hero Carousel */}
           <HeroCarousel />
 
@@ -40,7 +30,8 @@ const HomePage = () => {
               to={currentUser ? "/create" : "/signup"}
               className="btn btn-primary text-lg px-8 py-4 group w-full sm:w-auto shadow-lg hover:shadow-xl transition-shadow"
             >
-              {currentUser ? "Create Your First Entry" : "Try It Free - No Credit Card"}
+              <span className="hidden sm:inline">{currentUser ? "Create Your First Entry" : "Try It Free - No Credit Card"}</span>
+              <span className="sm:hidden">{currentUser ? "Create Entry" : "Try Free"}</span>
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a
@@ -54,7 +45,7 @@ const HomePage = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-charcoal/70 mt-8">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-charcoal/80 mt-8">
             <div className="flex items-center space-x-2">
               <CheckCircle className="w-4 h-4 text-green-600" />
               <span className="font-medium">5 free entries (no card needed)</span>
@@ -125,7 +116,7 @@ const HomePage = () => {
             <h2 className="text-4xl lg:text-5xl font-bold text-charcoal font-playfair mb-4">
               Dead Simple. <span className="text-chestnut">3 Steps</span> to Perfect Results
             </h2>
-            <p className="text-lg text-charcoal/70 max-w-2xl mx-auto font-lato">
+            <p className="text-lg text-charcoal/80 max-w-2xl mx-auto font-lato">
               No complex setup. No learning curve. Just upload and go.
             </p>
           </div>
@@ -137,7 +128,7 @@ const HomePage = () => {
                 <span className="text-3xl font-bold text-chestnut">1</span>
               </div>
               <h3 className="text-xl font-bold text-charcoal font-playfair mb-3">Upload Papers</h3>
-              <p className="text-charcoal/70 font-lato leading-relaxed">
+              <p className="text-charcoal/80 font-lato leading-relaxed">
                 Drop your PDF research papers or manually enter details. We support any academic PDF, any length.
               </p>
             </div>
@@ -148,7 +139,7 @@ const HomePage = () => {
                 <span className="text-3xl font-bold text-chestnut">2</span>
               </div>
               <h3 className="text-xl font-bold text-charcoal font-playfair mb-3">AI Generates</h3>
-              <p className="text-charcoal/70 font-lato leading-relaxed">
+              <p className="text-charcoal/80 font-lato leading-relaxed">
                 Our AI creates bibliographies, topics, outlines, or complete papers based on what you need. Takes 90 seconds to 5 minutes.
               </p>
             </div>
@@ -159,7 +150,7 @@ const HomePage = () => {
                 <span className="text-3xl font-bold text-chestnut">3</span>
               </div>
               <h3 className="text-xl font-bold text-charcoal font-playfair mb-3">Download & Submit</h3>
-              <p className="text-charcoal/70 font-lato leading-relaxed">
+              <p className="text-charcoal/80 font-lato leading-relaxed">
                 Get professionally formatted documents ready for submission. Export to Word, PDF, or copy to clipboard.
               </p>
             </div>
@@ -184,7 +175,7 @@ const HomePage = () => {
             <h2 className="text-4xl lg:text-5xl font-bold text-charcoal font-playfair mb-4">
               Simple, Transparent <span className="text-chestnut">Pricing</span>
             </h2>
-            <p className="text-lg text-charcoal/70 max-w-2xl mx-auto font-lato">
+            <p className="text-lg text-charcoal/80 max-w-2xl mx-auto font-lato">
               Start free, upgrade when you need more. No contracts, cancel anytime.
             </p>
           </div>
