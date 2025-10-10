@@ -21,6 +21,7 @@ import CreateEntryPage from './pages/CreateEntryPage';
 import BibliographyPage from './pages/BibliographyPage';
 import AnalyzePage from './pages/AnalyzePage';
 import OutlineViewPage from './pages/OutlineViewPage';
+import ContentGenerationPage from './pages/ContentGenerationPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import FeaturesPage from './pages/FeaturesPage';
 import DocsPage from './pages/DocsPage';
@@ -99,6 +100,11 @@ function App() {
               <Route path="/analyze/outline" element={
                 <ProtectedRoute>
                   <OutlineViewPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/content/generate" element={
+                <ProtectedRoute>
+                  <ContentGenerationPage />
                 </ProtectedRoute>
               } />
               <Route path="/admin" element={

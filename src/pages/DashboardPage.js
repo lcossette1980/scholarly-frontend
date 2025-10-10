@@ -22,6 +22,7 @@ import { useAuth } from '../context/AuthContext';
 import { canCreateEntry } from '../services/stripe';
 import { getUserBibliographyEntries } from '../services/bibliography';
 import LoadingSkeleton from '../components/LoadingSkeleton';
+import ContentGenerationCard from '../components/ContentGenerationCard';
 import toast from 'react-hot-toast';
 
 const DashboardPage = () => {
@@ -589,6 +590,11 @@ const DashboardPage = () => {
             color="green-600"
           />
           </div>
+        )}
+
+        {/* Content Generation Discovery Card */}
+        {!loading && entries.length > 0 && (
+          <ContentGenerationCard entries={entries} />
         )}
 
         {/* Quick Actions */}
