@@ -126,19 +126,14 @@ const HeroCarousel = () => {
               </div>
             </div>
 
-            {/* Right: Image Placeholder */}
+            {/* Right: Image */}
             <div className="order-1 lg:order-2">
               <div className="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
-                <div className="aspect-[4/3] flex items-center justify-center bg-gray-50">
-                  <div className="text-center p-8">
-                    <Icon className={`w-24 h-24 ${slide.iconColor} mx-auto mb-4 opacity-50`} />
-                    <p className="text-gray-400 text-sm">
-                      {slide.image}
-                      <br />
-                      <span className="text-xs">(Placeholder for screenshot)</span>
-                    </p>
-                  </div>
-                </div>
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  className="w-full h-auto object-cover"
+                />
               </div>
             </div>
           </div>
