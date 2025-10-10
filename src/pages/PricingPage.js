@@ -190,12 +190,100 @@ const PricingPage = () => {
           </div>
         )}
 
+        {/* Content Generation Pricing */}
+        <div className="max-w-5xl mx-auto mb-16">
+          <h2 className="text-3xl font-bold text-charcoal font-playfair text-center mb-4">
+            AI Content Generation Pricing
+          </h2>
+          <p className="text-center text-charcoal/70 mb-8">
+            Pay only for what you generate. No subscription required for paper generation.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Standard Tier */}
+            <div className="card">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-bold text-charcoal font-playfair">Standard</h3>
+                <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
+                  GPT-4o
+                </span>
+              </div>
+              <div className="mb-4">
+                <span className="text-4xl font-bold text-charcoal">$1.49</span>
+                <span className="text-charcoal/60">/page</span>
+              </div>
+              <p className="text-sm text-charcoal/70 mb-6">High-quality generation for most use cases</p>
+              <ul className="space-y-3">
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Fast generation (2-3 minutes for 10 pages)</span>
+                </li>
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>All citation styles (APA, MLA, Chicago, Harvard)</span>
+                </li>
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Multiple document types</span>
+                </li>
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Export to Word/PDF</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Pro Tier */}
+            <div className="card ring-2 ring-purple-500 relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span className="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1">
+                  <Star className="w-3 h-3" />
+                  <span>PREMIUM</span>
+                </span>
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-2xl font-bold text-charcoal font-playfair">Pro</h3>
+                <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                  GPT-4 Turbo
+                </span>
+              </div>
+              <div className="mb-4">
+                <span className="text-4xl font-bold text-charcoal">$2.49</span>
+                <span className="text-charcoal/60">/page</span>
+              </div>
+              <p className="text-sm text-charcoal/70 mb-6">Premium quality with priority processing</p>
+              <ul className="space-y-3">
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="font-semibold">Everything in Standard, plus:</span>
+                </li>
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Superior writing quality & coherence</span>
+                </li>
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Priority queue (2x faster)</span>
+                </li>
+                <li className="flex items-start space-x-2 text-sm">
+                  <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span>Better source integration</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center mt-6 text-sm text-charcoal/60">
+            <p>Example: A 10-page research paper costs $14.90 (Standard) or $24.90 (Pro)</p>
+          </div>
+        </div>
+
         {/* FAQ Section */}
         <div className="max-w-4xl mx-auto mb-16">
           <h2 className="text-3xl font-bold text-charcoal font-playfair text-center mb-12">
             Frequently Asked Questions
           </h2>
-          
+
           <div className="space-y-6">
             <div className="card">
               <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
@@ -205,25 +293,35 @@ const PricingPage = () => {
                 Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate the billing accordingly.
               </p>
             </div>
-            
+
             <div className="card">
               <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
                 What's the difference between Student and Researcher plans?
               </h3>
               <p className="text-charcoal/70 font-lato">
-                Both plans include unlimited bibliography entries. The Researcher plan adds our powerful Topic & Outline Generator, which uses AI to synthesize your research into organized topics and outlines.
+                <strong>Student Plan:</strong> Unlimited bibliography entries with all citation styles.<br />
+                <strong>Researcher Plan:</strong> Everything in Student PLUS Topic & Outline Generator, which analyzes your sources to suggest research topics and generate complete paper outlines.
               </p>
             </div>
-            
+
+            <div className="card">
+              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+                How does content generation pricing work?
+              </h3>
+              <p className="text-charcoal/70 font-lato">
+                Content generation (AI paper writing) is pay-per-use. You only pay for papers you generate, based on length. Choose Standard ($1.49/page) or Pro ($2.49/page) tier. This is separate from bibliography subscriptions.
+              </p>
+            </div>
+
             <div className="card">
               <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
                 Is there a student discount?
               </h3>
               <p className="text-charcoal/70 font-lato">
-                Our Student plan is specifically designed for individual students and researchers. For additional institutional discounts, contact our sales team.
+                Our Student plan is specifically designed for individual students and researchers at an affordable price. For additional institutional discounts, contact our sales team.
               </p>
             </div>
-            
+
             <div className="card">
               <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
                 What payment methods do you accept?
