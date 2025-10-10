@@ -961,6 +961,210 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* NEW: AI Content Generation Feature */}
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-purple-50 via-white to-blue-50">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-block bg-purple-50 border border-purple-200 rounded-lg px-3 py-1 mb-4">
+                <span className="text-purple-700 text-sm font-bold">✨ NEW: AI-POWERED CONTENT GENERATION</span>
+              </div>
+              <h2 className="text-4xl lg:text-5xl font-bold text-charcoal font-playfair mb-4">
+                Generate Complete Papers
+                <br />
+                <span className="text-chestnut">From Your Sources</span>
+              </h2>
+              <p className="text-lg text-charcoal/70 max-w-3xl mx-auto font-lato">
+                Turn your bibliography into a complete, properly-cited research paper in minutes.
+                Choose your outline, set your preferences, and let AI do the heavy lifting.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+              {/* Left: Feature highlights */}
+              <div>
+                <div className="space-y-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-charcoal font-playfair mb-2">Complete Academic Papers</h3>
+                      <p className="text-charcoal/70 font-lato leading-relaxed">
+                        Generate research papers, essays, articles, or blog posts from 500 to 10,000 words.
+                        Properly formatted with citations from YOUR sources.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-charcoal font-playfair mb-2">Multiple Citation Styles</h3>
+                      <p className="text-charcoal/70 font-lato leading-relaxed">
+                        APA, MLA, Chicago, or Harvard formatting. Choose your style and let AI handle
+                        all citations correctly.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                      <Download className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-charcoal font-playfair mb-2">Export to Word & PDF</h3>
+                      <p className="text-charcoal/70 font-lato leading-relaxed">
+                        Download your generated content as beautifully formatted Word documents or PDFs.
+                        Edit inline before downloading.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4">
+                    <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-yellow-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-charcoal font-playfair mb-2">2-5 Minutes Generation</h3>
+                      <p className="text-charcoal/70 font-lato leading-relaxed">
+                        What would take you hours to write happens in minutes. Real-time progress tracking
+                        shows each section being generated.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 p-6 bg-white rounded-xl border-2 border-purple-200 shadow-lg">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <h4 className="text-lg font-bold text-charcoal">Two Quality Tiers</h4>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div>
+                        <p className="font-semibold text-charcoal">Standard (GPT-4o)</p>
+                        <p className="text-sm text-charcoal/60">High-quality generation</p>
+                      </div>
+                      <p className="text-lg font-bold text-chestnut">$1.49/page</p>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg border-2 border-purple-300">
+                      <div>
+                        <p className="font-semibold text-purple-800">Pro (GPT-4 Turbo) ⭐</p>
+                        <p className="text-sm text-purple-600">Premium quality + priority</p>
+                      </div>
+                      <p className="text-lg font-bold text-purple-700">$2.49/page</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Visual or workflow */}
+              <div>
+                <div className="bg-white rounded-xl border-2 border-gray-200 shadow-2xl p-6">
+                  <div className="mb-4">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">1</span>
+                      <p className="font-semibold text-charcoal">Select 3-10 sources from your bibliography</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <p className="text-sm text-charcoal/70">AI in Education (Smith, 2023)</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <p className="text-sm text-charcoal/70">Machine Learning Methods (Chen, 2024)</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <p className="text-sm text-charcoal/70">Future of EdTech (Lee, 2023)</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">2</span>
+                      <p className="font-semibold text-charcoal">Choose or create your outline</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3">
+                      <p className="text-sm font-semibold text-charcoal mb-2">AI in Modern Education Systems</p>
+                      <div className="space-y-1 text-xs text-charcoal/60">
+                        <p>• Introduction</p>
+                        <p>• Current State of AI in Education</p>
+                        <p>• Benefits and Challenges</p>
+                        <p>• Future Implications</p>
+                        <p>• Conclusion</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">3</span>
+                      <p className="font-semibold text-charcoal">Set preferences & generate</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-3 grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <p className="text-charcoal/60">Type:</p>
+                        <p className="font-semibold text-charcoal">Research Paper</p>
+                      </div>
+                      <div>
+                        <p className="text-charcoal/60">Words:</p>
+                        <p className="font-semibold text-charcoal">2,500 (10 pages)</p>
+                      </div>
+                      <div>
+                        <p className="text-charcoal/60">Style:</p>
+                        <p className="font-semibold text-charcoal">APA 7th</p>
+                      </div>
+                      <div>
+                        <p className="text-charcoal/60">Tone:</p>
+                        <p className="font-semibold text-charcoal">Academic</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center space-x-2 mb-3">
+                      <span className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center text-white text-xs font-bold">✓</span>
+                      <p className="font-semibold text-green-700">Generated in 4 minutes</p>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                      <p className="text-xs text-green-800 font-medium mb-2">✅ 2,547 words • 10 pages • Fully cited</p>
+                      <div className="flex items-center space-x-2">
+                        <button className="text-xs px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                          Download Word
+                        </button>
+                        <button className="text-xs px-3 py-1 bg-white text-green-700 border border-green-300 rounded hover:bg-green-50 transition-colors">
+                          Edit Content
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 text-center">
+                  <Link
+                    to={currentUser ? "/content/generate" : "/signup"}
+                    className="btn btn-primary inline-flex items-center group text-lg px-8 py-4 shadow-lg"
+                  >
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    {currentUser ? "Generate Your First Paper" : "Try Content Generation"}
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <p className="text-xs text-charcoal/60 mt-2">Pay only for what you generate • No subscription required</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Social Proof - Testimonials */}
       <section className="py-16 lg:py-20 relative">
         <div className="absolute inset-0">
