@@ -43,53 +43,53 @@ const HomePage = () => {
             {/* Pain Point Badge */}
             <div className="inline-flex items-center space-x-2 bg-red-50 border border-red-200 rounded-full px-4 py-2 mb-6">
               <Clock className="w-4 h-4 text-red-600" />
-              <span className="text-sm font-medium text-red-700">The average student spends 47 hours per semester on literature reviews</span>
+              <span className="text-sm font-medium text-red-700">Stop spending 40+ hours per paper on research, reading, and writing</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-charcoal font-playfair mb-6 leading-tight">
-              Turn a 50-Page Research Paper Into a{' '}
-              <span className="text-gradient">Perfect Annotated Bibliography</span>
-              {' '}in 90 Seconds
+              Your AI-Powered Research Assistant:{' '}
+              <span className="text-gradient">From PDFs to Published Paper</span>
+              {' '}in Hours, Not Weeks
             </h1>
 
             <p className="text-lg sm:text-xl text-charcoal/70 mb-8 max-w-3xl mx-auto leading-relaxed font-lato">
-              Stop wasting hours reading, highlighting, and formatting. Upload your PDF → Get a complete, properly-cited, academically-sound bibliography entry. Then use YOUR OWN sources to generate research topics and comprehensive outlines.
+              Upload research papers → Get annotated bibliographies → Generate topics & outlines → Create complete, cited academic papers. ScholarlyAI handles the tedious work so you can focus on your ideas.
             </p>
 
             {/* What You Get Preview */}
             <div className="bg-white/90 backdrop-blur rounded-xl border-2 border-chestnut/30 p-6 mb-8 max-w-3xl mx-auto shadow-lg">
-              <p className="text-sm font-semibold text-chestnut mb-4 text-center">Everything You Need, Automatically Generated:</p>
+              <p className="text-sm font-semibold text-chestnut mb-4 text-center">Complete Research Workflow in One Platform:</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
                 <div className="flex flex-col items-center">
                   <FileText className="w-6 h-6 text-chestnut mb-2" />
-                  <span className="text-charcoal font-medium text-sm text-center">Perfect Citation</span>
+                  <span className="text-charcoal font-medium text-sm text-center">Bibliography Generator</span>
                   <span className="text-xs text-charcoal/60">APA, MLA, Chicago</span>
                 </div>
                 <div className="flex flex-col items-center">
+                  <Brain className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Topic Generator</span>
+                  <span className="text-xs text-charcoal/60">AI-powered insights</span>
+                </div>
+                <div className="flex flex-col items-center">
                   <BookOpen className="w-6 h-6 text-chestnut mb-2" />
-                  <span className="text-charcoal font-medium text-sm text-center">Smart Summary</span>
-                  <span className="text-xs text-charcoal/60">AI-written, academic</span>
+                  <span className="text-charcoal font-medium text-sm text-center">Outline Creator</span>
+                  <span className="text-xs text-charcoal/60">Structured sections</span>
+                </div>
+                <div className="flex flex-col items-center relative">
+                  <div className="absolute -top-2 -right-2 bg-purple-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</div>
+                  <Sparkles className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Paper Generator</span>
+                  <span className="text-xs text-charcoal/60">Complete drafts</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <Target className="w-6 h-6 text-chestnut mb-2" />
-                  <span className="text-charcoal font-medium text-sm text-center">Key Findings</span>
-                  <span className="text-xs text-charcoal/60">Extracted insights</span>
+                  <span className="text-charcoal font-medium text-sm text-center">Citation Manager</span>
+                  <span className="text-xs text-charcoal/60">Auto-formatted</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Brain className="w-6 h-6 text-chestnut mb-2" />
-                  <span className="text-charcoal font-medium text-sm text-center">Methodology</span>
-                  <span className="text-xs text-charcoal/60">Study design</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Quote className="w-6 h-6 text-chestnut mb-2" />
-                  <span className="text-charcoal font-medium text-sm text-center">Smart Quotes</span>
-                  <span className="text-xs text-charcoal/60">With page numbers!</span>
-                </div>
-                <div className="flex flex-col items-center relative">
-                  <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</div>
-                  <Sparkles className="w-6 h-6 text-chestnut mb-2" />
-                  <span className="text-charcoal font-medium text-sm text-center">Topic Generator</span>
-                  <span className="text-xs text-charcoal/60">From YOUR sources</span>
+                  <Download className="w-6 h-6 text-chestnut mb-2" />
+                  <span className="text-charcoal font-medium text-sm text-center">Export Tools</span>
+                  <span className="text-xs text-charcoal/60">Word, PDF, TXT</span>
                 </div>
               </div>
               <div className="pt-4 border-t border-khaki/30">
