@@ -430,29 +430,33 @@ const ContentHistoryPage = () => {
                     <div className="flex items-center space-x-2 ml-4">
                       <button
                         onClick={() => handleView(job)}
-                        className="p-2 text-charcoal/60 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                        className="p-2 text-charcoal/60 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         title="View"
+                        aria-label="View content"
                       >
                         <Eye className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => handleDownloadTxt(job)}
-                        className="p-2 text-charcoal/60 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all"
+                        className="p-2 text-charcoal/60 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                         title="Download TXT"
+                        aria-label="Download as TXT file"
                       >
                         <Download className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => handleDownloadWord(job)}
-                        className="p-2 text-charcoal/60 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
+                        className="p-2 text-charcoal/60 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         title="Download Word"
+                        aria-label="Download as Word document"
                       >
                         <FileText className="w-5 h-5" />
                       </button>
                       <button
                         onClick={() => handleDelete(job.id)}
-                        className="p-2 text-charcoal/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                        className="p-2 text-charcoal/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         title="Delete"
+                        aria-label="Delete content"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
