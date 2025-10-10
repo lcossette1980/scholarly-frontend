@@ -33,9 +33,6 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
       }
     }, 3000);
 
-    // Initial fetch
-    pollInterval;
-
     return () => clearInterval(pollInterval);
   }, [jobId, onComplete]);
 
