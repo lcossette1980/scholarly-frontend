@@ -239,6 +239,7 @@ const ContentGenerationPage = () => {
               selectedSources={selectedSources}
               setSelectedSources={setSelectedSources}
               onNext={nextStep}
+              loading={loading}
             />
           )}
 

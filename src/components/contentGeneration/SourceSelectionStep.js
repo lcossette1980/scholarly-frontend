@@ -1,8 +1,8 @@
 // src/components/contentGeneration/SourceSelectionStep.js
 import React, { useState } from 'react';
-import { Check, BookOpen, Calendar, Search } from 'lucide-react';
+import { Check, BookOpen, Calendar, Search, Loader } from 'lucide-react';
 
-const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onNext }) => {
+const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onNext, loading }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const toggleSource = (entry) => {
@@ -107,14 +107,21 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
         </p>
         <button
           onClick={onNext}
-          disabled={selectedSources.length === 0}
-          className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
-            selectedSources.length > 0
+          disabled={selectedSources.length === 0 || loading}
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors flex items-center space-x-2 ${
+            selectedSources.length > 0 && !loading
               ? 'bg-blue-600 text-white hover:bg-blue-700'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          Continue to Outline
+          {loading ? (
+            <>
+              <Loader className="w-4 h-4 animate-spin" />
+              <span>Generating Outlines...</span>
+            </>
+          ) : (
+            <span>Continue to Outline</span>
+          )}
         </button>
       </div>
     </div>
