@@ -266,6 +266,17 @@ const BibliographyPage = () => {
   return (
     <div className="min-h-screen py-4 md:py-8">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+        {/* Breadcrumb */}
+        <div className="mb-4">
+          <div className="flex items-center space-x-2 text-sm">
+            <Link to="/dashboard" className="text-charcoal/60 hover:text-charcoal transition-colors">
+              Dashboard
+            </Link>
+            <span className="text-charcoal/40">/</span>
+            <span className="text-charcoal font-medium">Bibliography Manager</span>
+          </div>
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
@@ -280,7 +291,7 @@ const BibliographyPage = () => {
                 Bibliography Manager
               </h1>
               <p className="text-sm sm:text-base text-charcoal/70 font-lato">
-                Select and export your bibliography entries
+                Advanced search, bulk operations, and export
               </p>
             </div>
           </div>
