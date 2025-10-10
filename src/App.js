@@ -22,6 +22,8 @@ import BibliographyPage from './pages/BibliographyPage';
 import AnalyzePage from './pages/AnalyzePage';
 import OutlineViewPage from './pages/OutlineViewPage';
 import ContentGenerationPage from './pages/ContentGenerationPage';
+import ContentHistoryPage from './pages/ContentHistoryPage';
+import ContentViewPage from './pages/ContentViewPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import FeaturesPage from './pages/FeaturesPage';
 import DocsPage from './pages/DocsPage';
@@ -105,6 +107,16 @@ function App() {
               <Route path="/content/generate" element={
                 <ProtectedRoute>
                   <ContentGenerationPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/content/history" element={
+                <ProtectedRoute>
+                  <ContentHistoryPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/content/view/:jobId" element={
+                <ProtectedRoute>
+                  <ContentViewPage />
                 </ProtectedRoute>
               } />
               <Route path="/admin" element={

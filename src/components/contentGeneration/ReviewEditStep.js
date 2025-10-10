@@ -1,7 +1,8 @@
 // src/components/contentGeneration/ReviewEditStep.js
 import React, { useState, useEffect } from 'react';
-import { Download, Edit3, Save, X, Check, FileText, Home } from 'lucide-react';
+import { Download, Edit3, Save, X, Check, FileText, Home, File } from 'lucide-react';
 import { contentGenerationAPI } from '../../services/api';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
 import toast from 'react-hot-toast';
 
 const ReviewEditStep = ({ jobId, onBack }) => {
@@ -45,18 +46,94 @@ const ReviewEditStep = ({ jobId, onBack }) => {
     }
   };
 
-  const handleDownload = () => {
-    // Create a blob with the content
+  const handleDownloadTxt = () => {
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `generated-content-${Date.now()}.txt`;
+    a.download = `${jobData?.metadata?.title || 'generated-content'}-${Date.now()}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast.success('Content downloaded!');
+    toast.success('Downloaded as TXT!');
+  };
+
+  const handleDownloadWord = async () => {
+    try {
+      // Parse markdown-style content into structured sections
+      const sections = content.split(/\n## /).filter(s => s.trim());
+
+      const docSections = sections.map((section, idx) => {
+        const lines = section.split('\n').filter(l => l.trim());
+        const title = idx === 0 ? jobData?.metadata?.title || 'Generated Content' : lines[0];
+        const paragraphContent = idx === 0 ? lines : lines.slice(1);
+
+        const paragraphs = [
+          new Paragraph({
+            text: title,
+            heading: idx === 0 ? HeadingLevel.TITLE : HeadingLevel.HEADING_1,
+            spacing: { after: 240, before: idx === 0 ? 0 : 240 },
+            alignment: idx === 0 ? AlignmentType.CENTER : AlignmentType.LEFT
+          })
+        ];
+
+        paragraphContent.forEach(line => {
+          if (line.trim()) {
+            // Check if line is a subheading (starts with ###)
+            if (line.startsWith('### ')) {
+              paragraphs.push(
+                new Paragraph({
+                  text: line.replace('### ', ''),
+                  heading: HeadingLevel.HEADING_2,
+                  spacing: { after: 120, before: 120 }
+                })
+              );
+            } else {
+              paragraphs.push(
+                new Paragraph({
+                  children: [new TextRun({ text: line, size: 24 })],
+                  spacing: { after: 120, line: 360 },
+                  alignment: AlignmentType.JUSTIFIED
+                })
+              );
+            }
+          }
+        });
+
+        return paragraphs;
+      });
+
+      const doc = new Document({
+        sections: [{
+          properties: {
+            page: {
+              margin: {
+                top: 1440,    // 1 inch
+                right: 1440,
+                bottom: 1440,
+                left: 1440
+              }
+            }
+          },
+          children: docSections.flat()
+        }]
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${jobData?.metadata?.title || 'generated-content'}-${Date.now()}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success('Downloaded as Word document!');
+    } catch (error) {
+      console.error('Error generating Word document:', error);
+      toast.error('Failed to generate Word document');
+    }
   };
 
   if (loading) {
@@ -95,11 +172,18 @@ const ReviewEditStep = ({ jobId, onBack }) => {
                 <span>Edit</span>
               </button>
               <button
-                onClick={handleDownload}
+                onClick={handleDownloadTxt}
+                className="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
+              >
+                <File className="w-4 h-4" />
+                <span>TXT</span>
+              </button>
+              <button
+                onClick={handleDownloadWord}
                 className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
               >
                 <Download className="w-4 h-4" />
-                <span>Download</span>
+                <span>Word</span>
               </button>
             </>
           ) : (
@@ -173,10 +257,40 @@ const ReviewEditStep = ({ jobId, onBack }) => {
             placeholder="Your generated content will appear here..."
           />
         ) : (
-          <div className="p-6 h-96 overflow-y-auto">
-            <pre className="whitespace-pre-wrap font-sans text-sm text-gray-800 leading-relaxed">
-              {content}
-            </pre>
+          <div className="p-8 max-h-[600px] overflow-y-auto prose prose-lg max-w-none">
+            {content.split(/\n## /).map((section, idx) => {
+              const lines = section.split('\n').filter(l => l.trim());
+              const heading = idx === 0 ? null : lines[0];
+              const paragraphs = idx === 0 ? lines : lines.slice(1);
+
+              return (
+                <div key={idx} className="mb-8">
+                  {heading && (
+                    <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4 pb-2 border-b-2 border-chestnut">
+                      {heading}
+                    </h2>
+                  )}
+                  {paragraphs.map((para, pidx) => {
+                    if (!para.trim()) return null;
+
+                    // Check for subheadings
+                    if (para.startsWith('### ')) {
+                      return (
+                        <h3 key={pidx} className="text-xl font-semibold text-charcoal font-playfair mt-6 mb-3">
+                          {para.replace('### ', '')}
+                        </h3>
+                      );
+                    }
+
+                    return (
+                      <p key={pidx} className="text-charcoal/80 font-lato leading-relaxed mb-4 text-justify">
+                        {para}
+                      </p>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

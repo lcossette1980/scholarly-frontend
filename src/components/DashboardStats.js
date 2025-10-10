@@ -1,15 +1,49 @@
 // src/components/DashboardStats.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileText, Calendar, Brain, Sparkles } from 'lucide-react';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../services/firebase';
+import { useAuth } from '../context/AuthContext';
 
 const DashboardStats = ({ entries, loading }) => {
+  const { currentUser } = useAuth();
+  const [generatedCount, setGeneratedCount] = useState(0);
+  const [loadingGenerated, setLoadingGenerated] = useState(true);
+
+  // Fetch generated content count from Firestore
+  useEffect(() => {
+    const fetchGeneratedCount = async () => {
+      if (!currentUser) {
+        setLoadingGenerated(false);
+        return;
+      }
+
+      try {
+        const jobsRef = collection(db, 'content_generation_jobs');
+        const q = query(
+          jobsRef,
+          where('userId', '==', currentUser.uid),
+          where('status', '==', 'completed')
+        );
+        const snapshot = await getDocs(q);
+        setGeneratedCount(snapshot.size);
+      } catch (error) {
+        console.error('Error fetching generated content count:', error);
+      } finally {
+        setLoadingGenerated(false);
+      }
+    };
+
+    fetchGeneratedCount();
+  }, [currentUser]);
+
   const calculateStats = () => {
     if (!entries || entries.length === 0) {
       return {
         totalEntries: 0,
         thisMonth: 0,
         analysisReady: 0,
-        generated: 0
+        generated: generatedCount
       };
     }
 
@@ -53,13 +87,13 @@ const DashboardStats = ({ entries, loading }) => {
       totalEntries: entries.length,
       thisMonth: thisMonth,
       analysisReady: analysisReady,
-      generated: 0 // TODO: Get from content_generation_jobs collection
+      generated: generatedCount
     };
   };
 
   const stats = calculateStats();
 
-  if (loading) {
+  if (loading || loadingGenerated) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {[1, 2, 3, 4].map(i => (

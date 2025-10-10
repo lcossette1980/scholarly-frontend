@@ -133,6 +133,14 @@ const Navbar = () => {
                         <FileText className="w-4 h-4" />
                         <span>My Entries</span>
                       </Link>
+                      <Link
+                        to="/content/history"
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors"
+                        onClick={() => setIsProfileOpen(false)}
+                      >
+                        <FileText className="w-4 h-4" />
+                        <span>Content History</span>
+                      </Link>
                       {isAdmin(currentUser) && (
                         <Link
                           to="/admin"
