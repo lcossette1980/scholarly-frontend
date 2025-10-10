@@ -16,12 +16,12 @@ const Footer = () => {
               </div>
               <div>
                 <h3 className="text-xl font-bold font-playfair">ScholarlyAI</h3>
-                <p className="text-xs text-white/70">Intelligent Bibliography Generation</p>
+                <p className="text-xs text-white/70">AI Research Assistant</p>
               </div>
             </div>
             <p className="text-white/70 font-lato leading-relaxed">
-              Transform your research workflow with AI-powered bibliography generation. 
-              Trusted by researchers worldwide.
+              Your complete AI research platform. From PDFs to published papers in hours, not weeks.
+              Trusted by 10,000+ researchers worldwide.
             </p>
             
             {/* Social Links */}

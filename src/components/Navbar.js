@@ -68,7 +68,7 @@ const Navbar = () => {
             <div>
               <h1 className="text-xl font-bold text-charcoal font-playfair">ScholarlyAI</h1>
               <p className="text-xs text-chestnut font-medium font-lato hidden sm:block">
-                Intelligent Bibliography Generation
+                AI Research Assistant
               </p>
             </div>
           </Link>
