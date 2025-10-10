@@ -127,12 +127,23 @@ service cloud.firestore {
       allow write: if false;
     }
     
+    // Content generation jobs collection
+    match /content_generation_jobs/{jobId} {
+      // Users can read their own jobs
+      allow read: if isAuthenticated() &&
+                     resource.data.userId == request.auth.uid;
+
+      // Users cannot directly create, update, or delete jobs
+      // Jobs are created and managed by backend Cloud Functions only
+      allow create, update, delete: if false;
+    }
+
     // Stripe webhook logs (server-side only)
     match /stripe_logs/{logId} {
       // Deny all client access
       allow read, write: if false;
     }
-    
+
     // Default deny rule for any other collections
     match /{document=**} {
       allow read, write: if false;

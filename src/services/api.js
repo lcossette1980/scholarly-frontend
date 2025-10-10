@@ -171,6 +171,38 @@ export const analysisAPI = {
   }
 };
 
+// Content Generation API calls
+export const contentGenerationAPI = {
+  // Create a new content generation job
+  createJob: async (userId, sourceEntryIds, outline, settings, tier = 'standard') => {
+    const response = await api.post('/content/generate', {
+      user_id: userId,
+      source_entry_ids: sourceEntryIds,
+      outline: outline,
+      settings: settings,
+      tier: tier
+    }, {
+      timeout: 60000 // 60 seconds for job creation
+    });
+
+    return response.data;
+  },
+
+  // Get status of a content generation job
+  getJobStatus: async (jobId) => {
+    const response = await api.get(`/content/status/${jobId}`);
+    return response.data;
+  },
+
+  // Get user's content generation history
+  getHistory: async (limit = 20) => {
+    const response = await api.get('/content/history', {
+      params: { limit }
+    });
+    return response.data;
+  }
+};
+
 // Health check with enhanced error reporting
 export const healthCheck = async () => {
   try {
