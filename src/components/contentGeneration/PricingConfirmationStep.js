@@ -71,12 +71,18 @@ const PricingConfirmationStep = ({
         selectedTier
       );
 
+      if (!response || !response.job_id) {
+        throw new Error('Invalid response from server - no job ID received');
+      }
+
       setJobId(response.job_id);
       toast.success('Job created! Starting generation...');
       onNext();
     } catch (error) {
       console.error('Error creating job:', error);
-      toast.error(error.response?.data?.detail || 'Failed to create generation job');
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to create generation job';
+      toast.error(errorMessage);
+      // Don't advance to next step if there's an error
     } finally {
       setLoading(false);
     }
