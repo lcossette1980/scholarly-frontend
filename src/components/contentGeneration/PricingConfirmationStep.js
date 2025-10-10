@@ -1,8 +1,9 @@
 // src/components/contentGeneration/PricingConfirmationStep.js
 import React, { useState } from 'react';
-import { Check, Zap, Sparkles, AlertCircle } from 'lucide-react';
+import { Check, Zap, Sparkles, Lock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { contentGenerationAPI } from '../../services/api';
+import { createPaymentIntent, verifyAndCreateJob } from '../../services/contentPayment';
+import PaymentModal from './PaymentModal';
 import toast from 'react-hot-toast';
 
 const PricingConfirmationStep = ({
@@ -17,6 +18,8 @@ const PricingConfirmationStep = ({
 }) => {
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentClientSecret, setPaymentClientSecret] = useState('');
 
   const estimatedPages = Math.ceil(settings.target_words / 250);
 
@@ -62,8 +65,40 @@ const PricingConfirmationStep = ({
     try {
       setLoading(true);
 
-      // Create content generation job
-      const response = await contentGenerationAPI.createJob(
+      // Create Stripe Payment Intent
+      const jobMetadata = {
+        source_ids: selectedSources.map(s => s.id),
+        outline: outline,
+        settings: settings
+      };
+
+      const paymentData = await createPaymentIntent(
+        currentUser.uid,
+        selectedTier,
+        estimatedPages,
+        jobMetadata
+      );
+
+      // Store client secret for Stripe Elements
+      setPaymentClientSecret(paymentData.client_secret);
+
+      // Show payment modal
+      setShowPaymentModal(true);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error creating payment intent:', error);
+      toast.error(error.message || 'Failed to initialize payment');
+      setLoading(false);
+    }
+  };
+
+  const handlePaymentSuccess = async (paymentIntentId) => {
+    try {
+      setLoading(true);
+
+      // Verify payment and create generation job
+      const response = await verifyAndCreateJob(
+        paymentIntentId,
         currentUser.uid,
         selectedSources.map(s => s.id),
         outline,
@@ -76,16 +111,25 @@ const PricingConfirmationStep = ({
       }
 
       setJobId(response.job_id);
-      toast.success('Job created! Starting generation...');
+      setShowPaymentModal(false);
+      toast.success('Payment successful! Starting generation...');
       onNext();
     } catch (error) {
       console.error('Error creating job:', error);
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to create generation job';
-      toast.error(errorMessage);
-      // Don't advance to next step if there's an error
-    } finally {
+      toast.error(error.message || 'Failed to create generation job');
       setLoading(false);
     }
+  };
+
+  const handlePaymentError = (errorMessage) => {
+    console.error('Payment error:', errorMessage);
+    toast.error(errorMessage || 'Payment failed');
+    setLoading(false);
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPaymentModal(false);
+    setLoading(false);
   };
 
   return (
@@ -204,13 +248,13 @@ const PricingConfirmationStep = ({
       </div>
 
       {/* Important Note */}
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 flex items-start space-x-3">
-        <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-start space-x-3">
+        <Lock className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
         <div>
-          <p className="text-sm font-medium text-yellow-900 mb-1">Payment After Generation</p>
-          <p className="text-xs text-yellow-700">
-            You'll be charged <strong>${totalCost}</strong> only after your content is successfully generated.
-            If generation fails, you won't be charged.
+          <p className="text-sm font-medium text-blue-900 mb-1">Secure Payment Before Generation</p>
+          <p className="text-xs text-blue-700">
+            You'll pay <strong>${totalCost}</strong> before generation starts.
+            If generation fails for any reason, you'll receive an automatic 100% refund.
           </p>
         </div>
       </div>
@@ -235,10 +279,21 @@ const PricingConfirmationStep = ({
                 : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg'
             }`}
           >
-            {loading ? 'Creating Job...' : `Start Generation - $${totalCost}`}
+            {loading ? 'Processing...' : `Pay & Generate - $${totalCost}`}
           </button>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={handlePaymentCancel}
+        clientSecret={paymentClientSecret}
+        onSuccess={handlePaymentSuccess}
+        onError={handlePaymentError}
+        totalCost={totalCost}
+        tier={selectedTier}
+      />
     </div>
   );
 };
