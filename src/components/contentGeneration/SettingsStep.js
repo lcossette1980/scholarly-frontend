@@ -19,7 +19,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">
+      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
         Configure Your Document
       </h2>
       <p className="text-gray-600 mb-8">
@@ -72,7 +72,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
               className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
             />
             <div className="w-32 bg-gray-100 rounded-lg px-4 py-2 text-center">
-              <span className="font-semibold text-charcoal">{settings.target_words}</span>
+              <span className="font-semibold text-secondary-900">{settings.target_words}</span>
               <span className="text-xs text-gray-600 block">words</span>
               <span className="text-xs text-gray-500">≈{Math.ceil(settings.target_words / 250)} pages</span>
             </div>

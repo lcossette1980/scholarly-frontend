@@ -87,14 +87,14 @@ const PaymentForm = ({ onSuccess, onError, totalCost, tier, onCancel }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Payment Summary */}
-      <div className="bg-gradient-to-br from-chestnut/5 to-khaki/10 rounded-xl p-6 border border-chestnut/20">
+      <div className="bg-gradient-to-br from-accent/5 to-khaki/10 rounded-xl p-6 border border-accent-600/20">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-charcoal/70 font-lato">Total Amount:</span>
-          <span className="text-3xl font-bold text-charcoal font-playfair">${totalCost}</span>
+          <span className="text-secondary-700 font-lato">Total Amount:</span>
+          <span className="text-3xl font-bold text-secondary-900 font-playfair">${totalCost}</span>
         </div>
         <div className="flex justify-between items-center text-sm">
-          <span className="text-charcoal/60">Quality Tier:</span>
-          <span className="font-medium text-charcoal">
+          <span className="text-secondary-600">Quality Tier:</span>
+          <span className="font-medium text-secondary-900">
             {tier === 'pro' ? 'Professional (GPT-4 Turbo)' : 'Standard (GPT-4o)'}
           </span>
         </div>
@@ -132,7 +132,7 @@ const PaymentForm = ({ onSuccess, onError, totalCost, tier, onCancel }) => {
         className={`w-full py-4 rounded-lg text-lg font-semibold transition-all flex items-center justify-center space-x-2 ${
           !stripe || loading
             ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : 'bg-gradient-chestnut text-white hover:shadow-lg'
+            : 'bg-gradient-brand text-white hover:shadow-lg'
         }`}
       >
         {loading ? (
@@ -153,13 +153,13 @@ const PaymentForm = ({ onSuccess, onError, totalCost, tier, onCancel }) => {
         type="button"
         onClick={onCancel}
         disabled={loading}
-        className="w-full text-charcoal/60 hover:text-charcoal text-sm transition-colors disabled:opacity-50"
+        className="w-full text-secondary-600 hover:text-secondary-900 text-sm transition-colors disabled:opacity-50"
       >
         Cancel Payment
       </button>
 
       {/* Security Badge */}
-      <div className="flex items-center justify-center space-x-2 text-xs text-charcoal/50">
+      <div className="flex items-center justify-center space-x-2 text-xs text-secondary-500">
         <Lock className="w-3 h-3" />
         <span>Secured by Stripe • Your payment information is encrypted</span>
       </div>
@@ -210,24 +210,24 @@ const PaymentModal = ({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-bone rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-bone border-b border-khaki/30 p-6 flex items-center justify-between">
+      <div className="bg-secondary-50 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-secondary-50 border-b border-secondary-300/30 p-6 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-chestnut rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-brand rounded-lg flex items-center justify-center">
               <CreditCard className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-charcoal font-playfair">
+              <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
                 Complete Payment
               </h2>
-              <p className="text-sm text-charcoal/60 font-lato">
+              <p className="text-sm text-secondary-600 font-lato">
                 To start content generation
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-charcoal/60 hover:text-charcoal transition-colors p-2 hover:bg-khaki/20 rounded-lg"
+            className="text-secondary-600 hover:text-secondary-900 transition-colors p-2 hover:bg-secondary-200/20 rounded-lg"
             aria-label="Close"
           >
             <X className="w-6 h-6" />
@@ -247,8 +247,8 @@ const PaymentModal = ({
             </Elements>
           ) : (
             <div className="text-center py-8">
-              <div className="w-16 h-16 border-4 border-chestnut border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-              <p className="text-charcoal/70">Loading payment form...</p>
+              <div className="w-16 h-16 border-4 border-accent-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-secondary-700">Loading payment form...</p>
             </div>
           )}
         </div>

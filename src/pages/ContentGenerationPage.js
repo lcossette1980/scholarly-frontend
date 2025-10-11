@@ -186,16 +186,16 @@ const ContentGenerationPage = () => {
         <div className="mb-8">
           <button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center space-x-2 text-charcoal/60 hover:text-charcoal mb-4 transition-colors"
+            className="flex items-center space-x-2 text-secondary-600 hover:text-secondary-900 mb-4 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>
           </button>
 
-          <h1 className="text-4xl font-bold text-charcoal font-playfair mb-2">
+          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-2">
             AI Content Generator
           </h1>
-          <p className="text-charcoal/70 font-lato">
+          <p className="text-secondary-700 font-lato">
             Generate well-cited academic content from your bibliography sources
           </p>
         </div>

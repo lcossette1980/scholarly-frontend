@@ -21,7 +21,7 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">
+      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
         Select Your Sources
       </h2>
       <p className="text-gray-600 mb-6">
@@ -77,7 +77,7 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
                 </div>
 
                 <div className="flex-1">
-                  <h3 className="font-semibold text-charcoal mb-1">
+                  <h3 className="font-semibold text-secondary-900 mb-1">
                     {entry.title || 'Untitled'}
                   </h3>
                   <p className="text-sm text-gray-600 mb-2">

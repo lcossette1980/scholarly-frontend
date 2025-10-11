@@ -148,8 +148,8 @@ const ProfilePage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-chestnut/30 border-t-chestnut rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-charcoal/70 font-lato">Loading profile...</p>
+          <div className="w-16 h-16 border-4 border-accent-600/30 border-t-chestnut rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-secondary-700 font-lato">Loading profile...</p>
         </div>
       </div>
     );
@@ -160,10 +160,10 @@ const ProfilePage = () => {
       <div className="container mx-auto px-6 max-w-4xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-charcoal font-playfair mb-2">
+          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-2">
             Profile Settings
           </h1>
-          <p className="text-charcoal/70 font-lato">
+          <p className="text-secondary-700 font-lato">
             Manage your account settings and preferences
           </p>
         </div>
@@ -175,10 +175,10 @@ const ProfilePage = () => {
             <div className="card">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                    <User className="w-5 h-5 text-chestnut" />
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                    <User className="w-5 h-5 text-accent" />
                   </div>
-                  <h2 className="text-xl font-bold text-charcoal font-playfair">
+                  <h2 className="text-xl font-bold text-secondary-900 font-playfair">
                     Basic Information
                   </h2>
                 </div>
@@ -229,7 +229,7 @@ const ProfilePage = () => {
                       onChange={handleInputChange}
                     />
                   ) : (
-                    <p className="text-charcoal font-lato py-2">
+                    <p className="text-secondary-900 font-lato py-2">
                       {currentUser?.displayName || 'Not set'}
                     </p>
                   )}
@@ -237,10 +237,10 @@ const ProfilePage = () => {
 
                 <div>
                   <label className="form-label">Email Address</label>
-                  <p className="text-charcoal font-lato py-2">
+                  <p className="text-secondary-900 font-lato py-2">
                     {currentUser?.email}
                   </p>
-                  <p className="text-sm text-charcoal/60 font-lato">
+                  <p className="text-sm text-secondary-600 font-lato">
                     Email cannot be changed. Contact support if needed.
                   </p>
                 </div>
@@ -257,7 +257,7 @@ const ProfilePage = () => {
                       onChange={handleInputChange}
                     />
                   ) : (
-                    <p className="text-charcoal font-lato py-2">
+                    <p className="text-secondary-900 font-lato py-2">
                       {userDocument?.preferences?.researchFocus || 'Not set'}
                     </p>
                   )}
@@ -265,7 +265,7 @@ const ProfilePage = () => {
 
                 <div>
                   <label className="form-label">Account Created</label>
-                  <p className="text-charcoal font-lato py-2">
+                  <p className="text-secondary-900 font-lato py-2">
                     {formatDate(userDocument?.createdAt)}
                   </p>
                 </div>
@@ -275,10 +275,10 @@ const ProfilePage = () => {
             {/* Preferences */}
             <div className="card">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-chestnut" />
+                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Settings className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="text-xl font-bold text-charcoal font-playfair">
+                <h2 className="text-xl font-bold text-secondary-900 font-playfair">
                   Preferences
                 </h2>
               </div>
@@ -286,8 +286,8 @@ const ProfilePage = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-charcoal font-lato">Email Notifications</h3>
-                    <p className="text-sm text-charcoal/60 font-lato">
+                    <h3 className="font-semibold text-secondary-900 font-lato">Email Notifications</h3>
+                    <p className="text-sm text-secondary-600 font-lato">
                       Receive updates about your bibliography entries and account
                     </p>
                   </div>
@@ -295,7 +295,7 @@ const ProfilePage = () => {
                     <input
                       type="checkbox"
                       name="notificationsEnabled"
-                      className="w-4 h-4 text-chestnut border-khaki/30 rounded focus:ring-chestnut"
+                      className="w-4 h-4 text-accent border-secondary-300/30 rounded focus:ring-accent"
                       checked={formData.notificationsEnabled}
                       onChange={handleInputChange}
                     />
@@ -341,10 +341,10 @@ const ProfilePage = () => {
             {/* Subscription Info */}
             <div className="card">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                  <Crown className="w-5 h-5 text-chestnut" />
+                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Crown className="w-5 h-5 text-accent" />
                 </div>
-                <h3 className="text-lg font-bold text-charcoal font-playfair">
+                <h3 className="text-lg font-bold text-secondary-900 font-playfair">
                   Subscription
                 </h3>
               </div>
@@ -352,18 +352,18 @@ const ProfilePage = () => {
               {userDocument?.subscription && (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-charcoal/60 font-lato">Current Plan</p>
-                    <p className="font-semibold text-charcoal font-lato capitalize">
+                    <p className="text-sm text-secondary-600 font-lato">Current Plan</p>
+                    <p className="font-semibold text-secondary-900 font-lato capitalize">
                       {userDocument.subscription.plan}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-sm text-charcoal/60 font-lato">Usage this month</p>
+                    <p className="text-sm text-secondary-600 font-lato">Usage this month</p>
                     <div className="flex items-center space-x-2 mt-1">
-                      <div className="flex-1 bg-khaki/30 rounded-full h-2">
+                      <div className="flex-1 bg-secondary-200/30 rounded-full h-2">
                         <div
-                          className="bg-chestnut h-2 rounded-full transition-all"
+                          className="bg-accent h-2 rounded-full transition-all"
                           style={{
                             width: `${Math.min(
                               (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
@@ -372,7 +372,7 @@ const ProfilePage = () => {
                           }}
                         />
                       </div>
-                      <span className="text-sm font-medium text-charcoal">
+                      <span className="text-sm font-medium text-secondary-900">
                         {userDocument.subscription.entriesUsed} / {
                           userDocument.subscription.entriesLimit === -1
                             ? '∞'
@@ -459,34 +459,34 @@ const ProfilePage = () => {
 
             {/* Quick Stats */}
             <div className="card">
-              <h3 className="text-lg font-bold text-charcoal font-playfair mb-4">
+              <h3 className="text-lg font-bold text-secondary-900 font-playfair mb-4">
                 Quick Stats
               </h3>
 
               {statsLoading ? (
                 <div className="space-y-3 animate-pulse">
                   <div className="flex justify-between">
-                    <div className="h-4 bg-khaki/20 rounded w-24"></div>
-                    <div className="h-4 bg-khaki/20 rounded w-8"></div>
+                    <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
+                    <div className="h-4 bg-secondary-200/20 rounded w-8"></div>
                   </div>
                   <div className="flex justify-between">
-                    <div className="h-4 bg-khaki/20 rounded w-24"></div>
-                    <div className="h-4 bg-khaki/20 rounded w-8"></div>
+                    <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
+                    <div className="h-4 bg-secondary-200/20 rounded w-8"></div>
                   </div>
                   <div className="flex justify-between">
-                    <div className="h-4 bg-khaki/20 rounded w-24"></div>
-                    <div className="h-4 bg-khaki/20 rounded w-16"></div>
+                    <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
+                    <div className="h-4 bg-secondary-200/20 rounded w-16"></div>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-charcoal/70 font-lato">Total Entries</span>
-                    <span className="font-semibold text-charcoal">{entries.length}</span>
+                    <span className="text-secondary-700 font-lato">Total Entries</span>
+                    <span className="font-semibold text-secondary-900">{entries.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-charcoal/70 font-lato">This Month</span>
-                    <span className="font-semibold text-charcoal">
+                    <span className="text-secondary-700 font-lato">This Month</span>
+                    <span className="font-semibold text-secondary-900">
                       {entries.filter(entry => {
                         const entryDate = new Date(entry.createdAt);
                         const now = new Date();
@@ -496,8 +496,8 @@ const ProfilePage = () => {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-charcoal/70 font-lato">Last Entry</span>
-                    <span className="font-semibold text-charcoal">
+                    <span className="text-secondary-700 font-lato">Last Entry</span>
+                    <span className="font-semibold text-secondary-900">
                       {entries.length > 0
                         ? (() => {
                             const sortedEntries = [...entries].sort((a, b) =>
@@ -525,17 +525,17 @@ const ProfilePage = () => {
             {/* Account Security */}
             <div className="card">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-chestnut" />
+                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-accent" />
                 </div>
-                <h3 className="text-lg font-bold text-charcoal font-playfair">
+                <h3 className="text-lg font-bold text-secondary-900 font-playfair">
                   Security
                 </h3>
               </div>
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-charcoal/70 font-lato">Two-Factor Auth</span>
+                  <span className="text-secondary-700 font-lato">Two-Factor Auth</span>
                   <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
                     Not Setup
                   </span>

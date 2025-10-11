@@ -46,7 +46,7 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-charcoal font-playfair">Recent Bibliography Entries</h2>
+        <h2 className="text-xl font-bold text-secondary-900 font-playfair">Recent Bibliography Entries</h2>
         <Link
           to="/bibliography"
           className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center space-x-1 transition-colors"
@@ -159,7 +159,7 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
       <div className="flex items-start justify-between space-x-4">
         {/* Entry Info */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-charcoal mb-1 truncate group-hover:text-blue-600 transition-colors">
+          <h3 className="font-semibold text-secondary-900 mb-1 truncate group-hover:text-blue-600 transition-colors">
             {title}
           </h3>
           <div className="flex items-center space-x-3 text-sm text-gray-600">

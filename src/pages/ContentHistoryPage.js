@@ -192,8 +192,8 @@ const ContentHistoryPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Sparkles className="w-16 h-16 text-chestnut mx-auto mb-4 animate-pulse" />
-          <p className="text-charcoal/70">Loading your content history...</p>
+          <Sparkles className="w-16 h-16 text-accent mx-auto mb-4 animate-pulse" />
+          <p className="text-secondary-700">Loading your content history...</p>
         </div>
       </div>
     );
@@ -205,11 +205,11 @@ const ContentHistoryPage = () => {
         {/* Breadcrumb */}
         <div className="mb-4">
           <div className="flex items-center space-x-2 text-sm">
-            <Link to="/dashboard" className="text-charcoal/60 hover:text-charcoal transition-colors">
+            <Link to="/dashboard" className="text-secondary-600 hover:text-secondary-900 transition-colors">
               Dashboard
             </Link>
-            <span className="text-charcoal/40">/</span>
-            <span className="text-charcoal font-medium">Content History</span>
+            <span className="text-secondary-400">/</span>
+            <span className="text-secondary-900 font-medium">Content History</span>
           </div>
         </div>
 
@@ -218,15 +218,15 @@ const ContentHistoryPage = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate('/dashboard')}
-              className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
+              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-charcoal font-playfair">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
                 Content History
               </h1>
-              <p className="text-sm sm:text-base text-charcoal/70 font-lato">
+              <p className="text-sm sm:text-base text-secondary-700 font-lato">
                 View, download, and manage your generated content
               </p>
             </div>
@@ -238,7 +238,7 @@ const ContentHistoryPage = () => {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-charcoal/40 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search by title or type..."
@@ -251,7 +251,7 @@ const ContentHistoryPage = () => {
             {/* Filters */}
             <div className="flex items-center space-x-3">
               <div className="flex items-center space-x-2">
-                <Filter className="w-5 h-5 text-charcoal/60" />
+                <Filter className="w-5 h-5 text-secondary-600" />
                 <select
                   className="form-input min-w-0"
                   value={filterStatus}
@@ -282,8 +282,8 @@ const ContentHistoryPage = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-charcoal/60">Total Generated</p>
-                <p className="text-2xl font-bold text-charcoal">{jobs.length}</p>
+                <p className="text-sm text-secondary-600">Total Generated</p>
+                <p className="text-2xl font-bold text-secondary-900">{jobs.length}</p>
               </div>
               <FileText className="w-8 h-8 text-blue-600" />
             </div>
@@ -291,7 +291,7 @@ const ContentHistoryPage = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-charcoal/60">Completed</p>
+                <p className="text-sm text-secondary-600">Completed</p>
                 <p className="text-2xl font-bold text-green-600">
                   {jobs.filter(j => j.status === 'completed').length}
                 </p>
@@ -302,7 +302,7 @@ const ContentHistoryPage = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-charcoal/60">Processing</p>
+                <p className="text-sm text-secondary-600">Processing</p>
                 <p className="text-2xl font-bold text-blue-600">
                   {jobs.filter(j => j.status === 'processing').length}
                 </p>
@@ -313,8 +313,8 @@ const ContentHistoryPage = () => {
           <div className="card">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-charcoal/60">Total Words</p>
-                <p className="text-2xl font-bold text-charcoal">
+                <p className="text-sm text-secondary-600">Total Words</p>
+                <p className="text-2xl font-bold text-secondary-900">
                   {jobs.filter(j => j.status === 'completed').reduce((sum, j) => sum + (j.wordCount || 0), 0).toLocaleString()}
                 </p>
               </div>
@@ -326,13 +326,13 @@ const ContentHistoryPage = () => {
         {/* Jobs List */}
         {filteredJobs.length === 0 ? (
           <div className="card text-center py-12">
-            <FileText className="w-16 h-16 text-charcoal/40 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-charcoal font-playfair mb-2">
+            <FileText className="w-16 h-16 text-secondary-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
               {searchTerm || filterStatus !== 'all' || filterTier !== 'all'
                 ? 'No content found'
                 : 'No content generated yet'}
             </h3>
-            <p className="text-charcoal/60 font-lato mb-6">
+            <p className="text-secondary-600 font-lato mb-6">
               {searchTerm || filterStatus !== 'all' || filterTier !== 'all'
                 ? 'Try adjusting your search or filters.'
                 : 'Generate your first piece of content from your bibliography sources.'}
@@ -355,7 +355,7 @@ const ContentHistoryPage = () => {
                       <div className="flex items-center space-x-3">
                         {getStatusIcon(job.status)}
                         <div>
-                          <h3 className="text-lg font-semibold text-charcoal font-playfair">
+                          <h3 className="text-lg font-semibold text-secondary-900 font-playfair">
                             {job.outline?.title || 'Untitled'}
                           </h3>
                           <div className="flex items-center space-x-2 mt-1">
@@ -376,26 +376,26 @@ const ContentHistoryPage = () => {
                     {/* Details */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
                       <div>
-                        <p className="text-xs text-charcoal/60">Word Count</p>
-                        <p className="text-sm font-medium text-charcoal">
+                        <p className="text-xs text-secondary-600">Word Count</p>
+                        <p className="text-sm font-medium text-secondary-900">
                           {job.wordCount?.toLocaleString() || 'N/A'}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-charcoal/60">Pages</p>
-                        <p className="text-sm font-medium text-charcoal">
+                        <p className="text-xs text-secondary-600">Pages</p>
+                        <p className="text-sm font-medium text-secondary-900">
                           {job.estimatedPages || 'N/A'}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-charcoal/60">Cost</p>
-                        <p className="text-sm font-medium text-charcoal">
+                        <p className="text-xs text-secondary-600">Cost</p>
+                        <p className="text-sm font-medium text-secondary-900">
                           ${job.estimatedCost?.toFixed(2) || '0.00'}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-charcoal/60">Created</p>
-                        <p className="text-sm font-medium text-charcoal">
+                        <p className="text-xs text-secondary-600">Created</p>
+                        <p className="text-sm font-medium text-secondary-900">
                           {job.createdAt.toLocaleDateString()}
                         </p>
                       </div>
@@ -405,12 +405,12 @@ const ContentHistoryPage = () => {
                     {job.status === 'processing' && (
                       <div className="mb-3">
                         <div className="flex items-center justify-between text-sm mb-1">
-                          <span className="text-charcoal/70">{job.currentSection || 'Processing...'}</span>
-                          <span className="text-chestnut font-medium">{job.progress || 0}%</span>
+                          <span className="text-secondary-700">{job.currentSection || 'Processing...'}</span>
+                          <span className="text-accent font-medium">{job.progress || 0}%</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-chestnut h-2 rounded-full transition-all"
+                            className="bg-accent h-2 rounded-full transition-all"
                             style={{ width: `${job.progress || 0}%` }}
                           />
                         </div>
@@ -430,7 +430,7 @@ const ContentHistoryPage = () => {
                     <div className="flex items-center space-x-2 ml-4">
                       <button
                         onClick={() => handleView(job)}
-                        className="p-2 text-charcoal/60 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="p-2 text-secondary-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         title="View"
                         aria-label="View content"
                       >
@@ -438,7 +438,7 @@ const ContentHistoryPage = () => {
                       </button>
                       <button
                         onClick={() => handleDownloadTxt(job)}
-                        className="p-2 text-charcoal/60 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                        className="p-2 text-secondary-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                         title="Download TXT"
                         aria-label="Download as TXT file"
                       >
@@ -446,7 +446,7 @@ const ContentHistoryPage = () => {
                       </button>
                       <button
                         onClick={() => handleDownloadWord(job)}
-                        className="p-2 text-charcoal/60 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                        className="p-2 text-secondary-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                         title="Download Word"
                         aria-label="Download as Word document"
                       >
@@ -454,7 +454,7 @@ const ContentHistoryPage = () => {
                       </button>
                       <button
                         onClick={() => handleDelete(job.id)}
-                        className="p-2 text-charcoal/60 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                        className="p-2 text-secondary-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         title="Delete"
                         aria-label="Delete content"
                       >

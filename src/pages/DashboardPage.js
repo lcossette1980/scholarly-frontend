@@ -224,10 +224,10 @@ const DashboardPage = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-charcoal font-playfair mb-2">
+            <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-2">
               Welcome back, {currentUser?.displayName || 'Researcher'}!
             </h1>
-            <p className="text-charcoal/70 font-lato">
+            <p className="text-secondary-700 font-lato">
               Manage your research and generate content from your sources.
             </p>
           </div>
@@ -275,8 +275,8 @@ const DashboardPage = () => {
                   <Sparkles className="w-6 h-6 text-purple-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-charcoal font-playfair">Generate Content</h3>
-                  <p className="text-sm text-charcoal/60 font-lato">Create papers from sources</p>
+                  <h3 className="font-semibold text-secondary-900 font-playfair">Generate Content</h3>
+                  <p className="text-sm text-secondary-600 font-lato">Create papers from sources</p>
                 </div>
               </div>
             </Link>
@@ -290,8 +290,8 @@ const DashboardPage = () => {
                   <Brain className="w-6 h-6 text-blue-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-charcoal font-playfair">Topic & Outline</h3>
-                  <p className="text-sm text-charcoal/60 font-lato">Analyze bibliography</p>
+                  <h3 className="font-semibold text-secondary-900 font-playfair">Topic & Outline</h3>
+                  <p className="text-sm text-secondary-600 font-lato">Analyze bibliography</p>
                 </div>
               </div>
             </Link>
@@ -305,8 +305,8 @@ const DashboardPage = () => {
                   <Download className="w-6 h-6 text-green-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-charcoal font-playfair">Export</h3>
-                  <p className="text-sm text-charcoal/60 font-lato">Download bibliography</p>
+                  <h3 className="font-semibold text-secondary-900 font-playfair">Export</h3>
+                  <p className="text-sm text-secondary-600 font-lato">Download bibliography</p>
                 </div>
               </div>
             </button>
@@ -321,10 +321,10 @@ const DashboardPage = () => {
               <>
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-charcoal font-playfair">
+                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair">
                       Lifetime Usage
                     </h3>
-                    <p className="text-charcoal/60 text-sm font-lato">
+                    <p className="text-secondary-600 text-sm font-lato">
                       Free Plan
                     </p>
                   </div>
@@ -334,16 +334,16 @@ const DashboardPage = () => {
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-charcoal/70">
+                    <span className="text-secondary-700">
                       {userDocument.subscription.entriesUsed} of {userDocument.subscription.entriesLimit} entries used
                     </span>
-                    <span className="text-chestnut font-medium">
+                    <span className="text-accent font-medium">
                       {Math.round((userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100)}%
                     </span>
                   </div>
-                  <div className="w-full bg-khaki/30 rounded-full h-2">
+                  <div className="w-full bg-secondary-200/30 rounded-full h-2">
                     <div
-                      className="bg-chestnut h-2 rounded-full transition-all"
+                      className="bg-accent h-2 rounded-full transition-all"
                       style={{
                         width: `${Math.min(
                           (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
@@ -353,7 +353,7 @@ const DashboardPage = () => {
                     />
                   </div>
                   {userDocument.subscription.entriesUsed >= userDocument.subscription.entriesLimit && (
-                    <p className="text-sm text-chestnut mt-2">
+                    <p className="text-sm text-accent mt-2">
                       You've reached your limit. Upgrade for unlimited entries!
                     </p>
                   )}
@@ -364,10 +364,10 @@ const DashboardPage = () => {
               <>
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-charcoal font-playfair">
+                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair">
                       Your Plan Features
                     </h3>
-                    <p className="text-charcoal/60 text-sm font-lato capitalize">
+                    <p className="text-secondary-600 text-sm font-lato capitalize">
                       {userDocument.subscription.plan} Plan
                     </p>
                   </div>
@@ -399,7 +399,7 @@ const DashboardPage = () => {
                       className="btn btn-outline btn-sm"
                     >
                       {refreshingSubscription ? (
-                        <div className="w-4 h-4 border-2 border-chestnut/30 border-t-chestnut rounded-full animate-spin" />
+                        <div className="w-4 h-4 border-2 border-accent-600/30 border-t-chestnut rounded-full animate-spin" />
                       ) : (
                         'Sync'
                       )}
@@ -415,21 +415,21 @@ const DashboardPage = () => {
                   {/* Bibliography Generator - Always unlimited for paid */}
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-600" />
-                    <span className="text-charcoal font-lato">Bibliography Generator (Unlimited)</span>
+                    <span className="text-secondary-900 font-lato">Bibliography Generator (Unlimited)</span>
                   </div>
 
                   {/* Topic & Outline Generator - Researcher only */}
                   {userDocument.subscription.plan === 'researcher' ? (
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="text-charcoal font-lato">Topic & Outline Generator (Unlimited)</span>
+                      <span className="text-secondary-900 font-lato">Topic & Outline Generator (Unlimited)</span>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-3">
                       <Lock className="w-5 h-5 text-gray-400" />
-                      <span className="text-charcoal/60 font-lato">
+                      <span className="text-secondary-600 font-lato">
                         Topic & Outline Generator
-                        <Link to="/pricing" className="text-chestnut ml-2 hover:underline">Upgrade to unlock</Link>
+                        <Link to="/pricing" className="text-accent ml-2 hover:underline">Upgrade to unlock</Link>
                       </span>
                     </div>
                   )}

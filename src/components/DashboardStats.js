@@ -178,7 +178,7 @@ const StatCard = ({ icon: Icon, title, value, subtitle, color }) => {
         </div>
         <div className="flex-1">
           <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-charcoal">{value}</p>
+          <p className="text-3xl font-bold text-secondary-900">{value}</p>
           {subtitle && (
             <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
           )}

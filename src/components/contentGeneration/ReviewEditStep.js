@@ -153,7 +153,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-charcoal font-playfair mb-2">
+          <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
             Your Generated Content
           </h2>
           <p className="text-gray-600">
@@ -266,7 +266,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
               return (
                 <div key={idx} className="mb-8">
                   {heading && (
-                    <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4 pb-2 border-b-2 border-chestnut">
+                    <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4 pb-2 border-b-2 border-accent-600">
                       {heading}
                     </h2>
                   )}
@@ -276,14 +276,14 @@ const ReviewEditStep = ({ jobId, onBack }) => {
                     // Check for subheadings
                     if (para.startsWith('### ')) {
                       return (
-                        <h3 key={pidx} className="text-xl font-semibold text-charcoal font-playfair mt-6 mb-3">
+                        <h3 key={pidx} className="text-xl font-semibold text-secondary-900 font-playfair mt-6 mb-3">
                           {para.replace('### ', '')}
                         </h3>
                       );
                     }
 
                     return (
-                      <p key={pidx} className="text-charcoal/80 font-lato leading-relaxed mb-4 text-justify">
+                      <p key={pidx} className="text-secondary-800 font-lato leading-relaxed mb-4 text-justify">
                         {para}
                       </p>
                     );

@@ -155,14 +155,14 @@ const ContentViewPage = () => {
       return (
         <div key={idx} className="mb-8">
           {heading && (
-            <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4 pb-2 border-b-2 border-chestnut">
+            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4 pb-2 border-b-2 border-accent-600">
               {heading}
             </h2>
           )}
           {paragraphs.map((para, pidx) => {
             if (!para.trim()) return null;
             return (
-              <p key={pidx} className="text-charcoal/80 font-lato leading-relaxed mb-4">
+              <p key={pidx} className="text-secondary-800 font-lato leading-relaxed mb-4">
                 {para}
               </p>
             );
@@ -176,8 +176,8 @@ const ContentViewPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Sparkles className="w-16 h-16 text-chestnut mx-auto mb-4 animate-pulse" />
-          <p className="text-charcoal/70">Loading content...</p>
+          <Sparkles className="w-16 h-16 text-accent mx-auto mb-4 animate-pulse" />
+          <p className="text-secondary-700">Loading content...</p>
         </div>
       </div>
     );
@@ -187,7 +187,7 @@ const ContentViewPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-charcoal/70">Content not found</p>
+          <p className="text-secondary-700">Content not found</p>
         </div>
       </div>
     );
@@ -199,15 +199,15 @@ const ContentViewPage = () => {
         {/* Breadcrumb */}
         <div className="mb-4">
           <div className="flex items-center space-x-2 text-sm">
-            <Link to="/dashboard" className="text-charcoal/60 hover:text-charcoal transition-colors">
+            <Link to="/dashboard" className="text-secondary-600 hover:text-secondary-900 transition-colors">
               Dashboard
             </Link>
-            <span className="text-charcoal/40">/</span>
-            <Link to="/content/history" className="text-charcoal/60 hover:text-charcoal transition-colors">
+            <span className="text-secondary-400">/</span>
+            <Link to="/content/history" className="text-secondary-600 hover:text-secondary-900 transition-colors">
               Content History
             </Link>
-            <span className="text-charcoal/40">/</span>
-            <span className="text-charcoal font-medium truncate max-w-xs">
+            <span className="text-secondary-400">/</span>
+            <span className="text-secondary-900 font-medium truncate max-w-xs">
               {job.outline?.title || 'View Content'}
             </span>
           </div>
@@ -218,12 +218,12 @@ const ContentViewPage = () => {
           <div className="flex items-center space-x-4 flex-1">
             <button
               onClick={() => navigate('/content/history')}
-              className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
+              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-charcoal font-playfair">
+              <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900 font-playfair">
                 {job.outline?.title || 'Generated Content'}
               </h1>
               <div className="flex items-center space-x-2 mt-2">
@@ -278,20 +278,20 @@ const ContentViewPage = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="card">
-            <p className="text-xs text-charcoal/60 mb-1">Word Count</p>
-            <p className="text-2xl font-bold text-charcoal">{job.wordCount?.toLocaleString() || 'N/A'}</p>
+            <p className="text-xs text-secondary-600 mb-1">Word Count</p>
+            <p className="text-2xl font-bold text-secondary-900">{job.wordCount?.toLocaleString() || 'N/A'}</p>
           </div>
           <div className="card">
-            <p className="text-xs text-charcoal/60 mb-1">Pages</p>
-            <p className="text-2xl font-bold text-charcoal">{job.estimatedPages || 'N/A'}</p>
+            <p className="text-xs text-secondary-600 mb-1">Pages</p>
+            <p className="text-2xl font-bold text-secondary-900">{job.estimatedPages || 'N/A'}</p>
           </div>
           <div className="card">
-            <p className="text-xs text-charcoal/60 mb-1">Cost</p>
-            <p className="text-2xl font-bold text-charcoal">${job.estimatedCost?.toFixed(2) || '0.00'}</p>
+            <p className="text-xs text-secondary-600 mb-1">Cost</p>
+            <p className="text-2xl font-bold text-secondary-900">${job.estimatedCost?.toFixed(2) || '0.00'}</p>
           </div>
           <div className="card">
-            <p className="text-xs text-charcoal/60 mb-1">Created</p>
-            <p className="text-2xl font-bold text-charcoal">
+            <p className="text-xs text-secondary-600 mb-1">Created</p>
+            <p className="text-2xl font-bold text-secondary-900">
               {job.createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </p>
           </div>

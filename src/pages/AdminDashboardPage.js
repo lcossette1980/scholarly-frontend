@@ -177,10 +177,10 @@ const AdminDashboardPage = () => {
     <div className="card">
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <p className="text-sm text-charcoal/60 font-lato mb-1">{title}</p>
-          <p className="text-3xl font-bold text-charcoal font-playfair mb-1">{value}</p>
+          <p className="text-sm text-secondary-600 font-lato mb-1">{title}</p>
+          <p className="text-3xl font-bold text-secondary-900 font-playfair mb-1">{value}</p>
           {subtitle && (
-            <p className="text-sm text-charcoal/60 font-lato">{subtitle}</p>
+            <p className="text-sm text-secondary-600 font-lato">{subtitle}</p>
           )}
         </div>
         <div className={`w-12 h-12 bg-${color}/10 rounded-lg flex items-center justify-center`}>
@@ -194,8 +194,8 @@ const AdminDashboardPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 text-chestnut animate-spin mx-auto mb-4" />
-          <p className="text-charcoal/70">Loading admin dashboard...</p>
+          <RefreshCw className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
+          <p className="text-secondary-700">Loading admin dashboard...</p>
         </div>
       </div>
     );
@@ -209,15 +209,15 @@ const AdminDashboardPage = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate('/dashboard')}
-              className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
+              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-4xl font-bold text-charcoal font-playfair">
+              <h1 className="text-4xl font-bold text-secondary-900 font-playfair">
                 Admin Dashboard
               </h1>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-secondary-700 font-lato">
                 System overview and user management
               </p>
             </div>
@@ -232,13 +232,13 @@ const AdminDashboardPage = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-4 mb-8 border-b border-khaki/30">
+        <div className="flex space-x-4 mb-8 border-b border-secondary-300/30">
           <button
             onClick={() => setActiveTab('overview')}
             className={`pb-3 px-4 font-semibold transition-colors ${
               activeTab === 'overview'
-                ? 'text-chestnut border-b-2 border-chestnut'
-                : 'text-charcoal/60 hover:text-charcoal'
+                ? 'text-accent border-b-2 border-accent-600'
+                : 'text-secondary-600 hover:text-secondary-900'
             }`}
           >
             Overview
@@ -247,8 +247,8 @@ const AdminDashboardPage = () => {
             onClick={() => setActiveTab('users')}
             className={`pb-3 px-4 font-semibold transition-colors ${
               activeTab === 'users'
-                ? 'text-chestnut border-b-2 border-chestnut'
-                : 'text-charcoal/60 hover:text-charcoal'
+                ? 'text-accent border-b-2 border-accent-600'
+                : 'text-secondary-600 hover:text-secondary-900'
             }`}
           >
             Users ({stats?.users?.total || 0})
@@ -257,8 +257,8 @@ const AdminDashboardPage = () => {
             onClick={() => setActiveTab('messages')}
             className={`pb-3 px-4 font-semibold transition-colors relative ${
               activeTab === 'messages'
-                ? 'text-chestnut border-b-2 border-chestnut'
-                : 'text-charcoal/60 hover:text-charcoal'
+                ? 'text-accent border-b-2 border-accent-600'
+                : 'text-secondary-600 hover:text-secondary-900'
             }`}
           >
             Support Messages
@@ -272,8 +272,8 @@ const AdminDashboardPage = () => {
             onClick={() => setActiveTab('entries')}
             className={`pb-3 px-4 font-semibold transition-colors ${
               activeTab === 'entries'
-                ? 'text-chestnut border-b-2 border-chestnut'
-                : 'text-charcoal/60 hover:text-charcoal'
+                ? 'text-accent border-b-2 border-accent-600'
+                : 'text-secondary-600 hover:text-secondary-900'
             }`}
           >
             All Entries
@@ -318,38 +318,38 @@ const AdminDashboardPage = () => {
             {/* Revenue Breakdown */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <div className="card">
-                <h2 className="text-xl font-bold text-charcoal font-playfair mb-4">
+                <h2 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
                   Revenue by Plan
                 </h2>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-charcoal/70 font-lato">Student Plan</span>
-                    <span className="text-xl font-bold text-charcoal">${stats.revenue?.by_plan?.student || 0}</span>
+                    <span className="text-secondary-700 font-lato">Student Plan</span>
+                    <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.student || 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-charcoal/70 font-lato">Researcher Plan</span>
-                    <span className="text-xl font-bold text-charcoal">${stats.revenue?.by_plan?.researcher || 0}</span>
+                    <span className="text-secondary-700 font-lato">Researcher Plan</span>
+                    <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.researcher || 0}</span>
                   </div>
                 </div>
               </div>
 
               {/* Recent Messages Preview */}
               <div className="card">
-                <h2 className="text-xl font-bold text-charcoal font-playfair mb-4">
+                <h2 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
                   Recent Messages
                 </h2>
                 <div className="space-y-3">
                   {messages.slice(0, 3).map((msg) => (
-                    <div key={msg.id} className="flex items-start space-x-3 pb-3 border-b border-khaki/20 last:border-0">
+                    <div key={msg.id} className="flex items-start space-x-3 pb-3 border-b border-secondary-300/20 last:border-0">
                       <div className={`w-2 h-2 rounded-full mt-2 ${msg.read ? 'bg-gray-400' : 'bg-red-500'}`} />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-charcoal truncate">{msg.subject}</p>
-                        <p className="text-xs text-charcoal/60">{msg.userEmail}</p>
+                        <p className="text-sm font-semibold text-secondary-900 truncate">{msg.subject}</p>
+                        <p className="text-xs text-secondary-600">{msg.userEmail}</p>
                       </div>
                     </div>
                   ))}
                   {messages.length === 0 && (
-                    <p className="text-sm text-charcoal/60">No messages yet</p>
+                    <p className="text-sm text-secondary-600">No messages yet</p>
                   )}
                 </div>
               </div>
@@ -360,25 +360,25 @@ const AdminDashboardPage = () => {
         {/* Users Tab */}
         {activeTab === 'users' && (
           <div className="card">
-            <h2 className="text-xl font-bold text-charcoal font-playfair mb-4">
+            <h2 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
               All Users
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-khaki/30">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-charcoal">Email</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-charcoal">Display Name</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-charcoal">Plan</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-charcoal">Entries Used</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-charcoal">Created</th>
+                  <tr className="border-b border-secondary-300/30">
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Email</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Display Name</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Plan</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Entries Used</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Created</th>
                   </tr>
                 </thead>
                 <tbody>
                   {users.map((user) => (
-                    <tr key={user.id} className="border-b border-khaki/10 hover:bg-pearl/30">
-                      <td className="py-3 px-4 text-sm text-charcoal">{user.email}</td>
-                      <td className="py-3 px-4 text-sm text-charcoal">{user.displayName || 'N/A'}</td>
+                    <tr key={user.id} className="border-b border-secondary-300/10 hover:bg-pearl/30">
+                      <td className="py-3 px-4 text-sm text-secondary-900">{user.email}</td>
+                      <td className="py-3 px-4 text-sm text-secondary-900">{user.displayName || 'N/A'}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           user.subscription?.plan === 'researcher' ? 'bg-purple-100 text-purple-800' :
@@ -388,10 +388,10 @@ const AdminDashboardPage = () => {
                           {user.subscription?.plan || 'trial'}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-sm text-charcoal">
+                      <td className="py-3 px-4 text-sm text-secondary-900">
                         {user.subscription?.entriesUsed || 0} / {user.subscription?.entriesLimit === -1 ? '∞' : user.subscription?.entriesLimit || 5}
                       </td>
-                      <td className="py-3 px-4 text-sm text-charcoal/60">
+                      <td className="py-3 px-4 text-sm text-secondary-600">
                         {user.createdAt ? (() => {
                           try {
                             // Handle Firestore Timestamp, Date object, or ISO string
@@ -426,7 +426,7 @@ const AdminDashboardPage = () => {
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       {!msg.read && <span className="w-2 h-2 bg-red-500 rounded-full" />}
-                      <h3 className="text-lg font-semibold text-charcoal font-playfair">{msg.subject}</h3>
+                      <h3 className="text-lg font-semibold text-secondary-900 font-playfair">{msg.subject}</h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         msg.category === 'bug' ? 'bg-red-100 text-red-800' :
                         msg.category === 'feature' ? 'bg-blue-100 text-blue-800' :
@@ -436,13 +436,13 @@ const AdminDashboardPage = () => {
                         {msg.category || 'general'}
                       </span>
                     </div>
-                    <p className="text-sm text-charcoal/60 mb-2">
+                    <p className="text-sm text-secondary-600 mb-2">
                       From: <span className="font-medium">{msg.userName || 'Unknown'}</span> ({msg.userEmail})
                     </p>
-                    <p className="text-charcoal/80 font-lato whitespace-pre-line">{msg.message}</p>
+                    <p className="text-secondary-800 font-lato whitespace-pre-line">{msg.message}</p>
                   </div>
                   <div className="flex flex-col items-end space-y-2 ml-4">
-                    <span className="text-xs text-charcoal/60">
+                    <span className="text-xs text-secondary-600">
                       {msg.createdAt ? new Date(msg.createdAt.toDate()).toLocaleString() : 'N/A'}
                     </span>
                     {!msg.read && (
@@ -461,11 +461,11 @@ const AdminDashboardPage = () => {
 
             {messages.length === 0 && (
               <div className="card text-center py-12">
-                <Mail className="w-16 h-16 text-charcoal/20 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-charcoal font-playfair mb-2">
+                <Mail className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
                   No support messages yet
                 </h3>
-                <p className="text-charcoal/60 font-lato">
+                <p className="text-secondary-600 font-lato">
                   Messages from users will appear here
                 </p>
               </div>
@@ -480,16 +480,16 @@ const AdminDashboardPage = () => {
             <div className="card">
               <div className="flex items-center space-x-4">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-charcoal/40" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary-400" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search by title or subject..."
-                    className="w-full pl-10 pr-4 py-3 border border-khaki/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-chestnut/20"
+                    className="w-full pl-10 pr-4 py-3 border border-secondary-300/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20"
                   />
                 </div>
-                <div className="text-sm text-charcoal/60 whitespace-nowrap">
+                <div className="text-sm text-secondary-600 whitespace-nowrap">
                   {entries.length} entries
                 </div>
               </div>
@@ -498,65 +498,65 @@ const AdminDashboardPage = () => {
             {/* Entries Table */}
             {entriesLoading ? (
               <div className="card text-center py-12">
-                <RefreshCw className="w-8 h-8 text-chestnut animate-spin mx-auto mb-4" />
-                <p className="text-charcoal/70">Loading entries...</p>
+                <RefreshCw className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
+                <p className="text-secondary-700">Loading entries...</p>
               </div>
             ) : (
               <>
                 <div className="card overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full">
-                      <thead className="bg-bone/50 border-b border-khaki/30">
+                      <thead className="bg-secondary-50/50 border-b border-secondary-300/30">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
                             Title
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
                             Subject
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
                             User
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
                             Date
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
                             Citation Type
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-charcoal uppercase tracking-wider">
+                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-khaki/20">
                         {entries.map((entry) => (
-                          <tr key={entry.id} className="hover:bg-bone/30 transition-colors">
+                          <tr key={entry.id} className="hover:bg-secondary-50/30 transition-colors">
                             <td className="px-4 py-3">
                               <div className="flex items-center space-x-2">
-                                <BookOpen className="w-4 h-4 text-chestnut flex-shrink-0" />
-                                <span className="text-sm text-charcoal font-medium line-clamp-2">
+                                <BookOpen className="w-4 h-4 text-accent flex-shrink-0" />
+                                <span className="text-sm text-secondary-900 font-medium line-clamp-2">
                                   {entry.title}
                                 </span>
                               </div>
                             </td>
                             <td className="px-4 py-3">
-                              <span className="text-sm text-charcoal/70">
+                              <span className="text-sm text-secondary-700">
                                 {entry.subject}
                               </span>
                             </td>
                             <td className="px-4 py-3">
                               <div className="text-sm">
-                                <div className="text-charcoal font-medium">{entry.userEmail}</div>
-                                <div className="text-charcoal/60 text-xs">{entry.userId.substring(0, 8)}...</div>
+                                <div className="text-secondary-900 font-medium">{entry.userEmail}</div>
+                                <div className="text-secondary-600 text-xs">{entry.userId.substring(0, 8)}...</div>
                               </div>
                             </td>
                             <td className="px-4 py-3">
-                              <span className="text-sm text-charcoal/70">
+                              <span className="text-sm text-secondary-700">
                                 {entry.date ? new Date(entry.date.toDate ? entry.date.toDate() : entry.date).toLocaleDateString() : 'N/A'}
                               </span>
                             </td>
                             <td className="px-4 py-3">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-chestnut/10 text-chestnut">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent">
                                 {entry.citationType}
                               </span>
                             </td>
@@ -578,11 +578,11 @@ const AdminDashboardPage = () => {
 
                 {entries.length === 0 && !searchQuery && (
                   <div className="card text-center py-12">
-                    <FileText className="w-16 h-16 text-charcoal/20 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-charcoal font-playfair mb-2">
+                    <FileText className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
                       No entries found
                     </h3>
-                    <p className="text-charcoal/60 font-lato">
+                    <p className="text-secondary-600 font-lato">
                       Bibliography entries will appear here
                     </p>
                   </div>
@@ -590,11 +590,11 @@ const AdminDashboardPage = () => {
 
                 {entries.length === 0 && searchQuery && (
                   <div className="card text-center py-12">
-                    <Search className="w-16 h-16 text-charcoal/20 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-charcoal font-playfair mb-2">
+                    <Search className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
                       No results for "{searchQuery}"
                     </h3>
-                    <p className="text-charcoal/60 font-lato">
+                    <p className="text-secondary-600 font-lato">
                       Try a different search term
                     </p>
                   </div>
@@ -606,33 +606,33 @@ const AdminDashboardPage = () => {
             {selectedEntry && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedEntry(null)}>
                 <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                  <div className="sticky top-0 bg-white border-b border-khaki/30 px-6 py-4 flex items-center justify-between">
-                    <h3 className="text-2xl font-bold text-charcoal font-playfair">Entry Details</h3>
+                  <div className="sticky top-0 bg-white border-b border-secondary-300/30 px-6 py-4 flex items-center justify-between">
+                    <h3 className="text-2xl font-bold text-secondary-900 font-playfair">Entry Details</h3>
                     <button
                       onClick={() => setSelectedEntry(null)}
-                      className="p-2 hover:bg-khaki/10 rounded-lg transition-colors"
+                      className="p-2 hover:bg-secondary-200/10 rounded-lg transition-colors"
                     >
-                      <ArrowLeft className="w-6 h-6 text-charcoal" />
+                      <ArrowLeft className="w-6 h-6 text-secondary-900" />
                     </button>
                   </div>
 
                   <div className="p-6 space-y-6">
                     {/* User Info */}
                     {selectedEntry.userInfo && (
-                      <div className="bg-bone/30 rounded-lg p-4">
-                        <h4 className="text-sm font-semibold text-charcoal mb-2">User Information</h4>
+                      <div className="bg-secondary-50/30 rounded-lg p-4">
+                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">User Information</h4>
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
-                            <span className="text-charcoal/60">Email:</span>
-                            <span className="ml-2 text-charcoal font-medium">{selectedEntry.userInfo.email}</span>
+                            <span className="text-secondary-600">Email:</span>
+                            <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.email}</span>
                           </div>
                           <div>
-                            <span className="text-charcoal/60">Name:</span>
-                            <span className="ml-2 text-charcoal font-medium">{selectedEntry.userInfo.displayName}</span>
+                            <span className="text-secondary-600">Name:</span>
+                            <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.displayName}</span>
                           </div>
                           <div>
-                            <span className="text-charcoal/60">Plan:</span>
-                            <span className="ml-2 text-charcoal font-medium capitalize">{selectedEntry.userInfo.plan}</span>
+                            <span className="text-secondary-600">Plan:</span>
+                            <span className="ml-2 text-secondary-900 font-medium capitalize">{selectedEntry.userInfo.plan}</span>
                           </div>
                         </div>
                       </div>
@@ -641,9 +641,9 @@ const AdminDashboardPage = () => {
                     {/* Citation */}
                     {selectedEntry.citation && (
                       <div>
-                        <h4 className="text-sm font-semibold text-charcoal mb-2">Citation ({selectedEntry.citation.type})</h4>
-                        <div className="bg-bone/30 rounded-lg p-4">
-                          <p className="text-charcoal font-lato">{selectedEntry.citation.formatted}</p>
+                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Citation ({selectedEntry.citation.type})</h4>
+                        <div className="bg-secondary-50/30 rounded-lg p-4">
+                          <p className="text-secondary-900 font-lato">{selectedEntry.citation.formatted}</p>
                         </div>
                       </div>
                     )}
@@ -651,9 +651,9 @@ const AdminDashboardPage = () => {
                     {/* Summary */}
                     {selectedEntry.summary && (
                       <div>
-                        <h4 className="text-sm font-semibold text-charcoal mb-2">Summary</h4>
-                        <div className="bg-bone/30 rounded-lg p-4">
-                          <p className="text-charcoal/80 font-lato whitespace-pre-line">{selectedEntry.summary}</p>
+                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Summary</h4>
+                        <div className="bg-secondary-50/30 rounded-lg p-4">
+                          <p className="text-secondary-800 font-lato whitespace-pre-line">{selectedEntry.summary}</p>
                         </div>
                       </div>
                     )}
@@ -661,13 +661,13 @@ const AdminDashboardPage = () => {
                     {/* Key Findings */}
                     {selectedEntry.keyFindings && selectedEntry.keyFindings.length > 0 && (
                       <div>
-                        <h4 className="text-sm font-semibold text-charcoal mb-2">Key Findings</h4>
-                        <div className="bg-bone/30 rounded-lg p-4">
+                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Key Findings</h4>
+                        <div className="bg-secondary-50/30 rounded-lg p-4">
                           <ul className="space-y-2">
                             {selectedEntry.keyFindings.map((finding, index) => (
                               <li key={index} className="flex items-start space-x-2">
-                                <CheckCircle className="w-4 h-4 text-chestnut flex-shrink-0 mt-0.5" />
-                                <span className="text-charcoal/80 font-lato">{finding}</span>
+                                <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                                <span className="text-secondary-800 font-lato">{finding}</span>
                               </li>
                             ))}
                           </ul>
@@ -678,9 +678,9 @@ const AdminDashboardPage = () => {
                     {/* Methodology */}
                     {selectedEntry.methodology && (
                       <div>
-                        <h4 className="text-sm font-semibold text-charcoal mb-2">Methodology</h4>
-                        <div className="bg-bone/30 rounded-lg p-4">
-                          <p className="text-charcoal/80 font-lato whitespace-pre-line">{selectedEntry.methodology}</p>
+                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Methodology</h4>
+                        <div className="bg-secondary-50/30 rounded-lg p-4">
+                          <p className="text-secondary-800 font-lato whitespace-pre-line">{selectedEntry.methodology}</p>
                         </div>
                       </div>
                     )}
@@ -688,12 +688,12 @@ const AdminDashboardPage = () => {
                     {/* Quotes */}
                     {selectedEntry.quotes && selectedEntry.quotes.length > 0 && (
                       <div>
-                        <h4 className="text-sm font-semibold text-charcoal mb-2">Quotes</h4>
+                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Quotes</h4>
                         <div className="space-y-3">
                           {selectedEntry.quotes.map((quote, index) => (
-                            <div key={index} className="bg-bone/30 rounded-lg p-4 border-l-4 border-chestnut">
-                              <p className="text-charcoal/80 font-lato italic mb-2">"{quote.text}"</p>
-                              <p className="text-sm text-charcoal/60">— Page {quote.page}</p>
+                            <div key={index} className="bg-secondary-50/30 rounded-lg p-4 border-l-4 border-accent-600">
+                              <p className="text-secondary-800 font-lato italic mb-2">"{quote.text}"</p>
+                              <p className="text-sm text-secondary-600">— Page {quote.page}</p>
                             </div>
                           ))}
                         </div>
@@ -703,9 +703,9 @@ const AdminDashboardPage = () => {
                     {/* Research Focus */}
                     {selectedEntry.researchFocus && (
                       <div>
-                        <h4 className="text-sm font-semibold text-charcoal mb-2">Research Focus</h4>
-                        <div className="bg-bone/30 rounded-lg p-4">
-                          <p className="text-charcoal/80 font-lato">{selectedEntry.researchFocus}</p>
+                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Research Focus</h4>
+                        <div className="bg-secondary-50/30 rounded-lg p-4">
+                          <p className="text-secondary-800 font-lato">{selectedEntry.researchFocus}</p>
                         </div>
                       </div>
                     )}

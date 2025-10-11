@@ -232,15 +232,15 @@ const CreateEntryPage = () => {
           <div className="flex items-center space-x-2 sm:space-x-4">
             <button
               onClick={() => navigate('/dashboard')}
-              className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
+              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-charcoal font-playfair">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
                 Create Bibliography Entry
               </h1>
-              <p className="text-sm sm:text-base text-charcoal/70 font-lato hidden sm:block">
+              <p className="text-sm sm:text-base text-secondary-700 font-lato hidden sm:block">
                 Upload an academic paper and generate a comprehensive annotated bibliography entry
               </p>
             </div>
@@ -263,10 +263,10 @@ const CreateEntryPage = () => {
             {/* Research Focus */}
             <div className="card">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                  <Target className="w-5 h-5 text-chestnut" />
+                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Target className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="text-xl font-bold text-charcoal font-playfair">
+                <h2 className="text-xl font-bold text-secondary-900 font-playfair">
                   Research Focus
                 </h2>
               </div>
@@ -283,7 +283,7 @@ const CreateEntryPage = () => {
                   onChange={(e) => setResearchFocus(sanitizeResearchFocus(e.target.value))}
                   maxLength={200}
                 />
-                <p className="text-sm text-charcoal/60 font-lato">
+                <p className="text-sm text-secondary-600 font-lato">
                   This helps our AI tailor the analysis to your specific research interests.
                 </p>
               </div>
@@ -292,10 +292,10 @@ const CreateEntryPage = () => {
             {/* File Upload */}
             <div className="card">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                  <Upload className="w-5 h-5 text-chestnut" />
+                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Upload className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="text-xl font-bold text-charcoal font-playfair">
+                <h2 className="text-xl font-bold text-secondary-900 font-playfair">
                   Upload Academic Paper
                 </h2>
               </div>
@@ -318,17 +318,17 @@ const CreateEntryPage = () => {
                   }}
                 />
                 <div className="space-y-4">
-                  <div className="w-16 h-16 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto">
-                    <Upload className="w-8 h-8 text-chestnut" />
+                  <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
+                    <Upload className="w-8 h-8 text-accent" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-semibold text-charcoal mb-2 font-lato">
+                    <h3 className="text-base sm:text-lg font-semibold text-secondary-900 mb-2 font-lato">
                       Drop your PDF here or click to browse
                     </h3>
-                    <p className="text-sm sm:text-base text-charcoal/60 font-lato mb-2">
+                    <p className="text-sm sm:text-base text-secondary-600 font-lato mb-2">
                       Supports research articles, journal papers, and academic reports
                     </p>
-                    <p className="text-sm text-charcoal/50 font-lato">
+                    <p className="text-sm text-secondary-500 font-lato">
                       Maximum file size: 10MB
                     </p>
                   </div>
@@ -342,15 +342,15 @@ const CreateEntryPage = () => {
         {currentStep === 'processing' && (
           <div className="card">
             <div className="text-center space-y-8">
-              <div className="w-16 h-16 bg-gradient-to-br from-chestnut to-charcoal rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto">
                 <Brain className="w-8 h-8 text-white animate-pulse" />
               </div>
               
               <div>
-                <h2 className="text-2xl font-bold text-charcoal font-playfair mb-2">
+                <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
                   Analyzing Your Document
                 </h2>
-                <p className="text-charcoal/70 font-lato">
+                <p className="text-secondary-700 font-lato">
                   Our AI is carefully reading and analyzing your research paper
                 </p>
               </div>
@@ -358,12 +358,12 @@ const CreateEntryPage = () => {
               {/* Progress Bar */}
               <div className="space-y-2 max-w-md mx-auto">
                 <div className="flex justify-between text-sm font-lato">
-                  <span className="text-charcoal/70">Progress</span>
-                  <span className="text-chestnut font-medium">{processingProgress}%</span>
+                  <span className="text-secondary-700">Progress</span>
+                  <span className="text-accent font-medium">{processingProgress}%</span>
                 </div>
                 <div className="w-full h-3 bg-pearl/50 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-chestnut to-charcoal rounded-full transition-all duration-300 ease-out"
+                    className="h-full bg-gradient-to-r from-accent to-charcoal rounded-full transition-all duration-300 ease-out"
                     style={{ width: `${processingProgress}%` }}
                   />
                 </div>
@@ -381,29 +381,29 @@ const CreateEntryPage = () => {
                       key={index}
                       className={`p-4 rounded-lg border transition-all duration-300 ${
                         isActive
-                          ? 'bg-chestnut/10 border-chestnut/30 scale-105'
+                          ? 'bg-accent/10 border-accent-600/30 scale-105'
                           : isCompleted
-                          ? 'bg-pearl/30 border-khaki/30'
-                          : 'bg-white/50 border-khaki/20'
+                          ? 'bg-pearl/30 border-secondary-300/30'
+                          : 'bg-white/50 border-secondary-300/20'
                       }`}
                     >
                       <div className="flex items-center space-x-3">
                         <div
                           className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
                             isActive
-                              ? 'bg-chestnut text-white animate-pulse'
+                              ? 'bg-accent text-white animate-pulse'
                               : isCompleted
-                              ? 'bg-khaki text-white'
-                              : 'bg-pearl/50 text-charcoal/50'
+                              ? 'bg-secondary-200 text-white'
+                              : 'bg-pearl/50 text-secondary-500'
                           }`}
                         >
                           <Icon className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className={`font-semibold font-lato ${isActive || isCompleted ? 'text-charcoal' : 'text-charcoal/50'}`}>
+                          <h4 className={`font-semibold font-lato ${isActive || isCompleted ? 'text-secondary-900' : 'text-secondary-500'}`}>
                             {step.label}
                           </h4>
-                          <p className={`text-sm font-lato ${isActive || isCompleted ? 'text-charcoal/70' : 'text-charcoal/40'}`}>
+                          <p className={`text-sm font-lato ${isActive || isCompleted ? 'text-secondary-700' : 'text-secondary-400'}`}>
                             {step.description}
                           </p>
                         </div>
@@ -422,10 +422,10 @@ const CreateEntryPage = () => {
             <div className="card">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                    <Eye className="w-5 h-5 text-chestnut" />
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                    <Eye className="w-5 h-5 text-accent" />
                   </div>
-                  <h2 className="text-2xl font-bold text-charcoal font-playfair">
+                  <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
                     Preview & Edit Your Entry
                   </h2>
                 </div>
@@ -436,45 +436,45 @@ const CreateEntryPage = () => {
               </div>
 
               {/* Bibliography Entry Preview */}
-              <div className="bg-white rounded-lg border border-khaki/20 p-8" style={{ fontFamily: 'Times New Roman, serif' }}>
+              <div className="bg-white rounded-lg border border-secondary-300/20 p-8" style={{ fontFamily: 'Times New Roman, serif' }}>
                 <div className="space-y-6">
                   {/* Citation */}
-                  <div className="font-bold text-charcoal leading-relaxed">
+                  <div className="font-bold text-secondary-900 leading-relaxed">
                     {cleanMarkdownFormatting(bibliographyEntry.citation)}
                   </div>
 
                   {/* Narrative Overview */}
                   <div>
-                    <h3 className="font-bold text-charcoal mb-3 text-lg font-playfair">
+                    <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
                       Narrative Overview
                     </h3>
-                    <p className="text-charcoal/90 leading-relaxed">
+                    <p className="text-secondary-900/90 leading-relaxed">
                       {cleanMarkdownFormatting(bibliographyEntry.narrative_overview)}
                     </p>
                   </div>
 
                   {/* Key Research Components */}
                   <div>
-                    <h3 className="font-bold text-charcoal mb-3 text-lg font-playfair">
+                    <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
                       Key Research Components
                     </h3>
                     <div className="space-y-3">
                       {bibliographyEntry.research_components?.research_purpose && (
                         <div>
-                          <span className="font-semibold text-charcoal">Research Purpose:</span>
-                          <p className="text-charcoal/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.research_purpose)}</p>
+                          <span className="font-semibold text-secondary-900">Research Purpose:</span>
+                          <p className="text-secondary-900/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.research_purpose)}</p>
                         </div>
                       )}
                       {bibliographyEntry.research_components?.methodology && (
                         <div>
-                          <span className="font-semibold text-charcoal">Methodology:</span>
-                          <p className="text-charcoal/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.methodology)}</p>
+                          <span className="font-semibold text-secondary-900">Methodology:</span>
+                          <p className="text-secondary-900/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.methodology)}</p>
                         </div>
                       )}
                       {bibliographyEntry.research_components?.theoretical_framework && (
                         <div>
-                          <span className="font-semibold text-charcoal">Theoretical Framework:</span>
-                          <p className="text-charcoal/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.theoretical_framework)}</p>
+                          <span className="font-semibold text-secondary-900">Theoretical Framework:</span>
+                          <p className="text-secondary-900/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.theoretical_framework)}</p>
                         </div>
                       )}
                     </div>
@@ -483,10 +483,10 @@ const CreateEntryPage = () => {
                   {/* Core Findings & Key Statistics */}
                   {bibliographyEntry.core_findings && (
                     <div>
-                      <h3 className="font-bold text-charcoal mb-3 text-lg font-playfair">
+                      <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
                         Core Findings & Key Statistics
                       </h3>
-                      <div className="text-charcoal/90 leading-relaxed whitespace-pre-wrap">
+                      <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
                         {cleanMarkdownFormatting(bibliographyEntry.core_findings)}
                       </div>
                     </div>
@@ -495,22 +495,22 @@ const CreateEntryPage = () => {
                   {/* Methodological Value */}
                   {(bibliographyEntry.methodological_value?.strengths || bibliographyEntry.methodological_value?.limitations) && (
                     <div>
-                      <h3 className="font-bold text-charcoal mb-3 text-lg font-playfair">
+                      <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
                         Methodological Value
                       </h3>
                       <div className="space-y-3">
                         {bibliographyEntry.methodological_value?.strengths && (
                           <div>
-                            <span className="font-semibold text-charcoal">Strengths:</span>
-                            <div className="text-charcoal/90 mt-1 whitespace-pre-wrap">
+                            <span className="font-semibold text-secondary-900">Strengths:</span>
+                            <div className="text-secondary-900/90 mt-1 whitespace-pre-wrap">
                               {cleanMarkdownFormatting(bibliographyEntry.methodological_value.strengths)}
                             </div>
                           </div>
                         )}
                         {bibliographyEntry.methodological_value?.limitations && (
                           <div>
-                            <span className="font-semibold text-charcoal">Limitations:</span>
-                            <div className="text-charcoal/90 mt-1 whitespace-pre-wrap">
+                            <span className="font-semibold text-secondary-900">Limitations:</span>
+                            <div className="text-secondary-900/90 mt-1 whitespace-pre-wrap">
                               {cleanMarkdownFormatting(bibliographyEntry.methodological_value.limitations)}
                             </div>
                           </div>
@@ -522,10 +522,10 @@ const CreateEntryPage = () => {
                   {/* Key Quotes */}
                   {bibliographyEntry.key_quotes && bibliographyEntry.key_quotes.length > 0 && (
                     <div>
-                      <h3 className="font-bold text-charcoal mb-3 text-lg font-playfair">
+                      <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
                         Key Quotes
                       </h3>
-                      <ol className="text-charcoal/90 space-y-2 list-decimal ml-6">
+                      <ol className="text-secondary-900/90 space-y-2 list-decimal ml-6">
                         {bibliographyEntry.key_quotes.map((quote, index) => (
                           <li key={index}>
                             "{quote.text}" (p. {quote.page})

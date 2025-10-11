@@ -44,10 +44,10 @@ const PricingPage = () => {
     const isCurrent = isCurrentPlan(planId);
 
     return (
-      <div className={`relative card card-hover ${featured ? 'ring-2 ring-chestnut border-chestnut/30' : ''} ${isPopular ? 'md:scale-105' : ''}`}>
+      <div className={`relative card card-hover ${featured ? 'ring-2 ring-accent border-accent-600/30' : ''} ${isPopular ? 'md:scale-105' : ''}`}>
         {isPopular && (
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <div className="bg-gradient-chestnut text-white px-4 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
+            <div className="bg-gradient-brand text-white px-4 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
               <Star className="w-4 h-4" />
               <span>Most Popular</span>
             </div>
@@ -56,33 +56,33 @@ const PricingPage = () => {
 
         <div className="text-center mb-6">
           <div className="flex justify-center mb-4">
-            {planId === 'free' && <Zap className="w-8 h-8 text-chestnut" />}
-            {planId === 'student' && <Users className="w-8 h-8 text-chestnut" />}
-            {planId === 'researcher' && <Crown className="w-8 h-8 text-chestnut" />}
-            {planId === 'institution' && <Building className="w-8 h-8 text-chestnut" />}
+            {planId === 'free' && <Zap className="w-8 h-8 text-accent" />}
+            {planId === 'student' && <Users className="w-8 h-8 text-accent" />}
+            {planId === 'researcher' && <Crown className="w-8 h-8 text-accent" />}
+            {planId === 'institution' && <Building className="w-8 h-8 text-accent" />}
           </div>
           
-          <h3 className="text-2xl font-bold text-charcoal font-playfair mb-2">
+          <h3 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
             {plan.name}
           </h3>
           
           <div className="mb-4">
-            <span className="text-4xl font-bold text-charcoal font-playfair">
+            <span className="text-4xl font-bold text-secondary-900 font-playfair">
               ${plan.price}
             </span>
             {plan.price > 0 && (
-              <span className="text-charcoal/60 text-lg font-lato">
+              <span className="text-secondary-600 text-lg font-lato">
                 /month
               </span>
             )}
           </div>
 
           {planId === 'free' ? (
-            <p className="text-sm text-charcoal/70 font-lato">
+            <p className="text-sm text-secondary-700 font-lato">
               5 lifetime entries
             </p>
           ) : (
-            <p className="text-sm text-charcoal/70 font-lato">
+            <p className="text-sm text-secondary-700 font-lato">
               Unlimited entries
             </p>
           )}
@@ -113,7 +113,7 @@ const PricingPage = () => {
         </button>
 
         {isCurrent && (
-          <p className="text-center text-sm text-chestnut font-medium mt-2">
+          <p className="text-center text-sm text-accent font-medium mt-2">
             ✓ Active subscription
           </p>
         )}
@@ -126,10 +126,10 @@ const PricingPage = () => {
       <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-charcoal font-playfair mb-6">
-            Choose Your <span className="text-chestnut">Research Plan</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-secondary-900 font-playfair mb-6">
+            Choose Your <span className="text-accent">Research Plan</span>
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-charcoal/70 max-w-3xl mx-auto font-lato leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-secondary-700 max-w-3xl mx-auto font-lato leading-relaxed">
             From individual researchers to large institutions, we have a plan that fits your bibliography generation needs.
           </p>
         </div>
@@ -144,14 +144,14 @@ const PricingPage = () => {
 
         {/* Current Plan Status */}
         {currentUser && userDocument?.subscription && (
-          <div className="card max-w-2xl mx-auto mb-16 bg-chestnut/5 border-chestnut/20">
+          <div className="card max-w-2xl mx-auto mb-16 bg-accent/5 border-accent-600/20">
             <div className="text-center">
-              <h3 className="text-xl font-bold text-charcoal font-playfair mb-2">
+              <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-2">
                 Your Current Plan
               </h3>
-              <p className="text-charcoal/70 mb-4 font-lato">
+              <p className="text-secondary-700 mb-4 font-lato">
                 You're currently on the{' '}
-                <span className="font-semibold text-chestnut capitalize">
+                <span className="font-semibold text-accent capitalize">
                   {userDocument.subscription.plan}
                 </span>{' '}
                 plan
@@ -160,11 +160,11 @@ const PricingPage = () => {
               {/* Only show usage bar for Free/Trial users */}
               {(userDocument.subscription.plan === 'free' || userDocument.subscription.plan === 'trial') ? (
                 <div className="bg-white/50 rounded-lg p-4 inline-block">
-                  <p className="text-sm text-charcoal/70 mb-1">Lifetime usage</p>
+                  <p className="text-sm text-secondary-700 mb-1">Lifetime usage</p>
                   <div className="flex items-center space-x-2">
-                    <div className="flex-1 bg-khaki/30 rounded-full h-2 min-w-[200px]">
+                    <div className="flex-1 bg-secondary-200/30 rounded-full h-2 min-w-[200px]">
                       <div
-                        className="bg-chestnut h-2 rounded-full transition-all"
+                        className="bg-accent h-2 rounded-full transition-all"
                         style={{
                           width: `${Math.min(
                             (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
@@ -173,16 +173,16 @@ const PricingPage = () => {
                         }}
                       />
                     </div>
-                    <span className="text-sm font-medium text-charcoal">
+                    <span className="text-sm font-medium text-secondary-900">
                       {userDocument.subscription.entriesUsed} / {userDocument.subscription.entriesLimit}
                     </span>
                   </div>
                 </div>
               ) : (
                 <div className="bg-white/50 rounded-lg p-4 inline-block">
-                  <p className="text-lg font-semibold text-chestnut">✓ Unlimited Bibliography Entries</p>
+                  <p className="text-lg font-semibold text-accent">✓ Unlimited Bibliography Entries</p>
                   {userDocument.subscription.plan === 'researcher' && (
-                    <p className="text-sm text-charcoal/70 mt-1">+ Topic & Outline Generator</p>
+                    <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator</p>
                   )}
                 </div>
               )}
@@ -192,10 +192,10 @@ const PricingPage = () => {
 
         {/* Content Generation Pricing */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-charcoal font-playfair text-center mb-4">
+          <h2 className="text-3xl font-bold text-secondary-900 font-playfair text-center mb-4">
             AI Content Generation Pricing
           </h2>
-          <p className="text-center text-charcoal/70 mb-8">
+          <p className="text-center text-secondary-700 mb-8">
             Pay only for what you generate. No subscription required for paper generation.
           </p>
 
@@ -203,16 +203,16 @@ const PricingPage = () => {
             {/* Standard Tier */}
             <div className="card">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-charcoal font-playfair">Standard</h3>
+                <h3 className="text-2xl font-bold text-secondary-900 font-playfair">Standard</h3>
                 <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
                   GPT-4o
                 </span>
               </div>
               <div className="mb-4">
-                <span className="text-4xl font-bold text-charcoal">$1.49</span>
-                <span className="text-charcoal/60">/page</span>
+                <span className="text-4xl font-bold text-secondary-900">$1.49</span>
+                <span className="text-secondary-600">/page</span>
               </div>
-              <p className="text-sm text-charcoal/70 mb-6">High-quality generation for most use cases</p>
+              <p className="text-sm text-secondary-700 mb-6">High-quality generation for most use cases</p>
               <ul className="space-y-3">
                 <li className="flex items-start space-x-2 text-sm">
                   <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -242,16 +242,16 @@ const PricingPage = () => {
                 </span>
               </div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-charcoal font-playfair">Pro</h3>
+                <h3 className="text-2xl font-bold text-secondary-900 font-playfair">Pro</h3>
                 <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
                   GPT-4 Turbo
                 </span>
               </div>
               <div className="mb-4">
-                <span className="text-4xl font-bold text-charcoal">$2.49</span>
-                <span className="text-charcoal/60">/page</span>
+                <span className="text-4xl font-bold text-secondary-900">$2.49</span>
+                <span className="text-secondary-600">/page</span>
               </div>
-              <p className="text-sm text-charcoal/70 mb-6">Premium quality with priority processing</p>
+              <p className="text-sm text-secondary-700 mb-6">Premium quality with priority processing</p>
               <ul className="space-y-3">
                 <li className="flex items-start space-x-2 text-sm">
                   <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -273,60 +273,60 @@ const PricingPage = () => {
             </div>
           </div>
 
-          <div className="text-center mt-6 text-sm text-charcoal/60">
+          <div className="text-center mt-6 text-sm text-secondary-600">
             <p>Example: A 10-page research paper costs $14.90 (Standard) or $24.90 (Pro)</p>
           </div>
         </div>
 
         {/* FAQ Section */}
         <div className="max-w-4xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-charcoal font-playfair text-center mb-12">
+          <h2 className="text-3xl font-bold text-secondary-900 font-playfair text-center mb-12">
             Frequently Asked Questions
           </h2>
 
           <div className="space-y-6">
             <div className="card">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
                 Can I change plans at any time?
               </h3>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-secondary-700 font-lato">
                 Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate the billing accordingly.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
                 What's the difference between Student and Researcher plans?
               </h3>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-secondary-700 font-lato">
                 <strong>Student Plan:</strong> Unlimited bibliography entries with all citation styles.<br />
                 <strong>Researcher Plan:</strong> Everything in Student PLUS Topic & Outline Generator, which analyzes your sources to suggest research topics and generate complete paper outlines.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
                 How does content generation pricing work?
               </h3>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-secondary-700 font-lato">
                 Content generation (AI paper writing) is pay-per-use. You only pay for papers you generate, based on length. Choose Standard ($1.49/page) or Pro ($2.49/page) tier. This is separate from bibliography subscriptions.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
                 Is there a student discount?
               </h3>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-secondary-700 font-lato">
                 Our Student plan is specifically designed for individual students and researchers at an affordable price. For additional institutional discounts, contact our sales team.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
                 What payment methods do you accept?
               </h3>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-secondary-700 font-lato">
                 We accept all major credit cards, PayPal, and bank transfers for institutional plans. All payments are processed securely through Stripe.
               </p>
             </div>
@@ -334,7 +334,7 @@ const PricingPage = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="card max-w-4xl mx-auto text-center bg-gradient-chestnut text-white">
+        <div className="card max-w-4xl mx-auto text-center bg-gradient-brand text-white">
           <h2 className="text-3xl lg:text-4xl font-bold font-playfair mb-4">
             Ready to Transform Your Research?
           </h2>
@@ -346,13 +346,13 @@ const PricingPage = () => {
               <>
                 <Link 
                   to="/signup" 
-                  className="bg-white text-chestnut hover:bg-bone transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
+                  className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
                 >
                   Start Free Trial
                 </Link>
                 <Link 
                   to="/login" 
-                  className="border-2 border-white text-white hover:bg-white hover:text-chestnut transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
+                  className="border-2 border-white text-white hover:bg-white hover:text-accent-600 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
                 >
                   Sign In
                 </Link>
@@ -360,7 +360,7 @@ const PricingPage = () => {
             ) : (
               <Link 
                 to="/create" 
-                className="bg-white text-chestnut hover:bg-bone transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
+                className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
               >
                 Create Your First Entry
               </Link>

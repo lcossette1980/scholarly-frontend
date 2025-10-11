@@ -131,10 +131,10 @@ export const withErrorBoundary = (Component, errorFallback = null) => {
     fallback: errorFallback || (({ error, resetError }) => (
       <div className="min-h-screen bg-pearl flex items-center justify-center p-4">
         <div className="card max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">
+          <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
             Something went wrong
           </h2>
-          <p className="text-charcoal/70 font-lato mb-6">
+          <p className="text-secondary-700 font-lato mb-6">
             We're sorry, but something unexpected happened. Please try again.
           </p>
           <button

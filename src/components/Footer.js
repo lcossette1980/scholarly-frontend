@@ -5,13 +5,13 @@ import { Brain, Mail, Facebook, Github, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-charcoal text-white py-12 mt-16">
+    <footer className="bg-primary-900 text-white py-12 mt-16">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-chestnut rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>

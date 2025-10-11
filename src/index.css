@@ -11,10 +11,10 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
-    @apply font-lato text-charcoal antialiased;
-    background: linear-gradient(135deg, #F5F2EA 0%, #D7CEB2 50%, #A59E8C 100%);
+    @apply font-lato text-secondary-900 antialiased;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
     min-height: 100vh;
   }
 
@@ -24,15 +24,15 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-bone;
+    @apply bg-secondary-100;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-khaki rounded-full;
+    @apply bg-secondary-400 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-chestnut;
+    @apply bg-accent-600;
   }
 }
 
@@ -44,20 +44,20 @@
   }
 
   .btn-primary {
-    @apply bg-chestnut text-white hover:bg-chestnut-700 focus:ring-chestnut-500 transform hover:scale-105 hover:shadow-brand;
+    @apply bg-accent text-white hover:bg-accent-700 focus:ring-accent-500 transform hover:scale-105 hover:shadow-accent;
   }
 
   .btn-secondary {
-    @apply bg-transparent text-chestnut border-2 border-chestnut hover:bg-chestnut hover:text-white focus:ring-chestnut-500;
+    @apply bg-transparent text-accent border-2 border-accent hover:bg-accent hover:text-white focus:ring-accent-500;
   }
 
   .btn-outline {
-    @apply bg-white/80 text-charcoal border border-khaki/30 hover:bg-white hover:border-chestnut focus:ring-chestnut-500;
+    @apply bg-white/80 text-secondary-900 border border-secondary-300/30 hover:bg-white hover:border-accent focus:ring-accent-500;
   }
 
   /* Cards */
   .card {
-    @apply bg-white/70 backdrop-blur-sm border border-khaki/30 rounded-2xl p-8 shadow-soft;
+    @apply bg-white/70 backdrop-blur-sm border border-secondary-200/30 rounded-2xl p-8 shadow-soft;
   }
 
   .card-hover {
@@ -66,20 +66,20 @@
 
   /* Form Elements */
   .form-input {
-    @apply w-full px-4 py-3 bg-white/80 border border-khaki/30 rounded-lg focus:ring-2 focus:ring-chestnut/50 focus:border-chestnut transition-all outline-none text-charcoal font-lato;
+    @apply w-full px-4 py-3 bg-white/80 border border-secondary-300/30 rounded-lg focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all outline-none text-secondary-900 font-lato;
   }
 
   .form-label {
-    @apply block text-sm font-medium text-charcoal mb-2 font-lato;
+    @apply block text-sm font-medium text-secondary-900 mb-2 font-lato;
   }
 
   /* Upload Zone */
   .upload-zone {
-    @apply relative border-2 border-dashed border-khaki/40 rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-chestnut/60 hover:bg-chestnut/5;
+    @apply relative border-2 border-dashed border-secondary-300/40 rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-accent-600/60 hover:bg-accent/5;
   }
 
   .upload-zone.dragover {
-    @apply border-chestnut bg-chestnut/10 scale-105;
+    @apply border-accent bg-accent/10 scale-105;
   }
 
   /* Glass Effect */
@@ -89,7 +89,7 @@
 
   /* Gradient Text */
   .text-gradient {
-    background: linear-gradient(135deg, #A44A3F 0%, #2A2A2A 100%);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -121,20 +121,20 @@
 
   /* Custom Gradient Backgrounds */
   .bg-gradient-brand {
-    background: linear-gradient(135deg, #F5F2EA 0%, #D7CEB2 50%, #A59E8C 100%);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
   }
 
-  .bg-gradient-chestnut {
-    background: linear-gradient(135deg, #A44A3F 0%, #2A2A2A 100%);
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #1e3a5f 0%, #334e68 100%);
   }
 
   .bg-gradient-overlay {
-    background: linear-gradient(90deg, rgba(164, 74, 63, 0.9) 0%, rgba(42, 42, 42, 0.9) 100%);
+    background: linear-gradient(90deg, rgba(30, 58, 95, 0.95) 0%, rgba(37, 99, 235, 0.95) 100%);
   }
 
   /* Loading States */
   .loading-skeleton {
-    @apply animate-pulse bg-pearl/50 rounded;
+    @apply animate-pulse bg-secondary-200/50 rounded;
   }
 
   .loading-dots::after {

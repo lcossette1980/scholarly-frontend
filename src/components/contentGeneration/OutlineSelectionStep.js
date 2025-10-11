@@ -61,7 +61,7 @@ const OutlineSelectionStep = ({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">
+      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
         Choose or Create an Outline
       </h2>
       <p className="text-gray-600 mb-6">
@@ -112,7 +112,7 @@ const OutlineSelectionStep = ({
                       </div>
 
                       <div className="flex-1">
-                        <h4 className="font-semibold text-charcoal mb-1">{outline.title}</h4>
+                        <h4 className="font-semibold text-secondary-900 mb-1">{outline.title}</h4>
                         <p className="text-xs text-gray-500">{outline.sections.length} sections</p>
                       </div>
 

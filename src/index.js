@@ -24,10 +24,10 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="min-h-screen bg-gradient-brand flex items-center justify-center px-4">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-charcoal font-playfair mb-4">
+            <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-4">
               Oops! Something went wrong
             </h1>
-            <p className="text-charcoal/70 font-lato mb-6">
+            <p className="text-secondary-700 font-lato mb-6">
               We're sorry for the inconvenience. Please try refreshing the page.
             </p>
             <button

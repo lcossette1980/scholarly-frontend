@@ -62,12 +62,12 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-chestnut rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
               <Brain className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-charcoal font-playfair">ScholarlyAI</h1>
-              <p className="text-xs text-chestnut font-medium font-lato hidden sm:block">
+              <h1 className="text-xl font-bold text-secondary-900 font-playfair">ScholarlyAI</h1>
+              <p className="text-xs text-accent font-medium font-lato hidden sm:block">
                 AI Research Assistant
               </p>
             </div>
@@ -77,16 +77,16 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-6">
             {currentUser ? (
               <>
-                <Link to="/dashboard" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                <Link to="/dashboard" className="text-secondary-900 hover:text-accent-600 transition-colors font-medium">
                   Dashboard
                 </Link>
-                <Link to="/create" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                <Link to="/create" className="text-secondary-900 hover:text-accent-600 transition-colors font-medium">
                   Create Entry
                 </Link>
-                <Link to="/features" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                <Link to="/features" className="text-secondary-900 hover:text-accent-600 transition-colors font-medium">
                   Features
                 </Link>
-                <Link to="/pricing" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                <Link to="/pricing" className="text-secondary-900 hover:text-accent-600 transition-colors font-medium">
                   Pricing
                 </Link>
                 
@@ -94,9 +94,9 @@ const Navbar = () => {
                 <div className="relative" ref={profileRef}>
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center space-x-2 text-charcoal hover:text-chestnut transition-colors"
+                    className="flex items-center space-x-2 text-secondary-900 hover:text-accent-600 transition-colors"
                   >
-                    <div className="w-8 h-8 bg-gradient-chestnut rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-brand rounded-full flex items-center justify-center">
                       {currentUser.photoURL ? (
                         <img src={currentUser.photoURL} alt="Profile" className="w-8 h-8 rounded-full" />
                       ) : (
@@ -109,17 +109,17 @@ const Navbar = () => {
                   {isProfileOpen && (
                     <div className="absolute right-0 mt-2 w-48 glass rounded-lg shadow-lg border border-white/20 py-2">
                       <div className="px-4 py-2 border-b border-white/20">
-                        <p className="text-sm font-medium text-charcoal">{currentUser.displayName}</p>
-                        <p className="text-xs text-charcoal/60">{currentUser.email}</p>
+                        <p className="text-sm font-medium text-secondary-900">{currentUser.displayName}</p>
+                        <p className="text-xs text-secondary-600">{currentUser.email}</p>
                         {userDocument?.subscription && (
-                          <p className="text-xs text-chestnut font-medium capitalize">
+                          <p className="text-xs text-accent font-medium capitalize">
                             {userDocument.subscription.plan} Plan
                           </p>
                         )}
                       </div>
                       <Link
                         to="/profile"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors"
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
                         onClick={() => setIsProfileOpen(false)}
                       >
                         <Settings className="w-4 h-4" />
@@ -127,7 +127,7 @@ const Navbar = () => {
                       </Link>
                       <Link
                         to="/dashboard"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors"
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
                         onClick={() => setIsProfileOpen(false)}
                       >
                         <FileText className="w-4 h-4" />
@@ -135,7 +135,7 @@ const Navbar = () => {
                       </Link>
                       <Link
                         to="/content/history"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors"
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
                         onClick={() => setIsProfileOpen(false)}
                       >
                         <FileText className="w-4 h-4" />
@@ -144,7 +144,7 @@ const Navbar = () => {
                       {isAdmin(currentUser) && (
                         <Link
                           to="/admin"
-                          className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors border-t border-white/20"
+                          className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors border-t border-white/20"
                           onClick={() => setIsProfileOpen(false)}
                         >
                           <Shield className="w-4 h-4" />
@@ -153,7 +153,7 @@ const Navbar = () => {
                       )}
                       <button
                         onClick={handleLogout}
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-charcoal hover:bg-white/20 transition-colors w-full text-left border-t border-white/20"
+                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors w-full text-left border-t border-white/20"
                       >
                         <LogOut className="w-4 h-4" />
                         <span>Logout</span>
@@ -164,10 +164,10 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/features" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                <Link to="/features" className="text-secondary-900 hover:text-accent-600 transition-colors font-medium">
                   Features
                 </Link>
-                <Link to="/pricing" className="text-charcoal hover:text-chestnut transition-colors font-medium">
+                <Link to="/pricing" className="text-secondary-900 hover:text-accent-600 transition-colors font-medium">
                   Pricing
                 </Link>
                 <Link to="/login" className="btn btn-secondary">
@@ -183,7 +183,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-charcoal hover:text-chestnut transition-colors"
+            className="md:hidden p-2 text-secondary-900 hover:text-accent-600 transition-colors"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -197,42 +197,42 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/dashboard"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Dashboard
                   </Link>
                   <Link
                     to="/create"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Create Entry
                   </Link>
                   <Link
                     to="/features"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Features
                   </Link>
                   <Link
                     to="/pricing"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Pricing
                   </Link>
                   <Link
                     to="/profile"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium text-left"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium text-left"
                   >
                     Logout
                   </button>
@@ -241,21 +241,21 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/features"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Features
                   </Link>
                   <Link
                     to="/pricing"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Pricing
                   </Link>
                   <Link
                     to="/login"
-                    className="block text-charcoal hover:text-chestnut transition-colors font-medium"
+                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Sign In

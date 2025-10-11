@@ -26,7 +26,7 @@ const HeroCarousel = () => {
       subtitle: "Perfect bibliographies in 90 seconds",
       description: "Upload any academic PDF and get a complete annotated bibliography entry. AI extracts citations, summarizes findings, identifies methodologies, and pulls smart quotes with page numbers.",
       icon: FileText,
-      iconColor: "text-chestnut",
+      iconColor: "text-accent",
       bgColor: "from-red-50 via-white to-orange-50",
       image: "/images/hero-bibliography.png",
       features: [
@@ -102,16 +102,16 @@ const HeroCarousel = () => {
                 <div className={`w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md`}>
                   <Icon className={`w-6 h-6 ${slide.iconColor}`} />
                 </div>
-                <span className="text-sm font-semibold text-charcoal/60 uppercase tracking-wide">
+                <span className="text-sm font-semibold text-secondary-600 uppercase tracking-wide">
                   {slide.subtitle}
                 </span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal font-playfair mb-6 leading-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-6 leading-tight">
                 {slide.title}
               </h2>
 
-              <p className="text-lg text-charcoal/80 mb-6 leading-relaxed font-lato">
+              <p className="text-lg text-secondary-800 mb-6 leading-relaxed font-lato">
                 {slide.description}
               </p>
 
@@ -120,7 +120,7 @@ const HeroCarousel = () => {
                 {slide.features.map((feature, idx) => (
                   <div key={idx} className="flex items-center space-x-2">
                     <CheckCircle className={`w-4 h-4 ${slide.iconColor} flex-shrink-0`} />
-                    <span className="text-sm text-charcoal/80">{feature}</span>
+                    <span className="text-sm text-secondary-800">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -142,17 +142,17 @@ const HeroCarousel = () => {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2"
+          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="w-6 h-6 text-charcoal" />
+          <ChevronLeft className="w-6 h-6 text-secondary-900" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2"
+          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
           aria-label="Next slide"
         >
-          <ChevronRight className="w-6 h-6 text-charcoal" />
+          <ChevronRight className="w-6 h-6 text-secondary-900" />
         </button>
       </div>
 
@@ -162,7 +162,7 @@ const HeroCarousel = () => {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`p-2 transition-all focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2 rounded-full ${
+            className={`p-2 transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-full ${
               index === currentSlide
                 ? ''
                 : ''
@@ -171,8 +171,8 @@ const HeroCarousel = () => {
           >
             <div className={`transition-all ${
               index === currentSlide
-                ? 'w-8 h-2 bg-chestnut rounded-full'
-                : 'w-2 h-2 bg-charcoal/30 rounded-full hover:bg-charcoal/50'
+                ? 'w-8 h-2 bg-accent rounded-full'
+                : 'w-2 h-2 bg-primary-900/30 rounded-full hover:bg-primary-900/50'
             }`} />
           </button>
         ))}
@@ -186,10 +186,10 @@ const HeroCarousel = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-chestnut focus:ring-offset-2 ${
+              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 ${
                 index === currentSlide
-                  ? 'bg-chestnut text-white'
-                  : 'bg-white text-charcoal/60 hover:bg-bone border border-khaki/30'
+                  ? 'bg-accent text-white'
+                  : 'bg-white text-secondary-600 hover:bg-secondary-50 border border-secondary-300/30'
               }`}
             >
               <div className="flex items-center space-x-1">

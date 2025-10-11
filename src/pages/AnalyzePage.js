@@ -94,7 +94,7 @@ const AnalyzePage = () => {
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-2">
-              <span className="w-8 h-8 bg-chestnut/10 text-chestnut rounded-full flex items-center justify-center font-semibold text-sm">
+              <span className="w-8 h-8 bg-accent/10 text-accent rounded-full flex items-center justify-center font-semibold text-sm">
                 {index + 1}
               </span>
               <div className="flex items-center space-x-1">
@@ -103,28 +103,28 @@ const AnalyzePage = () => {
                     key={i}
                     className={`w-4 h-4 ${
                       i < Math.round((topic.relevance_score * 5))
-                        ? 'text-chestnut fill-chestnut'
-                        : 'text-charcoal/20'
+                        ? 'text-accent fill-chestnut'
+                        : 'text-secondary-900/20'
                     }`}
                   />
                 ))}
-                <span className="text-sm font-medium text-charcoal/70 ml-2">
+                <span className="text-sm font-medium text-secondary-700 ml-2">
                   {scorePercentage}% relevance
                 </span>
               </div>
             </div>
 
-            <h3 className="text-xl font-bold text-charcoal font-playfair mb-3">
+            <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3">
               {topic.title}
             </h3>
 
-            <p className="text-charcoal/80 font-lato mb-4 leading-relaxed">
+            <p className="text-secondary-800 font-lato mb-4 leading-relaxed">
               {topic.rationale}
             </p>
 
             <div className="bg-pearl/30 rounded-lg p-3 mb-4">
-              <h4 className="text-sm font-semibold text-charcoal mb-2">Suggested Structure:</h4>
-              <ol className="text-sm text-charcoal/70 space-y-1 list-decimal ml-4">
+              <h4 className="text-sm font-semibold text-secondary-900 mb-2">Suggested Structure:</h4>
+              <ol className="text-sm text-secondary-700 space-y-1 list-decimal ml-4">
                 {topic.suggested_structure.map((point, idx) => (
                   <li key={idx}>{point}</li>
                 ))}
@@ -167,15 +167,15 @@ const AnalyzePage = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate('/bibliography')}
-              className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
+              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-charcoal font-playfair">
+              <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
                 Topic & Outline Generator
               </h1>
-              <p className="text-charcoal/70 font-lato">
+              <p className="text-secondary-700 font-lato">
                 AI-powered research synthesis for {selectedEntryData.length} selected entries
               </p>
             </div>
@@ -183,18 +183,18 @@ const AnalyzePage = () => {
         </div>
 
         {/* Selected Entries Summary */}
-        <div className="card mb-8 bg-gradient-to-br from-chestnut/5 to-khaki/5">
+        <div className="card mb-8 bg-gradient-to-br from-accent/5 to-khaki/5">
           <div className="flex items-start space-x-4">
-            <div className="w-12 h-12 bg-chestnut/20 rounded-lg flex items-center justify-center">
-              <FileText className="w-6 h-6 text-chestnut" />
+            <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
+              <FileText className="w-6 h-6 text-accent" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
                 Selected Entries ({selectedEntryData.length})
               </h3>
               <div className="space-y-1 max-h-32 overflow-y-auto">
                 {selectedEntryData.map((entry, idx) => (
-                  <div key={idx} className="text-sm text-charcoal/70 truncate break-words">
+                  <div key={idx} className="text-sm text-secondary-700 truncate break-words">
                     • {entry.citation}
                   </div>
                 ))}
@@ -207,10 +207,10 @@ const AnalyzePage = () => {
         {!topics && (
           <div className="card mb-8">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                <Lightbulb className="w-6 h-6 text-chestnut" />
+              <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                <Lightbulb className="w-6 h-6 text-accent" />
               </div>
-              <h2 className="text-2xl font-bold text-charcoal font-playfair">
+              <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
                 Configure Your Analysis
               </h2>
             </div>
@@ -230,12 +230,12 @@ const AnalyzePage = () => {
                       onClick={() => setOutputType(type.value)}
                       className={`p-4 rounded-lg border-2 transition-all text-left ${
                         outputType === type.value
-                          ? 'border-chestnut bg-chestnut/5'
-                          : 'border-khaki/30 hover:border-khaki/50'
+                          ? 'border-accent-600 bg-accent/5'
+                          : 'border-secondary-300/30 hover:border-secondary-300/50'
                       }`}
                     >
-                      <div className="font-semibold text-charcoal mb-1">{type.label}</div>
-                      <div className="text-sm text-charcoal/60">{type.desc}</div>
+                      <div className="font-semibold text-secondary-900 mb-1">{type.label}</div>
+                      <div className="text-sm text-secondary-600">{type.desc}</div>
                     </button>
                   ))}
                 </div>
@@ -252,9 +252,9 @@ const AnalyzePage = () => {
                   max="10"
                   value={numTopics}
                   onChange={(e) => setNumTopics(parseInt(e.target.value))}
-                  className="w-full h-2 bg-khaki/30 rounded-lg appearance-none cursor-pointer accent-chestnut"
+                  className="w-full h-2 bg-secondary-200/30 rounded-lg appearance-none cursor-pointer accent-chestnut"
                 />
-                <div className="flex justify-between text-sm text-charcoal/60 mt-1">
+                <div className="flex justify-between text-sm text-secondary-600 mt-1">
                   <span>3 topics</span>
                   <span>10 topics</span>
                 </div>
@@ -263,7 +263,7 @@ const AnalyzePage = () => {
               {/* Focus Area (Optional) */}
               <div>
                 <label className="form-label">
-                  Focus Area <span className="text-charcoal/40">(optional)</span>
+                  Focus Area <span className="text-secondary-400">(optional)</span>
                 </label>
                 <input
                   type="text"
@@ -273,7 +273,7 @@ const AnalyzePage = () => {
                   onChange={(e) => setFocusArea(e.target.value)}
                   maxLength={200}
                 />
-                <p className="text-sm text-charcoal/60 mt-1">
+                <p className="text-sm text-secondary-600 mt-1">
                   Narrow your topic suggestions to a specific angle or theme
                 </p>
               </div>
@@ -304,15 +304,15 @@ const AnalyzePage = () => {
         {isAnalyzing && (
           <div className="card">
             <div className="text-center space-y-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-chestnut to-charcoal rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto">
                 <Brain className="w-8 h-8 text-white animate-pulse" />
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-charcoal font-playfair mb-2">
+                <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-2">
                   Analyzing Your Research
                 </h3>
-                <p className="text-charcoal/70 font-lato">
+                <p className="text-secondary-700 font-lato">
                   Our AI is synthesizing {selectedEntryData.length} entries to generate compelling topic suggestions...
                 </p>
               </div>
@@ -320,12 +320,12 @@ const AnalyzePage = () => {
               {/* Progress Bar */}
               <div className="max-w-md mx-auto space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-charcoal/70">Progress</span>
-                  <span className="text-chestnut font-medium">{progress}%</span>
+                  <span className="text-secondary-700">Progress</span>
+                  <span className="text-accent font-medium">{progress}%</span>
                 </div>
                 <div className="w-full h-3 bg-pearl/50 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-chestnut to-charcoal transition-all duration-300"
+                    className="h-full bg-gradient-to-r from-accent to-charcoal transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
@@ -343,10 +343,10 @@ const AnalyzePage = () => {
                   <CheckCircle className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-charcoal font-playfair mb-1">
+                  <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-1">
                     Analysis Complete!
                   </h3>
-                  <p className="text-charcoal/70 font-lato">
+                  <p className="text-secondary-700 font-lato">
                     Generated {topics.topics.length} topic suggestions from {topics.entry_count} entries
                   </p>
                 </div>
@@ -354,7 +354,7 @@ const AnalyzePage = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-charcoal font-playfair">
+              <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
                 Suggested Topics
               </h2>
               <button

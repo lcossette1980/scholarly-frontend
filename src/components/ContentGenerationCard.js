@@ -23,7 +23,7 @@ const ContentGenerationCard = ({ entries }) => {
             <div className="bg-blue-500 rounded-lg p-2">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-charcoal font-playfair">
+            <h3 className="text-xl font-bold text-secondary-900 font-playfair">
               New: AI Content Generator
             </h3>
             <span className="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
