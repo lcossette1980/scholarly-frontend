@@ -134,7 +134,7 @@ const PricingConfirmationStep = ({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-charcoal font-playfair mb-4">
+      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
         Choose Your Quality Tier
       </h2>
       <p className="text-gray-600 mb-6">
@@ -170,7 +170,7 @@ const PricingConfirmationStep = ({
                     <Icon className={`w-6 h-6 text-${tier.color}-600`} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-charcoal">{tier.name}</h3>
+                    <h3 className="font-bold text-lg text-secondary-900">{tier.name}</h3>
                     <p className="text-xs text-gray-600">{tier.model}</p>
                   </div>
                 </div>
@@ -186,7 +186,7 @@ const PricingConfirmationStep = ({
 
               <div className="mb-4">
                 <div className="flex items-baseline space-x-1">
-                  <span className="text-3xl font-bold text-charcoal">${tier.pricePerPage}</span>
+                  <span className="text-3xl font-bold text-secondary-900">${tier.pricePerPage}</span>
                   <span className="text-gray-600">/page</span>
                 </div>
                 <p className="text-sm text-gray-600 mt-1">
@@ -209,39 +209,39 @@ const PricingConfirmationStep = ({
 
       {/* Order Summary */}
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-6">
-        <h3 className="font-bold text-lg text-charcoal mb-4">Order Summary</h3>
+        <h3 className="font-bold text-lg text-secondary-900 mb-4">Order Summary</h3>
 
         <div className="space-y-3 mb-4 pb-4 border-b border-gray-200">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Sources Selected</span>
-            <span className="font-medium text-charcoal">{selectedSources.length} sources</span>
+            <span className="font-medium text-secondary-900">{selectedSources.length} sources</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Document Type</span>
-            <span className="font-medium text-charcoal capitalize">
+            <span className="font-medium text-secondary-900 capitalize">
               {settings.document_type.replace('_', ' ')}
             </span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Target Length</span>
-            <span className="font-medium text-charcoal">
+            <span className="font-medium text-secondary-900">
               {settings.target_words} words ({estimatedPages} pages)
             </span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Citation Style</span>
-            <span className="font-medium text-charcoal">{settings.citation_style}</span>
+            <span className="font-medium text-secondary-900">{settings.citation_style}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Quality Tier</span>
-            <span className="font-medium text-charcoal">{selectedTierData.name}</span>
+            <span className="font-medium text-secondary-900">{selectedTierData.name}</span>
           </div>
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="font-bold text-lg text-charcoal">Total</span>
+          <span className="font-bold text-lg text-secondary-900">Total</span>
           <div className="text-right">
-            <span className="font-bold text-2xl text-charcoal">${totalCost}</span>
+            <span className="font-bold text-2xl text-secondary-900">${totalCost}</span>
             <p className="text-xs text-gray-600">Pay after generation</p>
           </div>
         </div>

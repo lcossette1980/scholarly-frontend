@@ -371,16 +371,16 @@ const HelpCenterPage = () => {
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-charcoal font-playfair mb-4">
+          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-4">
             Help Center
           </h1>
-          <p className="text-xl text-charcoal/70 font-lato mb-8">
+          <p className="text-xl text-secondary-700 font-lato mb-8">
             Find answers and get support for ScholarlyAI
           </p>
           
           {/* Search */}
           <div className="max-w-md mx-auto relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-charcoal/40 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400 w-5 h-5" />
             <input
               type="text"
               placeholder="Search for help..."
@@ -399,24 +399,24 @@ const HelpCenterPage = () => {
               <div>
                 <button
                   onClick={() => setSelectedArticle(null)}
-                  className="flex items-center space-x-2 text-chestnut hover:text-chestnut/80 transition-colors mb-6"
+                  className="flex items-center space-x-2 text-accent hover:text-accent-600/80 transition-colors mb-6"
                 >
                   <ChevronRight className="w-4 h-4 transform rotate-180" />
                   <span className="font-lato">Back to Help Center</span>
                 </button>
                 
                 <div className="card">
-                  <h1 className="text-3xl font-bold text-charcoal font-playfair mb-6">
+                  <h1 className="text-3xl font-bold text-secondary-900 font-playfair mb-6">
                     {helpContent[selectedArticle]?.title}
                   </h1>
                   
                   <div className="space-y-6">
                     {helpContent[selectedArticle]?.content.map((section, index) => (
                       <div key={index}>
-                        <h3 className="text-xl font-semibold text-charcoal font-playfair mb-3">
+                        <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-3">
                           {section.subtitle}
                         </h3>
-                        <p className="text-charcoal/80 font-lato leading-relaxed whitespace-pre-line">
+                        <p className="text-secondary-800 font-lato leading-relaxed whitespace-pre-line">
                           {section.text}
                         </p>
                       </div>
@@ -427,24 +427,24 @@ const HelpCenterPage = () => {
             ) : (
               /* Categories and FAQ View */
               <>
-                <h2 className="text-2xl font-bold text-charcoal font-playfair mb-8">Browse by Category</h2>
+                <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-8">Browse by Category</h2>
                 <div className="grid md:grid-cols-2 gap-6 mb-12">
                   {categories.map((category, index) => (
                     <div key={index} className="card card-hover">
                       <div className="flex items-center space-x-3 mb-4">
-                        <div className="w-12 h-12 bg-chestnut/10 rounded-lg flex items-center justify-center text-chestnut">
+                        <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
                           {category.icon}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-charcoal font-playfair">{category.title}</h3>
-                          <p className="text-sm text-charcoal/60 font-lato">{category.description}</p>
+                          <h3 className="font-semibold text-secondary-900 font-playfair">{category.title}</h3>
+                          <p className="text-sm text-secondary-600 font-lato">{category.description}</p>
                         </div>
                       </div>
                       <ul className="space-y-1">
                         {category.articles.map((article, idx) => (
                           <li 
                             key={idx} 
-                            className="text-sm text-charcoal/70 hover:text-chestnut cursor-pointer transition-colors"
+                            className="text-sm text-secondary-700 hover:text-accent-600 cursor-pointer transition-colors"
                             onClick={() => setSelectedArticle(article)}
                           >
                             {article}
@@ -456,7 +456,7 @@ const HelpCenterPage = () => {
                 </div>
 
                 {/* FAQ Section */}
-                <h2 className="text-2xl font-bold text-charcoal font-playfair mb-8">
+                <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-8">
                   Frequently Asked Questions
                 </h2>
                 <div className="space-y-4">
@@ -466,16 +466,16 @@ const HelpCenterPage = () => {
                         className="w-full text-left flex items-center justify-between"
                         onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
                       >
-                        <h3 className="font-semibold text-charcoal font-lato pr-4">{faq.question}</h3>
+                        <h3 className="font-semibold text-secondary-900 font-lato pr-4">{faq.question}</h3>
                         {openFAQ === index ? (
-                          <ChevronDown className="w-5 h-5 text-charcoal/60" />
+                          <ChevronDown className="w-5 h-5 text-secondary-600" />
                         ) : (
-                          <ChevronRight className="w-5 h-5 text-charcoal/60" />
+                          <ChevronRight className="w-5 h-5 text-secondary-600" />
                         )}
                       </button>
                       {openFAQ === index && (
-                        <div className="mt-4 pt-4 border-t border-khaki/20">
-                          <p className="text-charcoal/70 font-lato leading-relaxed">{faq.answer}</p>
+                        <div className="mt-4 pt-4 border-t border-secondary-300/20">
+                          <p className="text-secondary-700 font-lato leading-relaxed">{faq.answer}</p>
                         </div>
                       )}
                     </div>
@@ -489,11 +489,11 @@ const HelpCenterPage = () => {
           <div className="space-y-6">
             <div className="card">
               <div className="text-center">
-                <div className="w-16 h-16 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MessageCircle className="w-8 h-8 text-chestnut" />
+                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MessageCircle className="w-8 h-8 text-accent" />
                 </div>
-                <h3 className="font-semibold text-charcoal font-playfair mb-2">Live Chat</h3>
-                <p className="text-charcoal/70 font-lato mb-4 text-sm">
+                <h3 className="font-semibold text-secondary-900 font-playfair mb-2">Live Chat</h3>
+                <p className="text-secondary-700 font-lato mb-4 text-sm">
                   Get instant help from our support team
                 </p>
                 <button className="btn btn-primary w-full">Start Chat</button>
@@ -502,12 +502,12 @@ const HelpCenterPage = () => {
 
             <div className="card lg:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-chestnut/10 rounded-lg flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-chestnut" />
+                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-charcoal font-playfair">Contact Support</h3>
-                  <p className="text-sm text-charcoal/70 font-lato">We'll respond within 24 hours</p>
+                  <h3 className="font-semibold text-secondary-900 font-playfair">Contact Support</h3>
+                  <p className="text-sm text-secondary-700 font-lato">We'll respond within 24 hours</p>
                 </div>
               </div>
 
@@ -568,7 +568,7 @@ const HelpCenterPage = () => {
                 </button>
 
                 {!currentUser && (
-                  <p className="text-sm text-charcoal/60 text-center">
+                  <p className="text-sm text-secondary-600 text-center">
                     Please sign in to send a support message
                   </p>
                 )}
@@ -577,11 +577,11 @@ const HelpCenterPage = () => {
 
             <div className="card">
               <div className="text-center">
-                <div className="w-16 h-16 bg-chestnut/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Book className="w-8 h-8 text-chestnut" />
+                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Book className="w-8 h-8 text-accent" />
                 </div>
-                <h3 className="font-semibold text-charcoal font-playfair mb-2">Documentation</h3>
-                <p className="text-charcoal/70 font-lato mb-4 text-sm">
+                <h3 className="font-semibold text-secondary-900 font-playfair mb-2">Documentation</h3>
+                <p className="text-secondary-700 font-lato mb-4 text-sm">
                   Detailed guides and tutorials
                 </p>
                 <button className="btn btn-outline w-full">View Docs</button>
@@ -589,9 +589,9 @@ const HelpCenterPage = () => {
             </div>
 
             {/* Contact Hours */}
-            <div className="bg-bone border border-khaki/30 rounded-lg p-4">
-              <h4 className="font-semibold text-charcoal font-lato mb-2">Support Hours</h4>
-              <div className="space-y-1 text-sm text-charcoal/70 font-lato">
+            <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-4">
+              <h4 className="font-semibold text-secondary-900 font-lato mb-2">Support Hours</h4>
+              <div className="space-y-1 text-sm text-secondary-700 font-lato">
                 <p>Monday - Friday: 9 AM - 6 PM EST</p>
                 <p>Saturday: 10 AM - 4 PM EST</p>
                 <p>Sunday: Closed</p>

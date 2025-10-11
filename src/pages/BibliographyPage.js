@@ -206,42 +206,42 @@ const BibliographyPage = () => {
     return (
       <div 
         className={`card cursor-pointer transition-all ${
-          isSelected ? 'ring-2 ring-chestnut bg-chestnut/5' : 'hover:shadow-md'
+          isSelected ? 'ring-2 ring-accent bg-accent/5' : 'hover:shadow-md'
         }`}
         onClick={() => handleSelectEntry(entry.id)}
       >
         <div className="flex items-start space-x-4">
           <div className="pt-1">
             {isSelected ? (
-              <CheckSquare className="w-5 h-5 text-chestnut" />
+              <CheckSquare className="w-5 h-5 text-accent" />
             ) : (
-              <Square className="w-5 h-5 text-charcoal/40" />
+              <Square className="w-5 h-5 text-secondary-400" />
             )}
           </div>
           
           <div className="flex-1">
             <div className="flex items-start justify-between mb-2">
-              <span className="px-2 py-1 bg-chestnut/10 text-chestnut rounded-full text-xs font-medium">
+              <span className="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium">
                 {entry.researchFocus}
               </span>
               <button
                 onClick={(e) => handleDeleteEntry(entry.id, e)}
-                className="p-1 text-charcoal/40 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                className="p-1 text-secondary-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 title="Delete reference"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
             
-            <div className="font-semibold text-charcoal mb-2 line-clamp-3">
+            <div className="font-semibold text-secondary-900 mb-2 line-clamp-3">
               {entry.citation}
             </div>
             
-            <p className="text-charcoal/70 text-sm line-clamp-2">
+            <p className="text-secondary-700 text-sm line-clamp-2">
               {entry.narrative_overview}
             </p>
             
-            <div className="mt-3 text-xs text-charcoal/50">
+            <div className="mt-3 text-xs text-secondary-500">
               Added on {new Date(entry.createdAt?.toDate ? entry.createdAt.toDate() : entry.createdAt).toLocaleDateString()}
             </div>
           </div>
@@ -254,10 +254,10 @@ const BibliographyPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-chestnut to-charcoal rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto mb-4">
             <FileText className="w-8 h-8 text-white animate-pulse" />
           </div>
-          <p className="text-charcoal/70">Loading your bibliography...</p>
+          <p className="text-secondary-700">Loading your bibliography...</p>
         </div>
       </div>
     );
@@ -269,11 +269,11 @@ const BibliographyPage = () => {
         {/* Breadcrumb */}
         <div className="mb-4">
           <div className="flex items-center space-x-2 text-sm">
-            <Link to="/dashboard" className="text-charcoal/60 hover:text-charcoal transition-colors">
+            <Link to="/dashboard" className="text-secondary-600 hover:text-secondary-900 transition-colors">
               Dashboard
             </Link>
-            <span className="text-charcoal/40">/</span>
-            <span className="text-charcoal font-medium">Bibliography Manager</span>
+            <span className="text-secondary-400">/</span>
+            <span className="text-secondary-900 font-medium">Bibliography Manager</span>
           </div>
         </div>
 
@@ -282,15 +282,15 @@ const BibliographyPage = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate('/dashboard')}
-              className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
+              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-charcoal font-playfair">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
                 Bibliography Manager
               </h1>
-              <p className="text-sm sm:text-base text-charcoal/70 font-lato">
+              <p className="text-sm sm:text-base text-secondary-700 font-lato">
                 Advanced search, bulk operations, and export
               </p>
             </div>
@@ -304,7 +304,7 @@ const BibliographyPage = () => {
             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-charcoal/40" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary-400" />
                 <input
                   type="text"
                   placeholder="Search entries..."
@@ -357,10 +357,10 @@ const BibliographyPage = () => {
                     <Lock className="w-4 h-4 mr-2" />
                     Analyze Selected
                   </button>
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-charcoal text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-primary-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
                     Topic & Outline Generator requires Researcher plan
                     <br />
-                    <Link to="/pricing" className="text-chestnut hover:underline underline">
+                    <Link to="/pricing" className="text-accent hover:underline underline">
                       Upgrade now →
                     </Link>
                   </div>
@@ -396,7 +396,7 @@ const BibliographyPage = () => {
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleSelectAll}
-                className="flex items-center space-x-2 text-charcoal hover:text-chestnut transition-colors"
+                className="flex items-center space-x-2 text-secondary-900 hover:text-accent-600 transition-colors"
               >
                 {selectedEntries.size === filteredEntries.length && filteredEntries.length > 0 ? (
                   <CheckSquare className="w-5 h-5" />
@@ -405,7 +405,7 @@ const BibliographyPage = () => {
                 )}
                 <span className="font-medium">Select All</span>
               </button>
-              <span className="text-charcoal/70">
+              <span className="text-secondary-700">
                 {selectedEntries.size} of {filteredEntries.length} entries selected
               </span>
             </div>
@@ -413,7 +413,7 @@ const BibliographyPage = () => {
             {selectedEntries.size > 0 && (
               <button
                 onClick={() => setSelectedEntries(new Set())}
-                className="text-charcoal/60 hover:text-charcoal transition-colors"
+                className="text-secondary-600 hover:text-secondary-900 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -430,8 +430,8 @@ const BibliographyPage = () => {
           </div>
         ) : filteredEntries.length === 0 ? (
           <div className="text-center py-12">
-            <FileText className="w-16 h-16 text-charcoal/20 mx-auto mb-4" />
-            <p className="text-charcoal/60">
+            <FileText className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
+            <p className="text-secondary-600">
               {searchTerm || selectedCategory !== 'all' 
                 ? 'No entries found matching your filters' 
                 : 'No bibliography entries yet'}
@@ -446,24 +446,24 @@ const BibliographyPage = () => {
         )}
 
         {/* AI Analysis Feature Highlight */}
-        <div className="mt-12 card bg-gradient-to-br from-chestnut/10 to-khaki/10">
+        <div className="mt-12 card bg-gradient-to-br from-accent/10 to-khaki/10">
           <div className="flex items-start space-x-4">
-            <div className="w-12 h-12 bg-chestnut/20 rounded-lg flex items-center justify-center">
-              <Brain className="w-6 h-6 text-chestnut" />
+            <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
+              <Brain className="w-6 h-6 text-accent" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
                 🚀 NEW: AI Research Assistant
               </h3>
-              <ul className="text-charcoal/70 font-lato space-y-1 list-disc ml-4">
+              <ul className="text-secondary-700 font-lato space-y-1 list-disc ml-4">
                 <li>Generate article topics & detailed outlines from your selected entries</li>
                 <li>AI synthesizes your research to suggest compelling angles</li>
                 <li>Maps evidence to outline sections automatically</li>
                 <li>Export publication-ready outlines to Word</li>
               </ul>
               {selectedEntries.size >= 2 && (
-                <div className="mt-4 p-3 bg-chestnut/10 rounded-lg">
-                  <p className="text-chestnut font-medium flex items-center">
+                <div className="mt-4 p-3 bg-accent/10 rounded-lg">
+                  <p className="text-accent font-medium flex items-center">
                     <Brain className="w-4 h-4 mr-2" />
                     You have {selectedEntries.size} entries selected - perfect for analysis!
                     <button

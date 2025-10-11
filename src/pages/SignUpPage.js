@@ -122,14 +122,14 @@ const SignUpPage = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-chestnut rounded-2xl flex items-center justify-center">
+            <div className="w-16 h-16 bg-gradient-brand rounded-2xl flex items-center justify-center">
               <Brain className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-charcoal font-playfair mb-2">
+          <h1 className="text-3xl font-bold text-secondary-900 font-playfair mb-2">
             Create Account
           </h1>
-          <p className="text-charcoal/70 font-lato">
+          <p className="text-secondary-700 font-lato">
             Start your research journey with ScholarlyAI
           </p>
         </div>
@@ -144,7 +144,7 @@ const SignUpPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-charcoal/40" />
+                  <User className="h-5 w-5 text-secondary-400" />
                 </div>
                 <input
                   id="displayName"
@@ -166,7 +166,7 @@ const SignUpPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-charcoal/40" />
+                  <Mail className="h-5 w-5 text-secondary-400" />
                 </div>
                 <input
                   id="email"
@@ -188,7 +188,7 @@ const SignUpPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-charcoal/40" />
+                  <Lock className="h-5 w-5 text-secondary-400" />
                 </div>
                 <input
                   id="password"
@@ -206,13 +206,13 @@ const SignUpPage = () => {
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-charcoal/40" />
+                    <EyeOff className="h-5 w-5 text-secondary-400" />
                   ) : (
-                    <Eye className="h-5 w-5 text-charcoal/40" />
+                    <Eye className="h-5 w-5 text-secondary-400" />
                   )}
                 </button>
               </div>
-              <p className="mt-1 text-xs text-charcoal/60">
+              <p className="mt-1 text-xs text-secondary-600">
                 Minimum 6 characters
               </p>
             </div>
@@ -224,7 +224,7 @@ const SignUpPage = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-charcoal/40" />
+                  <Lock className="h-5 w-5 text-secondary-400" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -242,22 +242,22 @@ const SignUpPage = () => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-charcoal/40" />
+                    <EyeOff className="h-5 w-5 text-secondary-400" />
                   ) : (
-                    <Eye className="h-5 w-5 text-charcoal/40" />
+                    <Eye className="h-5 w-5 text-secondary-400" />
                   )}
                 </button>
               </div>
             </div>
 
             {/* Terms and Privacy */}
-            <div className="text-xs text-charcoal/60">
+            <div className="text-xs text-secondary-600">
               By creating an account, you agree to our{' '}
-              <Link to="/terms" className="text-chestnut hover:text-chestnut/80">
+              <Link to="/terms" className="text-accent hover:text-accent-600/80">
                 Terms of Service
               </Link>{' '}
               and{' '}
-              <Link to="/privacy" className="text-chestnut hover:text-chestnut/80">
+              <Link to="/privacy" className="text-accent hover:text-accent-600/80">
                 Privacy Policy
               </Link>
             </div>
@@ -279,10 +279,10 @@ const SignUpPage = () => {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-khaki/30" />
+              <div className="w-full border-t border-secondary-300/30" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-charcoal/60">Or continue with</span>
+              <span className="px-2 bg-white text-secondary-600">Or continue with</span>
             </div>
           </div>
 
@@ -290,7 +290,7 @@ const SignUpPage = () => {
           <button
             onClick={handleGoogleSignUp}
             disabled={isLoading}
-            className="w-full flex items-center justify-center px-4 py-3 border border-khaki/30 rounded-lg bg-white hover:bg-bone transition-colors font-medium text-charcoal"
+            className="w-full flex items-center justify-center px-4 py-3 border border-secondary-300/30 rounded-lg bg-white hover:bg-secondary-50 transition-colors font-medium text-secondary-900"
           >
             <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -302,9 +302,9 @@ const SignUpPage = () => {
           </button>
 
           {/* Sign In Link */}
-          <p className="mt-6 text-center text-sm text-charcoal/60">
+          <p className="mt-6 text-center text-sm text-secondary-600">
             Already have an account?{' '}
-            <Link to="/login" className="font-medium text-chestnut hover:text-chestnut/80">
+            <Link to="/login" className="font-medium text-accent hover:text-accent-600/80">
               Sign in here
             </Link>
           </p>

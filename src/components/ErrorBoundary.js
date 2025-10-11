@@ -29,11 +29,11 @@ class ErrorBoundary extends React.Component {
               <AlertTriangle className="w-10 h-10 text-red-600" />
             </div>
             
-            <h1 className="text-2xl font-bold text-charcoal font-playfair mb-4">
+            <h1 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
               Oops! Something went wrong
             </h1>
             
-            <p className="text-charcoal/70 mb-8 font-lato">
+            <p className="text-secondary-700 mb-8 font-lato">
               We're sorry, but something unexpected happened. Don't worry, your work is safe.
             </p>
             
@@ -54,10 +54,10 @@ class ErrorBoundary extends React.Component {
             
             {process.env.NODE_ENV === 'development' && (
               <details className="mt-8 text-left">
-                <summary className="cursor-pointer text-sm text-charcoal/60 font-mono">
+                <summary className="cursor-pointer text-sm text-secondary-600 font-mono">
                   Error details
                 </summary>
-                <pre className="mt-2 p-4 bg-charcoal/5 rounded-lg text-xs overflow-auto">
+                <pre className="mt-2 p-4 bg-primary-900/5 rounded-lg text-xs overflow-auto">
                   {this.state.error?.toString()}
                 </pre>
               </details>

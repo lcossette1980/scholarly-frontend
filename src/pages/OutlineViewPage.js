@@ -268,14 +268,14 @@ const OutlineViewPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center py-8">
         <div className="text-center space-y-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-chestnut to-charcoal rounded-full flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto">
             <Loader className="w-8 h-8 text-white animate-spin" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-charcoal font-playfair mb-2">
+            <h3 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
               Generating Detailed Outline
             </h3>
-            <p className="text-charcoal/70 font-lato">
+            <p className="text-secondary-700 font-lato">
               Mapping evidence to outline sections...
             </p>
           </div>
@@ -296,15 +296,15 @@ const OutlineViewPage = () => {
           <div className="flex items-center space-x-4 flex-1">
             <button
               onClick={() => navigate('/analyze', { state: { selectedEntries } })}
-              className="p-2 text-charcoal/60 hover:text-charcoal hover:bg-khaki/10 rounded-lg transition-colors"
+              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-charcoal font-playfair">
+              <h1 className="text-2xl md:text-3xl font-bold text-secondary-900 font-playfair">
                 Detailed Outline
               </h1>
-              <p className="text-charcoal/70 font-lato text-sm md:text-base">
+              <p className="text-secondary-700 font-lato text-sm md:text-base">
                 Evidence-mapped structure with {outline.sections.length} sections
               </p>
             </div>
@@ -335,10 +335,10 @@ const OutlineViewPage = () => {
               <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-charcoal font-playfair mb-1">
+              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-1">
                 Outline Generated Successfully!
               </h3>
-              <p className="text-charcoal/70 font-lato text-sm">
+              <p className="text-secondary-700 font-lato text-sm">
                 Synthesized from {outline.sources_used.length} sources with evidence mapping
               </p>
             </div>
@@ -348,19 +348,19 @@ const OutlineViewPage = () => {
         {/* Outline Content */}
         <div className="card bg-white">
           {/* Title */}
-          <div className="mb-8 pb-6 border-b border-khaki/20">
-            <h2 className="text-3xl font-bold text-charcoal font-playfair text-center">
+          <div className="mb-8 pb-6 border-b border-secondary-300/20">
+            <h2 className="text-3xl font-bold text-secondary-900 font-playfair text-center">
               {outline.topic}
             </h2>
           </div>
 
           {/* Introduction */}
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-charcoal font-playfair mb-3 flex items-center">
-              <FileText className="w-5 h-5 mr-2 text-chestnut" />
+            <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3 flex items-center">
+              <FileText className="w-5 h-5 mr-2 text-accent" />
               Introduction
             </h3>
-            <p className="text-charcoal/80 font-lato leading-relaxed">
+            <p className="text-secondary-800 font-lato leading-relaxed">
               {outline.introduction}
             </p>
           </div>
@@ -369,36 +369,36 @@ const OutlineViewPage = () => {
           <div className="space-y-8">
             {outline.sections.map((section, idx) => (
               <div key={idx} className="bg-pearl/20 rounded-lg p-6">
-                <h3 className="text-xl font-bold text-charcoal font-playfair mb-3">
+                <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3">
                   {idx + 1}. {section.heading}
                 </h3>
 
-                <p className="text-charcoal/70 font-lato italic mb-4">
+                <p className="text-secondary-700 font-lato italic mb-4">
                   {section.description}
                 </p>
 
                 <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-charcoal mb-2">Key Points:</h4>
+                  <h4 className="text-sm font-semibold text-secondary-900 mb-2">Key Points:</h4>
                   <ul className="space-y-2">
                     {section.key_points.map((point, pointIdx) => (
                       <li key={pointIdx} className="flex items-start space-x-2">
-                        <span className="text-chestnut mt-1">•</span>
-                        <span className="text-charcoal/80 font-lato">{point}</span>
+                        <span className="text-accent mt-1">•</span>
+                        <span className="text-secondary-800 font-lato">{point}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
                 <div className="bg-white rounded-lg p-4">
-                  <h4 className="text-sm font-semibold text-charcoal mb-2 flex items-center">
-                    <LinkIcon className="w-4 h-4 mr-1 text-chestnut" />
+                  <h4 className="text-sm font-semibold text-secondary-900 mb-2 flex items-center">
+                    <LinkIcon className="w-4 h-4 mr-1 text-accent" />
                     Supporting Sources:
                   </h4>
                   <div className="space-y-2">
                     {section.supporting_sources.map((sourceId, srcIdx) => {
                       const source = outline.sources_used.find(s => s.id === sourceId);
                       return (
-                        <div key={srcIdx} className="text-sm text-charcoal/70 pl-4 border-l-2 border-chestnut/30">
+                        <div key={srcIdx} className="text-sm text-secondary-700 pl-4 border-l-2 border-accent-600/30">
                           {source ? source.citation : `Source ${sourceId}`}
                         </div>
                       );
@@ -410,12 +410,12 @@ const OutlineViewPage = () => {
           </div>
 
           {/* Conclusion */}
-          <div className="mt-8 pt-6 border-t border-khaki/20">
-            <h3 className="text-xl font-bold text-charcoal font-playfair mb-3 flex items-center">
-              <BookOpen className="w-5 h-5 mr-2 text-chestnut" />
+          <div className="mt-8 pt-6 border-t border-secondary-300/20">
+            <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3 flex items-center">
+              <BookOpen className="w-5 h-5 mr-2 text-accent" />
               Conclusion
             </h3>
-            <p className="text-charcoal/80 font-lato leading-relaxed">
+            <p className="text-secondary-800 font-lato leading-relaxed">
               {outline.conclusion}
             </p>
           </div>
@@ -423,12 +423,12 @@ const OutlineViewPage = () => {
 
         {/* References */}
         <div className="card mt-8">
-          <h3 className="text-xl font-bold text-charcoal font-playfair mb-4">
+          <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
             References
           </h3>
           <div className="space-y-3">
             {outline.sources_used.map((source, idx) => (
-              <div key={idx} className="text-charcoal/80 font-lato text-sm leading-relaxed">
+              <div key={idx} className="text-secondary-800 font-lato text-sm leading-relaxed">
                 {source.citation}
               </div>
             ))}
