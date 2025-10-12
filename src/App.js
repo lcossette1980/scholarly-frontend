@@ -31,6 +31,7 @@ import HelpCenterPage from './pages/HelpCenterPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsofServicePage from './pages/TermsofServicePage';
 import CookiePolicyPage from './pages/CookiePolicyPage';
+import AcademicIntegrityPage from './pages/AcademicIntegrityPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Components
@@ -72,6 +73,7 @@ function App() {
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsofServicePage />} />
               <Route path="/cookies" element={<CookiePolicyPage />} />
+              <Route path="/academic-integrity" element={<AcademicIntegrityPage />} />
               
               {/* Protected Routes */}
               <Route path="/dashboard" element={

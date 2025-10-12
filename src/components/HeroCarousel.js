@@ -7,13 +7,14 @@ const HeroCarousel = () => {
 
   const slides = [
     {
-      title: "From Research Articles to Published Paper in Hours",
+      title: "AI Research Assistant — From PDFs to Published Papers in Hours",
       subtitle: "Complete academic workflow in one platform",
       description: "Upload PDFs, generate bibliographies, create topics & outlines, write complete papers. ScholarlyAI handles every step from research to final draft.",
       icon: Sparkles,
       iconColor: "text-purple-600",
       bgColor: "from-purple-50 via-white to-blue-50",
       image: "/images/hero-overview.png",
+      isMainHero: true,
       features: [
         "Research papers & essays",
         "Conference papers",
@@ -107,9 +108,15 @@ const HeroCarousel = () => {
                 </span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-6 leading-tight">
-                {slide.title}
-              </h2>
+              {slide.isMainHero ? (
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-6 leading-tight">
+                  {slide.title}
+                </h1>
+              ) : (
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-6 leading-tight">
+                  {slide.title}
+                </h2>
+              )}
 
               <p className="text-lg text-secondary-800 mb-6 leading-relaxed font-lato">
                 {slide.description}
