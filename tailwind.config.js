@@ -30,11 +30,11 @@ module.exports = {
           300: '#cbd5e1',
           400: '#94a3b8',
           500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
+          600: '#334155', // Darkened for better contrast (was #475569)
+          700: '#1e293b', // Darkened for better contrast (was #334155)
+          800: '#0f172a', // Darkened for better contrast (was #1e293b)
+          900: '#020617', // Darkened for better contrast (was #0f172a)
+          950: '#000000',
         },
         accent: {
           DEFAULT: '#2563eb', // Royal Blue - CTAs and links
@@ -44,11 +44,11 @@ module.exports = {
           300: '#93c5fd',
           400: '#60a5fa',
           500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+          600: '#1d4ed8', // Darkened for better contrast (was #2563eb)
+          700: '#1e40af', // Darkened for better contrast (was #1d4ed8)
+          800: '#1e3a8a', // Darkened for better contrast (was #1e40af)
+          900: '#172554', // Darkened for better contrast (was #1e3a8a)
+          950: '#0f1d3d',
         },
         success: {
           DEFAULT: '#059669', // Emerald Green
