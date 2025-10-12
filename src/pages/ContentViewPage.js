@@ -6,7 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx';
+import { exportGeneratedContent } from '../utils/contentExportUtils';
 
 const ContentViewPage = () => {
   const { jobId } = useParams();
@@ -88,52 +88,11 @@ const ContentViewPage = () => {
 
   const handleDownloadWord = async () => {
     try {
-      // Parse markdown-style content into structured sections
-      const sections = job.content.split(/\n## /).filter(s => s.trim());
-
-      const docSections = sections.map((section, idx) => {
-        const lines = section.split('\n').filter(l => l.trim());
-        const title = idx === 0 ? job.outline?.title || 'Generated Content' : lines[0];
-        const content = idx === 0 ? lines : lines.slice(1);
-
-        const paragraphs = [
-          new Paragraph({
-            text: title,
-            heading: idx === 0 ? HeadingLevel.TITLE : HeadingLevel.HEADING_1,
-            spacing: { after: 200 }
-          })
-        ];
-
-        content.forEach(line => {
-          if (line.trim()) {
-            paragraphs.push(
-              new Paragraph({
-                children: [new TextRun(line)],
-                spacing: { after: 120 }
-              })
-            );
-          }
-        });
-
-        return paragraphs;
+      await exportGeneratedContent(job, {
+        includeTitlePage: true,
+        includeHeaders: true,
+        includeFooters: true
       });
-
-      const doc = new Document({
-        sections: [{
-          properties: {},
-          children: docSections.flat()
-        }]
-      });
-
-      const blob = await Packer.toBlob(doc);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${job.outline?.title || 'content'}-${job.id}.docx`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
       toast.success('Downloaded as Word document');
     } catch (error) {
       console.error('Error generating Word document:', error);
