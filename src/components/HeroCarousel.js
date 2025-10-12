@@ -1,6 +1,6 @@
 // src/components/HeroCarousel.js
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, FileText, Brain, BookOpen, Sparkles, CheckCircle } from 'lucide-react';
+import { FileText, Brain, BookOpen, Sparkles, CheckCircle } from 'lucide-react';
 
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -73,10 +73,6 @@ const HeroCarousel = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
@@ -145,22 +141,6 @@ const HeroCarousel = () => {
             </div>
           </div>
         </div>
-
-        {/* Navigation Arrows */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft className="w-6 h-6 text-secondary-900" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all z-10 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-          aria-label="Next slide"
-        >
-          <ChevronRight className="w-6 h-6 text-secondary-900" />
-        </button>
       </div>
 
       {/* Dots Navigation */}
