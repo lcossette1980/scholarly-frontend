@@ -1,8 +1,10 @@
 // src/components/contentGeneration/PricingConfirmationStep.js
 import React, { useState } from 'react';
-import { Check, Zap, Sparkles, Lock } from 'lucide-react';
+import { Check, Zap, Sparkles, Lock, Crown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { createPaymentIntent, verifyAndCreateJob } from '../../services/contentPayment';
+import { contentGenerationAPI } from '../../services/api';
+import { isAdmin } from '../../services/admin';
 import PaymentModal from './PaymentModal';
 import toast from 'react-hot-toast';
 
@@ -65,7 +67,30 @@ const PricingConfirmationStep = ({
     try {
       setLoading(true);
 
-      // Create Stripe Payment Intent
+      // Admin bypass - create job directly without payment
+      if (isAdmin(currentUser)) {
+        toast.success('Admin access: Bypassing payment');
+
+        const response = await contentGenerationAPI.createJob(
+          currentUser.uid,
+          selectedSources.map(s => s.id),
+          outline,
+          settings,
+          selectedTier
+        );
+
+        if (!response || !response.job_id) {
+          throw new Error('Invalid response from server - no job ID received');
+        }
+
+        setJobId(response.job_id);
+        toast.success('Generation started! (Admin - No charge)');
+        onNext();
+        setLoading(false);
+        return;
+      }
+
+      // Regular user flow - Create Stripe Payment Intent
       const jobMetadata = {
         source_ids: selectedSources.map(s => s.id),
         outline: outline,
@@ -247,17 +272,30 @@ const PricingConfirmationStep = ({
         </div>
       </div>
 
-      {/* Important Note */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-start space-x-3">
-        <Lock className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-        <div>
-          <p className="text-sm font-medium text-blue-900 mb-1">Secure Payment Before Generation</p>
-          <p className="text-xs text-blue-700">
-            You'll pay <strong>${totalCost}</strong> before generation starts.
-            If generation fails for any reason, you'll receive an automatic 100% refund.
-          </p>
+      {/* Admin Notice or Important Note */}
+      {isAdmin(currentUser) ? (
+        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-300 rounded-lg p-4 mb-6 flex items-start space-x-3">
+          <Crown className="w-6 h-6 text-purple-600 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-bold text-purple-900 mb-1">Admin Access - Free Generation</p>
+            <p className="text-xs text-purple-700">
+              You have admin privileges. This generation will be <strong>FREE</strong> and bypass payment processing.
+              The system will create the job directly for testing purposes.
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-start space-x-3">
+          <Lock className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-blue-900 mb-1">Secure Payment Before Generation</p>
+            <p className="text-xs text-blue-700">
+              You'll pay <strong>${totalCost}</strong> before generation starts.
+              If generation fails for any reason, you'll receive an automatic 100% refund.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex items-center justify-between pt-6 border-t border-gray-200">
@@ -276,10 +314,12 @@ const PricingConfirmationStep = ({
             className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
               loading
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : isAdmin(currentUser)
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 shadow-lg'
                 : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg'
             }`}
           >
-            {loading ? 'Processing...' : `Pay & Generate - $${totalCost}`}
+            {loading ? 'Processing...' : isAdmin(currentUser) ? 'Generate (Admin - Free)' : `Pay & Generate - $${totalCost}`}
           </button>
         </div>
       </div>
