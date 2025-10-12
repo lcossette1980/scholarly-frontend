@@ -13,8 +13,7 @@
   }
 
   body {
-    @apply font-lato text-secondary-900 antialiased;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+    @apply font-lato text-secondary-900 antialiased bg-white;
     min-height: 100vh;
   }
 
@@ -52,21 +51,21 @@
   }
 
   .btn-outline {
-    @apply bg-white/80 text-secondary-900 border border-secondary-300/30 hover:bg-white hover:border-accent focus:ring-accent-500;
+    @apply bg-white text-secondary-900 border-2 border-secondary-300 hover:border-accent hover:bg-secondary-50 focus:ring-accent-500;
   }
 
   /* Cards */
   .card {
-    @apply bg-white/70 backdrop-blur-sm border border-secondary-200/30 rounded-2xl p-8 shadow-soft;
+    @apply bg-white border border-secondary-200 rounded-2xl p-8 shadow-md;
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:bg-white/80 hover:shadow-medium hover:-translate-y-1;
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
 
   /* Form Elements */
   .form-input {
-    @apply w-full px-4 py-3 bg-white/80 border border-secondary-300/30 rounded-lg focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all outline-none text-secondary-900 font-lato;
+    @apply w-full px-4 py-3 bg-white border border-secondary-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent transition-all outline-none text-secondary-900 font-lato;
   }
 
   .form-label {
@@ -75,7 +74,7 @@
 
   /* Upload Zone */
   .upload-zone {
-    @apply relative border-2 border-dashed border-secondary-300/40 rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-accent-600/60 hover:bg-accent/5;
+    @apply relative border-2 border-dashed border-secondary-300 rounded-xl p-12 text-center cursor-pointer transition-all duration-300 hover:border-accent hover:bg-accent/5;
   }
 
   .upload-zone.dragover {
@@ -84,7 +83,7 @@
 
   /* Glass Effect */
   .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20;
+    @apply bg-white border border-secondary-200 shadow-sm;
   }
 
   /* Gradient Text */

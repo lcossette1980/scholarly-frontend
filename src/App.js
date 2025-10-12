@@ -56,7 +56,7 @@ function App() {
     <ErrorBoundary>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen bg-gradient-brand">
+          <div className="min-h-screen bg-white">
             <Navbar />
           <main className="flex-1">
             <Routes>
