@@ -42,7 +42,7 @@ const PricingPage = () => {
   };
 
   const PlanCard = ({ plan, planId, featured = false }) => {
-    const isPopular = planId === 'researcher';
+    const isPopular = planId === 'student'; // Premium is now most popular
     const isCurrent = isCurrentPlan(planId);
 
     return (
@@ -132,16 +132,15 @@ const PricingPage = () => {
             Choose Your <span className="text-accent">Research Plan</span>
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-secondary-700 max-w-3xl mx-auto font-lato leading-relaxed">
-            From individual researchers to large institutions, we have a plan that fits your bibliography generation needs.
+            Start free with 5 lifetime entries, or upgrade to Premium for unlimited access to all features.
           </p>
         </div>
 
 
         {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
           <PlanCard plan={SUBSCRIPTION_PLANS.free} planId="free" />
-          <PlanCard plan={SUBSCRIPTION_PLANS.student} planId="student" />
-          <PlanCard plan={SUBSCRIPTION_PLANS.researcher} planId="researcher" featured={true} />
+          <PlanCard plan={SUBSCRIPTION_PLANS.student} planId="student" featured={true} />
         </div>
 
         {/* Current Plan Status */}
@@ -183,7 +182,7 @@ const PricingPage = () => {
               ) : (
                 <div className="bg-white/50 rounded-lg p-4 inline-block">
                   <p className="text-lg font-semibold text-accent">✓ Unlimited Bibliography Entries</p>
-                  {userDocument.subscription.plan === 'researcher' && (
+                  {(userDocument.subscription.plan === 'researcher' || userDocument.subscription.plan === 'student') && (
                     <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator</p>
                   )}
                 </div>

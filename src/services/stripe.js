@@ -36,19 +36,21 @@ export const SUBSCRIPTION_PLANS = {
   },
   student: {
     id: 'student',
-    name: 'Student',
+    name: 'Premium',
     price: 9.99,
     priceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID || 'price_1RdJyPCfEsnTPNpVUZVs6OU1',
     entriesLimit: -1,
     features: [
       'Unlimited bibliography entries',
+      'Topic & Outline Generator',
       'Advanced AI analysis',
       'Multiple export formats',
       'Priority support',
       'Research focus customization',
-      'Batch processing'
+      'Batch processing',
+      'Access to Content Generator (pay-per-use)'
     ],
-    allowedFeatures: ['bibliography']
+    allowedFeatures: ['bibliography', 'topic_outline']
   },
   researcher: {
     id: 'researcher',
