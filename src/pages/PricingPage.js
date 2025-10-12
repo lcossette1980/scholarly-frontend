@@ -1,13 +1,15 @@
 // src/pages/PricingPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Check, Zap, Crown, Building, Users, ArrowRight, Star } from 'lucide-react';
+import { Check, Zap, Crown, Building, Users, ArrowRight, Star, Calculator } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../services/stripe';
 import toast from 'react-hot-toast';
 
 const PricingPage = () => {
   const [isLoading, setIsLoading] = useState(null);
+  const [estimatorPages, setEstimatorPages] = useState(10);
+  const [estimatorTier, setEstimatorTier] = useState('standard');
   const { currentUser, userDocument } = useAuth();
   const navigate = useNavigate();
 
@@ -273,8 +275,114 @@ const PricingPage = () => {
             </div>
           </div>
 
-          <div className="text-center mt-6 text-sm text-secondary-600">
-            <p>Example: A 10-page research paper costs $14.90 (Standard) or $24.90 (Pro)</p>
+          {/* Cost Estimator Widget */}
+          <div className="card bg-gradient-to-br from-accent/5 to-secondary-50 mt-8">
+            <div className="flex items-center justify-center space-x-3 mb-6">
+              <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
+                <Calculator className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-secondary-900 font-playfair">
+                Cost Estimator
+              </h3>
+            </div>
+
+            <p className="text-center text-secondary-700 mb-6">
+              Calculate the exact cost for your paper before you generate
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              {/* Pages Input */}
+              <div>
+                <label className="form-label">Number of Pages</label>
+                <input
+                  type="range"
+                  min="2"
+                  max="40"
+                  value={estimatorPages}
+                  onChange={(e) => setEstimatorPages(Number(e.target.value))}
+                  className="w-full h-2 bg-secondary-200 rounded-lg appearance-none cursor-pointer accent-accent"
+                />
+                <div className="flex justify-between text-sm text-secondary-600 mt-2">
+                  <span>2 pages</span>
+                  <span className="font-bold text-accent">{estimatorPages} pages</span>
+                  <span>40 pages</span>
+                </div>
+                <p className="text-xs text-secondary-600 mt-2 text-center">
+                  ≈ {estimatorPages * 250} words
+                </p>
+              </div>
+
+              {/* Tier Selection */}
+              <div>
+                <label className="form-label">Quality Tier</label>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setEstimatorTier('standard')}
+                    className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                      estimatorTier === 'standard'
+                        ? 'border-accent bg-accent/5'
+                        : 'border-secondary-300/30 hover:border-secondary-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold text-secondary-900">Standard</p>
+                        <p className="text-xs text-secondary-600">GPT-4o • $1.49/page</p>
+                      </div>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                        estimatorTier === 'standard'
+                          ? 'bg-accent border-accent'
+                          : 'border-secondary-300'
+                      }`}>
+                        {estimatorTier === 'standard' && (
+                          <Check className="w-3 h-3 text-white" />
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => setEstimatorTier('pro')}
+                    className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                      estimatorTier === 'pro'
+                        ? 'border-purple-500 bg-purple-50'
+                        : 'border-secondary-300/30 hover:border-secondary-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold text-secondary-900">Pro</p>
+                        <p className="text-xs text-secondary-600">GPT-4 Turbo • $2.49/page</p>
+                      </div>
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                        estimatorTier === 'pro'
+                          ? 'bg-purple-500 border-purple-500'
+                          : 'border-secondary-300'
+                      }`}>
+                        {estimatorTier === 'pro' && (
+                          <Check className="w-3 h-3 text-white" />
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Cost Display */}
+            <div className="bg-white rounded-xl p-6 text-center border border-secondary-300/30">
+              <p className="text-sm text-secondary-600 mb-2">Estimated Cost</p>
+              <p className="text-5xl font-bold text-accent mb-2">
+                ${(estimatorPages * (estimatorTier === 'standard' ? 1.49 : 2.49)).toFixed(2)}
+              </p>
+              <p className="text-sm text-secondary-700">
+                {estimatorPages} pages × ${estimatorTier === 'standard' ? '1.49' : '2.49'} per page
+              </p>
+              <div className="mt-4 pt-4 border-t border-secondary-300/30">
+                <p className="text-xs text-secondary-600">
+                  ✓ Pay after generation • 100% refund if generation fails
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
