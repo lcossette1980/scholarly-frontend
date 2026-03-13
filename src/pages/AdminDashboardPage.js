@@ -177,10 +177,10 @@ const AdminDashboardPage = () => {
     <div className="card">
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <p className="text-sm text-secondary-600 font-lato mb-1">{title}</p>
-          <p className="text-3xl font-bold text-secondary-900 font-playfair mb-1">{value}</p>
+          <p className="text-sm text-secondary-600 mb-1">{title}</p>
+          <p className="text-3xl font-bold text-secondary-900 mb-1">{value}</p>
           {subtitle && (
-            <p className="text-sm text-secondary-600 font-lato">{subtitle}</p>
+            <p className="text-sm text-secondary-600">{subtitle}</p>
           )}
         </div>
         <div className={`w-12 h-12 bg-${color}/10 rounded-lg flex items-center justify-center`}>
@@ -214,10 +214,10 @@ const AdminDashboardPage = () => {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-4xl font-bold text-secondary-900 font-playfair">
+              <h1 className="text-4xl font-bold text-secondary-900">
                 Admin Dashboard
               </h1>
-              <p className="text-secondary-700 font-lato">
+              <p className="text-secondary-700">
                 System overview and user management
               </p>
             </div>
@@ -318,16 +318,16 @@ const AdminDashboardPage = () => {
             {/* Revenue Breakdown */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <div className="card">
-                <h2 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
+                <h2 className="text-xl font-bold text-secondary-900 mb-4">
                   Revenue by Plan
                 </h2>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-secondary-700 font-lato">Student Plan</span>
+                    <span className="text-secondary-700">Plus Plan</span>
                     <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.student || 0}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-secondary-700 font-lato">Researcher Plan</span>
+                    <span className="text-secondary-700">Pro Plan</span>
                     <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.researcher || 0}</span>
                   </div>
                 </div>
@@ -335,7 +335,7 @@ const AdminDashboardPage = () => {
 
               {/* Recent Messages Preview */}
               <div className="card">
-                <h2 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
+                <h2 className="text-xl font-bold text-secondary-900 mb-4">
                   Recent Messages
                 </h2>
                 <div className="space-y-3">
@@ -360,7 +360,7 @@ const AdminDashboardPage = () => {
         {/* Users Tab */}
         {activeTab === 'users' && (
           <div className="card">
-            <h2 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-xl font-bold text-secondary-900 mb-4">
               All Users
             </h2>
             <div className="overflow-x-auto">
@@ -426,7 +426,7 @@ const AdminDashboardPage = () => {
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       {!msg.read && <span className="w-2 h-2 bg-red-500 rounded-full" />}
-                      <h3 className="text-lg font-semibold text-secondary-900 font-playfair">{msg.subject}</h3>
+                      <h3 className="text-lg font-semibold text-secondary-900">{msg.subject}</h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         msg.category === 'bug' ? 'bg-red-100 text-red-800' :
                         msg.category === 'feature' ? 'bg-blue-100 text-blue-800' :
@@ -439,7 +439,7 @@ const AdminDashboardPage = () => {
                     <p className="text-sm text-secondary-600 mb-2">
                       From: <span className="font-medium">{msg.userName || 'Unknown'}</span> ({msg.userEmail})
                     </p>
-                    <p className="text-secondary-800 font-lato whitespace-pre-line">{msg.message}</p>
+                    <p className="text-secondary-800 whitespace-pre-line">{msg.message}</p>
                   </div>
                   <div className="flex flex-col items-end space-y-2 ml-4">
                     <span className="text-xs text-secondary-600">
@@ -462,10 +462,10 @@ const AdminDashboardPage = () => {
             {messages.length === 0 && (
               <div className="card text-center py-12">
                 <Mail className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
+                <h3 className="text-xl font-semibold text-secondary-900 mb-2">
                   No support messages yet
                 </h3>
-                <p className="text-secondary-600 font-lato">
+                <p className="text-secondary-600">
                   Messages from users will appear here
                 </p>
               </div>
@@ -579,11 +579,11 @@ const AdminDashboardPage = () => {
                 {entries.length === 0 && !searchQuery && (
                   <div className="card text-center py-12">
                     <FileText className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
+                    <h3 className="text-xl font-semibold text-secondary-900 mb-2">
                       No entries found
                     </h3>
-                    <p className="text-secondary-600 font-lato">
-                      Bibliography entries will appear here
+                    <p className="text-secondary-600">
+                      Source summary entries will appear here
                     </p>
                   </div>
                 )}
@@ -591,10 +591,10 @@ const AdminDashboardPage = () => {
                 {entries.length === 0 && searchQuery && (
                   <div className="card text-center py-12">
                     <Search className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
+                    <h3 className="text-xl font-semibold text-secondary-900 mb-2">
                       No results for "{searchQuery}"
                     </h3>
-                    <p className="text-secondary-600 font-lato">
+                    <p className="text-secondary-600">
                       Try a different search term
                     </p>
                   </div>
@@ -607,7 +607,7 @@ const AdminDashboardPage = () => {
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedEntry(null)}>
                 <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                   <div className="sticky top-0 bg-white border-b border-secondary-300/30 px-6 py-4 flex items-center justify-between">
-                    <h3 className="text-2xl font-bold text-secondary-900 font-playfair">Entry Details</h3>
+                    <h3 className="text-2xl font-bold text-secondary-900">Entry Details</h3>
                     <button
                       onClick={() => setSelectedEntry(null)}
                       className="p-2 hover:bg-secondary-200/10 rounded-lg transition-colors"
@@ -643,7 +643,7 @@ const AdminDashboardPage = () => {
                       <div>
                         <h4 className="text-sm font-semibold text-secondary-900 mb-2">Citation ({selectedEntry.citation.type})</h4>
                         <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-900 font-lato">{selectedEntry.citation.formatted}</p>
+                          <p className="text-secondary-900">{selectedEntry.citation.formatted}</p>
                         </div>
                       </div>
                     )}
@@ -653,7 +653,7 @@ const AdminDashboardPage = () => {
                       <div>
                         <h4 className="text-sm font-semibold text-secondary-900 mb-2">Summary</h4>
                         <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-800 font-lato whitespace-pre-line">{selectedEntry.summary}</p>
+                          <p className="text-secondary-800 whitespace-pre-line">{selectedEntry.summary}</p>
                         </div>
                       </div>
                     )}
@@ -667,7 +667,7 @@ const AdminDashboardPage = () => {
                             {selectedEntry.keyFindings.map((finding, index) => (
                               <li key={index} className="flex items-start space-x-2">
                                 <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                                <span className="text-secondary-800 font-lato">{finding}</span>
+                                <span className="text-secondary-800">{finding}</span>
                               </li>
                             ))}
                           </ul>
@@ -680,7 +680,7 @@ const AdminDashboardPage = () => {
                       <div>
                         <h4 className="text-sm font-semibold text-secondary-900 mb-2">Methodology</h4>
                         <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-800 font-lato whitespace-pre-line">{selectedEntry.methodology}</p>
+                          <p className="text-secondary-800 whitespace-pre-line">{selectedEntry.methodology}</p>
                         </div>
                       </div>
                     )}
@@ -692,7 +692,7 @@ const AdminDashboardPage = () => {
                         <div className="space-y-3">
                           {selectedEntry.quotes.map((quote, index) => (
                             <div key={index} className="bg-secondary-50/30 rounded-lg p-4 border-l-4 border-accent-600">
-                              <p className="text-secondary-800 font-lato italic mb-2">"{quote.text}"</p>
+                              <p className="text-secondary-800 italic mb-2">"{quote.text}"</p>
                               <p className="text-sm text-secondary-600">— Page {quote.page}</p>
                             </div>
                           ))}
@@ -705,7 +705,7 @@ const AdminDashboardPage = () => {
                       <div>
                         <h4 className="text-sm font-semibold text-secondary-900 mb-2">Research Focus</h4>
                         <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-800 font-lato">{selectedEntry.researchFocus}</p>
+                          <p className="text-secondary-800">{selectedEntry.researchFocus}</p>
                         </div>
                       </div>
                     )}

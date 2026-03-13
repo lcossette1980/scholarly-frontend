@@ -67,7 +67,7 @@ const AnalyzePage = () => {
       clearInterval(progressInterval);
       setProgress(100);
       setTopics(result);
-      toast.success(`Generated ${result.topics.length} topic suggestions!`);
+      toast.success(`Generated ${result.topics.length} content ideas!`);
     } catch (error) {
       clearInterval(progressInterval);
       console.error('Error generating topics:', error);
@@ -114,11 +114,11 @@ const AnalyzePage = () => {
               </div>
             </div>
 
-            <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3">
+            <h3 className="text-xl font-bold text-secondary-900 mb-3">
               {topic.title}
             </h3>
 
-            <p className="text-secondary-800 font-lato mb-4 leading-relaxed">
+            <p className="text-secondary-800 mb-4 leading-relaxed">
               {topic.rationale}
             </p>
 
@@ -172,11 +172,11 @@ const AnalyzePage = () => {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
-                Topic & Outline Generator
+              <h1 className="text-3xl md:text-4xl font-bold text-secondary-900">
+                Idea & Outline Generator
               </h1>
-              <p className="text-secondary-700 font-lato">
-                AI-powered research synthesis for {selectedEntryData.length} selected entries
+              <p className="text-secondary-700">
+                AI-powered content synthesis for {selectedEntryData.length} selected entries
               </p>
             </div>
           </div>
@@ -189,7 +189,7 @@ const AnalyzePage = () => {
               <FileText className="w-6 h-6 text-accent" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                 Selected Entries ({selectedEntryData.length})
               </h3>
               <div className="space-y-1 max-h-32 overflow-y-auto">
@@ -210,7 +210,7 @@ const AnalyzePage = () => {
               <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
                 <Lightbulb className="w-6 h-6 text-accent" />
               </div>
-              <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
+              <h2 className="text-2xl font-bold text-secondary-900">
                 Configure Your Analysis
               </h2>
             </div>
@@ -221,9 +221,9 @@ const AnalyzePage = () => {
                 <label className="form-label">Output Type</label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {[
-                    { value: 'article', label: 'Research Article', desc: 'Peer-reviewed academic article' },
+                    { value: 'article', label: 'Article', desc: 'Well-structured written article' },
                     { value: 'blog', label: 'Blog Post', desc: 'Accessible content for general audience' },
-                    { value: 'paper', label: 'Conference Paper', desc: 'Graduate-level research paper' }
+                    { value: 'paper', label: 'Conference Paper', desc: 'Formal conference paper' }
                   ].map(type => (
                     <button
                       key={type.value}
@@ -244,7 +244,7 @@ const AnalyzePage = () => {
               {/* Number of Topics */}
               <div>
                 <label className="form-label">
-                  Number of Topics: {numTopics}
+                  Number of Ideas: {numTopics}
                 </label>
                 <input
                   type="range"
@@ -255,8 +255,8 @@ const AnalyzePage = () => {
                   className="w-full h-2 bg-secondary-200/30 rounded-lg appearance-none cursor-pointer accent-chestnut"
                 />
                 <div className="flex justify-between text-sm text-secondary-600 mt-1">
-                  <span>3 topics</span>
-                  <span>10 topics</span>
+                  <span>3 ideas</span>
+                  <span>10 ideas</span>
                 </div>
               </div>
 
@@ -274,7 +274,7 @@ const AnalyzePage = () => {
                   maxLength={200}
                 />
                 <p className="text-sm text-secondary-600 mt-1">
-                  Narrow your topic suggestions to a specific angle or theme
+                  Narrow your content ideas to a specific angle or theme
                 </p>
               </div>
 
@@ -287,12 +287,12 @@ const AnalyzePage = () => {
                 {isAnalyzing ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                    Analyzing Your Research...
+                    Analyzing Your Sources...
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Generate Topic Suggestions
+                    Generate Content Ideas
                   </>
                 )}
               </button>
@@ -309,11 +309,11 @@ const AnalyzePage = () => {
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-2">
-                  Analyzing Your Research
+                <h3 className="text-xl font-bold text-secondary-900 mb-2">
+                  Analyzing Your Sources
                 </h3>
-                <p className="text-secondary-700 font-lato">
-                  Our AI is synthesizing {selectedEntryData.length} entries to generate compelling topic suggestions...
+                <p className="text-secondary-700">
+                  Our AI is synthesizing {selectedEntryData.length} entries to generate compelling content ideas...
                 </p>
               </div>
 
@@ -343,25 +343,25 @@ const AnalyzePage = () => {
                   <CheckCircle className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-1">
+                  <h3 className="text-lg font-semibold text-secondary-900 mb-1">
                     Analysis Complete!
                   </h3>
-                  <p className="text-secondary-700 font-lato">
-                    Generated {topics.topics.length} topic suggestions from {topics.entry_count} entries
+                  <p className="text-secondary-700">
+                    Generated {topics.topics.length} content ideas from {topics.entry_count} entries
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
-                Suggested Topics
+              <h2 className="text-2xl font-bold text-secondary-900">
+                Suggested Ideas
               </h2>
               <button
                 onClick={() => setTopics(null)}
                 className="btn btn-outline"
               >
-                Generate New Topics
+                Generate New Ideas
               </button>
             </div>
 

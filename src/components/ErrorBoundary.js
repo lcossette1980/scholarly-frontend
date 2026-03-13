@@ -29,11 +29,11 @@ class ErrorBoundary extends React.Component {
               <AlertTriangle className="w-10 h-10 text-red-600" />
             </div>
             
-            <h1 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h1 className="text-2xl font-bold text-secondary-900 mb-4">
               Oops! Something went wrong
             </h1>
             
-            <p className="text-secondary-700 mb-8 font-lato">
+            <p className="text-secondary-700 mb-8">
               We're sorry, but something unexpected happened. Don't worry, your work is safe.
             </p>
             

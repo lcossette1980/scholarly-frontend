@@ -55,10 +55,10 @@ const ForgotPasswordPage = () => {
           </Link>
           
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-secondary-900 font-playfair">
+            <h2 className="text-3xl font-bold text-secondary-900">
               Reset Your Password
             </h2>
-            <p className="mt-2 text-secondary-700 font-lato">
+            <p className="mt-2 text-secondary-700">
               Enter your email address and we'll send you a link to reset your password
             </p>
           </div>
@@ -107,11 +107,11 @@ const ForgotPasswordPage = () => {
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             
-            <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
+            <h3 className="text-xl font-semibold text-secondary-900 mb-2">
               Email Sent Successfully
             </h3>
             
-            <p className="text-secondary-700 font-lato mb-6">
+            <p className="text-secondary-700 mb-6">
               We've sent a password reset link to <strong>{email}</strong>. 
               Please check your inbox and follow the instructions to reset your password.
             </p>
@@ -136,7 +136,7 @@ const ForgotPasswordPage = () => {
 
         {/* Help Text */}
         <div className="text-center">
-          <p className="text-sm text-secondary-600 font-lato">
+          <p className="text-sm text-secondary-600">
             Didn't receive the email? Check your spam folder or{' '}
             <button
               onClick={() => {

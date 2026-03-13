@@ -89,8 +89,8 @@ const PaymentForm = ({ onSuccess, onError, totalCost, tier, onCancel }) => {
       {/* Payment Summary */}
       <div className="bg-gradient-to-br from-accent/5 to-khaki/10 rounded-xl p-6 border border-accent-600/20">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-secondary-700 font-lato">Total Amount:</span>
-          <span className="text-3xl font-bold text-secondary-900 font-playfair">${totalCost}</span>
+          <span className="text-secondary-700">Total Amount:</span>
+          <span className="text-3xl font-bold text-secondary-900">${totalCost}</span>
         </div>
         <div className="flex justify-between items-center text-sm">
           <span className="text-secondary-600">Quality Tier:</span>
@@ -217,10 +217,10 @@ const PaymentModal = ({
               <CreditCard className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
+              <h2 className="text-2xl font-bold text-secondary-900">
                 Complete Payment
               </h2>
-              <p className="text-sm text-secondary-600 font-lato">
+              <p className="text-sm text-secondary-600">
                 To start content generation
               </p>
             </div>

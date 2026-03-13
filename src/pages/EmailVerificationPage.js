@@ -82,10 +82,10 @@ const EmailVerificationPage = () => {
         <div className="max-w-md w-full space-y-8 text-center">
           <div className="card">
             <AlertCircle className="w-16 h-16 text-accent mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-2">
               Please Sign In
             </h2>
-            <p className="text-secondary-700 font-lato mb-6">
+            <p className="text-secondary-700 mb-6">
               You need to be signed in to verify your email.
             </p>
             <Link to="/login" className="btn btn-primary w-full">
@@ -107,11 +107,11 @@ const EmailVerificationPage = () => {
               <Mail className="w-8 h-8 text-accent" />
             </div>
             
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-2">
               Verify Your Email
             </h2>
             
-            <p className="text-secondary-700 font-lato mb-6">
+            <p className="text-secondary-700 mb-6">
               We've sent a verification email to{' '}
               <strong className="text-secondary-900">{currentUser.email}</strong>.
               Please check your inbox and click the verification link to continue.
@@ -146,7 +146,7 @@ const EmailVerificationPage = () => {
             </div>
             
             <div className="mt-8 pt-6 border-t border-secondary-300/20">
-              <p className="text-sm text-secondary-600 font-lato mb-4">
+              <p className="text-sm text-secondary-600 mb-4">
                 Can't find the email? Check your spam folder or make sure you entered the correct email address.
               </p>
               
@@ -165,11 +165,11 @@ const EmailVerificationPage = () => {
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-2">
               Email Verified!
             </h2>
             
-            <p className="text-secondary-700 font-lato mb-6">
+            <p className="text-secondary-700 mb-6">
               Your email has been successfully verified. You'll be redirected to your dashboard shortly.
             </p>
             

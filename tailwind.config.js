@@ -7,20 +7,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Academic Brand Colors - Professional & Trustworthy
+        // DraftEngine Brand Colors - Modern & Creative
         primary: {
-          DEFAULT: '#1e3a5f', // Navy Blue - main brand color
-          50: '#f0f4f8',
-          100: '#d9e2ec',
-          200: '#bcccdc',
-          300: '#9fb3c8',
-          400: '#829ab1',
-          500: '#627d98',
-          600: '#486581',
-          700: '#334e68',
-          800: '#1e3a5f',
-          900: '#102a43',
-          950: '#0a1929',
+          DEFAULT: '#312e81', // Indigo 900 - main brand color
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          200: '#c7d2fe',
+          300: '#a5b4fc',
+          400: '#818cf8',
+          500: '#6366f1',
+          600: '#4f46e5',
+          700: '#4338ca',
+          800: '#3730a3',
+          900: '#312e81',
+          950: '#1e1b4b',
         },
         secondary: {
           DEFAULT: '#475569', // Slate Gray - secondary brand
@@ -30,25 +30,25 @@ module.exports = {
           300: '#cbd5e1',
           400: '#94a3b8',
           500: '#64748b',
-          600: '#334155', // Darkened for better contrast (was #475569)
-          700: '#1e293b', // Darkened for better contrast (was #334155)
-          800: '#0f172a', // Darkened for better contrast (was #1e293b)
-          900: '#020617', // Darkened for better contrast (was #0f172a)
+          600: '#334155',
+          700: '#1e293b',
+          800: '#0f172a',
+          900: '#020617',
           950: '#000000',
         },
         accent: {
-          DEFAULT: '#2563eb', // Royal Blue - CTAs and links
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#1d4ed8', // Darkened for better contrast (was #2563eb)
-          700: '#1e40af', // Darkened for better contrast (was #1d4ed8)
-          800: '#1e3a8a', // Darkened for better contrast (was #1e40af)
-          900: '#172554', // Darkened for better contrast (was #1e3a8a)
-          950: '#0f1d3d',
+          DEFAULT: '#6366f1', // Indigo 500 - CTAs and links
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          200: '#c7d2fe',
+          300: '#a5b4fc',
+          400: '#818cf8',
+          500: '#6366f1',
+          600: '#4f46e5',
+          700: '#4338ca',
+          800: '#3730a3',
+          900: '#312e81',
+          950: '#1e1b4b',
         },
         success: {
           DEFAULT: '#059669', // Emerald Green
@@ -80,8 +80,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        'playfair': ['Playfair Display', 'serif'],
-        'lato': ['Lato', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -103,17 +102,17 @@ module.exports = {
         },
       },
       backgroundImage: {
-        'gradient-brand': 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%)',
-        'gradient-primary': 'linear-gradient(135deg, #1e3a5f 0%, #334e68 100%)',
-        'gradient-accent': 'linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)',
-        'gradient-overlay': 'linear-gradient(90deg, rgba(30, 58, 95, 0.95) 0%, rgba(37, 99, 235, 0.95) 100%)',
+        'gradient-brand': 'linear-gradient(135deg, #312e81 0%, #6366f1 100%)',
+        'gradient-primary': 'linear-gradient(135deg, #312e81 0%, #4338ca 100%)',
+        'gradient-accent': 'linear-gradient(135deg, #6366f1 0%, #818cf8 100%)',
+        'gradient-overlay': 'linear-gradient(90deg, rgba(49, 46, 129, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%)',
       },
       boxShadow: {
         'soft': '0 2px 15px rgba(0, 0, 0, 0.08)',
         'medium': '0 4px 25px rgba(0, 0, 0, 0.12)',
         'large': '0 8px 40px rgba(0, 0, 0, 0.15)',
-        'brand': '0 4px 20px rgba(30, 58, 95, 0.2)',
-        'accent': '0 4px 20px rgba(37, 99, 235, 0.25)',
+        'brand': '0 4px 20px rgba(49, 46, 129, 0.2)',
+        'accent': '0 4px 20px rgba(99, 102, 241, 0.25)',
       },
       backdropBlur: {
         xs: '2px',

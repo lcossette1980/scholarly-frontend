@@ -1,7 +1,7 @@
 // src/components/Navbar.js
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Brain, Menu, X, User, LogOut, Settings, FileText, Shield } from 'lucide-react';
+import { PenTool, Menu, X, User, LogOut, Settings, FileText, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { logOut } from '../services/auth';
 import { isAdmin } from '../services/admin';
@@ -63,12 +63,12 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Brain className="w-6 h-6 text-white" />
+              <PenTool className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-secondary-900 font-playfair">ScholarlyAI</h1>
-              <p className="text-xs text-accent font-medium font-lato hidden sm:block">
-                AI Research Assistant
+              <h1 className="text-xl font-bold text-secondary-900">DraftEngine</h1>
+              <p className="text-xs text-accent font-medium hidden sm:block">
+                AI Writing Assistant
               </p>
             </div>
           </Link>

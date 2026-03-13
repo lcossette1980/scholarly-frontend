@@ -10,51 +10,51 @@ const PrivacyPolicyPage = () => {
           <div className="w-16 h-16 bg-gradient-brand rounded-full flex items-center justify-center mx-auto mb-6">
             <Shield className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-4">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Privacy Policy
           </h1>
-          <p className="text-secondary-700 font-lato">
+          <p className="text-secondary-700">
             Last updated: December 2024
           </p>
         </div>
 
         <div className="card space-y-8">
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Information We Collect
             </h2>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <UserCheck className="w-5 h-5 text-accent mt-1" />
                 <div>
-                  <h3 className="font-semibold text-secondary-900 font-lato">Account Information</h3>
-                  <p className="text-secondary-700 font-lato">Name, email address, and authentication data when you create an account.</p>
+                  <h3 className="font-semibold text-secondary-900">Account Information</h3>
+                  <p className="text-secondary-700">Name, email address, and authentication data when you create an account.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <Database className="w-5 h-5 text-accent mt-1" />
                 <div>
-                  <h3 className="font-semibold text-secondary-900 font-lato">Usage Data</h3>
-                  <p className="text-secondary-700 font-lato">Information about how you use our service, including bibliography entries created and research focus areas.</p>
+                  <h3 className="font-semibold text-secondary-900">Usage Data</h3>
+                  <p className="text-secondary-700">Information about how you use our service, including bibliography entries created and research focus areas.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
                 <Eye className="w-5 h-5 text-accent mt-1" />
                 <div>
-                  <h3 className="font-semibold text-secondary-900 font-lato">Document Content</h3>
-                  <p className="text-secondary-700 font-lato">PDF documents you upload for analysis (processed securely and not stored permanently).</p>
+                  <h3 className="font-semibold text-secondary-900">Document Content</h3>
+                  <p className="text-secondary-700">PDF documents you upload for analysis (processed securely and not stored permanently).</p>
                 </div>
               </div>
             </div>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               How We Use Your Information
             </h2>
-            <ul className="space-y-2 text-secondary-800 font-lato">
+            <ul className="space-y-2 text-secondary-800">
               <li>• Provide and improve our bibliography generation service</li>
-              <li>• Process your academic documents using AI technology</li>
+              <li>• Process your documents using AI technology</li>
               <li>• Manage your account and subscription</li>
               <li>• Send important service updates and support communications</li>
               <li>• Analyze usage patterns to improve our AI models</li>
@@ -62,15 +62,15 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Data Security
             </h2>
             <div className="bg-accent/5 border border-accent-600/20 rounded-lg p-6">
               <div className="flex items-center space-x-3 mb-3">
                 <Lock className="w-6 h-6 text-accent" />
-                <h3 className="font-semibold text-secondary-900 font-lato">Enterprise-Grade Security</h3>
+                <h3 className="font-semibold text-secondary-900">Enterprise-Grade Security</h3>
               </div>
-              <p className="text-secondary-800 font-lato">
+              <p className="text-secondary-800">
                 We use industry-standard encryption, secure cloud infrastructure (Firebase/Google Cloud), 
                 and follow best practices to protect your data. Documents are processed securely and 
                 temporarily - we don't permanently store your uploaded PDFs.
@@ -79,13 +79,13 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Third-Party Services
             </h2>
-            <p className="text-secondary-800 font-lato mb-4">
+            <p className="text-secondary-800 mb-4">
               We use trusted third-party services to provide our functionality:
             </p>
-            <ul className="space-y-2 text-secondary-800 font-lato">
+            <ul className="space-y-2 text-secondary-800">
               <li>• <strong>OpenAI:</strong> For AI-powered text analysis and generation</li>
               <li>• <strong>Firebase/Google Cloud:</strong> For authentication and data storage</li>
               <li>• <strong>Stripe:</strong> For secure payment processing</li>
@@ -94,10 +94,10 @@ const PrivacyPolicyPage = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Your Rights
             </h2>
-            <p className="text-secondary-800 font-lato mb-4">
+            <p className="text-secondary-800 mb-4">
               You have the right to access, update, or delete your personal information. 
               You can also export your data or request account deletion at any time.
             </p>
@@ -107,9 +107,9 @@ const PrivacyPolicyPage = () => {
             <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-6">
               <div className="flex items-center space-x-3 mb-3">
                 <Mail className="w-6 h-6 text-accent" />
-                <h3 className="font-semibold text-secondary-900 font-lato">Contact Us</h3>
+                <h3 className="font-semibold text-secondary-900">Contact Us</h3>
               </div>
-              <p className="text-secondary-800 font-lato">
+              <p className="text-secondary-800">
                 For privacy questions or to exercise your rights, contact us at{' '}
                 <a href="mailto:privacy@scholarlyaiapp.com" className="text-accent hover:text-accent-600/80">
                   privacy@scholarlyaiapp.com

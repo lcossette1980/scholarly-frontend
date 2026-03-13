@@ -223,10 +223,10 @@ const ContentHistoryPage = () => {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900">
                 Content History
               </h1>
-              <p className="text-sm sm:text-base text-secondary-700 font-lato">
+              <p className="text-sm sm:text-base text-secondary-700">
                 View, download, and manage your generated content
               </p>
             </div>
@@ -327,15 +327,15 @@ const ContentHistoryPage = () => {
         {filteredJobs.length === 0 ? (
           <div className="card text-center py-12">
             <FileText className="w-16 h-16 text-secondary-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-2">
+            <h3 className="text-xl font-semibold text-secondary-900 mb-2">
               {searchTerm || filterStatus !== 'all' || filterTier !== 'all'
                 ? 'No content found'
                 : 'No content generated yet'}
             </h3>
-            <p className="text-secondary-600 font-lato mb-6">
+            <p className="text-secondary-600 mb-6">
               {searchTerm || filterStatus !== 'all' || filterTier !== 'all'
                 ? 'Try adjusting your search or filters.'
-                : 'Generate your first piece of content from your bibliography sources.'}
+                : 'Generate your first piece of content from your sources.'}
             </p>
             {!searchTerm && filterStatus === 'all' && filterTier === 'all' && (
               <Link to="/content/generate" className="btn btn-primary">
@@ -355,7 +355,7 @@ const ContentHistoryPage = () => {
                       <div className="flex items-center space-x-3">
                         {getStatusIcon(job.status)}
                         <div>
-                          <h3 className="text-lg font-semibold text-secondary-900 font-playfair">
+                          <h3 className="text-lg font-semibold text-secondary-900">
                             {job.outline?.title || 'Untitled'}
                           </h3>
                           <div className="flex items-center space-x-2 mt-1">

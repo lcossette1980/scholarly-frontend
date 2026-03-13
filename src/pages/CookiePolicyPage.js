@@ -10,20 +10,20 @@ const CookiePolicyPage = () => {
           <div className="w-16 h-16 bg-gradient-brand rounded-full flex items-center justify-center mx-auto mb-6">
             <Cookie className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-4">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Cookie Policy
           </h1>
-          <p className="text-secondary-700 font-lato">
+          <p className="text-secondary-700">
             Last updated: December 2024
           </p>
         </div>
 
         <div className="card space-y-8">
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               What Are Cookies?
             </h2>
-            <p className="text-secondary-800 font-lato">
+            <p className="text-secondary-800">
               Cookies are small data files stored on your device when you visit our website. 
               They help us provide you with a better experience by remembering your preferences 
               and improving our service.
@@ -31,7 +31,7 @@ const CookiePolicyPage = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Types of Cookies We Use
             </h2>
             <div className="space-y-6">
@@ -40,8 +40,8 @@ const CookiePolicyPage = () => {
                   <Shield className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-secondary-900 font-lato mb-2">Essential Cookies</h3>
-                  <p className="text-secondary-700 font-lato">
+                  <h3 className="font-semibold text-secondary-900 mb-2">Essential Cookies</h3>
+                  <p className="text-secondary-700">
                     Required for the website to function properly. These include authentication, 
                     security, and basic functionality cookies.
                   </p>
@@ -53,8 +53,8 @@ const CookiePolicyPage = () => {
                   <Settings className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-secondary-900 font-lato mb-2">Functional Cookies</h3>
-                  <p className="text-secondary-700 font-lato">
+                  <h3 className="font-semibold text-secondary-900 mb-2">Functional Cookies</h3>
+                  <p className="text-secondary-700">
                     Remember your preferences, such as research focus areas and settings, 
                     to provide a personalized experience.
                   </p>
@@ -66,8 +66,8 @@ const CookiePolicyPage = () => {
                   <BarChart3 className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-secondary-900 font-lato mb-2">Analytics Cookies</h3>
-                  <p className="text-secondary-700 font-lato">
+                  <h3 className="font-semibold text-secondary-900 mb-2">Analytics Cookies</h3>
+                  <p className="text-secondary-700">
                     Help us understand how you use our service so we can improve performance 
                     and user experience. These are anonymized and aggregated.
                   </p>
@@ -77,13 +77,13 @@ const CookiePolicyPage = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Third-Party Cookies
             </h2>
-            <p className="text-secondary-800 font-lato mb-4">
+            <p className="text-secondary-800 mb-4">
               We use some third-party services that may set their own cookies:
             </p>
-            <ul className="space-y-2 text-secondary-800 font-lato">
+            <ul className="space-y-2 text-secondary-800">
               <li>• <strong>Google Analytics:</strong> Website usage analytics</li>
               <li>• <strong>Stripe:</strong> Payment processing and fraud prevention</li>
               <li>• <strong>Firebase:</strong> Authentication and application functionality</li>
@@ -91,15 +91,15 @@ const CookiePolicyPage = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Managing Your Cookie Preferences
             </h2>
             <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-6">
-              <p className="text-secondary-800 font-lato mb-4">
+              <p className="text-secondary-800 mb-4">
                 You can control cookies through your browser settings. However, disabling certain 
                 cookies may affect the functionality of our service.
               </p>
-              <div className="space-y-2 text-sm text-secondary-700 font-lato">
+              <div className="space-y-2 text-sm text-secondary-700">
                 <p><strong>Chrome:</strong> Settings → Privacy and Security → Cookies</p>
                 <p><strong>Firefox:</strong> Preferences → Privacy & Security → Cookies</p>
                 <p><strong>Safari:</strong> Preferences → Privacy → Cookies</p>
@@ -108,10 +108,10 @@ const CookiePolicyPage = () => {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4">
               Updates to This Policy
             </h2>
-            <p className="text-secondary-800 font-lato">
+            <p className="text-secondary-800">
               We may update this Cookie Policy periodically. Changes will be posted on this page 
               with an updated revision date.
             </p>

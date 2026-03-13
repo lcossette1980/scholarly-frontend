@@ -167,11 +167,11 @@ const DashboardPage = () => {
         if (result.success) {
           setEntries(result.entries);
         } else {
-          toast.error('Failed to load bibliography entries');
+          toast.error('Failed to load source entries');
         }
       } catch (error) {
         console.error('Error fetching entries:', error);
-        toast.error('Failed to load bibliography entries');
+        toast.error('Failed to load source entries');
       } finally {
         setLoading(false);
       }
@@ -224,11 +224,11 @@ const DashboardPage = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-2">
+            <h1 className="text-4xl font-bold text-secondary-900 mb-2">
               Welcome back, {currentUser?.displayName || 'Researcher'}!
             </h1>
-            <p className="text-secondary-700 font-lato">
-              Manage your research and generate content from your sources.
+            <p className="text-secondary-700">
+              Manage your sources and generate content.
             </p>
           </div>
 
@@ -275,8 +275,8 @@ const DashboardPage = () => {
                   <Sparkles className="w-6 h-6 text-purple-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-secondary-900 font-playfair">Generate Content</h3>
-                  <p className="text-sm text-secondary-600 font-lato">Create papers from sources</p>
+                  <h3 className="font-semibold text-secondary-900">Generate Content</h3>
+                  <p className="text-sm text-secondary-600">Create papers from sources</p>
                 </div>
               </div>
             </Link>
@@ -290,8 +290,8 @@ const DashboardPage = () => {
                   <Brain className="w-6 h-6 text-blue-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-secondary-900 font-playfair">Topic & Outline</h3>
-                  <p className="text-sm text-secondary-600 font-lato">Analyze bibliography</p>
+                  <h3 className="font-semibold text-secondary-900">Idea & Outline</h3>
+                  <p className="text-sm text-secondary-600">Analyze sources</p>
                 </div>
               </div>
             </Link>
@@ -305,8 +305,8 @@ const DashboardPage = () => {
                   <Download className="w-6 h-6 text-green-600" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-secondary-900 font-playfair">Export</h3>
-                  <p className="text-sm text-secondary-600 font-lato">Download bibliography</p>
+                  <h3 className="font-semibold text-secondary-900">Export</h3>
+                  <p className="text-sm text-secondary-600">Export source summary</p>
                 </div>
               </div>
             </button>
@@ -321,11 +321,11 @@ const DashboardPage = () => {
               <>
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair">
+                    <h3 className="text-lg font-semibold text-secondary-900">
                       Lifetime Usage
                     </h3>
-                    <p className="text-secondary-600 text-sm font-lato">
-                      Free Plan
+                    <p className="text-secondary-600 text-sm">
+                      Starter Plan
                     </p>
                   </div>
                   <Link to="/pricing" className="btn btn-primary btn-sm">
@@ -364,10 +364,10 @@ const DashboardPage = () => {
               <>
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair">
+                    <h3 className="text-lg font-semibold text-secondary-900">
                       Your Plan Features
                     </h3>
-                    <p className="text-secondary-600 text-sm font-lato capitalize">
+                    <p className="text-secondary-600 text-sm capitalize">
                       {userDocument.subscription.plan} Plan
                     </p>
                   </div>
@@ -406,7 +406,7 @@ const DashboardPage = () => {
                     </button>
                     {userDocument.subscription.plan === 'student' && (
                       <Link to="/pricing" className="btn btn-outline btn-sm">
-                        Upgrade to Researcher
+                        Upgrade to Pro
                       </Link>
                     )}
                   </div>
@@ -415,20 +415,20 @@ const DashboardPage = () => {
                   {/* Bibliography Generator - Always unlimited for paid */}
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-600" />
-                    <span className="text-secondary-900 font-lato">Bibliography Generator (Unlimited)</span>
+                    <span className="text-secondary-900">Source Generator (Unlimited)</span>
                   </div>
 
                   {/* Topic & Outline Generator - Researcher only */}
                   {userDocument.subscription.plan === 'researcher' ? (
                     <div className="flex items-center space-x-3">
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="text-secondary-900 font-lato">Topic & Outline Generator (Unlimited)</span>
+                      <span className="text-secondary-900">Idea & Outline Generator (Unlimited)</span>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-3">
                       <Lock className="w-5 h-5 text-gray-400" />
-                      <span className="text-secondary-600 font-lato">
-                        Topic & Outline Generator
+                      <span className="text-secondary-600">
+                        Idea & Outline Generator
                         <Link to="/pricing" className="text-accent ml-2 hover:underline">Upgrade to unlock</Link>
                       </span>
                     </div>

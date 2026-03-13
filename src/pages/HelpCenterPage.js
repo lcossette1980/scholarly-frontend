@@ -62,31 +62,31 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Step 1: Upload Your Document",
-          text: "Click the 'Create Entry' button from your dashboard. Upload a PDF file (up to 10MB) of the research paper you want to analyze. Supported formats include academic papers, journal articles, and research documents."
+          text: "Click the 'Create Entry' button from your dashboard. Upload a PDF file (up to 10MB) of the document you want to analyze. Supported formats include papers, journal articles, and documents."
         },
         {
-          subtitle: "Step 2: Set Your Research Focus",
-          text: "Enter a specific research focus or question that guides the AI analysis. For example: 'Impact of social media on teenage mental health' or 'Machine learning applications in healthcare.' The more specific your focus, the more targeted your analysis will be."
+          subtitle: "Step 2: Set Your Focus",
+          text: "Enter a specific focus or question that guides the AI analysis. For example: 'Impact of social media on teenage mental health' or 'Machine learning applications in healthcare.' The more specific your focus, the more targeted your analysis will be."
         },
         {
           subtitle: "Step 3: Review Generated Content",
-          text: "The AI will analyze your document and generate a comprehensive annotated bibliography entry including key findings, methodology insights, and relevant quotes with page citations."
+          text: "The AI will analyze your document and generate a comprehensive source summary entry including key findings, methodology insights, and relevant quotes with page citations."
         },
         {
           subtitle: "Step 4: Edit and Export",
-          text: "Review the generated content, make any necessary edits, and export your formatted bibliography entry to Word or copy it to your preferred citation manager."
+          text: "Review the generated content, make any necessary edits, and export your formatted source summary entry to Word or copy it to your preferred citation manager."
         }
       ]
     },
     "Understanding research focus": {
-      title: "Understanding Research Focus",
+      title: "Understanding Your Focus",
       content: [
         {
-          subtitle: "What is Research Focus?",
-          text: "Your research focus is the lens through which the AI analyzes your document. It should be a specific question, topic, or angle that you want the AI to emphasize when extracting insights."
+          subtitle: "What is a Focus?",
+          text: "Your focus is the lens through which the AI analyzes your document. It should be a specific question, topic, or angle that you want the AI to emphasize when extracting insights."
         },
         {
-          subtitle: "Examples of Good Research Focus",
+          subtitle: "Examples of Good Focus",
           text: "• 'Environmental impact of renewable energy adoption'\n• 'Effectiveness of cognitive behavioral therapy for anxiety'\n• 'Social factors influencing voter behavior in urban areas'\n• 'Machine learning bias in facial recognition systems'"
         },
         {
@@ -100,11 +100,11 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Supported File Types",
-          text: "Currently, we support PDF files up to 10MB in size. We're working on adding support for Word documents, PowerPoint presentations, and other academic formats."
+          text: "Currently, we support PDF files up to 10MB in size. We're working on adding support for Word documents, PowerPoint presentations, and other formats."
         },
         {
           subtitle: "Best Practices",
-          text: "• Ensure your PDF is text-based (not just scanned images)\n• Academic papers with clear structure work best\n• Remove any password protection before uploading\n• Check that all pages are properly formatted"
+          text: "• Ensure your PDF is text-based (not just scanned images)\n• Papers with clear structure work best\n• Remove any password protection before uploading\n• Check that all pages are properly formatted"
         },
         {
           subtitle: "Upload Process",
@@ -121,19 +121,19 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Free Plan",
-          text: "Perfect for trying ScholarlyAI. Includes 5 bibliography entries to test our features and see if the platform meets your needs."
+          text: "Perfect for trying DraftEngine. Includes 5 source summary entries to test our features and see if the platform meets your needs."
         },
         {
-          subtitle: "Student Plan - $9.99/month",
-          text: "Ideal for undergraduate and graduate students. Includes 50 entries per month, all citation styles, and priority support."
+          subtitle: "Plus Plan - $9.99/month",
+          text: "Ideal for regular users. Includes 50 entries per month, all citation styles, and priority support."
         },
         {
-          subtitle: "Researcher Plan - $19.99/month",
-          text: "For active researchers and academics. Includes 200 entries per month, advanced analysis features, team collaboration, and priority processing."
+          subtitle: "Pro Plan - $19.99/month",
+          text: "For power users and professionals. Includes 200 entries per month, advanced analysis features, team collaboration, and priority processing."
         },
         {
           subtitle: "Institution Plan - Custom Pricing",
-          text: "For universities and research institutions. Includes unlimited entries, admin dashboard, usage analytics, custom integrations, and dedicated support."
+          text: "For organizations and institutions. Includes unlimited entries, admin dashboard, usage analytics, custom integrations, and dedicated support."
         }
       ]
     },
@@ -195,7 +195,7 @@ const HelpCenterPage = () => {
           text: "Set your preferred citation style (APA, MLA, Chicago) to save time. This becomes the default for all new entries, though you can change it per entry."
         },
         {
-          subtitle: "Academic Institution",
+          subtitle: "Institution",
           text: "Adding your institution helps us provide relevant features and may qualify you for educational discounts or institutional access."
         }
       ]
@@ -205,11 +205,11 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Data Processing",
-          text: "We process your documents temporarily to generate bibliography entries. Documents are not permanently stored and are deleted after processing."
+          text: "We process your documents temporarily to generate source summary entries. Documents are not permanently stored and are deleted after processing."
         },
         {
           subtitle: "Account Data",
-          text: "Your bibliography entries, research focuses, and account information are securely stored and encrypted. Only you have access to your content."
+          text: "Your source summary entries, focuses, and account information are securely stored and encrypted. Only you have access to your content."
         },
         {
           subtitle: "Data Export",
@@ -226,7 +226,7 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Individual Entry Export",
-          text: "Export individual bibliography entries to Word format with formatting preserved. Use the 'Export' button on any entry."
+          text: "Export individual source summary entries to Word format with formatting preserved. Use the 'Export' button on any entry."
         },
         {
           subtitle: "Bulk Export",
@@ -247,15 +247,15 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Creating Teams",
-          text: "Available on Researcher and Institution plans. Create teams for research groups, classes, or collaborative projects. Invite members via email."
+          text: "Available on Pro and Institution plans. Create teams for groups, classes, or collaborative projects. Invite members via email."
         },
         {
           subtitle: "Shared Libraries",
-          text: "Team members can access shared bibliography entries, making collaboration seamless. Set permissions for view-only or edit access."
+          text: "Team members can access shared source summary entries, making collaboration seamless. Set permissions for view-only or edit access."
         },
         {
           subtitle: "Team Analytics",
-          text: "Track team usage, popular research focuses, and collaboration patterns through the team dashboard. Available to team administrators."
+          text: "Track team usage, popular focuses, and collaboration patterns through the team dashboard. Available to team administrators."
         },
         {
           subtitle: "Role Management",
@@ -264,11 +264,11 @@ const HelpCenterPage = () => {
       ]
     },
     "Sharing entries": {
-      title: "Sharing Bibliography Entries",
+      title: "Sharing Source Summary Entries",
       content: [
         {
           subtitle: "Public Links",
-          text: "Generate shareable links for individual entries. Recipients can view the entry without needing a ScholarlyAI account. Links can be password-protected."
+          text: "Generate shareable links for individual entries. Recipients can view the entry without needing a DraftEngine account. Links can be password-protected."
         },
         {
           subtitle: "Team Sharing",
@@ -289,7 +289,7 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Comment System",
-          text: "Add comments to bibliography entries for team feedback and discussion. Comments are threaded and support @mentions for notifications."
+          text: "Add comments to source summary entries for team feedback and discussion. Comments are threaded and support @mentions for notifications."
         },
         {
           subtitle: "Version History",
@@ -311,7 +311,7 @@ const HelpCenterPage = () => {
     {
       icon: <FileText className="w-6 h-6" />,
       title: "Getting Started",
-      description: "Learn the basics of using ScholarlyAI",
+      description: "Learn the basics of using DraftEngine",
       articles: ["Creating your first entry", "Understanding research focus", "Uploading documents"]
     },
     {
@@ -337,14 +337,14 @@ const HelpCenterPage = () => {
   const faqs = [
     {
       question: "How accurate is the AI-generated content?",
-      answer: "Our AI uses advanced language models trained on academic literature. While highly accurate, we recommend reviewing all generated content for accuracy and compliance with your institution's standards."
+      answer: "Our AI uses advanced language models to produce high-quality content. While highly accurate, we recommend reviewing all generated content for accuracy and compliance with your institution's standards."
     },
     {
       question: "What file formats do you support?",
-      answer: "Currently, we support PDF files up to 10MB in size. We're working on adding support for Word documents and other academic formats."
+      answer: "Currently, we support PDF files up to 10MB in size. We're working on adding support for Word documents and other formats."
     },
     {
-      question: "Can I edit the generated bibliography entries?",
+      question: "Can I edit the generated source summary entries?",
       answer: "Yes! All generated entries can be edited before export. You have full control over the final content."
     },
     {
@@ -371,11 +371,11 @@ const HelpCenterPage = () => {
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-4">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Help Center
           </h1>
-          <p className="text-xl text-secondary-700 font-lato mb-8">
-            Find answers and get support for ScholarlyAI
+          <p className="text-xl text-secondary-700 mb-8">
+            Find answers and get support for DraftEngine
           </p>
           
           {/* Search */}
@@ -402,21 +402,21 @@ const HelpCenterPage = () => {
                   className="flex items-center space-x-2 text-accent hover:text-accent-600/80 transition-colors mb-6"
                 >
                   <ChevronRight className="w-4 h-4 transform rotate-180" />
-                  <span className="font-lato">Back to Help Center</span>
+                  <span className="">Back to Help Center</span>
                 </button>
                 
                 <div className="card">
-                  <h1 className="text-3xl font-bold text-secondary-900 font-playfair mb-6">
+                  <h1 className="text-3xl font-bold text-secondary-900  mb-6">
                     {helpContent[selectedArticle]?.title}
                   </h1>
                   
                   <div className="space-y-6">
                     {helpContent[selectedArticle]?.content.map((section, index) => (
                       <div key={index}>
-                        <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-3">
+                        <h3 className="text-xl font-semibold text-secondary-900  mb-3">
                           {section.subtitle}
                         </h3>
-                        <p className="text-secondary-800 font-lato leading-relaxed whitespace-pre-line">
+                        <p className="text-secondary-800  leading-relaxed whitespace-pre-line">
                           {section.text}
                         </p>
                       </div>
@@ -427,7 +427,7 @@ const HelpCenterPage = () => {
             ) : (
               /* Categories and FAQ View */
               <>
-                <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-8">Browse by Category</h2>
+                <h2 className="text-2xl font-bold text-secondary-900  mb-8">Browse by Category</h2>
                 <div className="grid md:grid-cols-2 gap-6 mb-12">
                   {categories.map((category, index) => (
                     <div key={index} className="card card-hover">
@@ -436,8 +436,8 @@ const HelpCenterPage = () => {
                           {category.icon}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-secondary-900 font-playfair">{category.title}</h3>
-                          <p className="text-sm text-secondary-600 font-lato">{category.description}</p>
+                          <h3 className="font-semibold text-secondary-900 ">{category.title}</h3>
+                          <p className="text-sm text-secondary-600 ">{category.description}</p>
                         </div>
                       </div>
                       <ul className="space-y-1">
@@ -456,7 +456,7 @@ const HelpCenterPage = () => {
                 </div>
 
                 {/* FAQ Section */}
-                <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-8">
+                <h2 className="text-2xl font-bold text-secondary-900  mb-8">
                   Frequently Asked Questions
                 </h2>
                 <div className="space-y-4">
@@ -466,7 +466,7 @@ const HelpCenterPage = () => {
                         className="w-full text-left flex items-center justify-between"
                         onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
                       >
-                        <h3 className="font-semibold text-secondary-900 font-lato pr-4">{faq.question}</h3>
+                        <h3 className="font-semibold text-secondary-900  pr-4">{faq.question}</h3>
                         {openFAQ === index ? (
                           <ChevronDown className="w-5 h-5 text-secondary-600" />
                         ) : (
@@ -475,7 +475,7 @@ const HelpCenterPage = () => {
                       </button>
                       {openFAQ === index && (
                         <div className="mt-4 pt-4 border-t border-secondary-300/20">
-                          <p className="text-secondary-700 font-lato leading-relaxed">{faq.answer}</p>
+                          <p className="text-secondary-700  leading-relaxed">{faq.answer}</p>
                         </div>
                       )}
                     </div>
@@ -492,8 +492,8 @@ const HelpCenterPage = () => {
                 <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <MessageCircle className="w-8 h-8 text-accent" />
                 </div>
-                <h3 className="font-semibold text-secondary-900 font-playfair mb-2">Live Chat</h3>
-                <p className="text-secondary-700 font-lato mb-4 text-sm">
+                <h3 className="font-semibold text-secondary-900  mb-2">Live Chat</h3>
+                <p className="text-secondary-700  mb-4 text-sm">
                   Get instant help from our support team
                 </p>
                 <button className="btn btn-primary w-full">Start Chat</button>
@@ -506,8 +506,8 @@ const HelpCenterPage = () => {
                   <Mail className="w-6 h-6 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-secondary-900 font-playfair">Contact Support</h3>
-                  <p className="text-sm text-secondary-700 font-lato">We'll respond within 24 hours</p>
+                  <h3 className="font-semibold text-secondary-900 ">Contact Support</h3>
+                  <p className="text-sm text-secondary-700 ">We'll respond within 24 hours</p>
                 </div>
               </div>
 
@@ -580,8 +580,8 @@ const HelpCenterPage = () => {
                 <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Book className="w-8 h-8 text-accent" />
                 </div>
-                <h3 className="font-semibold text-secondary-900 font-playfair mb-2">Documentation</h3>
-                <p className="text-secondary-700 font-lato mb-4 text-sm">
+                <h3 className="font-semibold text-secondary-900  mb-2">Documentation</h3>
+                <p className="text-secondary-700  mb-4 text-sm">
                   Detailed guides and tutorials
                 </p>
                 <button className="btn btn-outline w-full">View Docs</button>
@@ -590,8 +590,8 @@ const HelpCenterPage = () => {
 
             {/* Contact Hours */}
             <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-4">
-              <h4 className="font-semibold text-secondary-900 font-lato mb-2">Support Hours</h4>
-              <div className="space-y-1 text-sm text-secondary-700 font-lato">
+              <h4 className="font-semibold text-secondary-900  mb-2">Support Hours</h4>
+              <div className="space-y-1 text-sm text-secondary-700 ">
                 <p>Monday - Friday: 9 AM - 6 PM EST</p>
                 <p>Saturday: 10 AM - 4 PM EST</p>
                 <p>Sunday: Closed</p>

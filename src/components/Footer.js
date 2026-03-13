@@ -1,7 +1,7 @@
 // src/components/Footer.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Brain, Mail, Facebook, Github, Linkedin } from 'lucide-react';
+import { PenTool, Mail, Facebook, Github, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -12,16 +12,16 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center">
-                <Brain className="w-6 h-6 text-white" />
+                <PenTool className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold font-playfair">ScholarlyAI</h3>
-                <p className="text-xs text-white/70">AI Research Assistant</p>
+                <h3 className="text-xl font-bold">DraftEngine</h3>
+                <p className="text-xs text-white/70">AI Writing Assistant</p>
               </div>
             </div>
-            <p className="text-white/70 font-lato leading-relaxed">
-              Your complete AI research platform. From PDFs to published papers in hours, not weeks.
-              Trusted by 10,000+ researchers worldwide.
+            <p className="text-white/70 leading-relaxed">
+              Your complete AI writing platform. From sources to finished drafts in minutes, not hours.
+              Trusted by 10,000+ writers worldwide.
             </p>
             
             {/* Social Links */}
@@ -55,28 +55,28 @@ const Footer = () => {
 
           {/* Product */}
           <div>
-            <h4 className="font-semibold font-playfair mb-4">Product</h4>
-            <ul className="space-y-3 text-white/70 font-lato">
+            <h4 className="font-semibold mb-4">Product</h4>
+            <ul className="space-y-3 text-white/70">
               <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
               <li><Link to="/create" className="hover:text-white transition-colors">Create Entry</Link></li>
-              <li><Link to="/bibliography" className="hover:text-white transition-colors">Manage Bibliography</Link></li>
+              <li><Link to="/bibliography" className="hover:text-white transition-colors">Source Library</Link></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold font-playfair mb-4">Resources</h4>
-            <ul className="space-y-3 text-white/70 font-lato">
+            <h4 className="font-semibold mb-4">Resources</h4>
+            <ul className="space-y-3 text-white/70">
               <li><Link to="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
               <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-              <li><Link to="/academic-integrity" className="hover:text-white transition-colors">Academic Integrity</Link></li>
+              <li><Link to="/ethical-ai" className="hover:text-white transition-colors">Ethical AI Use</Link></li>
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold font-playfair mb-4">Support</h4>
-            <ul className="space-y-3 text-white/70 font-lato">
+            <h4 className="font-semibold mb-4">Support</h4>
+            <ul className="space-y-3 text-white/70">
               <li>
                 <a href="mailto:support@scholarlyaiapp.com" className="hover:text-white transition-colors flex items-center space-x-2">
                   <Mail className="w-4 h-4" />
@@ -95,8 +95,8 @@ const Footer = () => {
 
         {/* Bottom */}
         <div className="border-t border-white/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-white/70 font-lato text-sm">
-            © 2024 ScholarlyAI. All rights reserved.
+          <p className="text-white/70 text-sm">
+            © 2024 DraftEngine. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy" className="text-white/70 hover:text-white text-sm transition-colors">

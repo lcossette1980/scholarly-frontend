@@ -137,7 +137,7 @@ const DashboardStats = ({ entries, loading }) => {
         icon={Sparkles}
         title="Content Generated"
         value={stats.generated}
-        subtitle="Papers created"
+        subtitle="Documents created"
         color="orange"
       />
     </div>

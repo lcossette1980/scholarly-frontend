@@ -64,27 +64,27 @@ const PricingPage = () => {
             {planId === 'institution' && <Building className="w-8 h-8 text-accent" />}
           </div>
           
-          <h3 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
+          <h3 className="text-2xl font-bold text-secondary-900 mb-2">
             {plan.name}
           </h3>
           
           <div className="mb-4">
-            <span className="text-4xl font-bold text-secondary-900 font-playfair">
+            <span className="text-4xl font-bold text-secondary-900">
               ${plan.price}
             </span>
             {plan.price > 0 && (
-              <span className="text-secondary-600 text-lg font-lato">
+              <span className="text-secondary-600 text-lg">
                 /month
               </span>
             )}
           </div>
 
           {planId === 'free' ? (
-            <p className="text-sm text-secondary-700 font-lato">
+            <p className="text-sm text-secondary-700">
               5 lifetime entries
             </p>
           ) : (
-            <p className="text-sm text-secondary-700 font-lato">
+            <p className="text-sm text-secondary-700">
               Unlimited entries
             </p>
           )}
@@ -128,11 +128,11 @@ const PricingPage = () => {
       <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-secondary-900 font-playfair mb-6">
-            Choose Your <span className="text-accent">Research Plan</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-secondary-900 mb-6">
+            Choose Your <span className="text-accent">Writing Plan</span>
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-secondary-700 max-w-3xl mx-auto font-lato leading-relaxed">
-            Start free with 5 lifetime entries, or upgrade to Premium for unlimited access to all features.
+          <p className="text-base sm:text-lg lg:text-xl text-secondary-700 max-w-3xl mx-auto leading-relaxed">
+            Start free with 5 lifetime entries, or upgrade to Plus for unlimited access to all features.
           </p>
         </div>
 
@@ -147,10 +147,10 @@ const PricingPage = () => {
         {currentUser && userDocument?.subscription && (
           <div className="card max-w-2xl mx-auto mb-16 bg-accent/5 border-accent-600/20">
             <div className="text-center">
-              <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-2">
+              <h3 className="text-xl font-bold text-secondary-900 mb-2">
                 Your Current Plan
               </h3>
-              <p className="text-secondary-700 mb-4 font-lato">
+              <p className="text-secondary-700 mb-4">
                 You're currently on the{' '}
                 <span className="font-semibold text-accent capitalize">
                   {userDocument.subscription.plan}
@@ -181,9 +181,9 @@ const PricingPage = () => {
                 </div>
               ) : (
                 <div className="bg-white/50 rounded-lg p-4 inline-block">
-                  <p className="text-lg font-semibold text-accent">✓ Unlimited Bibliography Entries</p>
+                  <p className="text-lg font-semibold text-accent">✓ Unlimited Source Entries</p>
                   {(userDocument.subscription.plan === 'researcher' || userDocument.subscription.plan === 'student') && (
-                    <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator</p>
+                    <p className="text-sm text-secondary-700 mt-1">+ Idea & Outline Generator</p>
                   )}
                 </div>
               )}
@@ -193,18 +193,18 @@ const PricingPage = () => {
 
         {/* Content Generation Pricing */}
         <div className="max-w-5xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-secondary-900 font-playfair text-center mb-4">
+          <h2 className="text-3xl font-bold text-secondary-900 text-center mb-4">
             AI Content Generation Pricing
           </h2>
           <p className="text-center text-secondary-700 mb-8">
-            Pay only for what you generate. No subscription required for paper generation.
+            Pay only for what you generate. No subscription required for document generation.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Standard Tier */}
             <div className="card">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-secondary-900 font-playfair">Standard</h3>
+                <h3 className="text-2xl font-bold text-secondary-900">Standard</h3>
                 <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
                   GPT-4o
                 </span>
@@ -221,7 +221,7 @@ const PricingPage = () => {
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>All citation styles (APA, MLA, Chicago, Harvard)</span>
+                  <span>All reference styles (APA, MLA, Chicago, Harvard)</span>
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -243,7 +243,7 @@ const PricingPage = () => {
                 </span>
               </div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-secondary-900 font-playfair">Pro</h3>
+                <h3 className="text-2xl font-bold text-secondary-900">Pro</h3>
                 <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
                   GPT-4 Turbo
                 </span>
@@ -280,13 +280,13 @@ const PricingPage = () => {
               <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
                 <Calculator className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-secondary-900 font-playfair">
+              <h3 className="text-2xl font-bold text-secondary-900">
                 Cost Estimator
               </h3>
             </div>
 
             <p className="text-center text-secondary-700 mb-6">
-              Calculate the exact cost for your paper before you generate
+              Calculate the exact cost for your document before you generate
             </p>
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -387,53 +387,53 @@ const PricingPage = () => {
 
         {/* FAQ Section */}
         <div className="max-w-4xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold text-secondary-900 font-playfair text-center mb-12">
+          <h2 className="text-3xl font-bold text-secondary-900 text-center mb-12">
             Frequently Asked Questions
           </h2>
 
           <div className="space-y-6">
             <div className="card">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                 Can I change plans at any time?
               </h3>
-              <p className="text-secondary-700 font-lato">
+              <p className="text-secondary-700">
                 Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate the billing accordingly.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
-                What's the difference between Student and Researcher plans?
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                What's the difference between Plus and Pro plans?
               </h3>
-              <p className="text-secondary-700 font-lato">
-                <strong>Student Plan:</strong> Unlimited bibliography entries with all citation styles.<br />
-                <strong>Researcher Plan:</strong> Everything in Student PLUS Topic & Outline Generator, which analyzes your sources to suggest research topics and generate complete paper outlines.
+              <p className="text-secondary-700">
+                <strong>Plus:</strong> Unlimited source entries with all reference styles.<br />
+                <strong>Pro:</strong> Everything in Plus, PLUS the Idea & Outline Generator, which analyzes your sources to suggest content ideas and generate complete document outlines.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                 How does content generation pricing work?
               </h3>
-              <p className="text-secondary-700 font-lato">
-                Content generation (AI paper writing) is pay-per-use. You only pay for papers you generate, based on length. Choose Standard ($1.49/page) or Pro ($2.49/page) tier. This is separate from bibliography subscriptions.
+              <p className="text-secondary-700">
+                Content generation (AI document writing) is pay-per-use. You only pay for documents you generate, based on length. Choose Standard ($1.49/page) or Pro ($2.49/page) tier. This is separate from source analysis subscriptions.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
-                Is there a student discount?
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                Is there a starter discount?
               </h3>
-              <p className="text-secondary-700 font-lato">
-                Our Student plan is specifically designed for individual students and researchers at an affordable price. For additional institutional discounts, contact our sales team.
+              <p className="text-secondary-700">
+                Our Plus plan is designed for individual writers and creators at an affordable price. For additional institutional discounts, contact our sales team.
               </p>
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                 What payment methods do you accept?
               </h3>
-              <p className="text-secondary-700 font-lato">
+              <p className="text-secondary-700">
                 We accept all major credit cards, PayPal, and bank transfers for institutional plans. All payments are processed securely through Stripe.
               </p>
             </div>
@@ -442,11 +442,11 @@ const PricingPage = () => {
 
         {/* CTA Section */}
         <div className="card max-w-4xl mx-auto text-center bg-gradient-brand text-white">
-          <h2 className="text-3xl lg:text-4xl font-bold font-playfair mb-4">
-            Ready to Transform Your Research?
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+            Ready to Transform Your Writing?
           </h2>
-          <p className="text-xl text-white/90 mb-8 font-lato">
-            Join thousands of researchers who save hours every week with ScholarlyAI.
+          <p className="text-xl text-white/90 mb-8">
+            Join thousands of writers who save hours every week with DraftEngine.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
             {!currentUser ? (

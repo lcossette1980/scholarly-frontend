@@ -76,7 +76,7 @@ const ContentGenerationPage = () => {
           setEntries(transformedEntries);
 
           if (transformedEntries.length === 0) {
-            toast.error('You need to create bibliography entries first');
+            toast.error('You need to create source entries first');
             navigate('/create');
           }
         } else {
@@ -84,7 +84,7 @@ const ContentGenerationPage = () => {
         }
       } catch (error) {
         console.error('Error loading entries:', error);
-        toast.error('Failed to load your bibliography entries');
+        toast.error('Failed to load your source entries');
       } finally {
         setLoading(false);
       }
@@ -192,11 +192,11 @@ const ContentGenerationPage = () => {
             <span>Back to Dashboard</span>
           </button>
 
-          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-2">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-2">
             AI Content Generator
           </h1>
-          <p className="text-secondary-700 font-lato">
-            Generate well-cited academic content from your bibliography sources
+          <p className="text-secondary-700">
+            Generate well-cited content from your sources
           </p>
         </div>
 

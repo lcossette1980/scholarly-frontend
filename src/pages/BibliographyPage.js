@@ -55,11 +55,11 @@ const BibliographyPage = () => {
         const uniqueCategories = [...new Set(result.entries.map(e => e.researchFocus))];
         setCategories(uniqueCategories);
       } else {
-        toast.error('Failed to load bibliography entries');
+        toast.error('Failed to load source entries');
       }
     } catch (error) {
       console.error('Error fetching entries:', error);
-      toast.error('Failed to load bibliography entries');
+      toast.error('Failed to load source entries');
     } finally {
       setLoading(false);
     }
@@ -128,10 +128,10 @@ const BibliographyPage = () => {
 
     try {
       await exportToBibliography(selectedData, 'word');
-      toast.success(`Exported ${selectedData.length} entries as annotated bibliography`);
+      toast.success(`Exported ${selectedData.length} entries as detailed source summary`);
     } catch (error) {
       console.error('Export failed:', error);
-      toast.error('Failed to export bibliography');
+      toast.error('Failed to export sources');
     }
   };
 
@@ -257,7 +257,7 @@ const BibliographyPage = () => {
           <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto mb-4">
             <FileText className="w-8 h-8 text-white animate-pulse" />
           </div>
-          <p className="text-secondary-700">Loading your bibliography...</p>
+          <p className="text-secondary-700">Loading your sources...</p>
         </div>
       </div>
     );
@@ -273,7 +273,7 @@ const BibliographyPage = () => {
               Dashboard
             </Link>
             <span className="text-secondary-400">/</span>
-            <span className="text-secondary-900 font-medium">Bibliography Manager</span>
+            <span className="text-secondary-900 font-medium">Source Library</span>
           </div>
         </div>
 
@@ -287,10 +287,10 @@ const BibliographyPage = () => {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
-                Bibliography Manager
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900">
+                Source Library
               </h1>
-              <p className="text-sm sm:text-base text-secondary-700 font-lato">
+              <p className="text-sm sm:text-base text-secondary-700">
                 Advanced search, bulk operations, and export
               </p>
             </div>
@@ -358,7 +358,7 @@ const BibliographyPage = () => {
                     Analyze Selected
                   </button>
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-primary-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                    Topic & Outline Generator requires Researcher plan
+                    Idea & Outline Generator requires Researcher plan
                     <br />
                     <Link to="/pricing" className="text-accent hover:underline underline">
                       Upgrade now →
@@ -384,7 +384,7 @@ const BibliographyPage = () => {
                 }`}
               >
                 <BookOpen className="w-4 h-4 mr-2" />
-                Export Annotated
+                Export Detailed
               </button>
             </div>
           </div>
@@ -433,8 +433,8 @@ const BibliographyPage = () => {
             <FileText className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
             <p className="text-secondary-600">
               {searchTerm || selectedCategory !== 'all' 
-                ? 'No entries found matching your filters' 
-                : 'No bibliography entries yet'}
+                ? 'No entries found matching your filters'
+                : 'No source entries yet'}
             </p>
           </div>
         ) : (
@@ -452,12 +452,12 @@ const BibliographyPage = () => {
               <Brain className="w-6 h-6 text-accent" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
-                🚀 NEW: AI Research Assistant
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                NEW: AI Writing Assistant
               </h3>
-              <ul className="text-secondary-700 font-lato space-y-1 list-disc ml-4">
-                <li>Generate article topics & detailed outlines from your selected entries</li>
-                <li>AI synthesizes your research to suggest compelling angles</li>
+              <ul className="text-secondary-700 space-y-1 list-disc ml-4">
+                <li>Generate content ideas & detailed outlines from your selected entries</li>
+                <li>AI synthesizes your sources to suggest compelling angles</li>
                 <li>Maps evidence to outline sections automatically</li>
                 <li>Export publication-ready outlines to Word</li>
               </ul>

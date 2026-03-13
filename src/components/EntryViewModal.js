@@ -21,8 +21,8 @@ const EntryViewModal = ({ entry, onClose }) => {
         {/* Header */}
         <div className="flex items-start justify-between p-6 border-b border-gray-200">
           <div className="flex-1 pr-4">
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
-              Bibliography Entry
+            <h2 className="text-2xl font-bold text-secondary-900 mb-2">
+              Source Summary Entry
             </h2>
             <p className="text-sm text-gray-600">
               {entry.researchFocus || entry.research_focus || 'Uncategorized'}
@@ -148,7 +148,7 @@ const Section = ({ icon: Icon, title, color, children }) => {
     <div>
       <div className="flex items-center space-x-2 mb-3">
         <Icon className={`w-5 h-5 ${colorClasses[color]}`} />
-        <h3 className="font-bold text-lg text-secondary-900 font-playfair">{title}</h3>
+        <h3 className="font-bold text-lg text-secondary-900">{title}</h3>
       </div>
       {children}
     </div>

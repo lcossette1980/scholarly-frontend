@@ -225,7 +225,7 @@ const createContentTitlePage = (title, metadata = {}) => {
     new Paragraph({
       children: [
         new TextRun({
-          text: "Created with ScholarlyAI",
+          text: "Created with DraftEngine",
           font: STYLES.fonts.body,
           size: 18,
           color: STYLES.colors.secondary,

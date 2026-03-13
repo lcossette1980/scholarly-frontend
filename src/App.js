@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -73,7 +73,8 @@ function App() {
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsofServicePage />} />
               <Route path="/cookies" element={<CookiePolicyPage />} />
-              <Route path="/academic-integrity" element={<AcademicIntegrityPage />} />
+              <Route path="/ethical-ai" element={<AcademicIntegrityPage />} />
+              <Route path="/academic-integrity" element={<Navigate to="/ethical-ai" replace />} />
               
               {/* Protected Routes */}
               <Route path="/dashboard" element={

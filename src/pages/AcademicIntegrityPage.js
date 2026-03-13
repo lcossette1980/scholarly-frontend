@@ -12,11 +12,11 @@ const AcademicIntegrityPage = () => {
           <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <Shield className="w-10 h-10 text-accent" />
           </div>
-          <h1 className="text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-6">
+          <h1 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-6">
             How We Cite & Verify Sources
           </h1>
-          <p className="text-lg text-secondary-800 font-lato leading-relaxed">
-            Academic integrity is at the core of ScholarlyAI. Here's exactly how we ensure every citation is accurate,
+          <p className="text-lg text-secondary-800 leading-relaxed">
+            Ethical AI use is at the core of DraftEngine. Here's exactly how we ensure every citation is accurate,
             verifiable, and properly formatted.
           </p>
         </div>
@@ -25,12 +25,12 @@ const AcademicIntegrityPage = () => {
         <div className="max-w-5xl mx-auto space-y-12">
           {/* Our Approach */}
           <section className="card">
-            <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-6">
-              Our Approach to Academic Integrity
+            <h2 className="text-3xl font-bold text-secondary-900 mb-6">
+              Our Approach to Ethical AI Use
             </h2>
             <p className="text-secondary-800 mb-6 leading-relaxed">
-              ScholarlyAI is designed to be a <strong>research assistant</strong>, not a replacement for your own critical thinking.
-              We help you work faster while maintaining the highest standards of academic honesty.
+              DraftEngine is designed to be a <strong>writing assistant</strong>, not a replacement for your own critical thinking.
+              We help you work faster while maintaining the highest standards of integrity.
             </p>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-secondary-50 rounded-lg p-6">
@@ -67,7 +67,7 @@ const AcademicIntegrityPage = () => {
           <section className="card">
             <div className="flex items-center space-x-3 mb-6">
               <Search className="w-8 h-8 text-accent" />
-              <h2 className="text-3xl font-bold text-secondary-900 font-playfair">
+              <h2 className="text-3xl font-bold text-secondary-900">
                 How Our Citation Process Works
               </h2>
             </div>
@@ -142,11 +142,11 @@ const AcademicIntegrityPage = () => {
 
           {/* Paper Generation Integrity */}
           <section className="card bg-gradient-to-br from-accent/5 to-secondary-50">
-            <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-6">
-              Paper Generation & Citation Integrity
+            <h2 className="text-3xl font-bold text-secondary-900 mb-6">
+              Document Generation & Citation Integrity
             </h2>
             <p className="text-secondary-800 mb-6 leading-relaxed">
-              When you use our paper generation feature (Researcher plan), every claim is backed by citations
+              When you use our document generation feature (Researcher plan), every claim is backed by citations
               from your uploaded sources:
             </p>
             <ul className="space-y-4">
@@ -167,7 +167,7 @@ const AcademicIntegrityPage = () => {
               <li className="flex items-start space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-secondary-900">Full references list:</strong> A complete bibliography
+                  <strong className="text-secondary-900">Full references list:</strong> A complete source summary
                   is automatically generated at the end in your chosen citation style.
                 </div>
               </li>
@@ -185,12 +185,12 @@ const AcademicIntegrityPage = () => {
           <section className="card border-2 border-red-200 bg-red-50/30">
             <div className="flex items-center space-x-3 mb-6">
               <AlertCircle className="w-8 h-8 text-red-600" />
-              <h2 className="text-3xl font-bold text-secondary-900 font-playfair">
+              <h2 className="text-3xl font-bold text-secondary-900">
                 What We Don't Do
               </h2>
             </div>
             <p className="text-secondary-800 mb-6">
-              To maintain academic integrity, ScholarlyAI deliberately avoids certain practices:
+              To maintain integrity, DraftEngine deliberately avoids certain practices:
             </p>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
@@ -204,7 +204,7 @@ const AcademicIntegrityPage = () => {
                 <div className="w-2 h-2 bg-red-600 rounded-full flex-shrink-0 mt-2" />
                 <div>
                   <strong className="text-secondary-900">We don't pull from general knowledge:</strong> Our
-                  paper generation only uses information from YOUR sources, not Wikipedia or other databases.
+                  document generation only uses information from YOUR sources, not Wikipedia or other databases.
                 </div>
               </li>
               <li className="flex items-start space-x-3">
@@ -218,8 +218,8 @@ const AcademicIntegrityPage = () => {
               <li className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-red-600 rounded-full flex-shrink-0 mt-2" />
                 <div>
-                  <strong className="text-secondary-900">We don't encourage plagiarism:</strong> ScholarlyAI
-                  is a research assistant tool. You should always review, verify, and revise any generated content
+                  <strong className="text-secondary-900">We don't encourage plagiarism:</strong> DraftEngine
+                  is a writing assistant tool. You should always review, verify, and revise any generated content
                   before submission.
                 </div>
               </li>
@@ -228,8 +228,8 @@ const AcademicIntegrityPage = () => {
 
           {/* Best Practices */}
           <section className="card">
-            <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-6">
-              Best Practices for Using ScholarlyAI
+            <h2 className="text-3xl font-bold text-secondary-900 mb-6">
+              Best Practices for Using DraftEngine
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="border border-secondary-300/30 rounded-lg p-6">
@@ -238,7 +238,7 @@ const AcademicIntegrityPage = () => {
                   Do This
                 </h3>
                 <ul className="space-y-2 text-sm text-secondary-800">
-                  <li>✓ Use bibliographies to organize your research</li>
+                  <li>✓ Use source summaries to organize your research</li>
                   <li>✓ Verify all citations against the original sources</li>
                   <li>✓ Use generated outlines as a starting framework</li>
                   <li>✓ Revise AI-generated content into your own voice</li>
@@ -255,8 +255,8 @@ const AcademicIntegrityPage = () => {
                   <li>✗ Submitting generated content without revision</li>
                   <li>✗ Using sources you haven't read or verified</li>
                   <li>✗ Claiming AI-generated ideas as entirely your own</li>
-                  <li>✗ Violating your institution's academic policies</li>
-                  <li>✗ Relying on ScholarlyAI without understanding your topic</li>
+                  <li>✗ Violating your institution's policies</li>
+                  <li>✗ Relying on DraftEngine without understanding your topic</li>
                   <li>✗ Skipping fact-checking of claims and citations</li>
                 </ul>
               </div>
@@ -265,7 +265,7 @@ const AcademicIntegrityPage = () => {
 
           {/* Citation Style Accuracy */}
           <section className="card">
-            <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-6">
+            <h2 className="text-3xl font-bold text-secondary-900 mb-6">
               Citation Style Accuracy
             </h2>
             <p className="text-secondary-800 mb-6">
@@ -297,12 +297,12 @@ const AcademicIntegrityPage = () => {
 
           {/* Final Note */}
           <section className="bg-gradient-brand text-white rounded-2xl p-8 text-center">
-            <h2 className="text-3xl font-bold font-playfair mb-4">
-              Your Academic Success, Done Right
+            <h2 className="text-3xl font-bold mb-4">
+              Your Success, Done Right
             </h2>
             <p className="text-lg mb-6 text-white/90">
-              ScholarlyAI is designed to help you work smarter while upholding the highest standards of
-              academic integrity. Use it as your research assistant, not a shortcut.
+              DraftEngine is designed to help you work smarter while upholding the highest standards of
+              integrity. Use it as your writing assistant, not a shortcut.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
               <Link

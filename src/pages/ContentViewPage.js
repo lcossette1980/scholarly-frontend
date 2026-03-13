@@ -114,14 +114,14 @@ const ContentViewPage = () => {
       return (
         <div key={idx} className="mb-8">
           {heading && (
-            <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4 pb-2 border-b-2 border-accent-600">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4 pb-2 border-b-2 border-accent-600">
               {heading}
             </h2>
           )}
           {paragraphs.map((para, pidx) => {
             if (!para.trim()) return null;
             return (
-              <p key={pidx} className="text-secondary-800 font-lato leading-relaxed mb-4">
+              <p key={pidx} className="text-secondary-800 leading-relaxed mb-4">
                 {para}
               </p>
             );
@@ -182,7 +182,7 @@ const ContentViewPage = () => {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900 font-playfair">
+              <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900">
                 {job.outline?.title || 'Generated Content'}
               </h1>
               <div className="flex items-center space-x-2 mt-2">

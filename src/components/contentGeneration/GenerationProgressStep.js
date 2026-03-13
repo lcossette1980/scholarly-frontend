@@ -63,7 +63,7 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4 text-center">
+      <h2 className="text-2xl font-bold text-secondary-900 mb-4 text-center">
         Generating Your Content
       </h2>
       <p className="text-gray-600 mb-8 text-center">
@@ -140,8 +140,8 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
         <h3 className="font-semibold text-gray-700 mb-3">Did you know?</h3>
         <p className="text-sm text-gray-600">
-          On average, it takes a student <strong>4-6 hours</strong> to write a 2,500-word research paper manually.
-          With ScholarlyAI, you're getting it done in under 5 minutes! 🚀
+          On average, it takes a person <strong>4-6 hours</strong> to write a 2,500-word document manually.
+          With DraftEngine, you're getting it done in under 5 minutes!
         </p>
       </div>
 

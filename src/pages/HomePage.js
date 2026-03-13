@@ -51,7 +51,7 @@ const HomePage = () => {
                   className="btn btn-secondary text-base px-6 py-3 group flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
                 >
                   <Download className="w-4 h-4 mr-2 group-hover:translate-y-0.5 transition-transform" />
-                  <span>Sample Bibliography</span>
+                  <span>Sample Source Summary</span>
                 </a>
                 <a
                   href="/content_example.docx"
@@ -59,7 +59,7 @@ const HomePage = () => {
                   className="btn btn-secondary text-base px-6 py-3 group flex items-center justify-center shadow-md hover:shadow-lg transition-shadow"
                 >
                   <Download className="w-4 h-4 mr-2 group-hover:translate-y-0.5 transition-transform" />
-                  <span>Sample Paper</span>
+                  <span>Sample Document</span>
                 </a>
               </div>
             </div>
@@ -87,7 +87,7 @@ const HomePage = () => {
 
           {/* Social Proof */}
           <p className="text-center text-sm text-secondary-600 italic mt-4">
-            Join 10,000+ researchers who've saved an average of 18 hours per month
+            Join 10,000+ writers who've saved an average of 18 hours per month
           </p>
         </div>
       </section>
@@ -101,28 +101,28 @@ const HomePage = () => {
                 <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Users className="w-8 h-8 text-accent" />
                 </div>
-                <p className="text-3xl font-bold text-secondary-900 font-playfair mb-1">10,000+</p>
-                <p className="text-sm text-secondary-600">Active Researchers</p>
+                <p className="text-3xl font-bold text-secondary-900 mb-1">10,000+</p>
+                <p className="text-sm text-secondary-600">Active Writers</p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Clock className="w-8 h-8 text-green-600" />
                 </div>
-                <p className="text-3xl font-bold text-secondary-900 font-playfair mb-1">18hrs</p>
+                <p className="text-3xl font-bold text-secondary-900 mb-1">18hrs</p>
                 <p className="text-sm text-secondary-600">Saved Per Month</p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Zap className="w-8 h-8 text-blue-600" />
                 </div>
-                <p className="text-3xl font-bold text-secondary-900 font-playfair mb-1">90sec</p>
+                <p className="text-3xl font-bold text-secondary-900 mb-1">90sec</p>
                 <p className="text-sm text-secondary-600">Average Generation</p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Star className="w-8 h-8 text-yellow-600" />
                 </div>
-                <p className="text-3xl font-bold text-secondary-900 font-playfair mb-1">4.9/5</p>
+                <p className="text-3xl font-bold text-secondary-900 mb-1">4.9/5</p>
                 <p className="text-sm text-secondary-600">User Rating</p>
               </div>
             </div>
@@ -134,10 +134,10 @@ const HomePage = () => {
       <section className="py-16 lg:py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
               Dead Simple. <span className="text-accent">3 Steps</span> to Perfect Results
             </h2>
-            <p className="text-lg text-secondary-800 max-w-2xl mx-auto font-lato">
+            <p className="text-lg text-secondary-800 max-w-2xl mx-auto">
               No complex setup. No learning curve. Just upload and go.
             </p>
           </div>
@@ -148,9 +148,9 @@ const HomePage = () => {
               <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl font-bold text-accent">1</span>
               </div>
-              <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3">Upload Papers</h3>
-              <p className="text-secondary-800 font-lato leading-relaxed">
-                Drop your PDF research papers or manually enter details. We support any academic PDF, any length.
+              <h3 className="text-xl font-bold text-secondary-900 mb-3">Upload Sources</h3>
+              <p className="text-secondary-800 leading-relaxed">
+                Drop your PDF documents or manually enter details. We support any PDF, any length.
               </p>
             </div>
 
@@ -159,9 +159,9 @@ const HomePage = () => {
               <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl font-bold text-accent">2</span>
               </div>
-              <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3">AI Generates</h3>
-              <p className="text-secondary-800 font-lato leading-relaxed">
-                Our AI creates bibliographies, topics, outlines, or complete papers based on what you need. Takes 90 seconds to 5 minutes.
+              <h3 className="text-xl font-bold text-secondary-900 mb-3">AI Generates</h3>
+              <p className="text-secondary-800 leading-relaxed">
+                Our AI creates source summaries, ideas, outlines, or complete documents based on what you need. Takes 90 seconds to 5 minutes.
               </p>
             </div>
 
@@ -170,8 +170,8 @@ const HomePage = () => {
               <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-3xl font-bold text-accent">3</span>
               </div>
-              <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3">Download & Submit</h3>
-              <p className="text-secondary-800 font-lato leading-relaxed">
+              <h3 className="text-xl font-bold text-secondary-900 mb-3">Download & Submit</h3>
+              <p className="text-secondary-800 leading-relaxed">
                 Get professionally formatted documents ready for submission. Export to Word, PDF, or copy to clipboard.
               </p>
             </div>
@@ -194,7 +194,7 @@ const HomePage = () => {
                   className="text-accent hover:text-accent-700 font-medium text-base flex items-center underline"
                 >
                   <Download className="w-4 h-4 mr-1.5" />
-                  Sample Bibliography
+                  Sample Source Summary
                 </a>
                 <a
                   href="/content_example.docx"
@@ -202,7 +202,7 @@ const HomePage = () => {
                   className="text-accent hover:text-accent-700 font-medium text-base flex items-center underline"
                 >
                   <Download className="w-4 h-4 mr-1.5" />
-                  Sample Paper
+                  Sample Document
                 </a>
               </div>
             </div>
@@ -214,10 +214,10 @@ const HomePage = () => {
       <section className="py-16 lg:py-20 bg-white/50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-4">
+            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
               Simple, Transparent <span className="text-accent">Pricing</span>
             </h2>
-            <p className="text-lg text-secondary-800 max-w-2xl mx-auto font-lato">
+            <p className="text-lg text-secondary-800 max-w-2xl mx-auto">
               Start free, upgrade when you need more. No contracts, cancel anytime.
             </p>
           </div>
@@ -225,7 +225,7 @@ const HomePage = () => {
           <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
             {/* Free */}
             <div className="card text-center">
-              <h3 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">Free</h3>
+              <h3 className="text-2xl font-bold text-secondary-900 mb-2">Free</h3>
               <div className="mb-4">
                 <span className="text-4xl font-bold text-secondary-900">$0</span>
                 <span className="text-secondary-600">/forever</span>
@@ -238,7 +238,7 @@ const HomePage = () => {
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Bibliography Generator</span>
+                  <span>Source Analyzer</span>
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -256,12 +256,12 @@ const HomePage = () => {
                   MOST POPULAR
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">Student</h3>
+              <h3 className="text-2xl font-bold text-secondary-900 mb-2">Plus</h3>
               <div className="mb-4">
                 <span className="text-4xl font-bold text-secondary-900">$9.99</span>
                 <span className="text-secondary-600">/month</span>
               </div>
-              <p className="text-sm text-secondary-700 mb-6">For ongoing research</p>
+              <p className="text-sm text-secondary-700 mb-6">For regular writing</p>
               <ul className="space-y-3 text-left mb-6">
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -273,7 +273,7 @@ const HomePage = () => {
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>All citation styles</span>
+                  <span>All reference styles</span>
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -286,7 +286,7 @@ const HomePage = () => {
 
             {/* Researcher */}
             <div className="card text-center">
-              <h3 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">Researcher</h3>
+              <h3 className="text-2xl font-bold text-secondary-900 mb-2">Pro</h3>
               <div className="mb-4">
                 <span className="text-4xl font-bold text-secondary-900">$19.99</span>
                 <span className="text-secondary-600">/month</span>
@@ -295,7 +295,7 @@ const HomePage = () => {
               <ul className="space-y-3 text-left mb-6">
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="font-semibold">Everything in Student</span>
+                  <span className="font-semibold">Everything in Plus</span>
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -303,7 +303,7 @@ const HomePage = () => {
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Research synthesis tools</span>
+                  <span>Source synthesis tools</span>
                 </li>
                 <li className="flex items-start space-x-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -325,11 +325,11 @@ const HomePage = () => {
       <section className="py-16 lg:py-20 relative overflow-hidden bg-gradient-brand">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
-            <h2 className="text-3xl lg:text-5xl font-bold font-playfair mb-6">
-              Ready to Save Hours on Every Paper?
+            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+              Ready to Save Hours on Every Draft?
             </h2>
-            <p className="text-xl text-white/90 mb-8 font-lato">
-              Join 10,000+ researchers who've transformed their research workflow
+            <p className="text-xl text-white/90 mb-8">
+              Join 10,000+ writers who've transformed their writing workflow
             </p>
 
             <div className="flex flex-col items-center space-y-4 mb-8">
@@ -351,7 +351,7 @@ const HomePage = () => {
                 <svg className="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Secure checkout • Your academic data stays private
+                Secure checkout • Your data stays private
               </p>
             </div>
 
@@ -371,7 +371,7 @@ const HomePage = () => {
             </div>
 
             <p className="text-white/70 text-sm mt-6">
-              1,247 researchers signed up this week
+              1,247 writers signed up this week
             </p>
           </div>
         </div>

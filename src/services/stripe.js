@@ -10,11 +10,11 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 export const SUBSCRIPTION_PLANS = {
   trial: {
     id: 'trial',
-    name: 'Free Trial',
+    name: 'Starter',
     price: 0,
     entriesLimit: 5,
     features: [
-      '5 bibliography entries (lifetime)',
+      '5 source entries (lifetime)',
       'Basic AI analysis',
       'Standard export format',
       'Email support'
@@ -23,11 +23,11 @@ export const SUBSCRIPTION_PLANS = {
   },
   free: {
     id: 'free',
-    name: 'Free',
+    name: 'Starter',
     price: 0,
     entriesLimit: 5,
     features: [
-      '5 bibliography entries (lifetime)',
+      '5 source entries (lifetime)',
       'Basic AI analysis',
       'Standard export format',
       'Email support'
@@ -36,17 +36,17 @@ export const SUBSCRIPTION_PLANS = {
   },
   student: {
     id: 'student',
-    name: 'Premium',
+    name: 'Plus',
     price: 9.99,
     priceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID || 'price_1RdJyPCfEsnTPNpVUZVs6OU1',
     entriesLimit: -1,
     features: [
-      'Unlimited bibliography entries',
+      'Unlimited source entries',
       'Topic & Outline Generator',
       'Advanced AI analysis',
       'Multiple export formats',
       'Priority support',
-      'Research focus customization',
+      'Topic focus customization',
       'Batch processing',
       'Access to Content Generator (pay-per-use)'
     ],
@@ -54,19 +54,19 @@ export const SUBSCRIPTION_PLANS = {
   },
   researcher: {
     id: 'researcher',
-    name: 'Researcher',
+    name: 'Pro',
     price: 19.99,
     priceId: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID || 'price_1RdK3ACfEsnTPNpVG9GjSJNH',
     entriesLimit: -1,
     features: [
-      'Unlimited bibliography entries',
+      'Unlimited source entries',
       'Topic & Outline Generator',
       'Premium AI analysis',
       'All export formats',
       'Priority support',
       'Advanced customization',
       'Batch processing',
-      'Citation style options'
+      'Reference style options'
     ],
     allowedFeatures: ['bibliography', 'topic_outline']
   }
@@ -306,7 +306,7 @@ export const canCreateEntry = (user) => {
 
   const { entriesUsed, entriesLimit, plan } = user.subscription;
 
-  // Unlimited plan (Student, Researcher)
+  // Unlimited plan (Plus, Pro)
   if (entriesLimit === -1) return true;
 
   // Free/trial users have 5 lifetime limit

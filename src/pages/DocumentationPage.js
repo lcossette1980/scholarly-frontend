@@ -71,11 +71,11 @@ const DocumentationPage = () => {
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-4">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Documentation
           </h1>
-          <p className="text-xl text-secondary-700 font-lato">
-            Everything you need to integrate and use ScholarlyAI effectively
+          <p className="text-xl text-secondary-700">
+            Everything you need to integrate and use DraftEngine effectively
           </p>
         </div>
 
@@ -108,33 +108,33 @@ const DocumentationPage = () => {
             {activeSection === 'getting-started' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-4">Getting Started</h2>
-                  <p className="text-secondary-700 font-lato mb-6">
-                    Welcome to ScholarlyAI! This guide will help you get started with creating your first annotated bibliography entry.
+                  <h2 className="text-3xl font-bold text-secondary-900 mb-4">Getting Started</h2>
+                  <p className="text-secondary-700 mb-6">
+                    Welcome to DraftEngine! This guide will help you get started with creating your first source summary entry.
                   </p>
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Step 1: Create Your Account
                   </h3>
-                  <p className="text-secondary-700 font-lato mb-4">
-                    Sign up for a free account to get started with 5 bibliography entries per month.
+                  <p className="text-secondary-700 mb-4">
+                    Sign up for a free account to get started with 5 source summary entries per month.
                   </p>
                   <div className="bg-accent/5 border border-accent-600/20 rounded-lg p-4">
-                    <p className="text-secondary-800 font-lato">
+                    <p className="text-secondary-800">
                       💡 <strong>Tip:</strong> Use your institutional email for potential educational discounts.
                     </p>
                   </div>
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Step 2: Upload Your First Document
                   </h3>
-                  <ol className="list-decimal list-inside space-y-2 text-secondary-700 font-lato">
+                  <ol className="list-decimal list-inside space-y-2 text-secondary-700">
                     <li>Navigate to the "Create Entry" page</li>
-                    <li>Enter your research focus (e.g., "Machine Learning", "Climate Change")</li>
+                    <li>Enter your focus (e.g., "Machine Learning", "Climate Change")</li>
                     <li>Upload a PDF document (max 10MB)</li>
                     <li>Wait for AI analysis to complete (usually 30-60 seconds)</li>
                     <li>Review and edit the generated entry</li>
@@ -143,32 +143,32 @@ const DocumentationPage = () => {
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Step 3: Understanding Your Results
                   </h3>
-                  <p className="text-secondary-700 font-lato mb-4">
+                  <p className="text-secondary-700 mb-4">
                     Each generated entry includes:
                   </p>
                   <ul className="space-y-2">
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
-                      <span className="text-secondary-700 font-lato"><strong>Citation:</strong> Properly formatted academic citation</span>
+                      <span className="text-secondary-700"><strong>Citation:</strong> Properly formatted citation</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
-                      <span className="text-secondary-700 font-lato"><strong>Narrative Overview:</strong> Comprehensive summary</span>
+                      <span className="text-secondary-700"><strong>Narrative Overview:</strong> Comprehensive summary</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
-                      <span className="text-secondary-700 font-lato"><strong>Research Components:</strong> Methodology and framework</span>
+                      <span className="text-secondary-700"><strong>Components:</strong> Methodology and framework</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
-                      <span className="text-secondary-700 font-lato"><strong>Key Findings:</strong> Important results and statistics</span>
+                      <span className="text-secondary-700"><strong>Key Findings:</strong> Important results and statistics</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
-                      <span className="text-secondary-700 font-lato"><strong>Key Quotes:</strong> Impactful quotes with page numbers</span>
+                      <span className="text-secondary-700"><strong>Key Quotes:</strong> Impactful quotes with page numbers</span>
                     </li>
                   </ul>
                 </div>
@@ -178,17 +178,17 @@ const DocumentationPage = () => {
             {activeSection === 'api-reference' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-4">API Reference</h2>
-                  <p className="text-secondary-700 font-lato mb-6">
-                    Integrate ScholarlyAI into your applications with our REST API.
+                  <h2 className="text-3xl font-bold text-secondary-900 mb-4">API Reference</h2>
+                  <p className="text-secondary-700 mb-6">
+                    Integrate DraftEngine into your applications with our REST API.
                   </p>
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Authentication
                   </h3>
-                  <p className="text-secondary-700 font-lato mb-4">
+                  <p className="text-secondary-700 mb-4">
                     All API requests require authentication using Firebase Auth tokens.
                   </p>
                   <CodeBlock
@@ -198,7 +198,7 @@ const DocumentationPage = () => {
 const token = await user.getIdToken();
 
 // Include in API requests
-const response = await fetch('https://api.scholarlyaiapp.com/upload', {
+const response = await fetch('https://api.draftengine.com/upload', {
   method: 'POST',
   headers: {
     'Authorization': \`Bearer \${token}\`,
@@ -210,10 +210,10 @@ const response = await fetch('https://api.scholarlyaiapp.com/upload', {
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Upload Document
                   </h3>
-                  <p className="text-secondary-700 font-lato mb-4">
+                  <p className="text-secondary-700 mb-4">
                     <code className="bg-secondary-200/20 px-2 py-1 rounded">POST /upload</code>
                   </p>
                   <CodeBlock
@@ -236,10 +236,10 @@ const { task_id } = await response.json();`}
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Check Processing Status
                   </h3>
-                  <p className="text-secondary-700 font-lato mb-4">
+                  <p className="text-secondary-700 mb-4">
                     <code className="bg-secondary-200/20 px-2 py-1 rounded">GET /status/{'{task_id}'}</code>
                   </p>
                   <CodeBlock
@@ -267,20 +267,20 @@ const { task_id } = await response.json();`}
             {activeSection === 'guides' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-4">Guides & Tutorials</h2>
-                  <p className="text-secondary-700 font-lato mb-6">
-                    Detailed guides to help you get the most out of ScholarlyAI.
+                  <h2 className="text-3xl font-bold text-secondary-900 mb-4">Guides & Tutorials</h2>
+                  <p className="text-secondary-700 mb-6">
+                    Detailed guides to help you get the most out of DraftEngine.
                   </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="card card-hover">
                     <FileText className="w-8 h-8 text-accent mb-4" />
-                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
-                      Optimizing Research Focus
+                    <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                      Optimizing Your Focus
                     </h3>
-                    <p className="text-secondary-700 font-lato mb-4">
-                      Learn how to write effective research focus statements for better AI analysis.
+                    <p className="text-secondary-700 mb-4">
+                      Learn how to write effective focus statements for better AI analysis.
                     </p>
                     <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
                       <span>Read Guide</span>
@@ -290,10 +290,10 @@ const { task_id } = await response.json();`}
 
                   <div className="card card-hover">
                     <FileText className="w-8 h-8 text-accent mb-4" />
-                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
+                    <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                       Citation Style Guide
                     </h3>
-                    <p className="text-secondary-700 font-lato mb-4">
+                    <p className="text-secondary-700 mb-4">
                       Understanding different citation formats and when to use them.
                     </p>
                     <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
@@ -304,11 +304,11 @@ const { task_id } = await response.json();`}
 
                   <div className="card card-hover">
                     <FileText className="w-8 h-8 text-accent mb-4" />
-                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
+                    <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                       Batch Processing
                     </h3>
-                    <p className="text-secondary-700 font-lato mb-4">
-                      Efficiently process multiple documents for large research projects.
+                    <p className="text-secondary-700 mb-4">
+                      Efficiently process multiple documents for large projects.
                     </p>
                     <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
                       <span>Read Guide</span>
@@ -318,11 +318,11 @@ const { task_id } = await response.json();`}
 
                   <div className="card card-hover">
                     <FileText className="w-8 h-8 text-accent mb-4" />
-                    <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-2">
+                    <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                       Team Collaboration
                     </h3>
-                    <p className="text-secondary-700 font-lato mb-4">
-                      Share and collaborate on bibliography entries with your research team.
+                    <p className="text-secondary-700 mb-4">
+                      Share and collaborate on source summary entries with your team.
                     </p>
                     <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
                       <span>Read Guide</span>
@@ -336,14 +336,14 @@ const { task_id } = await response.json();`}
             {activeSection === 'best-practices' && (
               <div className="space-y-8">
                 <div>
-                  <h2 className="text-3xl font-bold text-secondary-900 font-playfair mb-4">Best Practices</h2>
-                  <p className="text-secondary-700 font-lato mb-6">
-                    Tips and recommendations for getting the best results from ScholarlyAI.
+                  <h2 className="text-3xl font-bold text-secondary-900 mb-4">Best Practices</h2>
+                  <p className="text-secondary-700 mb-6">
+                    Tips and recommendations for getting the best results from DraftEngine.
                   </p>
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Document Preparation
                   </h3>
                   <ul className="space-y-3">
@@ -364,16 +364,16 @@ const { task_id } = await response.json();`}
                     <li className="flex items-start space-x-3">
                       <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
                       <div>
-                        <strong className="text-secondary-900">Academic sources:</strong>
-                        <span className="text-secondary-700"> Peer-reviewed articles produce the most accurate results</span>
+                        <strong className="text-secondary-900">Quality sources:</strong>
+                        <span className="text-secondary-700"> Well-structured articles produce the most accurate results</span>
                       </div>
                     </li>
                   </ul>
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
-                    Research Focus Guidelines
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
+                    Focus Guidelines
                   </h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -398,14 +398,14 @@ const { task_id } = await response.json();`}
                 </div>
 
                 <div className="card">
-                  <h3 className="text-xl font-semibold text-secondary-900 font-playfair mb-4">
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-4">
                     Quality Assurance
                   </h3>
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <p className="text-yellow-800 font-lato">
+                    <p className="text-yellow-800">
                       <strong>Always review AI-generated content!</strong> While our AI is highly accurate, 
-                      you should verify citations, quotes, and analysis for accuracy and compliance with 
-                      your institution's academic standards.
+                      you should verify citations, quotes, and analysis for accuracy and compliance with
+                      your institution's standards.
                     </p>
                   </div>
                 </div>
