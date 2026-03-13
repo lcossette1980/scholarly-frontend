@@ -22,17 +22,17 @@ const DocsPage = () => {
     },
     {
       id: 'uploading-files',
-      title: 'Uploading Research Papers',
+      title: 'Uploading Documents',
       icon: <Upload className="w-5 h-5" />
     },
     {
       id: 'creating-entries',
-      title: 'Creating Bibliography Entries',
+      title: 'Creating Source Summary Entries',
       icon: <FileText className="w-5 h-5" />
     },
     {
       id: 'managing-bibliography',
-      title: 'Managing Your Bibliography',
+      title: 'Managing Your Sources',
       icon: <BookOpen className="w-5 h-5" />
     },
     {
@@ -45,30 +45,30 @@ const DocsPage = () => {
   const content = {
     'getting-started': (
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-secondary-900 font-playfair">Getting Started with ScholarlyAI</h2>
+        <h2 className="text-3xl font-bold text-secondary-900">Getting Started with DraftEngine</h2>
         
         <div className="bg-accent/10 border border-accent-600/20 rounded-lg p-4">
-          <p className="text-secondary-900 font-lato">
-            ScholarlyAI helps you transform research papers into comprehensive annotated bibliography entries using AI-powered analysis.
+          <p className="text-secondary-900">
+            DraftEngine helps you transform documents into comprehensive source summary entries using AI-powered analysis.
           </p>
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Quick Start Guide</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Quick Start Guide</h3>
           
           <div className="space-y-3">
             <div className="flex items-start space-x-3">
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
                 <p className="font-semibold text-secondary-900">1. Sign up for a free account</p>
-                <p className="text-secondary-700 text-sm">Get 5 free bibliography entries to try out the platform.</p>
+                <p className="text-secondary-700 text-sm">Get 5 free source summary entries to try out the platform.</p>
               </div>
             </div>
             
             <div className="flex items-start space-x-3">
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
-                <p className="font-semibold text-secondary-900">2. Upload a research paper (PDF)</p>
+                <p className="font-semibold text-secondary-900">2. Upload a document (PDF)</p>
                 <p className="text-secondary-700 text-sm">Support for files up to 10MB in size.</p>
               </div>
             </div>
@@ -76,7 +76,7 @@ const DocsPage = () => {
             <div className="flex items-start space-x-3">
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
-                <p className="font-semibold text-secondary-900">3. Define your research focus</p>
+                <p className="font-semibold text-secondary-900">3. Define your focus</p>
                 <p className="text-secondary-700 text-sm">Guide the AI to extract relevant insights for your specific needs.</p>
               </div>
             </div>
@@ -97,7 +97,7 @@ const DocsPage = () => {
             <div>
               <p className="font-semibold text-secondary-900 mb-1">Pro Tip</p>
               <p className="text-secondary-700 text-sm">
-                The more specific your research focus, the better the AI can tailor the analysis to your needs.
+                The more specific your focus, the better the AI can tailor the analysis to your needs.
               </p>
             </div>
           </div>
@@ -107,10 +107,10 @@ const DocsPage = () => {
     
     'uploading-files': (
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-secondary-900 font-playfair">Uploading Research Papers</h2>
+        <h2 className="text-3xl font-bold text-secondary-900">Uploading Documents</h2>
         
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Supported File Types</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Supported File Types</h3>
           <ul className="list-disc list-inside space-y-2 text-secondary-800">
             <li>PDF files (recommended)</li>
             <li>Maximum file size: 10MB</li>
@@ -119,7 +119,7 @@ const DocsPage = () => {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Step-by-Step Upload Process</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Step-by-Step Upload Process</h3>
           
           <div className="space-y-6">
             <div className="flex items-start space-x-4">
@@ -174,17 +174,17 @@ const DocsPage = () => {
 
     'creating-entries': (
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-secondary-900 font-playfair">Creating Bibliography Entries</h2>
+        <h2 className="text-3xl font-bold text-secondary-900">Creating Source Summary Entries</h2>
         
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Setting Your Research Focus</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Setting Your Focus</h3>
           <p className="text-secondary-800">
-            The research focus is crucial for guiding the AI's analysis. It determines which aspects of the paper the AI emphasizes.
+            The focus is crucial for guiding the AI's analysis. It determines which aspects of the document the AI emphasizes.
           </p>
           
           <div className="grid md:grid-cols-2 gap-4">
             <div className="card">
-              <h4 className="font-semibold text-secondary-900 mb-2">Good Research Focus Examples</h4>
+              <h4 className="font-semibold text-secondary-900 mb-2">Good Focus Examples</h4>
               <ul className="space-y-2 text-sm text-secondary-700">
                 <li>✓ "Impact of social media on teenage mental health"</li>
                 <li>✓ "Machine learning applications in medical diagnosis"</li>
@@ -204,7 +204,7 @@ const DocsPage = () => {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">AI Analysis Process</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">AI Analysis Process</h3>
           
           <div className="space-y-3">
             <div className="card bg-gradient-to-r from-accent/5 to-accent/10">
@@ -227,7 +227,7 @@ const DocsPage = () => {
                 <h4 className="font-semibold text-secondary-900">Content Extraction</h4>
               </div>
               <p className="text-secondary-700 text-sm">
-                Extracts summary, key findings, methodology, and relevant quotes based on your research focus.
+                Extracts summary, key findings, methodology, and relevant quotes based on your focus.
               </p>
             </div>
 
@@ -239,7 +239,7 @@ const DocsPage = () => {
                 <h4 className="font-semibold text-secondary-900">Smart Analysis</h4>
               </div>
               <p className="text-secondary-700 text-sm">
-                AI understands academic context and provides insights relevant to your specific research needs.
+                AI understands context and provides insights relevant to your specific writing needs.
               </p>
             </div>
           </div>
@@ -255,12 +255,12 @@ const DocsPage = () => {
 
     'managing-bibliography': (
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-secondary-900 font-playfair">Managing Your Bibliography</h2>
+        <h2 className="text-3xl font-bold text-secondary-900">Managing Your Sources</h2>
         
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Bibliography Dashboard</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Sources Dashboard</h3>
           <p className="text-secondary-800">
-            Access your complete bibliography from the "Manage Bibliography" page. Here you can:
+            Access your complete sources from the "Manage Sources" page. Here you can:
           </p>
           
           <div className="grid md:grid-cols-2 gap-4">
@@ -273,7 +273,7 @@ const DocsPage = () => {
                 </li>
                 <li className="flex items-start space-x-2">
                   <CheckCircle className="w-4 h-4 text-accent mt-0.5" />
-                  <span className="text-sm">Filter by research focus</span>
+                  <span className="text-sm">Filter by focus</span>
                 </li>
                 <li className="flex items-start space-x-2">
                   <CheckCircle className="w-4 h-4 text-accent mt-0.5" />
@@ -311,7 +311,7 @@ const DocsPage = () => {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Bulk Operations</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Bulk Operations</h3>
           
           <div className="bg-gray-100 rounded-lg p-4">
             <p className="text-secondary-800 mb-3">To perform bulk operations:</p>
@@ -330,7 +330,7 @@ const DocsPage = () => {
             <div>
               <p className="font-semibold text-secondary-900 mb-1">Quick Tip</p>
               <p className="text-secondary-700 text-sm">
-                Use the search bar to quickly find entries by author name, paper title, or keywords from your research focus.
+                Use the search bar to quickly find entries by author name, title, or keywords from your focus.
               </p>
             </div>
           </div>
@@ -340,10 +340,10 @@ const DocsPage = () => {
 
     'exporting': (
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-secondary-900 font-playfair">Exporting Your Bibliography</h2>
+        <h2 className="text-3xl font-bold text-secondary-900">Exporting Your Sources</h2>
         
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Export Formats</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Export Formats</h3>
           
           <div className="grid md:grid-cols-3 gap-4">
             <div className="card">
@@ -352,7 +352,7 @@ const DocsPage = () => {
               </div>
               <h4 className="font-semibold text-secondary-900 mb-2">Word Document</h4>
               <p className="text-secondary-700 text-sm">
-                Export formatted bibliography entries to .docx with proper styling and citations.
+                Export formatted source summary entries to .docx with proper styling and citations.
               </p>
             </div>
             
@@ -379,7 +379,7 @@ const DocsPage = () => {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900 font-playfair">Export Process</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Export Process</h3>
           
           <div className="space-y-3">
             <div className="flex items-start space-x-3">
@@ -437,11 +437,11 @@ const DocsPage = () => {
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-4">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
             Documentation
           </h1>
-          <p className="text-xl text-secondary-700 font-lato">
-            Everything you need to know about using ScholarlyAI
+          <p className="text-xl text-secondary-700">
+            Everything you need to know about using DraftEngine
           </p>
         </div>
 
@@ -463,7 +463,7 @@ const DocsPage = () => {
                     <span className={activeSection === section.id ? 'text-white' : 'text-accent'}>
                       {section.icon}
                     </span>
-                    <span className="font-lato">{section.title}</span>
+                    <span className="">{section.title}</span>
                   </button>
                 ))}
               </nav>
@@ -474,7 +474,7 @@ const DocsPage = () => {
                   Can't find what you're looking for? Contact our support team.
                 </p>
                 <a 
-                  href="mailto:support@scholarlyai.com" 
+                  href="mailto:support@draftengine.com" 
                   className="btn btn-sm btn-primary w-full"
                 >
                   Contact Support

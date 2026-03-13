@@ -76,7 +76,7 @@ const SignUpPage = () => {
           toast.success('Account created! Please verify your email to continue.');
           navigate('/verify-email', { replace: true });
         } else {
-          toast.success('Welcome to ScholarlyAI!');
+          toast.success('Welcome to DraftEngine!');
           // Refresh user document to get latest credit data
           try {
             await refreshUserDocument();
@@ -126,11 +126,11 @@ const SignUpPage = () => {
               <Brain className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-secondary-900 font-playfair mb-2">
+          <h1 className="text-3xl font-bold text-secondary-900 mb-2">
             Create Account
           </h1>
-          <p className="text-secondary-700 font-lato">
-            Start your research journey with ScholarlyAI
+          <p className="text-secondary-700">
+            Start your writing journey with DraftEngine
           </p>
         </div>
 

@@ -170,13 +170,13 @@ const CreateEntryPage = () => {
         setCurrentStep('preview');
         setIsLoading(false);
         
-        toast.success('Bibliography entry generated and saved successfully!');
+        toast.success('Source entry generated and saved successfully!');
       } else {
         throw new Error(saveResult.error || 'Failed to save entry');
       }
     } catch (error) {
       console.error('Error fetching or saving result:', error);
-      toast.error('Failed to save bibliography entry. Please try again.');
+      toast.error('Failed to save source entry. Please try again.');
       setCurrentStep('upload');
       setIsLoading(false);
     }
@@ -237,11 +237,11 @@ const CreateEntryPage = () => {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900 font-playfair">
-                Create Bibliography Entry
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900">
+                Create Source Entry
               </h1>
-              <p className="text-sm sm:text-base text-secondary-700 font-lato hidden sm:block">
-                Upload an academic paper and generate a comprehensive annotated bibliography entry
+              <p className="text-sm sm:text-base text-secondary-700 hidden sm:block">
+                Upload a document and generate a comprehensive source summary entry
               </p>
             </div>
           </div>
@@ -266,14 +266,14 @@ const CreateEntryPage = () => {
                 <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                   <Target className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="text-xl font-bold text-secondary-900 font-playfair">
-                  Research Focus
+                <h2 className="text-xl font-bold text-secondary-900">
+                  Topic Focus
                 </h2>
               </div>
-              
+
               <div className="space-y-2">
                 <label className="form-label">
-                  What is your research focus area?
+                  What is your topic focus area?
                 </label>
                 <input
                   type="text"
@@ -283,8 +283,8 @@ const CreateEntryPage = () => {
                   onChange={(e) => setResearchFocus(sanitizeResearchFocus(e.target.value))}
                   maxLength={200}
                 />
-                <p className="text-sm text-secondary-600 font-lato">
-                  This helps our AI tailor the analysis to your specific research interests.
+                <p className="text-sm text-secondary-600">
+                  This helps our AI tailor the analysis to your specific topic interests.
                 </p>
               </div>
             </div>
@@ -295,8 +295,8 @@ const CreateEntryPage = () => {
                 <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                   <Upload className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="text-xl font-bold text-secondary-900 font-playfair">
-                  Upload Academic Paper
+                <h2 className="text-xl font-bold text-secondary-900">
+                  Upload Document
                 </h2>
               </div>
 
@@ -322,13 +322,13 @@ const CreateEntryPage = () => {
                     <Upload className="w-8 h-8 text-accent" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-semibold text-secondary-900 mb-2 font-lato">
+                    <h3 className="text-base sm:text-lg font-semibold text-secondary-900 mb-2">
                       Drop your PDF here or click to browse
                     </h3>
-                    <p className="text-sm sm:text-base text-secondary-600 font-lato mb-2">
+                    <p className="text-sm sm:text-base text-secondary-600 mb-2">
                       Supports research articles, journal papers, and academic reports
                     </p>
-                    <p className="text-sm text-secondary-500 font-lato">
+                    <p className="text-sm text-secondary-500">
                       Maximum file size: 10MB
                     </p>
                   </div>
@@ -347,17 +347,17 @@ const CreateEntryPage = () => {
               </div>
               
               <div>
-                <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
+                <h2 className="text-2xl font-bold text-secondary-900 mb-2">
                   Analyzing Your Document
                 </h2>
-                <p className="text-secondary-700 font-lato">
+                <p className="text-secondary-700">
                   Our AI is carefully reading and analyzing your research paper
                 </p>
               </div>
 
               {/* Progress Bar */}
               <div className="space-y-2 max-w-md mx-auto">
-                <div className="flex justify-between text-sm font-lato">
+                <div className="flex justify-between text-sm">
                   <span className="text-secondary-700">Progress</span>
                   <span className="text-accent font-medium">{processingProgress}%</span>
                 </div>
@@ -400,10 +400,10 @@ const CreateEntryPage = () => {
                           <Icon className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className={`font-semibold font-lato ${isActive || isCompleted ? 'text-secondary-900' : 'text-secondary-500'}`}>
+                          <h4 className={`font-semibold ${isActive || isCompleted ? 'text-secondary-900' : 'text-secondary-500'}`}>
                             {step.label}
                           </h4>
-                          <p className={`text-sm font-lato ${isActive || isCompleted ? 'text-secondary-700' : 'text-secondary-400'}`}>
+                          <p className={`text-sm ${isActive || isCompleted ? 'text-secondary-700' : 'text-secondary-400'}`}>
                             {step.description}
                           </p>
                         </div>
@@ -425,7 +425,7 @@ const CreateEntryPage = () => {
                   <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                     <Eye className="w-5 h-5 text-accent" />
                   </div>
-                  <h2 className="text-2xl font-bold text-secondary-900 font-playfair">
+                  <h2 className="text-2xl font-bold text-secondary-900">
                     Preview & Edit Your Entry
                   </h2>
                 </div>
@@ -435,7 +435,7 @@ const CreateEntryPage = () => {
                 </button>
               </div>
 
-              {/* Bibliography Entry Preview */}
+              {/* Source Entry Preview */}
               <div className="bg-white rounded-lg border border-secondary-300/20 p-8" style={{ fontFamily: 'Times New Roman, serif' }}>
                 <div className="space-y-6">
                   {/* Citation */}
@@ -445,7 +445,7 @@ const CreateEntryPage = () => {
 
                   {/* Narrative Overview */}
                   <div>
-                    <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
+                    <h3 className="font-bold text-secondary-900 mb-3 text-lg">
                       Narrative Overview
                     </h3>
                     <p className="text-secondary-900/90 leading-relaxed">
@@ -455,7 +455,7 @@ const CreateEntryPage = () => {
 
                   {/* Key Research Components */}
                   <div>
-                    <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
+                    <h3 className="font-bold text-secondary-900 mb-3 text-lg">
                       Key Research Components
                     </h3>
                     <div className="space-y-3">
@@ -483,7 +483,7 @@ const CreateEntryPage = () => {
                   {/* Core Findings & Key Statistics */}
                   {bibliographyEntry.core_findings && (
                     <div>
-                      <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
+                      <h3 className="font-bold text-secondary-900 mb-3 text-lg">
                         Core Findings & Key Statistics
                       </h3>
                       <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
@@ -495,7 +495,7 @@ const CreateEntryPage = () => {
                   {/* Methodological Value */}
                   {(bibliographyEntry.methodological_value?.strengths || bibliographyEntry.methodological_value?.limitations) && (
                     <div>
-                      <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
+                      <h3 className="font-bold text-secondary-900 mb-3 text-lg">
                         Methodological Value
                       </h3>
                       <div className="space-y-3">
@@ -522,7 +522,7 @@ const CreateEntryPage = () => {
                   {/* Key Quotes */}
                   {bibliographyEntry.key_quotes && bibliographyEntry.key_quotes.length > 0 && (
                     <div>
-                      <h3 className="font-bold text-secondary-900 mb-3 text-lg font-playfair">
+                      <h3 className="font-bold text-secondary-900 mb-3 text-lg">
                         Key Quotes
                       </h3>
                       <ol className="text-secondary-900/90 space-y-2 list-decimal ml-6">

@@ -7,63 +7,63 @@ const HeroCarousel = () => {
 
   const slides = [
     {
-      title: "AI Research Assistant — From PDFs to Published Papers in Hours",
-      subtitle: "Complete academic workflow in one platform",
-      description: "Upload PDFs, generate bibliographies, create topics & outlines, write complete papers. ScholarlyAI handles every step from research to final draft.",
+      title: "AI Writing Assistant — From Sources to Finished Drafts in Minutes",
+      subtitle: "Complete writing workflow in one platform",
+      description: "Upload PDFs, generate source summaries, create ideas & outlines, draft complete documents. DraftEngine handles every step from sources to final draft.",
       icon: Sparkles,
       iconColor: "text-purple-600",
-      bgColor: "from-purple-50 via-white to-blue-50",
+      bgColor: "from-purple-50 via-white to-indigo-50",
       image: "/images/hero-overview.png",
       isMainHero: true,
       features: [
-        "Research papers & essays",
-        "Conference papers",
-        "Blog posts & articles",
+        "Articles & essays",
+        "Reports & briefs",
+        "Blog posts & content",
         "500-10,000 words"
       ]
     },
     {
-      title: "Bibliography Generator",
-      subtitle: "Perfect bibliographies in 90 seconds",
-      description: "Upload any academic PDF and get a complete annotated bibliography entry. AI extracts citations, summarizes findings, identifies methodologies, and pulls smart quotes with page numbers.",
+      title: "Source Analyzer",
+      subtitle: "Detailed summaries in 90 seconds",
+      description: "Upload any PDF and get a complete source summary entry. AI extracts references, summarizes findings, identifies key approaches, and pulls smart quotes with page numbers.",
       icon: FileText,
       iconColor: "text-accent",
       bgColor: "from-red-50 via-white to-orange-50",
       image: "/images/hero-bibliography.png",
       features: [
         "APA, MLA, Chicago, Harvard",
-        "Auto-citation extraction",
+        "Auto-reference extraction",
         "Key findings summary",
         "Quotes with page numbers"
       ]
     },
     {
-      title: "Topic & Outline Generator",
-      subtitle: "AI-powered research topics from YOUR sources",
-      description: "After building your bibliography, generate research topics and complete outlines based on your sources. AI identifies research gaps and creates structured paper outlines tied directly to your bibliography.",
+      title: "Idea & Outline Generator",
+      subtitle: "AI-powered content ideas from YOUR sources",
+      description: "After building your source library, generate content ideas and complete outlines based on your sources. AI identifies opportunities and creates structured document outlines tied directly to your sources.",
       icon: Brain,
       iconColor: "text-green-600",
       bgColor: "from-green-50 via-white to-teal-50",
       image: "/images/hero-topic-outline.png",
       features: [
-        "Identifies research gaps",
+        "Identifies content opportunities",
         "3-5 topic suggestions",
-        "Complete paper outlines",
+        "Complete document outlines",
         "Source-backed sections"
       ]
     },
     {
-      title: "Complete Paper Generator",
-      subtitle: "Fully-cited papers in minutes",
-      description: "Turn your bibliography and outline into a complete academic paper. Choose your document type, word count, citation style, and tone. AI generates properly formatted, fully-cited content ready for editing.",
+      title: "Complete Document Generator",
+      subtitle: "Fully-referenced drafts in minutes",
+      description: "Turn your sources and outline into a complete document. Choose your document type, word count, reference style, and tone. AI generates properly formatted, fully-referenced content ready for editing.",
       icon: BookOpen,
-      iconColor: "text-blue-600",
-      bgColor: "from-blue-50 via-white to-indigo-50",
+      iconColor: "text-indigo-600",
+      bgColor: "from-indigo-50 via-white to-violet-50",
       image: "/images/hero-paper-generator.png",
       features: [
         "2,500-10,000 words",
         "Multiple document types",
-        "Inline citations",
+        "Inline references",
         "Export to Word/PDF"
       ]
     }
@@ -105,16 +105,16 @@ const HeroCarousel = () => {
               </div>
 
               {slide.isMainHero ? (
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-6 leading-tight">
                   {slide.title}
                 </h1>
               ) : (
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 font-playfair mb-6 leading-tight">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-6 leading-tight">
                   {slide.title}
                 </h2>
               )}
 
-              <p className="text-lg text-secondary-800 mb-6 leading-relaxed font-lato">
+              <p className="text-lg text-secondary-800 mb-6 leading-relaxed">
                 {slide.description}
               </p>
 

@@ -98,11 +98,11 @@ const LoginPage = () => {
               <Brain className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-secondary-900 font-playfair mb-2">
+          <h1 className="text-3xl font-bold text-secondary-900 mb-2">
             Welcome Back
           </h1>
-          <p className="text-secondary-700 font-lato">
-            Sign in to your ScholarlyAI account
+          <p className="text-secondary-700">
+            Sign in to your DraftEngine account
           </p>
         </div>
 

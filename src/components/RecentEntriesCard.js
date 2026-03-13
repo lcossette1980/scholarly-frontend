@@ -27,9 +27,9 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
         <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">No Bibliography Entries Yet</h3>
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">No Source Summary Entries Yet</h3>
         <p className="text-gray-600 mb-6">
-          Start by uploading a research paper to create your first annotated bibliography entry.
+          Start by uploading a document to create your first source summary entry.
         </p>
         <Link
           to="/create"
@@ -46,7 +46,7 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-secondary-900 font-playfair">Recent Bibliography Entries</h2>
+        <h2 className="text-xl font-bold text-secondary-900">Recent Source Summary Entries</h2>
         <Link
           to="/bibliography"
           className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center space-x-1 transition-colors"

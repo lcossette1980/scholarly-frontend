@@ -21,11 +21,11 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+      <h2 className="text-2xl font-bold text-secondary-900 mb-4">
         Select Your Sources
       </h2>
       <p className="text-gray-600 mb-6">
-        Choose the bibliography entries you want to use as sources for your content.
+        Choose the source summary entries you want to use as sources for your content.
         Selected sources will be cited and referenced in the generated document.
       </p>
 

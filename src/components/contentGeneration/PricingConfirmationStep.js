@@ -49,8 +49,8 @@ const PricingConfirmationStep = ({
       model: 'GPT-4 Turbo',
       features: [
         'Premium AI model (GPT-4 Turbo)',
-        'Enhanced research depth',
-        'Advanced citation validation',
+        'Enhanced content depth',
+        'Advanced reference validation',
         'Priority processing speed',
         'Unlimited revisions',
         'Priority support'
@@ -159,7 +159,7 @@ const PricingConfirmationStep = ({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+      <h2 className="text-2xl font-bold text-secondary-900 mb-4">
         Choose Your Quality Tier
       </h2>
       <p className="text-gray-600 mb-6">
@@ -254,7 +254,7 @@ const PricingConfirmationStep = ({
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Citation Style</span>
+            <span className="text-gray-600">Reference Style</span>
             <span className="font-medium text-secondary-900">{settings.citation_style}</span>
           </div>
           <div className="flex justify-between text-sm">

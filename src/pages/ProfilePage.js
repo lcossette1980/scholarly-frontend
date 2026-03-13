@@ -149,7 +149,7 @@ const ProfilePage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-accent-600/30 border-t-chestnut rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-secondary-700 font-lato">Loading profile...</p>
+          <p className="text-secondary-700">Loading profile...</p>
         </div>
       </div>
     );
@@ -160,10 +160,10 @@ const ProfilePage = () => {
       <div className="container mx-auto px-6 max-w-4xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-secondary-900 font-playfair mb-2">
+          <h1 className="text-4xl font-bold text-secondary-900 mb-2">
             Profile Settings
           </h1>
-          <p className="text-secondary-700 font-lato">
+          <p className="text-secondary-700">
             Manage your account settings and preferences
           </p>
         </div>
@@ -178,7 +178,7 @@ const ProfilePage = () => {
                   <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                     <User className="w-5 h-5 text-accent" />
                   </div>
-                  <h2 className="text-xl font-bold text-secondary-900 font-playfair">
+                  <h2 className="text-xl font-bold text-secondary-900">
                     Basic Information
                   </h2>
                 </div>
@@ -229,7 +229,7 @@ const ProfilePage = () => {
                       onChange={handleInputChange}
                     />
                   ) : (
-                    <p className="text-secondary-900 font-lato py-2">
+                    <p className="text-secondary-900 py-2">
                       {currentUser?.displayName || 'Not set'}
                     </p>
                   )}
@@ -237,10 +237,10 @@ const ProfilePage = () => {
 
                 <div>
                   <label className="form-label">Email Address</label>
-                  <p className="text-secondary-900 font-lato py-2">
+                  <p className="text-secondary-900 py-2">
                     {currentUser?.email}
                   </p>
-                  <p className="text-sm text-secondary-600 font-lato">
+                  <p className="text-sm text-secondary-600">
                     Email cannot be changed. Contact support if needed.
                   </p>
                 </div>
@@ -257,7 +257,7 @@ const ProfilePage = () => {
                       onChange={handleInputChange}
                     />
                   ) : (
-                    <p className="text-secondary-900 font-lato py-2">
+                    <p className="text-secondary-900 py-2">
                       {userDocument?.preferences?.researchFocus || 'Not set'}
                     </p>
                   )}
@@ -265,7 +265,7 @@ const ProfilePage = () => {
 
                 <div>
                   <label className="form-label">Account Created</label>
-                  <p className="text-secondary-900 font-lato py-2">
+                  <p className="text-secondary-900 py-2">
                     {formatDate(userDocument?.createdAt)}
                   </p>
                 </div>
@@ -278,7 +278,7 @@ const ProfilePage = () => {
                 <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                   <Settings className="w-5 h-5 text-accent" />
                 </div>
-                <h2 className="text-xl font-bold text-secondary-900 font-playfair">
+                <h2 className="text-xl font-bold text-secondary-900">
                   Preferences
                 </h2>
               </div>
@@ -286,9 +286,9 @@ const ProfilePage = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-semibold text-secondary-900 font-lato">Email Notifications</h3>
-                    <p className="text-sm text-secondary-600 font-lato">
-                      Receive updates about your bibliography entries and account
+                    <h3 className="font-semibold text-secondary-900">Email Notifications</h3>
+                    <p className="text-sm text-secondary-600">
+                      Receive updates about your source summary entries and account
                     </p>
                   </div>
                   {isEditing ? (
@@ -319,13 +319,13 @@ const ProfilePage = () => {
                 <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
                   <Trash2 className="w-5 h-5 text-red-600" />
                 </div>
-                <h2 className="text-xl font-bold text-red-800 font-playfair">
+                <h2 className="text-xl font-bold text-red-800">
                   Danger Zone
                 </h2>
               </div>
 
               <div className="space-y-4">
-                <p className="text-red-700 font-lato">
+                <p className="text-red-700">
                   Once you delete your account, there is no going back. Please be certain.
                 </p>
                 <button className="btn bg-red-600 hover:bg-red-700 text-white">
@@ -344,7 +344,7 @@ const ProfilePage = () => {
                 <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                   <Crown className="w-5 h-5 text-accent" />
                 </div>
-                <h3 className="text-lg font-bold text-secondary-900 font-playfair">
+                <h3 className="text-lg font-bold text-secondary-900">
                   Subscription
                 </h3>
               </div>
@@ -352,14 +352,14 @@ const ProfilePage = () => {
               {userDocument?.subscription && (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-secondary-600 font-lato">Current Plan</p>
-                    <p className="font-semibold text-secondary-900 font-lato capitalize">
+                    <p className="text-sm text-secondary-600">Current Plan</p>
+                    <p className="font-semibold text-secondary-900 capitalize">
                       {userDocument.subscription.plan}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-sm text-secondary-600 font-lato">Usage this month</p>
+                    <p className="text-sm text-secondary-600">Usage this month</p>
                     <div className="flex items-center space-x-2 mt-1">
                       <div className="flex-1 bg-secondary-200/30 rounded-full h-2">
                         <div
@@ -420,7 +420,7 @@ const ProfilePage = () => {
                               setIsLoading(true);
                               await manuallyActivateSubscription(currentUser.uid, 'student');
                               await refreshUserDocument();
-                              toast.success('Student subscription activated!');
+                              toast.success('Plus subscription activated!');
                             } catch (error) {
                               toast.error('Failed to activate subscription');
                             } finally {
@@ -430,7 +430,7 @@ const ProfilePage = () => {
                           className="btn btn-sm btn-outline"
                           disabled={isLoading}
                         >
-                          Activate Student
+                          Activate Plus
                         </button>
                         <button
                           onClick={async () => {
@@ -438,7 +438,7 @@ const ProfilePage = () => {
                               setIsLoading(true);
                               await manuallyActivateSubscription(currentUser.uid, 'researcher');
                               await refreshUserDocument();
-                              toast.success('Researcher subscription activated!');
+                              toast.success('Pro subscription activated!');
                             } catch (error) {
                               toast.error('Failed to activate subscription');
                             } finally {
@@ -448,7 +448,7 @@ const ProfilePage = () => {
                           className="btn btn-sm btn-outline"
                           disabled={isLoading}
                         >
-                          Activate Researcher
+                          Activate Pro
                         </button>
                       </div>
                     </div>
@@ -459,7 +459,7 @@ const ProfilePage = () => {
 
             {/* Quick Stats */}
             <div className="card">
-              <h3 className="text-lg font-bold text-secondary-900 font-playfair mb-4">
+              <h3 className="text-lg font-bold text-secondary-900 mb-4">
                 Quick Stats
               </h3>
 
@@ -481,11 +481,11 @@ const ProfilePage = () => {
               ) : (
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-secondary-700 font-lato">Total Entries</span>
+                    <span className="text-secondary-700">Total Entries</span>
                     <span className="font-semibold text-secondary-900">{entries.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-secondary-700 font-lato">This Month</span>
+                    <span className="text-secondary-700">This Month</span>
                     <span className="font-semibold text-secondary-900">
                       {entries.filter(entry => {
                         const entryDate = new Date(entry.createdAt);
@@ -496,7 +496,7 @@ const ProfilePage = () => {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-secondary-700 font-lato">Last Entry</span>
+                    <span className="text-secondary-700">Last Entry</span>
                     <span className="font-semibold text-secondary-900">
                       {entries.length > 0
                         ? (() => {
@@ -528,14 +528,14 @@ const ProfilePage = () => {
                 <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                   <Shield className="w-5 h-5 text-accent" />
                 </div>
-                <h3 className="text-lg font-bold text-secondary-900 font-playfair">
+                <h3 className="text-lg font-bold text-secondary-900">
                   Security
                 </h3>
               </div>
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-secondary-700 font-lato">Two-Factor Auth</span>
+                  <span className="text-secondary-700">Two-Factor Auth</span>
                   <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
                     Not Setup
                   </span>

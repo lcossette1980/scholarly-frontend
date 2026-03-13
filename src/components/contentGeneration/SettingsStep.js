@@ -8,7 +8,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
   };
 
   const documentTypes = [
-    { value: 'research_paper', label: 'Research Paper', icon: FileText },
+    { value: 'research_paper', label: 'Document', icon: FileText },
     { value: 'essay', label: 'Essay', icon: Feather },
     { value: 'article', label: 'Article', icon: FileText },
     { value: 'blog_post', label: 'Blog Post', icon: Feather }
@@ -19,7 +19,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-secondary-900 font-playfair mb-4">
+      <h2 className="text-2xl font-bold text-secondary-900 mb-4">
         Configure Your Document
       </h2>
       <p className="text-gray-600 mb-8">
@@ -86,7 +86,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
         {/* Citation Style */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Citation Style
+            Reference Style
           </label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {citationStyles.map(style => {

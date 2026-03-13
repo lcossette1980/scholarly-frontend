@@ -272,10 +272,10 @@ const OutlineViewPage = () => {
             <Loader className="w-8 h-8 text-white animate-spin" />
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-secondary-900 font-playfair mb-2">
+            <h3 className="text-2xl font-bold text-secondary-900 mb-2">
               Generating Detailed Outline
             </h3>
-            <p className="text-secondary-700 font-lato">
+            <p className="text-secondary-700">
               Mapping evidence to outline sections...
             </p>
           </div>
@@ -301,10 +301,10 @@ const OutlineViewPage = () => {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-secondary-900 font-playfair">
+              <h1 className="text-2xl md:text-3xl font-bold text-secondary-900">
                 Detailed Outline
               </h1>
-              <p className="text-secondary-700 font-lato text-sm md:text-base">
+              <p className="text-secondary-700 text-sm md:text-base">
                 Evidence-mapped structure with {outline.sections.length} sections
               </p>
             </div>
@@ -335,10 +335,10 @@ const OutlineViewPage = () => {
               <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-secondary-900 font-playfair mb-1">
+              <h3 className="text-lg font-semibold text-secondary-900 mb-1">
                 Outline Generated Successfully!
               </h3>
-              <p className="text-secondary-700 font-lato text-sm">
+              <p className="text-secondary-700 text-sm">
                 Synthesized from {outline.sources_used.length} sources with evidence mapping
               </p>
             </div>
@@ -349,18 +349,18 @@ const OutlineViewPage = () => {
         <div className="card bg-white">
           {/* Title */}
           <div className="mb-8 pb-6 border-b border-secondary-300/20">
-            <h2 className="text-3xl font-bold text-secondary-900 font-playfair text-center">
+            <h2 className="text-3xl font-bold text-secondary-900 text-center">
               {outline.topic}
             </h2>
           </div>
 
           {/* Introduction */}
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3 flex items-center">
+            <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
               <FileText className="w-5 h-5 mr-2 text-accent" />
               Introduction
             </h3>
-            <p className="text-secondary-800 font-lato leading-relaxed">
+            <p className="text-secondary-800 leading-relaxed">
               {outline.introduction}
             </p>
           </div>
@@ -369,11 +369,11 @@ const OutlineViewPage = () => {
           <div className="space-y-8">
             {outline.sections.map((section, idx) => (
               <div key={idx} className="bg-pearl/20 rounded-lg p-6">
-                <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3">
+                <h3 className="text-xl font-bold text-secondary-900 mb-3">
                   {idx + 1}. {section.heading}
                 </h3>
 
-                <p className="text-secondary-700 font-lato italic mb-4">
+                <p className="text-secondary-700 italic mb-4">
                   {section.description}
                 </p>
 
@@ -383,7 +383,7 @@ const OutlineViewPage = () => {
                     {section.key_points.map((point, pointIdx) => (
                       <li key={pointIdx} className="flex items-start space-x-2">
                         <span className="text-accent mt-1">•</span>
-                        <span className="text-secondary-800 font-lato">{point}</span>
+                        <span className="text-secondary-800">{point}</span>
                       </li>
                     ))}
                   </ul>
@@ -411,11 +411,11 @@ const OutlineViewPage = () => {
 
           {/* Conclusion */}
           <div className="mt-8 pt-6 border-t border-secondary-300/20">
-            <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-3 flex items-center">
+            <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
               <BookOpen className="w-5 h-5 mr-2 text-accent" />
               Conclusion
             </h3>
-            <p className="text-secondary-800 font-lato leading-relaxed">
+            <p className="text-secondary-800 leading-relaxed">
               {outline.conclusion}
             </p>
           </div>
@@ -423,12 +423,12 @@ const OutlineViewPage = () => {
 
         {/* References */}
         <div className="card mt-8">
-          <h3 className="text-xl font-bold text-secondary-900 font-playfair mb-4">
+          <h3 className="text-xl font-bold text-secondary-900 mb-4">
             References
           </h3>
           <div className="space-y-3">
             {outline.sources_used.map((source, idx) => (
-              <div key={idx} className="text-secondary-800 font-lato text-sm leading-relaxed">
+              <div key={idx} className="text-secondary-800 text-sm leading-relaxed">
                 {source.citation}
               </div>
             ))}
@@ -448,7 +448,7 @@ const OutlineViewPage = () => {
             onClick={() => navigate('/bibliography')}
             className="btn btn-outline"
           >
-            Back to Bibliography
+            Back to Sources
           </button>
         </div>
       </div>

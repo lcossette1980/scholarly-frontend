@@ -1,8 +1,8 @@
 export const wordExportConfig = {
   // Document branding
   branding: {
-    companyName: 'ScholarlyAI',
-    tagline: 'A Comprehensive Academic Reference Collection',
+    companyName: 'DraftEngine',
+    tagline: 'A Comprehensive Reference Collection',
     watermark: false
   },
   
