@@ -11,9 +11,7 @@ import {
   PageNumber,
   NumberFormat,
   BorderStyle,
-  ShadingType,
   convertInchesToTwip,
-  Tab,
   TabStopType,
   TabStopPosition
 } from 'docx';
