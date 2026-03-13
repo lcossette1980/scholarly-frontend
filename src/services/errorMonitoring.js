@@ -153,7 +153,7 @@ export const withErrorBoundary = (Component, errorFallback = null) => {
   });
 };
 
-export default {
+const errorMonitoring = {
   initErrorMonitoring,
   logError,
   logWarning,
@@ -162,3 +162,5 @@ export default {
   addBreadcrumb,
   withErrorBoundary,
 };
+
+export default errorMonitoring;

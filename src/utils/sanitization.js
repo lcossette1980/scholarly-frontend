@@ -121,7 +121,7 @@ export const cleanMarkdownFormatting = (text) => {
     .replace(/#{1,6}\s+/g, '') // Remove header markdown
     .replace(/^\d+\.\s+/gm, '') // Remove numbered list formatting
     .replace(/^\*\s+/gm, '') // Remove bullet point formatting
-    .replace(/^\-\s+/gm, '') // Remove dash bullet formatting
+    .replace(/^-\s+/gm, '') // Remove dash bullet formatting
     .trim();
 };
 
@@ -209,7 +209,7 @@ export const sanitizeFormData = (formData) => {
   return sanitized;
 };
 
-export default {
+const sanitization = {
   sanitizeHtml,
   sanitizeText,
   sanitizeResearchFocus,
@@ -220,3 +220,5 @@ export default {
   sanitizeSearchQuery,
   sanitizeFormData,
 };
+
+export default sanitization;

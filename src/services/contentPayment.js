@@ -149,14 +149,9 @@ export const verifyAndCreateJob = async (
  * If user closes tab during payment, check on return
  */
 export const checkPaymentStatus = async (paymentIntentId) => {
-  try {
-    // This would call Stripe directly via your backend
-    // For now, we'll rely on Stripe.js client-side check
-    return false;
-  } catch (error) {
-    console.error('Error checking payment status:', error);
-    return false;
-  }
+  // This would call Stripe directly via your backend
+  // For now, we'll rely on Stripe.js client-side check
+  return false;
 };
 
 /**
