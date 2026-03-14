@@ -2,29 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Brain, BookOpen, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PlaceholderImage from './PlaceholderImage';
 
-const placeholderConfigs = [
-  {
-    label: "DraftEngine Dashboard Overview",
-    gradient: "from-violet-100 to-indigo-100",
-    prompt: "Clean modern SaaS dashboard UI mockup showing an AI writing assistant platform with dark sidebar navigation, document editor with inline citations highlighted in indigo, floating cards showing word count and progress. Indigo and violet color scheme, white background, subtle shadows, Figma quality, 4K."
-  },
-  {
-    label: "Source Analyzer Interface",
-    gradient: "from-rose-100 to-orange-100",
-    prompt: "Modern SaaS interface showing PDF document being analyzed by AI. Left side shows PDF page, right side shows extracted citation card, key findings list, quotes with page numbers. Clean indigo/violet UI, white background, Figma quality, 4K."
-  },
-  {
-    label: "Idea & Outline Generator",
-    gradient: "from-emerald-100 to-teal-100",
-    prompt: "Modern SaaS UI showing AI-powered outline generator. Left panel with selected source cards, right panel with generated document outline with nested sections linked to sources. Green and teal accents on indigo theme, Figma quality, 4K."
-  },
-  {
-    label: "Document Generator",
-    gradient: "from-indigo-100 to-violet-100",
-    prompt: "Modern SaaS document generation interface with settings panel (document type, word count slider, citation style) on left, content preview with inline citations on right. Progress bar showing generation. Indigo/violet scheme, Figma quality, 4K."
-  }
+const heroImages = [
+  { src: "/images/dashbioard.png", alt: "DraftEngine Dashboard Overview" },
+  { src: "/images/source_analyzer.png", alt: "Source Analyzer Interface" },
+  { src: "/images/outline_generator.png", alt: "Idea & Outline Generator" },
+  { src: "/images/document_generator.png", alt: "Document Generator" }
 ];
 
 const HeroCarousel = () => {
@@ -107,7 +90,7 @@ const HeroCarousel = () => {
 
   const slide = slides[currentSlide];
   const Icon = slide.icon;
-  const placeholder = placeholderConfigs[currentSlide];
+  const heroImage = heroImages[currentSlide];
 
   return (
     <div className="relative">
@@ -185,12 +168,12 @@ const HeroCarousel = () => {
                 {/* Right: Image */}
                 <div className="order-1 lg:order-2">
                   <div className="bg-white rounded-xl shadow-2xl border border-secondary-200 overflow-hidden">
-                    <PlaceholderImage
-                      label={placeholder.label}
-                      prompt={placeholder.prompt}
-                      aspectRatio="16/10"
-                      gradient={placeholder.gradient}
-                      className="w-full"
+                    <img
+                      src={heroImage.src}
+                      alt={heroImage.alt}
+                      className="w-full object-cover"
+                      style={{ aspectRatio: '16/10' }}
+                      loading="eager"
                     />
                   </div>
                 </div>
