@@ -16,6 +16,8 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { submitSupportMessage } from '../services/support';
 import toast from 'react-hot-toast';
+import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const HelpCenterPage = () => {
   const { currentUser } = useAuth();
@@ -361,124 +363,152 @@ const HelpCenterPage = () => {
     }
   ];
 
-  const filteredFAQs = faqs.filter(faq => 
+  const filteredFAQs = faqs.filter(faq =>
     faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen py-12 bg-mesh">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-            Help Center
-          </h1>
-          <p className="text-xl text-secondary-700 mb-8">
-            Find answers and get support for DraftEngine
-          </p>
-          
-          {/* Search */}
-          <div className="max-w-md mx-auto relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search for help..."
-              className="form-input pl-10"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        <FadeIn>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-secondary-900 mb-4">
+              Help Center
+            </h1>
+            <p className="text-xl text-secondary-700 mb-8">
+              Find answers and get support for DraftEngine
+            </p>
+
+            {/* Search */}
+            <div className="max-w-md mx-auto relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search for help..."
+                className="form-input pl-10 focus:ring-2 focus:ring-accent/30 focus:shadow-lg focus:shadow-accent/10 transition-shadow"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Help Categories or Article Content */}
           <div className="lg:col-span-2">
             {selectedArticle ? (
               /* Article Content View */
-              <div>
-                <button
-                  onClick={() => setSelectedArticle(null)}
-                  className="flex items-center space-x-2 text-accent hover:text-accent-600/80 transition-colors mb-6"
-                >
-                  <ChevronRight className="w-4 h-4 transform rotate-180" />
-                  <span className="">Back to Help Center</span>
-                </button>
-                
-                <div className="card">
-                  <h1 className="text-3xl font-bold text-secondary-900  mb-6">
-                    {helpContent[selectedArticle]?.title}
-                  </h1>
-                  
-                  <div className="space-y-6">
-                    {helpContent[selectedArticle]?.content.map((section, index) => (
-                      <div key={index}>
-                        <h3 className="text-xl font-semibold text-secondary-900  mb-3">
-                          {section.subtitle}
-                        </h3>
-                        <p className="text-secondary-800  leading-relaxed whitespace-pre-line">
-                          {section.text}
-                        </p>
-                      </div>
-                    ))}
+              <FadeIn>
+                <div>
+                  <motion.button
+                    whileHover={{ x: -4 }}
+                    onClick={() => setSelectedArticle(null)}
+                    className="flex items-center space-x-2 text-accent hover:text-accent-600/80 transition-colors mb-6"
+                  >
+                    <ChevronRight className="w-4 h-4 transform rotate-180" />
+                    <span className="">Back to Help Center</span>
+                  </motion.button>
+
+                  <div className="card card-floating">
+                    <h1 className="text-3xl font-bold text-secondary-900  mb-6">
+                      {helpContent[selectedArticle]?.title}
+                    </h1>
+
+                    <div className="space-y-6">
+                      {helpContent[selectedArticle]?.content.map((section, index) => (
+                        <FadeIn key={index} delay={index * 0.1}>
+                          <div>
+                            <h3 className="text-xl font-semibold text-secondary-900  mb-3">
+                              {section.subtitle}
+                            </h3>
+                            <p className="text-secondary-800  leading-relaxed whitespace-pre-line">
+                              {section.text}
+                            </p>
+                          </div>
+                        </FadeIn>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </FadeIn>
             ) : (
               /* Categories and FAQ View */
               <>
-                <h2 className="text-2xl font-bold text-secondary-900  mb-8">Browse by Category</h2>
-                <div className="grid md:grid-cols-2 gap-6 mb-12">
-                  {categories.map((category, index) => (
-                    <div key={index} className="card card-hover">
-                      <div className="flex items-center space-x-3 mb-4">
-                        <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
-                          {category.icon}
+                <FadeIn>
+                  <h2 className="text-2xl font-bold text-secondary-900  mb-8">Browse by Category</h2>
+                </FadeIn>
+                <StaggerChildren>
+                  <div className="grid md:grid-cols-2 gap-6 mb-12">
+                    {categories.map((category, index) => (
+                      <StaggerItem key={index}>
+                        <div className="card card-floating card-hover">
+                          <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
+                              {category.icon}
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-secondary-900 ">{category.title}</h3>
+                              <p className="text-sm text-secondary-600 ">{category.description}</p>
+                            </div>
+                          </div>
+                          <ul className="space-y-1">
+                            {category.articles.map((article, idx) => (
+                              <li
+                                key={idx}
+                                className="text-sm text-secondary-700 hover:text-accent-600 cursor-pointer transition-colors"
+                                onClick={() => setSelectedArticle(article)}
+                              >
+                                {article}
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-secondary-900 ">{category.title}</h3>
-                          <p className="text-sm text-secondary-600 ">{category.description}</p>
-                        </div>
-                      </div>
-                      <ul className="space-y-1">
-                        {category.articles.map((article, idx) => (
-                          <li 
-                            key={idx} 
-                            className="text-sm text-secondary-700 hover:text-accent-600 cursor-pointer transition-colors"
-                            onClick={() => setSelectedArticle(article)}
-                          >
-                            {article}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
+                      </StaggerItem>
+                    ))}
+                  </div>
+                </StaggerChildren>
 
                 {/* FAQ Section */}
-                <h2 className="text-2xl font-bold text-secondary-900  mb-8">
-                  Frequently Asked Questions
-                </h2>
+                <FadeIn>
+                  <h2 className="text-2xl font-bold text-secondary-900  mb-8">
+                    Frequently Asked Questions
+                  </h2>
+                </FadeIn>
                 <div className="space-y-4">
                   {filteredFAQs.map((faq, index) => (
-                    <div key={index} className="card">
-                      <button
-                        className="w-full text-left flex items-center justify-between"
-                        onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                      >
-                        <h3 className="font-semibold text-secondary-900  pr-4">{faq.question}</h3>
-                        {openFAQ === index ? (
-                          <ChevronDown className="w-5 h-5 text-secondary-600" />
-                        ) : (
-                          <ChevronRight className="w-5 h-5 text-secondary-600" />
-                        )}
-                      </button>
-                      {openFAQ === index && (
-                        <div className="mt-4 pt-4 border-t border-secondary-300/20">
-                          <p className="text-secondary-700  leading-relaxed">{faq.answer}</p>
-                        </div>
-                      )}
-                    </div>
+                    <FadeIn key={index} delay={index * 0.05}>
+                      <div className="card card-floating">
+                        <button
+                          className="w-full text-left flex items-center justify-between"
+                          onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                        >
+                          <h3 className="font-semibold text-secondary-900  pr-4">{faq.question}</h3>
+                          <motion.div
+                            animate={{ rotate: openFAQ === index ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <ChevronDown className="w-5 h-5 text-secondary-600" />
+                          </motion.div>
+                        </button>
+                        <AnimatePresence>
+                          {openFAQ === index && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="mt-4 pt-4 border-t border-secondary-300/20">
+                                <p className="text-secondary-700  leading-relaxed">{faq.answer}</p>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </FadeIn>
                   ))}
                 </div>
               </>
@@ -486,117 +516,143 @@ const HelpCenterPage = () => {
           </div>
 
           {/* Contact Support */}
-          <div className="space-y-6">
-            <div className="card">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MessageCircle className="w-8 h-8 text-accent" />
-                </div>
-                <h3 className="font-semibold text-secondary-900  mb-2">Live Chat</h3>
-                <p className="text-secondary-700  mb-4 text-sm">
-                  Get instant help from our support team
-                </p>
-                <button className="btn btn-primary w-full">Start Chat</button>
+          <div>
+            <StaggerChildren>
+              <div className="space-y-6">
+                <StaggerItem>
+                  <div className="card card-floating">
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <MessageCircle className="w-8 h-8 text-accent" />
+                      </div>
+                      <h3 className="font-semibold text-secondary-900  mb-2">Live Chat</h3>
+                      <p className="text-secondary-700  mb-4 text-sm">
+                        Get instant help from our support team
+                      </p>
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="btn btn-primary w-full"
+                      >
+                        Start Chat
+                      </motion.button>
+                    </div>
+                  </div>
+                </StaggerItem>
+
+                <StaggerItem>
+                  <div className="card glass-card lg:col-span-2">
+                    <div className="flex items-center space-x-3 mb-6">
+                      <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <Mail className="w-6 h-6 text-accent" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-secondary-900 ">Contact Support</h3>
+                        <p className="text-sm text-secondary-700 ">We'll respond within 24 hours</p>
+                      </div>
+                    </div>
+
+                    <form onSubmit={handleContactSubmit} className="space-y-4">
+                      <div>
+                        <label className="form-label">Subject</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          placeholder="Brief description of your issue"
+                          value={contactForm.subject}
+                          onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="form-label">Category</label>
+                        <select
+                          className="form-select"
+                          value={contactForm.category}
+                          onChange={(e) => setContactForm({ ...contactForm, category: e.target.value })}
+                        >
+                          <option value="general">General Question</option>
+                          <option value="bug">Bug Report</option>
+                          <option value="feature">Feature Request</option>
+                          <option value="billing">Billing Issue</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="form-label">Message</label>
+                        <textarea
+                          className="form-input min-h-[150px]"
+                          placeholder="Describe your issue or question in detail..."
+                          value={contactForm.message}
+                          onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                          required
+                        />
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit"
+                        disabled={isSubmitting || !currentUser}
+                        className="btn btn-primary w-full"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4 mr-2" />
+                            Send Message
+                          </>
+                        )}
+                      </motion.button>
+
+                      {!currentUser && (
+                        <p className="text-sm text-secondary-600 text-center">
+                          Please sign in to send a support message
+                        </p>
+                      )}
+                    </form>
+                  </div>
+                </StaggerItem>
+
+                <StaggerItem>
+                  <div className="card card-floating">
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Book className="w-8 h-8 text-accent" />
+                      </div>
+                      <h3 className="font-semibold text-secondary-900  mb-2">Documentation</h3>
+                      <p className="text-secondary-700  mb-4 text-sm">
+                        Detailed guides and tutorials
+                      </p>
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="btn btn-outline w-full"
+                      >
+                        View Docs
+                      </motion.button>
+                    </div>
+                  </div>
+                </StaggerItem>
+
+                <StaggerItem>
+                  {/* Contact Hours */}
+                  <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-4">
+                    <h4 className="font-semibold text-secondary-900  mb-2">Support Hours</h4>
+                    <div className="space-y-1 text-sm text-secondary-700 ">
+                      <p>Monday - Friday: 9 AM - 6 PM EST</p>
+                      <p>Saturday: 10 AM - 4 PM EST</p>
+                      <p>Sunday: Closed</p>
+                    </div>
+                  </div>
+                </StaggerItem>
               </div>
-            </div>
-
-            <div className="card lg:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-secondary-900 ">Contact Support</h3>
-                  <p className="text-sm text-secondary-700 ">We'll respond within 24 hours</p>
-                </div>
-              </div>
-
-              <form onSubmit={handleContactSubmit} className="space-y-4">
-                <div>
-                  <label className="form-label">Subject</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Brief description of your issue"
-                    value={contactForm.subject}
-                    onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="form-label">Category</label>
-                  <select
-                    className="form-select"
-                    value={contactForm.category}
-                    onChange={(e) => setContactForm({ ...contactForm, category: e.target.value })}
-                  >
-                    <option value="general">General Question</option>
-                    <option value="bug">Bug Report</option>
-                    <option value="feature">Feature Request</option>
-                    <option value="billing">Billing Issue</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="form-label">Message</label>
-                  <textarea
-                    className="form-input min-h-[150px]"
-                    placeholder="Describe your issue or question in detail..."
-                    value={contactForm.message}
-                    onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !currentUser}
-                  className="btn btn-primary w-full"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Send Message
-                    </>
-                  )}
-                </button>
-
-                {!currentUser && (
-                  <p className="text-sm text-secondary-600 text-center">
-                    Please sign in to send a support message
-                  </p>
-                )}
-              </form>
-            </div>
-
-            <div className="card">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Book className="w-8 h-8 text-accent" />
-                </div>
-                <h3 className="font-semibold text-secondary-900  mb-2">Documentation</h3>
-                <p className="text-secondary-700  mb-4 text-sm">
-                  Detailed guides and tutorials
-                </p>
-                <button className="btn btn-outline w-full">View Docs</button>
-              </div>
-            </div>
-
-            {/* Contact Hours */}
-            <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-4">
-              <h4 className="font-semibold text-secondary-900  mb-2">Support Hours</h4>
-              <div className="space-y-1 text-sm text-secondary-700 ">
-                <p>Monday - Friday: 9 AM - 6 PM EST</p>
-                <p>Saturday: 10 AM - 4 PM EST</p>
-                <p>Sunday: Closed</p>
-              </div>
-            </div>
+            </StaggerChildren>
           </div>
         </div>
       </div>

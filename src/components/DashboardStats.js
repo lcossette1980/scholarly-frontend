@@ -4,6 +4,8 @@ import { FileText, Calendar, Brain, Sparkles } from 'lucide-react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+import { StaggerChildren, StaggerItem, AnimatedCounter } from './motion';
 
 const DashboardStats = ({ entries, loading }) => {
   const { currentUser } = useAuth();
@@ -112,35 +114,43 @@ const DashboardStats = ({ entries, loading }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <StatCard
-        icon={FileText}
-        title="Total Entries"
-        value={stats.totalEntries}
-        color="blue"
-      />
-      <StatCard
-        icon={Calendar}
-        title="This Month"
-        value={stats.thisMonth}
-        subtitle={stats.thisMonth > 0 ? `${stats.thisMonth} new ${stats.thisMonth === 1 ? 'entry' : 'entries'}` : 'No new entries yet'}
-        color="green"
-      />
-      <StatCard
-        icon={Brain}
-        title="Analysis Ready"
-        value={stats.analysisReady}
-        subtitle={stats.analysisReady > 0 ? `${Math.round((stats.analysisReady / stats.totalEntries) * 100)}% of total` : 'No entries analyzed'}
-        color="purple"
-      />
-      <StatCard
-        icon={Sparkles}
-        title="Content Generated"
-        value={stats.generated}
-        subtitle="Documents created"
-        color="orange"
-      />
-    </div>
+    <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <StaggerItem>
+        <StatCard
+          icon={FileText}
+          title="Total Entries"
+          value={stats.totalEntries}
+          color="blue"
+        />
+      </StaggerItem>
+      <StaggerItem>
+        <StatCard
+          icon={Calendar}
+          title="This Month"
+          value={stats.thisMonth}
+          subtitle={stats.thisMonth > 0 ? `${stats.thisMonth} new ${stats.thisMonth === 1 ? 'entry' : 'entries'}` : 'No new entries yet'}
+          color="green"
+        />
+      </StaggerItem>
+      <StaggerItem>
+        <StatCard
+          icon={Brain}
+          title="Analysis Ready"
+          value={stats.analysisReady}
+          subtitle={stats.analysisReady > 0 ? `${Math.round((stats.analysisReady / stats.totalEntries) * 100)}% of total` : 'No entries analyzed'}
+          color="purple"
+        />
+      </StaggerItem>
+      <StaggerItem>
+        <StatCard
+          icon={Sparkles}
+          title="Content Generated"
+          value={stats.generated}
+          subtitle="Documents created"
+          color="orange"
+        />
+      </StaggerItem>
+    </StaggerChildren>
   );
 };
 
@@ -171,20 +181,29 @@ const StatCard = ({ icon: Icon, title, value, subtitle, color }) => {
   const colors = colorClasses[color] || colorClasses.blue;
 
   return (
-    <div className={`bg-white rounded-xl border ${colors.border} p-6 hover:shadow-md transition-shadow`}>
-      <div className="flex items-center space-x-4">
-        <div className={`${colors.bg} rounded-lg p-3`}>
-          <Icon className={`w-6 h-6 ${colors.text}`} />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-secondary-900">{value}</p>
-          {subtitle && (
-            <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-          )}
+    <motion.div
+      whileHover={{ scale: 1.03, y: -2 }}
+      transition={{ type: 'spring', stiffness: 300 }}
+    >
+      <div className={`bg-white rounded-xl border ${colors.border} p-6 hover:shadow-md transition-shadow`}>
+        <div className="flex items-center space-x-4">
+          <div className={`${colors.bg} rounded-lg p-3`}>
+            <Icon className={`w-6 h-6 ${colors.text}`} />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
+            <AnimatedCounter
+              target={value}
+              className="text-3xl font-bold text-secondary-900"
+              duration={1}
+            />
+            {subtitle && (
+              <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

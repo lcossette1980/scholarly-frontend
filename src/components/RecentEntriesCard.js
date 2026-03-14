@@ -2,6 +2,8 @@
 import React from 'react';
 import { Eye, Brain, Trash2, Calendar, BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FadeIn, StaggerChildren, StaggerItem } from './motion';
 
 const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) => {
   if (loading) {
@@ -43,45 +45,48 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-secondary-900">Recent Source Summary Entries</h2>
-        <Link
-          to="/bibliography"
-          className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center space-x-1 transition-colors"
-        >
-          <span>View All</span>
-          <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
+    <FadeIn direction="up" delay={0.2}>
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-secondary-900">Recent Source Summary Entries</h2>
+          <Link
+            to="/bibliography"
+            className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center space-x-1 transition-colors"
+          >
+            <span>View All</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
 
-      {/* Entries List */}
-      <div className="divide-y divide-gray-200">
-        {entries.map((entry, index) => (
-          <EntryRow
-            key={entry.id}
-            entry={entry}
-            onView={onView}
-            onAnalyze={onAnalyze}
-            onDelete={onDelete}
-          />
-        ))}
-      </div>
+        {/* Entries List */}
+        <StaggerChildren className="divide-y divide-gray-200">
+          {entries.map((entry, index) => (
+            <StaggerItem key={entry.id}>
+              <EntryRow
+                entry={entry}
+                onView={onView}
+                onAnalyze={onAnalyze}
+                onDelete={onDelete}
+              />
+            </StaggerItem>
+          ))}
+        </StaggerChildren>
 
-      {/* Footer Actions */}
-      <div className="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-        <p className="text-sm text-gray-600">
-          Showing {entries.length} most recent {entries.length === 1 ? 'entry' : 'entries'}
-        </p>
-        <Link
-          to="/bibliography"
-          className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          Manage All Entries →
-        </Link>
+        {/* Footer Actions */}
+        <div className="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+          <p className="text-sm text-gray-600">
+            Showing {entries.length} most recent {entries.length === 1 ? 'entry' : 'entries'}
+          </p>
+          <Link
+            to="/bibliography"
+            className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+          >
+            Manage All Entries →
+          </Link>
+        </div>
       </div>
-    </div>
+    </FadeIn>
   );
 };
 
@@ -186,27 +191,33 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
 
         {/* Actions */}
         <div className="flex items-center space-x-2 flex-shrink-0">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onView(entry)}
             className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
             title="View Details"
           >
             <Eye className="w-4 h-4" />
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onAnalyze(entry)}
             className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
             title="Analyze & Generate Topics"
           >
             <Brain className="w-4 h-4" />
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onDelete(entry)}
             className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
             title="Delete Entry"
           >
             <Trash2 className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

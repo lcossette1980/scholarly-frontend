@@ -1,15 +1,17 @@
 // src/pages/DocsPage.js
 import React, { useState } from 'react';
-import { 
-  Book, 
-  Upload, 
-  FileText, 
+import {
+  Book,
+  Upload,
+  FileText,
   CheckCircle,
   Info,
   Zap,
   BookOpen,
   FileDown
 } from 'lucide-react';
+import { FadeIn } from '../components/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const DocsPage = () => {
   const [activeSection, setActiveSection] = useState('getting-started');
@@ -46,7 +48,7 @@ const DocsPage = () => {
     'getting-started': (
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-secondary-900">Getting Started with DraftEngine</h2>
-        
+
         <div className="bg-accent/10 border border-accent-600/20 rounded-lg p-4">
           <p className="text-secondary-900">
             DraftEngine helps you transform documents into comprehensive source summary entries using AI-powered analysis.
@@ -55,7 +57,7 @@ const DocsPage = () => {
 
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Quick Start Guide</h3>
-          
+
           <div className="space-y-3">
             <div className="flex items-start space-x-3">
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
@@ -64,7 +66,7 @@ const DocsPage = () => {
                 <p className="text-secondary-700 text-sm">Get 5 free source summary entries to try out the platform.</p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
@@ -72,7 +74,7 @@ const DocsPage = () => {
                 <p className="text-secondary-700 text-sm">Support for files up to 10MB in size.</p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
@@ -80,7 +82,7 @@ const DocsPage = () => {
                 <p className="text-secondary-700 text-sm">Guide the AI to extract relevant insights for your specific needs.</p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
@@ -104,11 +106,11 @@ const DocsPage = () => {
         </div>
       </div>
     ),
-    
+
     'uploading-files': (
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-secondary-900">Uploading Documents</h2>
-        
+
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Supported File Types</h3>
           <ul className="list-disc list-inside space-y-2 text-secondary-800">
@@ -120,7 +122,7 @@ const DocsPage = () => {
 
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Step-by-Step Upload Process</h3>
-          
+
           <div className="space-y-6">
             <div className="flex items-start space-x-4">
               <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold">1</div>
@@ -175,15 +177,15 @@ const DocsPage = () => {
     'creating-entries': (
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-secondary-900">Creating Source Summary Entries</h2>
-        
+
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Setting Your Focus</h3>
           <p className="text-secondary-800">
             The focus is crucial for guiding the AI's analysis. It determines which aspects of the document the AI emphasizes.
           </p>
-          
+
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="card">
+            <div className="card card-floating">
               <h4 className="font-semibold text-secondary-900 mb-2">Good Focus Examples</h4>
               <ul className="space-y-2 text-sm text-secondary-700">
                 <li>✓ "Impact of social media on teenage mental health"</li>
@@ -191,8 +193,8 @@ const DocsPage = () => {
                 <li>✓ "Climate change effects on urban infrastructure"</li>
               </ul>
             </div>
-            
-            <div className="card">
+
+            <div className="card card-floating">
               <h4 className="font-semibold text-secondary-900 mb-2">Too Broad Examples</h4>
               <ul className="space-y-2 text-sm text-secondary-700">
                 <li>✗ "Education"</li>
@@ -205,9 +207,9 @@ const DocsPage = () => {
 
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">AI Analysis Process</h3>
-          
+
           <div className="space-y-3">
-            <div className="card bg-gradient-to-r from-accent/5 to-accent/10">
+            <div className="card card-floating bg-gradient-to-r from-accent/5 to-accent/10">
               <div className="flex items-center space-x-3 mb-2">
                 <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
                   <Book className="w-6 h-6 text-accent" />
@@ -219,7 +221,7 @@ const DocsPage = () => {
               </p>
             </div>
 
-            <div className="card bg-gradient-to-r from-accent/5 to-accent/10">
+            <div className="card card-floating bg-gradient-to-r from-accent/5 to-accent/10">
               <div className="flex items-center space-x-3 mb-2">
                 <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
                   <FileText className="w-6 h-6 text-accent" />
@@ -231,7 +233,7 @@ const DocsPage = () => {
               </p>
             </div>
 
-            <div className="card bg-gradient-to-r from-accent/5 to-accent/10">
+            <div className="card card-floating bg-gradient-to-r from-accent/5 to-accent/10">
               <div className="flex items-center space-x-3 mb-2">
                 <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
                   <Zap className="w-6 h-6 text-accent" />
@@ -256,15 +258,15 @@ const DocsPage = () => {
     'managing-bibliography': (
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-secondary-900">Managing Your Sources</h2>
-        
+
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Sources Dashboard</h3>
           <p className="text-secondary-800">
             Access your complete sources from the "Manage Sources" page. Here you can:
           </p>
-          
+
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="card">
+            <div className="card card-floating">
               <h4 className="font-semibold text-secondary-900 mb-3">Organization Features</h4>
               <ul className="space-y-2 text-secondary-700">
                 <li className="flex items-start space-x-2">
@@ -285,8 +287,8 @@ const DocsPage = () => {
                 </li>
               </ul>
             </div>
-            
-            <div className="card">
+
+            <div className="card card-floating">
               <h4 className="font-semibold text-secondary-900 mb-3">Entry Actions</h4>
               <ul className="space-y-2 text-secondary-700">
                 <li className="flex items-start space-x-2">
@@ -312,7 +314,7 @@ const DocsPage = () => {
 
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Bulk Operations</h3>
-          
+
           <div className="bg-gray-100 rounded-lg p-4">
             <p className="text-secondary-800 mb-3">To perform bulk operations:</p>
             <ol className="list-decimal list-inside space-y-2 text-secondary-700">
@@ -341,12 +343,12 @@ const DocsPage = () => {
     'exporting': (
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-secondary-900">Exporting Your Sources</h2>
-        
+
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Export Formats</h3>
-          
+
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="card">
+            <div className="card card-floating">
               <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
                 <FileDown className="w-6 h-6 text-accent" />
               </div>
@@ -355,8 +357,8 @@ const DocsPage = () => {
                 Export formatted source summary entries to .docx with proper styling and citations.
               </p>
             </div>
-            
-            <div className="card">
+
+            <div className="card card-floating">
               <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
                 <FileText className="w-6 h-6 text-accent" />
               </div>
@@ -365,8 +367,8 @@ const DocsPage = () => {
                 Copy citations and annotations as plain text for easy pasting.
               </p>
             </div>
-            
-            <div className="card">
+
+            <div className="card card-floating">
               <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
                 <BookOpen className="w-6 h-6 text-accent" />
               </div>
@@ -380,7 +382,7 @@ const DocsPage = () => {
 
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Export Process</h3>
-          
+
           <div className="space-y-3">
             <div className="flex items-start space-x-3">
               <div className="w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
@@ -389,7 +391,7 @@ const DocsPage = () => {
                 <p className="text-secondary-700 text-sm">Choose individual entries or select multiple for bulk export.</p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
               <div>
@@ -397,7 +399,7 @@ const DocsPage = () => {
                 <p className="text-secondary-700 text-sm">Select your preferred export format from the dropdown menu.</p>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
               <div>
@@ -433,61 +435,79 @@ const DocsPage = () => {
   };
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen py-12 bg-mesh">
       <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-            Documentation
-          </h1>
-          <p className="text-xl text-secondary-700">
-            Everything you need to know about using DraftEngine
-          </p>
-        </div>
+        <FadeIn>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-secondary-900 mb-4">
+              Documentation
+            </h1>
+            <p className="text-xl text-secondary-700">
+              Everything you need to know about using DraftEngine
+            </p>
+          </div>
+        </FadeIn>
 
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
-            <div className="sticky top-8">
-              <nav className="space-y-2">
-                {sections.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-colors ${
-                      activeSection === section.id
-                        ? 'bg-accent text-white'
-                        : 'hover:bg-secondary-200/20 text-secondary-900'
-                    }`}
-                  >
-                    <span className={activeSection === section.id ? 'text-white' : 'text-accent'}>
-                      {section.icon}
-                    </span>
-                    <span className="">{section.title}</span>
-                  </button>
-                ))}
-              </nav>
+            <FadeIn direction="left">
+              <div className="sticky top-8">
+                <nav className="space-y-2">
+                  {sections.map((section) => (
+                    <motion.button
+                      key={section.id}
+                      whileHover={{ x: 4 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setActiveSection(section.id)}
+                      className={`w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-all ${
+                        activeSection === section.id
+                          ? 'bg-accent text-white shadow-md shadow-accent/20'
+                          : 'hover:bg-secondary-200/20 text-secondary-900'
+                      }`}
+                    >
+                      <span className={activeSection === section.id ? 'text-white' : 'text-accent'}>
+                        {section.icon}
+                      </span>
+                      <span className="">{section.title}</span>
+                    </motion.button>
+                  ))}
+                </nav>
 
-              <div className="mt-8 card bg-accent/10 border-accent-600/20">
-                <h3 className="font-semibold text-secondary-900 mb-2">Need More Help?</h3>
-                <p className="text-secondary-700 text-sm mb-3">
-                  Can't find what you're looking for? Contact our support team.
-                </p>
-                <a 
-                  href="mailto:support@draftengine.com" 
-                  className="btn btn-sm btn-primary w-full"
-                >
-                  Contact Support
-                </a>
+                <div className="mt-8 card card-floating bg-accent/10 border-accent-600/20">
+                  <h3 className="font-semibold text-secondary-900 mb-2">Need More Help?</h3>
+                  <p className="text-secondary-700 text-sm mb-3">
+                    Can't find what you're looking for? Contact our support team.
+                  </p>
+                  <motion.a
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    href="mailto:support@draftengine.com"
+                    className="btn btn-sm btn-primary w-full"
+                  >
+                    Contact Support
+                  </motion.a>
+                </div>
               </div>
-            </div>
+            </FadeIn>
           </div>
 
           {/* Content Area */}
           <div className="lg:col-span-3">
-            <div className="card">
-              {content[activeSection]}
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSection}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="card card-floating">
+                  {content[activeSection]}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>

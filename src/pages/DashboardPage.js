@@ -10,6 +10,7 @@ import {
   Lock,
   Download
   } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry } from '../services/stripe';
 import { getUserBibliographyEntries, deleteBibliographyEntry } from '../services/bibliography';
@@ -18,6 +19,7 @@ import ContentGenerationCard from '../components/ContentGenerationCard';
 import DashboardStats from '../components/DashboardStats';
 import RecentEntriesCard from '../components/RecentEntriesCard';
 import EntryViewModal from '../components/EntryViewModal';
+import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 import toast from 'react-hot-toast';
 
 const DashboardPage = () => {
@@ -37,35 +39,35 @@ const DashboardPage = () => {
       if (success === 'true' && currentUser && !refreshingSubscription) {
         console.log('Payment success detected for plan:', planId);
         setRefreshingSubscription(true);
-        
+
         // Show initial success message with plan info
         const planName = planId ? planId.charAt(0).toUpperCase() + planId.slice(1) : 'your';
         toast.success(`Payment successful! Activating your ${planName} plan...`);
-        
+
         // Clean up URL immediately to prevent re-triggering
         searchParams.delete('success');
         searchParams.delete('plan');
         setSearchParams(searchParams);
-        
+
         // Wait a moment for webhook to process, then refresh subscription data
         const refreshWithRetry = async (maxRetries = 20, delay = 1500) => {
           let previousPlan = userDocument?.subscription?.plan;
           let previousLimit = userDocument?.subscription?.entriesLimit;
-          
+
           for (let i = 0; i < maxRetries; i++) {
             try {
               console.log(`Refresh attempt ${i + 1}/${maxRetries}`);
               await refreshUserDocument();
-              
+
               // Wait a bit for the state to update
               await new Promise(resolve => setTimeout(resolve, 500));
-              
+
               // First try to check subscription status from backend
               const { checkSubscriptionStatus, forceSyncSubscription, manuallyActivateSubscription } = await import('../services/stripe');
-              
+
               // Try different methods to sync subscription
               let backendStatus = await checkSubscriptionStatus(currentUser.uid);
-              
+
               // If backend check fails, try force sync
               if (!backendStatus?.subscription) {
                 console.log('Backend check failed, trying force sync...');
@@ -74,7 +76,7 @@ const DashboardPage = () => {
                   backendStatus = { subscription: syncResult.subscription };
                 }
               }
-              
+
               // If still no subscription, check localStorage for pending subscription
               if (!backendStatus?.subscription) {
                 const pendingSubStr = localStorage.getItem('pendingSubscription');
@@ -82,7 +84,7 @@ const DashboardPage = () => {
                   try {
                     const pendingSub = JSON.parse(pendingSubStr);
                     // Check if it's recent (within last hour) and matches current user
-                    if (pendingSub.userId === currentUser.uid && 
+                    if (pendingSub.userId === currentUser.uid &&
                         Date.now() - pendingSub.timestamp < 3600000) {
                       planId = planId || pendingSub.planId;
                     }
@@ -91,7 +93,7 @@ const DashboardPage = () => {
                   }
                 }
               }
-              
+
               // If still no subscription and we have a planId, manually activate as last resort
               if (!backendStatus?.subscription && planId && i === maxRetries - 1) {
                 console.log('All sync methods failed, manually activating subscription...');
@@ -105,28 +107,28 @@ const DashboardPage = () => {
                   console.error('Manual activation failed:', manualError);
                 }
               }
-              
+
               // Force a re-check by getting the latest user document
               const { getUserDocument } = await import('../services/auth');
               const latestUserData = await getUserDocument(currentUser.uid);
-              
+
               console.log('Backend subscription status:', backendStatus);
               console.log('Latest user data:', latestUserData);
-              
+
               // Check if subscription has been updated
-              if (latestUserData?.subscription && 
-                  (latestUserData.subscription.plan !== previousPlan || 
+              if (latestUserData?.subscription &&
+                  (latestUserData.subscription.plan !== previousPlan ||
                    latestUserData.subscription.entriesLimit !== previousLimit) &&
-                  latestUserData.subscription.plan !== 'trial' && 
+                  latestUserData.subscription.plan !== 'trial' &&
                   latestUserData.subscription.plan !== 'free') {
                 console.log('Subscription successfully updated:', latestUserData.subscription);
                 toast.success(`Your ${latestUserData.subscription.plan} plan is now active with ${latestUserData.subscription.entriesLimit} monthly entries!`);
-                
+
                 // Force refresh the auth context
                 await refreshUserDocument();
                 break;
               }
-              
+
               if (i < maxRetries - 1) {
                 console.log(`Subscription not updated yet (plan: ${latestUserData?.subscription?.plan}, limit: ${latestUserData?.subscription?.entriesLimit}), retrying in ${delay}ms...`);
                 await new Promise(resolve => setTimeout(resolve, delay));
@@ -144,7 +146,7 @@ const DashboardPage = () => {
             }
           }
         };
-        
+
         await refreshWithRetry();
         setRefreshingSubscription(false);
       }
@@ -218,31 +220,45 @@ const DashboardPage = () => {
     // Navigate to create page
   };
 
+  const usagePercentage = userDocument?.subscription
+    ? Math.min(
+        (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
+        100
+      )
+    : 0;
+
   return (
-    <div className="min-h-screen py-8">
+    <div className="min-h-screen py-8 bg-gradient-to-br from-secondary-50 via-white to-accent-50/30">
       <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-secondary-900 mb-2">
-              Welcome back, {currentUser?.displayName || 'Researcher'}!
-            </h1>
-            <p className="text-secondary-700">
-              Manage your sources and generate content.
-            </p>
-          </div>
+        <FadeIn direction="left">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+            <div>
+              <h1 className="text-4xl font-bold text-secondary-900 mb-2">
+                Welcome back, {currentUser?.displayName || 'Researcher'}!
+              </h1>
+              <p className="text-secondary-700">
+                Manage your sources and generate content.
+              </p>
+            </div>
 
-          <div className="mt-4 lg:mt-0">
-            <Link
-              to="/create"
-              onClick={handleCreateNew}
-              className={`btn ${canCreate ? 'btn-primary' : 'btn-outline opacity-50 cursor-not-allowed'}`}
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Create New Entry
-            </Link>
+            <div className="mt-4 lg:mt-0">
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                <Link
+                  to="/create"
+                  onClick={handleCreateNew}
+                  className={`btn ${canCreate ? 'btn-primary' : 'btn-outline opacity-50 cursor-not-allowed'}`}
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Create New Entry
+                </Link>
+              </motion.div>
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Stats Cards */}
         <DashboardStats entries={entries} loading={loading} />
@@ -265,178 +281,189 @@ const DashboardPage = () => {
 
         {/* Quick Actions */}
         {!loading && entries.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Link
-              to="/content/generate"
-              className="card card-hover group"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Sparkles className="w-6 h-6 text-purple-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-secondary-900">Generate Content</h3>
-                  <p className="text-sm text-secondary-600">Create papers from sources</p>
-                </div>
-              </div>
-            </Link>
+          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <StaggerItem>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/content/generate"
+                  className="card-floating group block"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Sparkles className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-secondary-900">Generate Content</h3>
+                      <p className="text-sm text-secondary-600">Create papers from sources</p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            </StaggerItem>
 
-            <Link
-              to="/bibliography"
-              className="card card-hover group"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Brain className="w-6 h-6 text-blue-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-secondary-900">Idea & Outline</h3>
-                  <p className="text-sm text-secondary-600">Analyze sources</p>
-                </div>
-              </div>
-            </Link>
+            <StaggerItem>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/bibliography"
+                  className="card-floating group block"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Brain className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-secondary-900">Idea & Outline</h3>
+                      <p className="text-sm text-secondary-600">Analyze sources</p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            </StaggerItem>
 
-            <button
-              onClick={handleExportAll}
-              className="card card-hover group text-left"
-            >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Download className="w-6 h-6 text-green-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-secondary-900">Export</h3>
-                  <p className="text-sm text-secondary-600">Export source summary</p>
-                </div>
-              </div>
-            </button>
-          </div>
+            <StaggerItem>
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <button
+                  onClick={handleExportAll}
+                  className="card-floating group text-left w-full"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Download className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-secondary-900">Export</h3>
+                      <p className="text-sm text-secondary-600">Export source summary</p>
+                    </div>
+                  </div>
+                </button>
+              </motion.div>
+            </StaggerItem>
+          </StaggerChildren>
         )}
 
         {/* Usage Progress / Plan Features */}
         {userDocument?.subscription && (
-          <div className="card mb-8">
-            {userDocument.subscription.plan === 'free' || userDocument.subscription.plan === 'trial' ? (
-              // Free users: Show usage bar
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-secondary-900">
-                      Lifetime Usage
-                    </h3>
-                    <p className="text-secondary-600 text-sm">
-                      Starter Plan
-                    </p>
-                  </div>
-                  <Link to="/pricing" className="btn btn-primary btn-sm">
-                    Upgrade
-                  </Link>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-secondary-700">
-                      {userDocument.subscription.entriesUsed} of {userDocument.subscription.entriesLimit} entries used
-                    </span>
-                    <span className="text-accent font-medium">
-                      {Math.round((userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100)}%
-                    </span>
-                  </div>
-                  <div className="w-full bg-secondary-200/30 rounded-full h-2">
-                    <div
-                      className="bg-accent h-2 rounded-full transition-all"
-                      style={{
-                        width: `${Math.min(
-                          (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
-                          100
-                        )}%`
-                      }}
-                    />
-                  </div>
-                  {userDocument.subscription.entriesUsed >= userDocument.subscription.entriesLimit && (
-                    <p className="text-sm text-accent mt-2">
-                      You've reached your limit. Upgrade for unlimited entries!
-                    </p>
-                  )}
-                </div>
-              </>
-            ) : (
-              // Paid users: Show features
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-secondary-900">
-                      Your Plan Features
-                    </h3>
-                    <p className="text-secondary-600 text-sm capitalize">
-                      {userDocument.subscription.plan} Plan
-                    </p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={async () => {
-                        setRefreshingSubscription(true);
-                        try {
-                          const loadingToast = toast.loading('Syncing subscription...');
-                          const { forceSyncSubscription } = await import('../services/stripe');
-                          const syncResult = await forceSyncSubscription(currentUser.uid);
-
-                          if (syncResult.success) {
-                            await refreshUserDocument();
-                            toast.dismiss(loadingToast);
-                            toast.success('Subscription synced successfully!');
-                          } else {
-                            toast.dismiss(loadingToast);
-                            toast.error('No active subscription found.');
-                          }
-                        } catch (error) {
-                          console.error('Error refreshing subscription:', error);
-                          toast.error('Failed to sync subscription.');
-                        } finally {
-                          setRefreshingSubscription(false);
-                        }
-                      }}
-                      disabled={refreshingSubscription}
-                      className="btn btn-outline btn-sm"
-                    >
-                      {refreshingSubscription ? (
-                        <div className="w-4 h-4 border-2 border-accent-600/30 border-t-chestnut rounded-full animate-spin" />
-                      ) : (
-                        'Sync'
-                      )}
-                    </button>
-                    {userDocument.subscription.plan === 'student' && (
-                      <Link to="/pricing" className="btn btn-outline btn-sm">
-                        Upgrade to Pro
-                      </Link>
-                    )}
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  {/* Bibliography Generator - Always unlimited for paid */}
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-600" />
-                    <span className="text-secondary-900">Source Generator (Unlimited)</span>
-                  </div>
-
-                  {/* Topic & Outline Generator - Researcher only */}
-                  {userDocument.subscription.plan === 'researcher' ? (
-                    <div className="flex items-center space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="text-secondary-900">Idea & Outline Generator (Unlimited)</span>
+          <FadeIn direction="up">
+            <div className="card mb-8">
+              {userDocument.subscription.plan === 'free' || userDocument.subscription.plan === 'trial' ? (
+                // Free users: Show usage bar
+                <>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-secondary-900">
+                        Lifetime Usage
+                      </h3>
+                      <p className="text-secondary-600 text-sm">
+                        Starter Plan
+                      </p>
                     </div>
-                  ) : (
-                    <div className="flex items-center space-x-3">
-                      <Lock className="w-5 h-5 text-gray-400" />
-                      <span className="text-secondary-600">
-                        Idea & Outline Generator
-                        <Link to="/pricing" className="text-accent ml-2 hover:underline">Upgrade to unlock</Link>
+                    <Link to="/pricing" className="btn btn-primary btn-sm">
+                      Upgrade
+                    </Link>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-secondary-700">
+                        {userDocument.subscription.entriesUsed} of {userDocument.subscription.entriesLimit} entries used
+                      </span>
+                      <span className="text-accent font-medium">
+                        {Math.round(usagePercentage)}%
                       </span>
                     </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
+                    <div className="w-full bg-secondary-200/30 rounded-full h-2">
+                      <motion.div
+                        className="bg-accent h-2 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${usagePercentage}%` }}
+                        transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
+                      />
+                    </div>
+                    {userDocument.subscription.entriesUsed >= userDocument.subscription.entriesLimit && (
+                      <p className="text-sm text-accent mt-2">
+                        You've reached your limit. Upgrade for unlimited entries!
+                      </p>
+                    )}
+                  </div>
+                </>
+              ) : (
+                // Paid users: Show features
+                <>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold text-secondary-900">
+                        Your Plan Features
+                      </h3>
+                      <p className="text-secondary-600 text-sm capitalize">
+                        {userDocument.subscription.plan} Plan
+                      </p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={async () => {
+                          setRefreshingSubscription(true);
+                          try {
+                            const loadingToast = toast.loading('Syncing subscription...');
+                            const { forceSyncSubscription } = await import('../services/stripe');
+                            const syncResult = await forceSyncSubscription(currentUser.uid);
+
+                            if (syncResult.success) {
+                              await refreshUserDocument();
+                              toast.dismiss(loadingToast);
+                              toast.success('Subscription synced successfully!');
+                            } else {
+                              toast.dismiss(loadingToast);
+                              toast.error('No active subscription found.');
+                            }
+                          } catch (error) {
+                            console.error('Error refreshing subscription:', error);
+                            toast.error('Failed to sync subscription.');
+                          } finally {
+                            setRefreshingSubscription(false);
+                          }
+                        }}
+                        disabled={refreshingSubscription}
+                        className="btn btn-outline btn-sm"
+                      >
+                        {refreshingSubscription ? (
+                          <div className="w-4 h-4 border-2 border-accent-600/30 border-t-chestnut rounded-full animate-spin" />
+                        ) : (
+                          'Sync'
+                        )}
+                      </button>
+                      {userDocument.subscription.plan === 'student' && (
+                        <Link to="/pricing" className="btn btn-outline btn-sm">
+                          Upgrade to Pro
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {/* Bibliography Generator - Always unlimited for paid */}
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <span className="text-secondary-900">Source Generator (Unlimited)</span>
+                    </div>
+
+                    {/* Topic & Outline Generator - Researcher only */}
+                    {userDocument.subscription.plan === 'researcher' ? (
+                      <div className="flex items-center space-x-3">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        <span className="text-secondary-900">Idea & Outline Generator (Unlimited)</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center space-x-3">
+                        <Lock className="w-5 h-5 text-gray-400" />
+                        <span className="text-secondary-600">
+                          Idea & Outline Generator
+                          <Link to="/pricing" className="text-accent ml-2 hover:underline">Upgrade to unlock</Link>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </FadeIn>
         )}
 
         {/* Entry View Modal */}

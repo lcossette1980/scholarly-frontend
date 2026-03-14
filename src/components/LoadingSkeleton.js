@@ -5,7 +5,7 @@ const LoadingSkeleton = ({ variant = 'default' }) => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {[1, 2, 3, 4].map(i => (
-          <div key={i} className="card animate-pulse">
+          <div key={i} className="card loading-shimmer">
             <div className="flex items-center justify-between">
               <div>
                 <div className="h-4 w-24 bg-primary-900/10 rounded mb-2"></div>
@@ -21,7 +21,7 @@ const LoadingSkeleton = ({ variant = 'default' }) => {
 
   if (variant === 'entry-card') {
     return (
-      <div className="card animate-pulse">
+      <div className="card loading-shimmer">
         <div className="flex items-start space-x-4">
           <div className="w-5 h-5 bg-primary-900/10 rounded mt-1"></div>
           <div className="flex-1">
@@ -37,7 +37,7 @@ const LoadingSkeleton = ({ variant = 'default' }) => {
 
   if (variant === 'table-row') {
     return (
-      <tr className="animate-pulse">
+      <tr className="loading-shimmer">
         <td className="px-6 py-4">
           <div className="h-4 bg-primary-900/10 rounded w-3/4"></div>
         </td>
@@ -59,7 +59,7 @@ const LoadingSkeleton = ({ variant = 'default' }) => {
 
   // Default skeleton
   return (
-    <div className="animate-pulse">
+    <div className="loading-shimmer">
       <div className="h-4 bg-primary-900/10 rounded w-3/4 mb-2"></div>
       <div className="h-4 bg-primary-900/10 rounded w-1/2"></div>
     </div>

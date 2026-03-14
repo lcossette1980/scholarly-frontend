@@ -7,6 +7,8 @@ import { db } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { exportGeneratedContent } from '../utils/contentExportUtils';
+import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ContentViewPage = () => {
   const { jobId } = useParams();
@@ -153,7 +155,7 @@ const ContentViewPage = () => {
   }
 
   return (
-    <div className="min-h-screen py-4 md:py-8">
+    <div className="min-h-screen py-4 md:py-8 bg-mesh">
       <div className="container mx-auto px-4 md:px-6 max-w-5xl">
         {/* Breadcrumb */}
         <div className="mb-4">
@@ -173,104 +175,156 @@ const ContentViewPage = () => {
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-4 flex-1">
-            <button
-              onClick={() => navigate('/content/history')}
-              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
-            <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900">
-                {job.outline?.title || 'Generated Content'}
-              </h1>
-              <div className="flex items-center space-x-2 mt-2">
-                <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                  {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
-                </span>
-                <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium capitalize">
-                  {job.tier} Tier
-                </span>
-                <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium capitalize">
-                  {job.settings?.document_type?.replace('_', ' ')}
-                </span>
+        <FadeIn>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-4 flex-1">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => navigate('/content/history')}
+                className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
+              >
+                <ArrowLeft className="w-6 h-6" />
+              </motion.button>
+              <div className="flex-1">
+                <h1 className="text-2xl sm:text-3xl font-bold text-secondary-900">
+                  {job.outline?.title || 'Generated Content'}
+                </h1>
+                <div className="flex items-center space-x-2 mt-2">
+                  <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                  </span>
+                  <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium capitalize">
+                    {job.tier} Tier
+                  </span>
+                  <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium capitalize">
+                    {job.settings?.document_type?.replace('_', ' ')}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center space-x-2">
-            {!isEditing ? (
-              <>
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="btn btn-outline"
-                >
-                  <Edit3 className="w-4 h-4 mr-2" />
-                  Edit
-                </button>
-                <button onClick={handleDownloadTxt} className="btn btn-outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  TXT
-                </button>
-                <button onClick={handleDownloadWord} className="btn btn-primary">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Word
-                </button>
-              </>
-            ) : (
-              <>
-                <button onClick={handleCancelEdit} className="btn btn-outline">
-                  <X className="w-4 h-4 mr-2" />
-                  Cancel
-                </button>
-                <button onClick={handleSaveEdit} className="btn btn-primary">
-                  <Save className="w-4 h-4 mr-2" />
-                  Save
-                </button>
-              </>
-            )}
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-2">
+              <AnimatePresence mode="wait">
+                {!isEditing ? (
+                  <motion.div
+                    key="view-actions"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center space-x-2"
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setIsEditing(true)}
+                      className="btn btn-outline"
+                    >
+                      <Edit3 className="w-4 h-4 mr-2" />
+                      Edit
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleDownloadTxt}
+                      className="btn btn-outline"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      TXT
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleDownloadWord}
+                      className="btn btn-primary"
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      Word
+                    </motion.button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="edit-actions"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center space-x-2"
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleCancelEdit}
+                      className="btn btn-outline"
+                    >
+                      <X className="w-4 h-4 mr-2" />
+                      Cancel
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleSaveEdit}
+                      className="btn btn-primary"
+                    >
+                      <Save className="w-4 h-4 mr-2" />
+                      Save
+                    </motion.button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="card">
-            <p className="text-xs text-secondary-600 mb-1">Word Count</p>
-            <p className="text-2xl font-bold text-secondary-900">{job.wordCount?.toLocaleString() || 'N/A'}</p>
+        <StaggerChildren>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <StaggerItem>
+              <div className="card card-floating">
+                <p className="text-xs text-secondary-600 mb-1">Word Count</p>
+                <p className="text-2xl font-bold text-secondary-900">{job.wordCount?.toLocaleString() || 'N/A'}</p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="card card-floating">
+                <p className="text-xs text-secondary-600 mb-1">Pages</p>
+                <p className="text-2xl font-bold text-secondary-900">{job.estimatedPages || 'N/A'}</p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="card card-floating">
+                <p className="text-xs text-secondary-600 mb-1">Cost</p>
+                <p className="text-2xl font-bold text-secondary-900">${job.estimatedCost?.toFixed(2) || '0.00'}</p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="card card-floating">
+                <p className="text-xs text-secondary-600 mb-1">Created</p>
+                <p className="text-2xl font-bold text-secondary-900">
+                  {job.createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </p>
+              </div>
+            </StaggerItem>
           </div>
-          <div className="card">
-            <p className="text-xs text-secondary-600 mb-1">Pages</p>
-            <p className="text-2xl font-bold text-secondary-900">{job.estimatedPages || 'N/A'}</p>
-          </div>
-          <div className="card">
-            <p className="text-xs text-secondary-600 mb-1">Cost</p>
-            <p className="text-2xl font-bold text-secondary-900">${job.estimatedCost?.toFixed(2) || '0.00'}</p>
-          </div>
-          <div className="card">
-            <p className="text-xs text-secondary-600 mb-1">Created</p>
-            <p className="text-2xl font-bold text-secondary-900">
-              {job.createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </p>
-          </div>
-        </div>
+        </StaggerChildren>
 
         {/* Content */}
-        <div className="card">
-          {isEditing ? (
-            <textarea
-              value={editedContent}
-              onChange={(e) => setEditedContent(e.target.value)}
-              className="form-input font-mono text-sm min-h-[600px] w-full"
-              placeholder="Edit your content..."
-            />
-          ) : (
-            <div className="prose prose-lg max-w-none">
-              {formatContent(job.content)}
-            </div>
-          )}
-        </div>
+        <FadeIn>
+          <div className="card glass-card">
+            {isEditing ? (
+              <textarea
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+                className="form-input font-mono text-sm min-h-[600px] w-full"
+                placeholder="Edit your content..."
+              />
+            ) : (
+              <div className="prose prose-lg max-w-none">
+                {formatContent(job.content)}
+              </div>
+            )}
+          </div>
+        </FadeIn>
       </div>
     </div>
   );

@@ -1,12 +1,14 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import { initErrorMonitoring } from './services/errorMonitoring';
 import { validateEnvironment } from './config/environment';
+import { PageTransition } from './components/motion';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -51,89 +53,99 @@ try {
 // Initialize error monitoring
 initErrorMonitoring();
 
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {/* Public Routes */}
+        <Route path="/" element={<PageTransition><HomePage /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><LoginPage /></PageTransition>} />
+        <Route path="/signup" element={<PageTransition><SignUpPage /></PageTransition>} />
+        <Route path="/forgot-password" element={<PageTransition><ForgotPasswordPage /></PageTransition>} />
+        <Route path="/verify-email" element={<PageTransition><EmailVerificationPage /></PageTransition>} />
+        <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
+        <Route path="/features" element={<PageTransition><FeaturesPage /></PageTransition>} />
+        <Route path="/docs" element={<PageTransition><DocsPage /></PageTransition>} />
+        <Route path="/help" element={<PageTransition><HelpCenterPage /></PageTransition>} />
+        <Route path="/privacy" element={<PageTransition><PrivacyPolicyPage /></PageTransition>} />
+        <Route path="/terms" element={<PageTransition><TermsofServicePage /></PageTransition>} />
+        <Route path="/cookies" element={<PageTransition><CookiePolicyPage /></PageTransition>} />
+        <Route path="/ethical-ai" element={<PageTransition><AcademicIntegrityPage /></PageTransition>} />
+        <Route path="/academic-integrity" element={<Navigate to="/ethical-ai" replace />} />
+
+        {/* Protected Routes */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <PageTransition><DashboardPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/create" element={
+          <ProtectedRoute>
+            <PageTransition><CreateEntryPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <PageTransition><ProfilePage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/bibliography" element={
+          <ProtectedRoute>
+            <PageTransition><BibliographyPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/analyze" element={
+          <ProtectedRoute>
+            <PageTransition><AnalyzePage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/analyze/outline" element={
+          <ProtectedRoute>
+            <PageTransition><OutlineViewPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/content/generate" element={
+          <ProtectedRoute>
+            <PageTransition><ContentGenerationPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/content/history" element={
+          <ProtectedRoute>
+            <PageTransition><ContentHistoryPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/content/view/:jobId" element={
+          <ProtectedRoute>
+            <PageTransition><ContentViewPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <PageTransition><AdminDashboardPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+
+        {/* 404 Page */}
+        <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen bg-white">
+          <div className="min-h-screen bg-white flex flex-col">
             <Navbar />
           <main className="flex-1">
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/verify-email" element={<EmailVerificationPage />} />
-              <Route path="/pricing" element={<PricingPage />} />
-              <Route path="/features" element={<FeaturesPage />} />
-              <Route path="/docs" element={<DocsPage />} />
-              <Route path="/help" element={<HelpCenterPage />} />
-              <Route path="/privacy" element={<PrivacyPolicyPage />} />
-              <Route path="/terms" element={<TermsofServicePage />} />
-              <Route path="/cookies" element={<CookiePolicyPage />} />
-              <Route path="/ethical-ai" element={<AcademicIntegrityPage />} />
-              <Route path="/academic-integrity" element={<Navigate to="/ethical-ai" replace />} />
-              
-              {/* Protected Routes */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/create" element={
-                <ProtectedRoute>
-                  <CreateEntryPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              } />
-              <Route path="/bibliography" element={
-                <ProtectedRoute>
-                  <BibliographyPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/analyze" element={
-                <ProtectedRoute>
-                  <AnalyzePage />
-                </ProtectedRoute>
-              } />
-              <Route path="/analyze/outline" element={
-                <ProtectedRoute>
-                  <OutlineViewPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/content/generate" element={
-                <ProtectedRoute>
-                  <ContentGenerationPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/content/history" element={
-                <ProtectedRoute>
-                  <ContentHistoryPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/content/view/:jobId" element={
-                <ProtectedRoute>
-                  <ContentViewPage />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin" element={
-                <ProtectedRoute>
-                  <AdminDashboardPage />
-                </ProtectedRoute>
-              } />
-
-              {/* 404 Page */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <AnimatedRoutes />
           </main>
           <Footer />
-          
+
           {/* Toast Notifications */}
           <Toaster
             position="top-right"
@@ -141,12 +153,14 @@ function App() {
               duration: 4000,
               style: {
                 background: '#fff',
-                color: '#2A2A2A',
-                border: '1px solid #A59E8C',
+                color: '#1e293b',
+                border: '1px solid #e2e8f0',
+                borderRadius: '0.75rem',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
               },
               success: {
                 iconTheme: {
-                  primary: '#A44A3F',
+                  primary: '#059669',
                   secondary: '#fff',
                 },
               },

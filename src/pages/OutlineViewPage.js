@@ -7,8 +7,11 @@ import {
   CheckCircle,
   BookOpen,
   Link as LinkIcon,
-  Loader
+  Loader,
+  ChevronDown
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from '../components/motion';
 import { useAuth } from '../context/AuthContext';
 import { analysisAPI } from '../services/api';
 import toast from 'react-hot-toast';
@@ -23,6 +26,20 @@ const OutlineViewPage = () => {
   const [outline, setOutline] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (idx) => {
+    setExpandedSections(prev => ({ ...prev, [idx]: !prev[idx] }));
+  };
+
+  // Initialize all sections as expanded when outline loads
+  useEffect(() => {
+    if (outline?.sections) {
+      const allExpanded = {};
+      outline.sections.forEach((_, idx) => { allExpanded[idx] = true; });
+      setExpandedSections(allExpanded);
+    }
+  }, [outline]);
 
   useEffect(() => {
     if (!topic || !selectedEntries) {
@@ -266,20 +283,24 @@ const OutlineViewPage = () => {
 
   if (isGenerating) {
     return (
-      <div className="min-h-screen flex items-center justify-center py-8">
-        <div className="text-center space-y-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto">
-            <Loader className="w-8 h-8 text-white animate-spin" />
+      <div className="min-h-screen bg-mesh flex items-center justify-center py-8">
+        <FadeIn>
+          <div className="text-center space-y-6">
+            <ScaleIn>
+              <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto">
+                <Loader className="w-8 h-8 text-white animate-spin" />
+              </div>
+            </ScaleIn>
+            <div>
+              <h3 className="text-2xl font-bold text-secondary-900 mb-2">
+                Generating Detailed Outline
+              </h3>
+              <p className="text-secondary-700">
+                Mapping evidence to outline sections...
+              </p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-2xl font-bold text-secondary-900 mb-2">
-              Generating Detailed Outline
-            </h3>
-            <p className="text-secondary-700">
-              Mapping evidence to outline sections...
-            </p>
-          </div>
-        </div>
+        </FadeIn>
       </div>
     );
   }
@@ -289,168 +310,228 @@ const OutlineViewPage = () => {
   }
 
   return (
-    <div className="min-h-screen py-8">
+    <div className="min-h-screen bg-mesh py-8">
       <div className="container mx-auto px-6 max-w-5xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4 flex-1">
-            <button
-              onClick={() => navigate('/analyze', { state: { selectedEntries } })}
-              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
-            <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold text-secondary-900">
-                Detailed Outline
-              </h1>
-              <p className="text-secondary-700 text-sm md:text-base">
-                Evidence-mapped structure with {outline.sections.length} sections
-              </p>
+        <FadeIn>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4 flex-1">
+              <motion.button
+                onClick={() => navigate('/analyze', { state: { selectedEntries } })}
+                className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
+                whileHover={{ x: -4 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <ArrowLeft className="w-6 h-6" />
+              </motion.button>
+              <div className="flex-1">
+                <h1 className="text-2xl md:text-3xl font-bold text-secondary-900">
+                  Detailed Outline
+                </h1>
+                <p className="text-secondary-700 text-sm md:text-base">
+                  Evidence-mapped structure with {outline.sections.length} sections
+                </p>
+              </div>
             </div>
+            <motion.button
+              onClick={exportToWord}
+              disabled={isExporting}
+              className="btn btn-primary"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {isExporting ? (
+                <>
+                  <Loader className="w-4 h-4 mr-2 animate-spin" />
+                  Exporting...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4 mr-2" />
+                  Export to Word
+                </>
+              )}
+            </motion.button>
           </div>
-          <button
-            onClick={exportToWord}
-            disabled={isExporting}
-            className="btn btn-primary"
-          >
-            {isExporting ? (
-              <>
-                <Loader className="w-4 h-4 mr-2 animate-spin" />
-                Exporting...
-              </>
-            ) : (
-              <>
-                <Download className="w-4 h-4 mr-2" />
-                Export to Word
-              </>
-            )}
-          </button>
-        </div>
+        </FadeIn>
 
         {/* Success Message */}
-        <div className="card bg-gradient-to-br from-green-50 to-khaki/10 mb-8">
-          <div className="flex items-start space-x-4">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-green-600" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-secondary-900 mb-1">
-                Outline Generated Successfully!
-              </h3>
-              <p className="text-secondary-700 text-sm">
-                Synthesized from {outline.sources_used.length} sources with evidence mapping
-              </p>
+        <FadeIn delay={0.1}>
+          <div className="card bg-gradient-to-br from-green-50 to-khaki/10 mb-8">
+            <div className="flex items-start space-x-4">
+              <ScaleIn>
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                </div>
+              </ScaleIn>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-secondary-900 mb-1">
+                  Outline Generated Successfully!
+                </h3>
+                <p className="text-secondary-700 text-sm">
+                  Synthesized from {outline.sources_used.length} sources with evidence mapping
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Outline Content */}
-        <div className="card bg-white">
-          {/* Title */}
-          <div className="mb-8 pb-6 border-b border-secondary-300/20">
-            <h2 className="text-3xl font-bold text-secondary-900 text-center">
-              {outline.topic}
-            </h2>
-          </div>
+        <FadeIn delay={0.2}>
+          <div className="glass-card">
+            {/* Title */}
+            <div className="mb-8 pb-6 border-b border-secondary-300/20">
+              <h2 className="text-3xl font-bold text-secondary-900 text-center">
+                {outline.topic}
+              </h2>
+            </div>
 
-          {/* Introduction */}
-          <div className="mb-8">
-            <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
-              <FileText className="w-5 h-5 mr-2 text-accent" />
-              Introduction
-            </h3>
-            <p className="text-secondary-800 leading-relaxed">
-              {outline.introduction}
-            </p>
-          </div>
-
-          {/* Sections */}
-          <div className="space-y-8">
-            {outline.sections.map((section, idx) => (
-              <div key={idx} className="bg-pearl/20 rounded-lg p-6">
-                <h3 className="text-xl font-bold text-secondary-900 mb-3">
-                  {idx + 1}. {section.heading}
+            {/* Introduction */}
+            <FadeIn delay={0.3}>
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
+                  <FileText className="w-5 h-5 mr-2 text-accent" />
+                  Introduction
                 </h3>
-
-                <p className="text-secondary-700 italic mb-4">
-                  {section.description}
+                <p className="text-secondary-800 leading-relaxed">
+                  {outline.introduction}
                 </p>
-
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-secondary-900 mb-2">Key Points:</h4>
-                  <ul className="space-y-2">
-                    {section.key_points.map((point, pointIdx) => (
-                      <li key={pointIdx} className="flex items-start space-x-2">
-                        <span className="text-accent mt-1">•</span>
-                        <span className="text-secondary-800">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-white rounded-lg p-4">
-                  <h4 className="text-sm font-semibold text-secondary-900 mb-2 flex items-center">
-                    <LinkIcon className="w-4 h-4 mr-1 text-accent" />
-                    Supporting Sources:
-                  </h4>
-                  <div className="space-y-2">
-                    {section.supporting_sources.map((sourceId, srcIdx) => {
-                      const source = outline.sources_used.find(s => s.id === sourceId);
-                      return (
-                        <div key={srcIdx} className="text-sm text-secondary-700 pl-4 border-l-2 border-accent-600/30">
-                          {source ? source.citation : `Source ${sourceId}`}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
               </div>
-            ))}
-          </div>
+            </FadeIn>
 
-          {/* Conclusion */}
-          <div className="mt-8 pt-6 border-t border-secondary-300/20">
-            <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
-              <BookOpen className="w-5 h-5 mr-2 text-accent" />
-              Conclusion
-            </h3>
-            <p className="text-secondary-800 leading-relaxed">
-              {outline.conclusion}
-            </p>
+            {/* Sections */}
+            <StaggerChildren>
+              <div className="space-y-6">
+                {outline.sections.map((section, idx) => (
+                  <StaggerItem key={idx}>
+                    <div className="card-floating bg-pearl/20 rounded-lg overflow-hidden">
+                      {/* Section header - clickable to toggle */}
+                      <motion.button
+                        onClick={() => toggleSection(idx)}
+                        className="w-full p-6 pb-0 flex items-center justify-between text-left"
+                        whileHover={{ backgroundColor: 'rgba(0,0,0,0.02)' }}
+                      >
+                        <h3 className="text-xl font-bold text-secondary-900">
+                          {idx + 1}. {section.heading}
+                        </h3>
+                        <motion.div
+                          animate={{ rotate: expandedSections[idx] ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <ChevronDown className="w-5 h-5 text-secondary-500" />
+                        </motion.div>
+                      </motion.button>
+
+                      {/* Expandable content */}
+                      <AnimatePresence initial={false}>
+                        {expandedSections[idx] && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                            className="overflow-hidden"
+                          >
+                            <div className="p-6 pt-3">
+                              <p className="text-secondary-700 italic mb-4">
+                                {section.description}
+                              </p>
+
+                              <div className="mb-4">
+                                <h4 className="text-sm font-semibold text-secondary-900 mb-2">Key Points:</h4>
+                                <ul className="space-y-2">
+                                  {section.key_points.map((point, pointIdx) => (
+                                    <li key={pointIdx} className="flex items-start space-x-2">
+                                      <span className="text-accent mt-1">•</span>
+                                      <span className="text-secondary-800">{point}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="bg-white rounded-lg p-4">
+                                <h4 className="text-sm font-semibold text-secondary-900 mb-2 flex items-center">
+                                  <LinkIcon className="w-4 h-4 mr-1 text-accent" />
+                                  Supporting Sources:
+                                </h4>
+                                <div className="space-y-2">
+                                  {section.supporting_sources.map((sourceId, srcIdx) => {
+                                    const source = outline.sources_used.find(s => s.id === sourceId);
+                                    return (
+                                      <div key={srcIdx} className="text-sm text-secondary-700 pl-4 border-l-2 border-accent-600/30">
+                                        {source ? source.citation : `Source ${sourceId}`}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </StaggerItem>
+                ))}
+              </div>
+            </StaggerChildren>
+
+            {/* Conclusion */}
+            <FadeIn delay={0.3}>
+              <div className="mt-8 pt-6 border-t border-secondary-300/20">
+                <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
+                  <BookOpen className="w-5 h-5 mr-2 text-accent" />
+                  Conclusion
+                </h3>
+                <p className="text-secondary-800 leading-relaxed">
+                  {outline.conclusion}
+                </p>
+              </div>
+            </FadeIn>
           </div>
-        </div>
+        </FadeIn>
 
         {/* References */}
-        <div className="card mt-8">
-          <h3 className="text-xl font-bold text-secondary-900 mb-4">
-            References
-          </h3>
-          <div className="space-y-3">
-            {outline.sources_used.map((source, idx) => (
-              <div key={idx} className="text-secondary-800 text-sm leading-relaxed">
-                {source.citation}
+        <FadeIn delay={0.4}>
+          <div className="glass-card mt-8">
+            <h3 className="text-xl font-bold text-secondary-900 mb-4">
+              References
+            </h3>
+            <StaggerChildren>
+              <div className="space-y-3">
+                {outline.sources_used.map((source, idx) => (
+                  <StaggerItem key={idx}>
+                    <div className="text-secondary-800 text-sm leading-relaxed">
+                      {source.citation}
+                    </div>
+                  </StaggerItem>
+                ))}
               </div>
-            ))}
+            </StaggerChildren>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Action Buttons */}
-        <div className="flex justify-center space-x-4 mt-8">
-          <button
-            onClick={() => navigate('/analyze', { state: { selectedEntries } })}
-            className="btn btn-outline"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Topics
-          </button>
-          <button
-            onClick={() => navigate('/bibliography')}
-            className="btn btn-outline"
-          >
-            Back to Sources
-          </button>
-        </div>
+        <FadeIn delay={0.5}>
+          <div className="flex justify-center space-x-4 mt-8">
+            <motion.button
+              onClick={() => navigate('/analyze', { state: { selectedEntries } })}
+              className="btn btn-outline"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Topics
+            </motion.button>
+            <motion.button
+              onClick={() => navigate('/bibliography')}
+              className="btn btn-outline"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Back to Sources
+            </motion.button>
+          </div>
+        </FadeIn>
       </div>
     </div>
   );

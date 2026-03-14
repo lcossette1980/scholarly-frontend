@@ -12,14 +12,72 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import HeroCarousel from '../components/HeroCarousel';
+import { FadeIn, StaggerChildren, StaggerItem, AnimatedCounter } from '../components/motion';
 
 const HomePage = () => {
   const { currentUser } = useAuth();
 
+  const pricingCards = [
+    {
+      name: 'Free',
+      price: '$0',
+      period: '/forever',
+      description: 'Perfect for trying it out',
+      features: [
+        { text: '5 entries (lifetime)', bold: false },
+        { text: 'Source Analyzer', bold: false },
+        { text: 'Basic AI analysis', bold: false },
+      ],
+      cta: 'Start Free',
+      ctaLink: '/signup',
+      ctaClass: 'btn btn-outline w-full',
+      note: 'No credit card required',
+      highlight: false,
+    },
+    {
+      name: 'Plus',
+      price: '$9.99',
+      period: '/month',
+      description: 'For regular writing',
+      features: [
+        { text: 'Unlimited entries', bold: true },
+        { text: 'Advanced AI analysis', bold: false },
+        { text: 'All reference styles', bold: false },
+        { text: 'Priority support', bold: false },
+      ],
+      cta: 'Start Trial',
+      ctaLink: '/pricing',
+      ctaClass: 'btn btn-primary w-full',
+      note: 'Cancel anytime, no lock-in',
+      highlight: true,
+    },
+    {
+      name: 'Pro',
+      price: '$19.99',
+      period: '/month',
+      description: 'For power users',
+      features: [
+        { text: 'Everything in Plus', bold: true },
+        { text: 'Topic & Outline Generator', bold: true },
+        { text: 'Source synthesis tools', bold: false },
+        { text: 'Premium AI', bold: false },
+      ],
+      cta: 'Start Trial',
+      ctaLink: '/pricing',
+      ctaClass: 'btn btn-outline w-full',
+      note: 'Cancel anytime, no lock-in',
+      highlight: false,
+    },
+  ];
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-mesh">
       {/* Hero Section with Carousel */}
       <section className="relative py-12 lg:py-20 overflow-hidden">
+        {/* Decorative gradient orbs */}
+        <div className="gradient-orb w-96 h-96 bg-accent-300 -top-20 -right-20" />
+        <div className="gradient-orb w-72 h-72 bg-primary-300 top-40 -left-10" />
+
         <div className="container mx-auto px-6 relative z-10">
           {/* Hero Carousel */}
           <HeroCarousel />
@@ -66,72 +124,96 @@ const HomePage = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-secondary-800 mt-8">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="font-medium">5 free entries (no card needed)</span>
+          <FadeIn direction="up">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-secondary-800 mt-8">
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <span className="font-medium">5 free entries (no card needed)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <span className="font-medium">90-second setup</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <span className="font-medium">Export to Word/PDF</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                <span className="font-medium">Cancel anytime</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="font-medium">90-second setup</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="font-medium">Export to Word/PDF</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              <span className="font-medium">Cancel anytime</span>
-            </div>
-          </div>
 
-          {/* Social Proof */}
-          <p className="text-center text-sm text-secondary-600 italic mt-4">
-            Join 10,000+ writers who've saved an average of 18 hours per month
-          </p>
+            {/* Social Proof */}
+            <p className="text-center text-sm text-secondary-600 italic mt-4">
+              Join 10,000+ writers who've saved an average of 18 hours per month
+            </p>
+          </FadeIn>
         </div>
       </section>
+
+      <div className="section-divider my-16" />
 
       {/* Quick Stats Section */}
-      <section className="py-16 bg-gradient-to-br from-accent/5 via-white to-khaki/10">
+      <section className="py-20 lg:py-24 bg-gradient-to-br from-accent/5 via-white to-khaki/10">
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="w-8 h-8 text-accent" />
-                </div>
-                <p className="text-3xl font-bold text-secondary-900 mb-1">10,000+</p>
-                <p className="text-sm text-secondary-600">Active Writers</p>
+            <StaggerChildren>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <StaggerItem>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Users className="w-8 h-8 text-accent" />
+                    </div>
+                    <p className="text-3xl font-bold text-secondary-900 mb-1">
+                      <AnimatedCounter target={10000} suffix="+" />
+                    </p>
+                    <p className="text-sm text-secondary-600">Active Writers</p>
+                  </div>
+                </StaggerItem>
+                <StaggerItem>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Clock className="w-8 h-8 text-green-600" />
+                    </div>
+                    <p className="text-3xl font-bold text-secondary-900 mb-1">
+                      <AnimatedCounter target={18} suffix="hrs" />
+                    </p>
+                    <p className="text-sm text-secondary-600">Saved Per Month</p>
+                  </div>
+                </StaggerItem>
+                <StaggerItem>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Zap className="w-8 h-8 text-blue-600" />
+                    </div>
+                    <p className="text-3xl font-bold text-secondary-900 mb-1">
+                      <AnimatedCounter target={90} suffix="sec" />
+                    </p>
+                    <p className="text-sm text-secondary-600">Average Generation</p>
+                  </div>
+                </StaggerItem>
+                <StaggerItem>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Star className="w-8 h-8 text-yellow-600" />
+                    </div>
+                    <p className="text-3xl font-bold text-secondary-900 mb-1">
+                      <AnimatedCounter target={4.9} suffix="/5" />
+                    </p>
+                    <p className="text-sm text-secondary-600">User Rating</p>
+                  </div>
+                </StaggerItem>
               </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Clock className="w-8 h-8 text-green-600" />
-                </div>
-                <p className="text-3xl font-bold text-secondary-900 mb-1">18hrs</p>
-                <p className="text-sm text-secondary-600">Saved Per Month</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Zap className="w-8 h-8 text-blue-600" />
-                </div>
-                <p className="text-3xl font-bold text-secondary-900 mb-1">90sec</p>
-                <p className="text-sm text-secondary-600">Average Generation</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Star className="w-8 h-8 text-yellow-600" />
-                </div>
-                <p className="text-3xl font-bold text-secondary-900 mb-1">4.9/5</p>
-                <p className="text-sm text-secondary-600">User Rating</p>
-              </div>
-            </div>
+            </StaggerChildren>
           </div>
         </div>
       </section>
 
+      <div className="section-divider my-16" />
+
       {/* How It Works - Simple 3 Steps */}
-      <section className="py-16 lg:py-20">
+      <section className="py-20 lg:py-24">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
@@ -142,39 +224,49 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
-            {/* Step 1 */}
-            <div className="card text-center group hover:shadow-xl transition-shadow">
-              <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-3xl font-bold text-accent">1</span>
-              </div>
-              <h3 className="text-xl font-bold text-secondary-900 mb-3">Upload Sources</h3>
-              <p className="text-secondary-800 leading-relaxed">
-                Drop your PDF documents or manually enter details. We support any PDF, any length.
-              </p>
-            </div>
+          <div className="max-w-5xl mx-auto">
+            <StaggerChildren>
+              <div className="grid md:grid-cols-3 gap-8">
+                {/* Step 1 */}
+                <StaggerItem>
+                  <div className="card-floating text-center group">
+                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="text-3xl font-bold text-accent">1</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-secondary-900 mb-3">Upload Sources</h3>
+                    <p className="text-secondary-800 leading-relaxed">
+                      Drop your PDF documents or manually enter details. We support any PDF, any length.
+                    </p>
+                  </div>
+                </StaggerItem>
 
-            {/* Step 2 */}
-            <div className="card text-center group hover:shadow-xl transition-shadow">
-              <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-3xl font-bold text-accent">2</span>
-              </div>
-              <h3 className="text-xl font-bold text-secondary-900 mb-3">AI Generates</h3>
-              <p className="text-secondary-800 leading-relaxed">
-                Our AI creates source summaries, ideas, outlines, or complete documents based on what you need. Takes 90 seconds to 5 minutes.
-              </p>
-            </div>
+                {/* Step 2 */}
+                <StaggerItem>
+                  <div className="card-floating text-center group">
+                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="text-3xl font-bold text-accent">2</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-secondary-900 mb-3">AI Generates</h3>
+                    <p className="text-secondary-800 leading-relaxed">
+                      Our AI creates source summaries, ideas, outlines, or complete documents based on what you need. Takes 90 seconds to 5 minutes.
+                    </p>
+                  </div>
+                </StaggerItem>
 
-            {/* Step 3 */}
-            <div className="card text-center group hover:shadow-xl transition-shadow">
-              <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-3xl font-bold text-accent">3</span>
+                {/* Step 3 */}
+                <StaggerItem>
+                  <div className="card-floating text-center group">
+                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <span className="text-3xl font-bold text-accent">3</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-secondary-900 mb-3">Download & Submit</h3>
+                    <p className="text-secondary-800 leading-relaxed">
+                      Get professionally formatted documents ready for submission. Export to Word, PDF, or copy to clipboard.
+                    </p>
+                  </div>
+                </StaggerItem>
               </div>
-              <h3 className="text-xl font-bold text-secondary-900 mb-3">Download & Submit</h3>
-              <p className="text-secondary-800 leading-relaxed">
-                Get professionally formatted documents ready for submission. Export to Word, PDF, or copy to clipboard.
-              </p>
-            </div>
+            </StaggerChildren>
           </div>
 
           <div className="text-center mt-12">
@@ -210,12 +302,14 @@ const HomePage = () => {
         </div>
       </section>
 
+      <div className="section-divider my-16" />
+
       {/* Pricing Preview */}
-      <section className="py-16 lg:py-20 bg-white/50">
+      <section className="py-20 lg:py-24 bg-white/50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
-              Simple, Transparent <span className="text-accent">Pricing</span>
+              Simple, Transparent <span className="text-gradient">Pricing</span>
             </h2>
             <p className="text-lg text-secondary-800 max-w-2xl mx-auto">
               Start free, upgrade when you need more. No contracts, cancel anytime.
@@ -223,96 +317,35 @@ const HomePage = () => {
           </div>
 
           <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
-            {/* Free */}
-            <div className="card text-center">
-              <h3 className="text-2xl font-bold text-secondary-900 mb-2">Free</h3>
-              <div className="mb-4">
-                <span className="text-4xl font-bold text-secondary-900">$0</span>
-                <span className="text-secondary-600">/forever</span>
-              </div>
-              <p className="text-sm text-secondary-700 mb-6">Perfect for trying it out</p>
-              <ul className="space-y-3 text-left mb-6">
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>5 entries (lifetime)</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Source Analyzer</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Basic AI analysis</span>
-                </li>
-              </ul>
-              <Link to="/signup" className="btn btn-outline w-full">Start Free</Link>
-              <p className="text-xs text-secondary-600 mt-2 text-center">No credit card required</p>
-            </div>
-
-            {/* Student - Most Popular */}
-            <div className="card text-center ring-2 ring-accent relative">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full">
-                  MOST POPULAR
-                </span>
-              </div>
-              <h3 className="text-2xl font-bold text-secondary-900 mb-2">Plus</h3>
-              <div className="mb-4">
-                <span className="text-4xl font-bold text-secondary-900">$9.99</span>
-                <span className="text-secondary-600">/month</span>
-              </div>
-              <p className="text-sm text-secondary-700 mb-6">For regular writing</p>
-              <ul className="space-y-3 text-left mb-6">
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="font-semibold">Unlimited entries</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Advanced AI analysis</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>All reference styles</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Priority support</span>
-                </li>
-              </ul>
-              <Link to="/pricing" className="btn btn-primary w-full">Start Trial</Link>
-              <p className="text-xs text-secondary-600 mt-2 text-center">Cancel anytime, no lock-in</p>
-            </div>
-
-            {/* Researcher */}
-            <div className="card text-center">
-              <h3 className="text-2xl font-bold text-secondary-900 mb-2">Pro</h3>
-              <div className="mb-4">
-                <span className="text-4xl font-bold text-secondary-900">$19.99</span>
-                <span className="text-secondary-600">/month</span>
-              </div>
-              <p className="text-sm text-secondary-700 mb-6">For power users</p>
-              <ul className="space-y-3 text-left mb-6">
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="font-semibold">Everything in Plus</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="font-semibold">Topic & Outline Generator</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Source synthesis tools</span>
-                </li>
-                <li className="flex items-start space-x-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>Premium AI</span>
-                </li>
-              </ul>
-              <Link to="/pricing" className="btn btn-outline w-full">Start Trial</Link>
-              <p className="text-xs text-secondary-600 mt-2 text-center">Cancel anytime, no lock-in</p>
-            </div>
+            {pricingCards.map((card, index) => (
+              <FadeIn key={card.name} direction="up" delay={index * 0.1}>
+                <div className={`card text-center ${card.highlight ? 'ring-2 ring-accent relative' : ''}`}>
+                  {card.highlight && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full">
+                        MOST POPULAR
+                      </span>
+                    </div>
+                  )}
+                  <h3 className="text-2xl font-bold text-secondary-900 mb-2">{card.name}</h3>
+                  <div className="mb-4">
+                    <span className="text-4xl font-bold text-secondary-900">{card.price}</span>
+                    <span className="text-secondary-600">{card.period}</span>
+                  </div>
+                  <p className="text-sm text-secondary-700 mb-6">{card.description}</p>
+                  <ul className="space-y-3 text-left mb-6">
+                    {card.features.map((feature, i) => (
+                      <li key={i} className="flex items-start space-x-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                        <span className={feature.bold ? 'font-semibold' : ''}>{feature.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to={card.ctaLink} className={card.ctaClass}>{card.cta}</Link>
+                  <p className="text-xs text-secondary-600 mt-2 text-center">{card.note}</p>
+                </div>
+              </FadeIn>
+            ))}
           </div>
 
           <p className="text-center text-sm text-secondary-600 mt-8">
@@ -321,61 +354,65 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-16 lg:py-20 relative overflow-hidden bg-gradient-brand">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center text-white">
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-              Ready to Save Hours on Every Draft?
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Join 10,000+ writers who've transformed their writing workflow
-            </p>
+      <div className="section-divider my-16" />
 
-            <div className="flex flex-col items-center space-y-4 mb-8">
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <Link
-                  to={currentUser ? "/create" : "/signup"}
-                  className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg w-full sm:w-auto"
-                >
-                  {currentUser ? "Create Your First Entry" : "Start Free - No Credit Card"}
-                </Link>
-                <Link
-                  to="/features"
-                  className="border-2 border-white text-white hover:bg-white hover:text-accent-600 transition-colors px-8 py-4 rounded-lg font-semibold text-lg w-full sm:w-auto"
-                >
-                  Learn More
-                </Link>
+      {/* Final CTA */}
+      <FadeIn direction="up">
+        <section className="py-20 lg:py-24 relative overflow-hidden bg-gradient-brand">
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="max-w-3xl mx-auto text-center text-white">
+              <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+                Ready to Save Hours on Every Draft?
+              </h2>
+              <p className="text-xl text-white/90 mb-8">
+                Join 10,000+ writers who've transformed their writing workflow
+              </p>
+
+              <div className="flex flex-col items-center space-y-4 mb-8">
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                  <Link
+                    to={currentUser ? "/create" : "/signup"}
+                    className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg w-full sm:w-auto"
+                  >
+                    {currentUser ? "Create Your First Entry" : "Start Free - No Credit Card"}
+                  </Link>
+                  <Link
+                    to="/features"
+                    className="border-2 border-white text-white hover:bg-white hover:text-accent-600 transition-colors px-8 py-4 rounded-lg font-semibold text-lg w-full sm:w-auto"
+                  >
+                    Learn More
+                  </Link>
+                </div>
+                <p className="text-sm text-white/80 flex items-center">
+                  <svg className="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Secure checkout • Your data stays private
+                </p>
               </div>
-              <p className="text-sm text-white/80 flex items-center">
-                <svg className="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                Secure checkout • Your data stays private
+
+              <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>5 free entries to start</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>2-minute setup</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>Cancel anytime</span>
+                </div>
+              </div>
+
+              <p className="text-white/70 text-sm mt-6">
+                1,247 writers signed up this week
               </p>
             </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="w-4 h-4" />
-                <span>5 free entries to start</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="w-4 h-4" />
-                <span>2-minute setup</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="w-4 h-4" />
-                <span>Cancel anytime</span>
-              </div>
-            </div>
-
-            <p className="text-white/70 text-sm mt-6">
-              1,247 writers signed up this week
-            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      </FadeIn>
     </div>
   );
 };

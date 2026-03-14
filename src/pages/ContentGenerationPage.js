@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FadeIn, ScaleIn } from '../components/motion';
 import { useAuth } from '../context/AuthContext';
 import { getUserBibliographyEntries } from '../services/bibliography';
 import { analysisAPI } from '../services/api';
@@ -171,7 +173,7 @@ const ContentGenerationPage = () => {
 
   if (loading && entries.length === 0) {
     return (
-      <div className="min-h-screen py-8">
+      <div className="min-h-screen bg-mesh py-8">
         <div className="container mx-auto px-6">
           <LoadingSkeleton variant="form" />
         </div>
@@ -180,116 +182,141 @@ const ContentGenerationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-mesh py-8">
       <div className="container mx-auto px-6 max-w-5xl">
         {/* Header */}
-        <div className="mb-8">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="flex items-center space-x-2 text-secondary-600 hover:text-secondary-900 mb-4 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Dashboard</span>
-          </button>
+        <FadeIn direction="down">
+          <div className="mb-8">
+            <motion.button
+              onClick={() => navigate('/dashboard')}
+              className="flex items-center space-x-2 text-secondary-600 hover:text-secondary-900 mb-4 transition-colors"
+              whileHover={{ x: -4 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Dashboard</span>
+            </motion.button>
 
-          <h1 className="text-4xl font-bold text-secondary-900 mb-2">
-            AI Content Generator
-          </h1>
-          <p className="text-secondary-700">
-            Generate well-cited content from your sources
-          </p>
-        </div>
+            <h1 className="text-4xl font-bold text-secondary-900 mb-2">
+              AI Content Generator
+            </h1>
+            <p className="text-secondary-700">
+              Generate well-cited content from your sources
+            </p>
+          </div>
+        </FadeIn>
 
         {/* Progress Steps */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            {steps.map((step, idx) => (
-              <React.Fragment key={step.number}>
-                <div className="flex flex-col items-center">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all ${
-                    step.completed
-                      ? 'bg-green-500 text-white'
-                      : currentStep === step.number
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-500'
-                  }`}>
-                    {step.completed ? <CheckCircle className="w-5 h-5" /> : step.number}
+        <FadeIn delay={0.1}>
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              {steps.map((step, idx) => (
+                <React.Fragment key={step.number}>
+                  <div className="flex flex-col items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all ${
+                      step.completed
+                        ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                        : currentStep === step.number
+                        ? 'bg-gradient-to-br from-accent to-charcoal text-white shadow-lg shadow-accent/30'
+                        : 'bg-gray-200 text-gray-500'
+                    }`}>
+                      {step.completed ? (
+                        <ScaleIn>
+                          <CheckCircle className="w-5 h-5" />
+                        </ScaleIn>
+                      ) : step.number}
+                    </div>
+                    <span className={`text-xs mt-2 font-medium ${
+                      currentStep === step.number ? 'text-accent' : step.completed ? 'text-green-600' : 'text-gray-500'
+                    }`}>
+                      {step.name}
+                    </span>
                   </div>
-                  <span className={`text-xs mt-2 font-medium ${
-                    currentStep === step.number ? 'text-blue-600' : 'text-gray-500'
-                  }`}>
-                    {step.name}
-                  </span>
-                </div>
-                {idx < steps.length - 1 && (
-                  <div className={`flex-1 h-1 mx-2 transition-all ${
-                    step.completed ? 'bg-green-500' : 'bg-gray-200'
-                  }`}></div>
-                )}
-              </React.Fragment>
-            ))}
+                  {idx < steps.length - 1 && (
+                    <div className="flex-1 h-1 mx-2 rounded-full overflow-hidden bg-gray-200">
+                      <motion.div
+                        className="h-full bg-green-500 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: step.completed ? '100%' : '0%' }}
+                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                      />
+                    </div>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Step Content */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-          {currentStep === 1 && (
-            <SourceSelectionStep
-              entries={entries}
-              selectedSources={selectedSources}
-              setSelectedSources={setSelectedSources}
-              onNext={nextStep}
-              loading={loading}
-            />
-          )}
+        <div className="glass-card rounded-xl p-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.3 }}
+            >
+              {currentStep === 1 && (
+                <SourceSelectionStep
+                  entries={entries}
+                  selectedSources={selectedSources}
+                  setSelectedSources={setSelectedSources}
+                  onNext={nextStep}
+                  loading={loading}
+                />
+              )}
 
-          {currentStep === 2 && (
-            <OutlineSelectionStep
-              outlines={outlines}
-              selectedOutline={selectedOutline}
-              setSelectedOutline={setSelectedOutline}
-              customOutline={customOutline}
-              setCustomOutline={setCustomOutline}
-              onNext={nextStep}
-              onBack={prevStep}
-            />
-          )}
+              {currentStep === 2 && (
+                <OutlineSelectionStep
+                  outlines={outlines}
+                  selectedOutline={selectedOutline}
+                  setSelectedOutline={setSelectedOutline}
+                  customOutline={customOutline}
+                  setCustomOutline={setCustomOutline}
+                  onNext={nextStep}
+                  onBack={prevStep}
+                />
+              )}
 
-          {currentStep === 3 && (
-            <SettingsStep
-              settings={settings}
-              setSettings={setSettings}
-              onNext={nextStep}
-              onBack={prevStep}
-            />
-          )}
+              {currentStep === 3 && (
+                <SettingsStep
+                  settings={settings}
+                  setSettings={setSettings}
+                  onNext={nextStep}
+                  onBack={prevStep}
+                />
+              )}
 
-          {currentStep === 4 && (
-            <PricingConfirmationStep
-              selectedSources={selectedSources}
-              outline={selectedOutline || customOutline}
-              settings={settings}
-              selectedTier={selectedTier}
-              setSelectedTier={setSelectedTier}
-              onNext={nextStep}
-              onBack={prevStep}
-              setJobId={setJobId}
-            />
-          )}
+              {currentStep === 4 && (
+                <PricingConfirmationStep
+                  selectedSources={selectedSources}
+                  outline={selectedOutline || customOutline}
+                  settings={settings}
+                  selectedTier={selectedTier}
+                  setSelectedTier={setSelectedTier}
+                  onNext={nextStep}
+                  onBack={prevStep}
+                  setJobId={setJobId}
+                />
+              )}
 
-          {currentStep === 5 && (
-            <GenerationProgressStep
-              jobId={jobId}
-              onComplete={() => setCurrentStep(6)}
-            />
-          )}
+              {currentStep === 5 && (
+                <GenerationProgressStep
+                  jobId={jobId}
+                  onComplete={() => setCurrentStep(6)}
+                />
+              )}
 
-          {currentStep === 6 && (
-            <ReviewEditStep
-              jobId={jobId}
-              onBack={() => navigate('/dashboard')}
-            />
-          )}
+              {currentStep === 6 && (
+                <ReviewEditStep
+                  jobId={jobId}
+                  onBack={() => navigate('/dashboard')}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </div>
