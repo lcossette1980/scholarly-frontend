@@ -1,6 +1,6 @@
 // src/components/HeroCarousel.js
 import React, { useState, useEffect } from 'react';
-import { FileText, Brain, BookOpen, Sparkles, CheckCircle } from 'lucide-react';
+import { FileText, Brain, BookOpen, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PlaceholderImage from './PlaceholderImage';
 
@@ -134,12 +134,9 @@ const HeroCarousel = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0, duration: 0.4 }}
-                    className="flex items-center space-x-3 mb-4"
+                    className="mb-4"
                   >
-                    <div className={`w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md`}>
-                      <Icon className={`w-6 h-6 ${slide.iconColor}`} />
-                    </div>
-                    <span className="text-sm font-semibold text-secondary-600 uppercase tracking-wide">
+                    <span className="text-sm font-semibold text-secondary-500 uppercase tracking-wide">
                       {slide.subtitle}
                     </span>
                   </motion.div>
@@ -178,8 +175,8 @@ const HeroCarousel = () => {
                   >
                     {slide.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center space-x-2">
-                        <CheckCircle className={`w-4 h-4 ${slide.iconColor} flex-shrink-0`} />
-                        <span className="text-sm text-secondary-800">{feature}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="text-sm text-secondary-700">{feature}</span>
                       </div>
                     ))}
                   </motion.div>
