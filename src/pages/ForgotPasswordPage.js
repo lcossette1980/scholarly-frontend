@@ -4,7 +4,6 @@ import { ArrowLeft, Mail, CheckCircle, Brain, Shield, Users } from 'lucide-react
 import { resetPassword } from '../services/auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ScaleIn } from '../components/motion';
-import PlaceholderImage from '../components/PlaceholderImage';
 import toast from 'react-hot-toast';
 
 const ForgotPasswordPage = () => {
@@ -80,11 +79,12 @@ const ForgotPasswordPage = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-8"
           >
-            <PlaceholderImage
-              label="AI Writing Assistant"
-              prompt="Abstract isometric illustration of a person at a modern desk with laptop, surrounded by floating document icons, citation cards, and AI sparkle effects. Indigo and violet gradient background, minimal modern flat illustration style. No text. 4K."
-              aspectRatio="4/3"
-              gradient="from-white/10 to-white/5"
+            <img
+              src="/images/auth_illustration.png"
+              alt="AI Writing Assistant"
+              className="w-full rounded-2xl object-cover"
+              style={{ aspectRatio: '4/3' }}
+              loading="eager"
             />
           </motion.div>
 
