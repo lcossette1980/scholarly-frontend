@@ -1,32 +1,12 @@
 // src/pages/FeaturesPage.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Brain,
-  Sparkles,
-  Quote,
-  FileDown,
-  Target,
-  Zap,
-  Shield,
-  Users,
-  BarChart3,
-  Search,
-  Clock,
-  CheckCircle,
-  FileText,
-  BookOpen,
-  Award,
-  TrendingUp,
-  Download,
-  X
-} from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 
 const FeaturesPage = () => {
   const coreFeatures = [
     {
-      icon: FileText,
       title: 'Source Analyzer',
       description: 'Upload PDFs and get complete source summary entries in 90 seconds. AI extracts references, summarizes content, identifies key approaches, and pulls relevant quotes with page numbers.',
       bullets: [
@@ -37,7 +17,6 @@ const FeaturesPage = () => {
       ],
     },
     {
-      icon: Brain,
       title: 'Topic & Outline Generator',
       description: 'Analyze your sources together to identify content opportunities and generate compelling topics with complete outlines. Every suggestion is backed by your actual sources.',
       bullets: [
@@ -48,7 +27,6 @@ const FeaturesPage = () => {
       ],
     },
     {
-      icon: Sparkles,
       title: 'Complete Document Generator',
       description: 'Turn your sources and outline into a fully-referenced document in minutes. Choose document type, word count, citation style, and tone. AI generates professional content ready for editing.',
       bullets: [
@@ -59,7 +37,6 @@ const FeaturesPage = () => {
       ],
     },
     {
-      icon: Download,
       title: 'Export & Editing Tools',
       description: 'Download your work in multiple formats with professional formatting. Edit inline before downloading, manage versions, and organize your content library.',
       bullets: [
@@ -72,12 +49,12 @@ const FeaturesPage = () => {
   ];
 
   const additionalFeatures = [
-    { icon: Target, title: 'Topic Focus Customization', description: 'Tell AI your specific topic area for targeted, relevant analysis tailored to your needs.' },
-    { icon: Brain, title: 'GPT-4 Powered', description: 'Advanced AI with 98% accuracy for reference extraction and analysis.' },
-    { icon: BarChart3, title: 'Approach Analysis', description: 'Deep analysis of methods, key findings, and limitations.' },
-    { icon: Shield, title: 'Private & Secure', description: "PDFs aren't stored after processing. Your data stays yours. GDPR compliant." },
-    { icon: Award, title: 'Professional Standards', description: 'Proper references, clear language, professional formatting - ready to use.' },
-    { icon: TrendingUp, title: 'Unlimited Revisions', description: 'Regenerate with different settings anytime (paid plans). No limit on iterations.' },
+    { title: 'Topic Focus Customization', description: 'Tell AI your specific topic area for targeted, relevant analysis tailored to your needs.' },
+    { title: 'GPT-4 Powered', description: 'Advanced AI with 98% accuracy for reference extraction and analysis.' },
+    { title: 'Approach Analysis', description: 'Deep analysis of methods, key findings, and limitations.' },
+    { title: 'Private & Secure', description: "PDFs aren't stored after processing. Your data stays yours. GDPR compliant." },
+    { title: 'Professional Standards', description: 'Proper references, clear language, professional formatting — ready to use.' },
+    { title: 'Unlimited Revisions', description: 'Regenerate with different settings anytime (paid plans). No limit on iterations.' },
   ];
 
   const faqItems = [
@@ -121,32 +98,26 @@ const FeaturesPage = () => {
           </h2>
           <StaggerChildren>
             <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {coreFeatures.map((feature) => {
-                const Icon = feature.icon;
-                return (
+              {coreFeatures.map((feature) => (
                   <StaggerItem key={feature.title}>
-                    <div className="card-floating">
-                      <div className="w-16 h-16 bg-gradient-brand rounded-xl flex items-center justify-center mb-6">
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
+                    <div className="card-floating h-full flex flex-col">
                       <h3 className="text-2xl font-bold text-secondary-900 mb-4">
                         {feature.title}
                       </h3>
                       <p className="text-secondary-700 mb-6 leading-relaxed">
                         {feature.description}
                       </p>
-                      <ul className="space-y-3 mb-6">
+                      <ul className="space-y-3 mb-6 flex-1">
                         {feature.bullets.map((bullet, i) => (
                           <li key={i} className="flex items-start space-x-2 text-sm">
-                            <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                            <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                             <span>{bullet}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                   </StaggerItem>
-                );
-              })}
+                ))}
             </div>
           </StaggerChildren>
         </div>
@@ -163,40 +134,35 @@ const FeaturesPage = () => {
               {/* Manual Method */}
               <FadeIn direction="right">
                 <div className="bg-white rounded-xl border-2 border-red-200 p-6 shadow-lg">
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                      <X className="w-5 h-5 text-red-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-red-700">Manual Method</h3>
-                      <p className="text-sm text-red-600 font-semibold">40+ hours per paper</p>
-                    </div>
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-red-700">Manual Method</h3>
+                    <p className="text-sm text-red-600 font-semibold">40+ hours per paper</p>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
-                      <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                      <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-800 font-medium">Reading each paper (90 min/paper x 10 papers)</p>
                         <p className="text-secondary-500 text-xs">~15 hours</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                      <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-800 font-medium">Writing source summaries</p>
                         <p className="text-secondary-500 text-xs">~6 hours</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                      <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-800 font-medium">Identifying topics & outlining</p>
                         <p className="text-secondary-500 text-xs">~4 hours</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <Clock className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                      <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-800 font-medium">Writing complete document draft</p>
                         <p className="text-secondary-500 text-xs">~15 hours</p>
@@ -217,47 +183,42 @@ const FeaturesPage = () => {
                     95% FASTER
                   </div>
 
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-green-700">DraftEngine</h3>
-                      <p className="text-sm text-green-600 font-semibold">~2 hours total</p>
-                    </div>
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-green-700">DraftEngine</h3>
+                    <p className="text-sm text-green-600 font-semibold">~2 hours total</p>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-900 font-medium">Upload 10 PDFs to Source Analyzer</p>
                         <p className="text-secondary-500 text-xs">~2 minutes</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-900 font-medium">AI generates complete source summaries</p>
                         <p className="text-secondary-500 text-xs">~15 minutes</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-900 font-medium">Generate topics & select outline</p>
                         <p className="text-secondary-500 text-xs">~3 minutes</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-900 font-medium">AI writes complete document draft</p>
                         <p className="text-secondary-500 text-xs">~5 minutes</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
                         <p className="text-secondary-900 font-medium">Review, edit & refine</p>
                         <p className="text-secondary-500 text-xs">~2 hours</p>
@@ -284,22 +245,16 @@ const FeaturesPage = () => {
           </h2>
           <StaggerChildren>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {additionalFeatures.map((feature) => {
-                const Icon = feature.icon;
-                return (
+              {additionalFeatures.map((feature) => (
                   <StaggerItem key={feature.title}>
-                    <div className="card-floating">
-                      <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                        <Icon className="w-6 h-6 text-accent" />
-                      </div>
+                    <div className="card-floating h-full flex flex-col">
                       <h3 className="text-lg font-bold text-secondary-900 mb-2">{feature.title}</h3>
-                      <p className="text-secondary-700 text-sm">
+                      <p className="text-secondary-700 text-sm flex-1">
                         {feature.description}
                       </p>
                     </div>
                   </StaggerItem>
-                );
-              })}
+                ))}
             </div>
           </StaggerChildren>
         </div>

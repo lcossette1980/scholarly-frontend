@@ -1,10 +1,10 @@
 // src/pages/PricingPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Check, Zap, Crown, Building, Users, ArrowRight, Star, Calculator } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../services/stripe';
-import { FadeIn, StaggerChildren, StaggerItem, ScaleIn, AnimatedCounter } from '../components/motion';
+import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from '../components/motion';
 import toast from 'react-hot-toast';
 
 const PricingPage = () => {
@@ -44,117 +44,129 @@ const PricingPage = () => {
 
   const estimatedCost = estimatorPages * (estimatorTier === 'standard' ? 1.49 : 2.49);
 
-  const PlanCard = ({ plan, planId, featured = false }) => {
-    const isPopular = planId === 'student'; // Premium is now most popular
-    const isCurrent = isCurrentPlan(planId);
+  const planCards = [
+    {
+      planId: 'free',
+      name: 'Starter',
+      price: '$0',
+      period: '/forever',
+      description: 'Perfect for trying it out',
+      features: [
+        { text: '5 source entries (lifetime)', bold: false },
+        { text: 'AI-powered source analysis', bold: false },
+        { text: 'Standard export formats', bold: false },
+        { text: 'Email support', bold: false },
+      ],
+      ctaClass: 'btn btn-outline w-full justify-center',
+      highlight: false,
+    },
+    {
+      planId: 'student',
+      name: 'Plus',
+      price: '$9.99',
+      period: '/month',
+      description: 'For regular writing',
+      features: [
+        { text: 'Unlimited source entries', bold: true },
+        { text: 'Topic & Outline Generator', bold: true },
+        { text: 'Advanced AI analysis', bold: false },
+        { text: 'Priority support', bold: false },
+      ],
+      ctaClass: 'btn btn-primary w-full justify-center',
+      highlight: true,
+    },
+    {
+      planId: 'researcher',
+      name: 'Pro',
+      price: '$19.99',
+      period: '/month',
+      description: 'For power users',
+      features: [
+        { text: 'Everything in Plus', bold: true },
+        { text: 'Premium AI analysis', bold: false },
+        { text: 'Advanced customization', bold: false },
+        { text: 'All reference styles', bold: false },
+      ],
+      ctaClass: 'btn btn-outline w-full justify-center',
+      highlight: false,
+    },
+  ];
 
-    return (
-      <div className={`relative card card-hover ${featured ? 'ring-2 ring-accent border-accent-600/30' : ''} ${isPopular ? 'md:scale-105 gradient-border' : ''}`}>
-        {isPopular && (
-          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <div className="bg-gradient-brand text-white px-4 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
-              <Star className="w-4 h-4" />
-              <span>Most Popular</span>
-            </div>
-          </div>
-        )}
-
-        <div className="text-center mb-6">
-          <div className="flex justify-center mb-4">
-            {planId === 'free' && <Zap className="w-8 h-8 text-accent" />}
-            {planId === 'student' && <Users className="w-8 h-8 text-accent" />}
-            {planId === 'researcher' && <Crown className="w-8 h-8 text-accent" />}
-            {planId === 'institution' && <Building className="w-8 h-8 text-accent" />}
-          </div>
-
-          <h3 className="text-2xl font-bold text-secondary-900 mb-2">
-            {plan.name}
-          </h3>
-
-          <div className="mb-4">
-            <span className="text-4xl font-bold text-secondary-900">
-              ${plan.price}
-            </span>
-            {plan.price > 0 && (
-              <span className="text-secondary-600 text-lg">
-                /month
-              </span>
-            )}
-          </div>
-
-          {planId === 'free' ? (
-            <p className="text-sm text-secondary-700">
-              5 lifetime entries
-            </p>
-          ) : (
-            <p className="text-sm text-secondary-700">
-              Unlimited entries
-            </p>
-          )}
-        </div>
-
-
-        <button
-          onClick={() => handleSubscribe(planId)}
-          disabled={isLoading === planId || isCurrent}
-          className={`btn w-full justify-center ${
-            featured || isPopular
-              ? 'btn-primary'
-              : 'btn-outline'
-          } ${isCurrent ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          {isLoading === planId ? (
-            <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          ) : isCurrent ? (
-            'Current Plan'
-          ) : planId === 'free' ? (
-            'Get Started Free'
-          ) : (
-            <>
-              Upgrade to {plan.name}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </>
-          )}
-        </button>
-
-        {isCurrent && (
-          <p className="text-center text-sm text-accent font-medium mt-2">
-            ✓ Active subscription
-          </p>
-        )}
-      </div>
-    );
+  const getPlanDisplayName = (planId) => {
+    const map = { free: 'Starter', trial: 'Starter', student: 'Plus', researcher: 'Pro' };
+    return map[planId] || planId;
   };
 
   return (
     <div className="min-h-screen py-6 md:py-12 bg-mesh relative overflow-hidden">
-      {/* Decorative gradient orbs */}
-      <div className="gradient-orb w-72 h-72 top-10 -left-36 opacity-30" />
-      <div className="gradient-orb w-96 h-96 top-40 -right-48 opacity-20" />
-      <div className="gradient-orb w-64 h-64 top-[600px] left-1/4 opacity-15" />
-
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header */}
         <FadeIn direction="up">
           <div className="text-center mb-16">
             <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-secondary-900 mb-6">
-              Choose Your <span className="text-gradient">Writing Plan</span>
+              Simple, Transparent <span className="text-gradient">Pricing</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-secondary-700 max-w-3xl mx-auto leading-relaxed">
-              Start free with 5 lifetime entries, or upgrade to Plus for unlimited access to all features.
+              Start free with 5 lifetime entries, or upgrade for unlimited access. No contracts, cancel anytime.
             </p>
           </div>
         </FadeIn>
 
-
-        {/* Pricing Cards */}
-        <StaggerChildren className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
-          <StaggerItem>
-            <PlanCard plan={SUBSCRIPTION_PLANS.free} planId="free" />
-          </StaggerItem>
-          <StaggerItem>
-            <PlanCard plan={SUBSCRIPTION_PLANS.student} planId="student" featured={true} />
-          </StaggerItem>
+        {/* Pricing Cards — 3 columns */}
+        <StaggerChildren className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+          {planCards.map((card) => {
+            const isCurrent = isCurrentPlan(card.planId);
+            return (
+              <StaggerItem key={card.planId}>
+                <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-accent relative' : ''}`}>
+                  {card.highlight && (
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                      <span className="bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">
+                        Most Popular
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-secondary-900 mb-2">{card.name}</h3>
+                    <div className="mb-1">
+                      <span className="text-4xl font-bold text-secondary-900">{card.price}</span>
+                      <span className="text-secondary-400 text-sm">{card.period}</span>
+                    </div>
+                    <p className="text-sm text-secondary-500 mb-6">{card.description}</p>
+                    <ul className="space-y-3 mb-8">
+                      {card.features.map((feature, i) => (
+                        <li key={i} className="flex items-start space-x-2 text-sm text-secondary-600">
+                          <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                          <span className={feature.bold ? 'font-semibold text-secondary-900' : ''}>{feature.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button
+                    onClick={() => handleSubscribe(card.planId)}
+                    disabled={isLoading === card.planId || isCurrent}
+                    className={`${card.ctaClass} ${isCurrent ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {isLoading === card.planId ? (
+                      <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    ) : isCurrent ? (
+                      'Current Plan'
+                    ) : card.planId === 'free' ? (
+                      'Get Started Free'
+                    ) : (
+                      <>
+                        Upgrade to {card.name}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    )}
+                  </button>
+                  <p className="text-xs text-secondary-400 mt-2 text-center">
+                    {card.planId === 'free' ? 'No credit card required' : 'Cancel anytime, no lock-in'}
+                  </p>
+                </div>
+              </StaggerItem>
+            );
+          })}
         </StaggerChildren>
 
         {/* Current Plan Status */}
@@ -167,13 +179,12 @@ const PricingPage = () => {
                 </h3>
                 <p className="text-secondary-700 mb-4">
                   You're currently on the{' '}
-                  <span className="font-semibold text-accent capitalize">
-                    {userDocument.subscription.plan}
+                  <span className="font-semibold text-accent">
+                    {getPlanDisplayName(userDocument.subscription.plan)}
                   </span>{' '}
                   plan
                 </p>
 
-                {/* Only show usage bar for Free/Trial users */}
                 {(userDocument.subscription.plan === 'free' || userDocument.subscription.plan === 'trial') ? (
                   <div className="bg-white/50 rounded-lg p-4 inline-block">
                     <p className="text-sm text-secondary-700 mb-1">Lifetime usage</p>
@@ -196,10 +207,8 @@ const PricingPage = () => {
                   </div>
                 ) : (
                   <div className="bg-white/50 rounded-lg p-4 inline-block">
-                    <p className="text-lg font-semibold text-accent">✓ Unlimited Source Entries</p>
-                    {(userDocument.subscription.plan === 'researcher' || userDocument.subscription.plan === 'student') && (
-                      <p className="text-sm text-secondary-700 mt-1">+ Idea & Outline Generator</p>
-                    )}
+                    <p className="text-lg font-semibold text-accent">Unlimited Source Entries</p>
+                    <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator</p>
                   </div>
                 )}
               </div>
@@ -222,7 +231,7 @@ const PricingPage = () => {
 
             <div className="grid md:grid-cols-2 gap-6">
               {/* Standard Tier */}
-              <div className="card">
+              <div className="card flex flex-col h-full">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-bold text-secondary-900">Standard</h3>
                   <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
@@ -234,37 +243,36 @@ const PricingPage = () => {
                   <span className="text-secondary-600">/page</span>
                 </div>
                 <p className="text-sm text-secondary-700 mb-6">High-quality generation for most use cases</p>
-                <ul className="space-y-3">
+                <ul className="space-y-3 flex-1">
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span>Fast generation (2-3 minutes for 10 pages)</span>
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Fast generation (2-3 min for 10 pages)</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                     <span>All reference styles (APA, MLA, Chicago, Harvard)</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                     <span>Multiple document types</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                     <span>Export to Word/PDF</span>
                   </li>
                 </ul>
               </div>
 
               {/* Pro Tier */}
-              <div className="card ring-2 ring-purple-500 relative">
+              <div className="card flex flex-col h-full ring-2 ring-accent relative">
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1">
-                    <Star className="w-3 h-3" />
-                    <span>PREMIUM</span>
+                  <span className="bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">
+                    PREMIUM
                   </span>
                 </div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-bold text-secondary-900">Pro</h3>
-                  <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">
+                  <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium">
                     GPT-4 Turbo
                   </span>
                 </div>
@@ -273,21 +281,21 @@ const PricingPage = () => {
                   <span className="text-secondary-600">/page</span>
                 </div>
                 <p className="text-sm text-secondary-700 mb-6">Premium quality with priority processing</p>
-                <ul className="space-y-3">
+                <ul className="space-y-3 flex-1">
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                     <span className="font-semibold">Everything in Standard, plus:</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                     <span>Superior writing quality & coherence</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                     <span>Priority queue (2x faster)</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
                     <span>Better source integration</span>
                   </li>
                 </ul>
@@ -297,15 +305,9 @@ const PricingPage = () => {
             {/* Cost Estimator Widget */}
             <ScaleIn delay={0.2}>
               <div className="glass-card mt-8 p-6 md:p-8 rounded-2xl">
-                <div className="flex items-center justify-center space-x-3 mb-6">
-                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
-                    <Calculator className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-secondary-900">
-                    Cost Estimator
-                  </h3>
-                </div>
-
+                <h3 className="text-2xl font-bold text-secondary-900 text-center mb-2">
+                  Cost Estimator
+                </h3>
                 <p className="text-center text-secondary-700 mb-6">
                   Calculate the exact cost for your document before you generate
                 </p>
@@ -347,7 +349,7 @@ const PricingPage = () => {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-semibold text-secondary-900">Standard</p>
-                            <p className="text-xs text-secondary-600">GPT-4o - $1.49/page</p>
+                            <p className="text-xs text-secondary-600">GPT-4o — $1.49/page</p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                             estimatorTier === 'standard'
@@ -364,18 +366,18 @@ const PricingPage = () => {
                         onClick={() => setEstimatorTier('pro')}
                         className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
                           estimatorTier === 'pro'
-                            ? 'border-purple-500 bg-purple-50'
+                            ? 'border-accent bg-accent/5'
                             : 'border-secondary-300/30 hover:border-secondary-300'
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-semibold text-secondary-900">Pro</p>
-                            <p className="text-xs text-secondary-600">GPT-4 Turbo - $2.49/page</p>
+                            <p className="text-xs text-secondary-600">GPT-4 Turbo — $2.49/page</p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                             estimatorTier === 'pro'
-                              ? 'bg-purple-500 border-purple-500'
+                              ? 'bg-accent border-accent'
                               : 'border-secondary-300'
                           }`}>
                             {estimatorTier === 'pro' && (
@@ -392,23 +394,14 @@ const PricingPage = () => {
                 <div className="bg-white rounded-xl p-6 text-center border border-secondary-300/30">
                   <p className="text-sm text-secondary-600 mb-2">Estimated Cost</p>
                   <p className="text-5xl font-bold text-accent mb-2">
-                    <AnimatedCounter
-                      prefix="$"
-                      target={Math.round(estimatedCost * 100)}
-                      suffix=""
-                      className="text-5xl font-bold text-accent"
-                      key={`${estimatorPages}-${estimatorTier}`}
-                    />
-                  </p>
-                  <p className="text-sm text-secondary-600 mb-1">
                     ${estimatedCost.toFixed(2)}
                   </p>
                   <p className="text-sm text-secondary-700">
-                    {estimatorPages} pages x ${estimatorTier === 'standard' ? '1.49' : '2.49'} per page
+                    {estimatorPages} pages × ${estimatorTier === 'standard' ? '1.49' : '2.49'} per page
                   </p>
                   <div className="mt-4 pt-4 border-t border-secondary-300/30">
                     <p className="text-xs text-secondary-600">
-                      ✓ Pay after generation - 100% refund if generation fails
+                      Pay after generation — 100% refund if generation fails
                     </p>
                   </div>
                 </div>
@@ -443,11 +436,10 @@ const PricingPage = () => {
             <StaggerItem>
               <div className="card">
                 <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  What's the difference between Plus and Pro plans?
+                  What's the difference between Plus and Pro?
                 </h3>
                 <p className="text-secondary-700">
-                  <strong>Plus:</strong> Unlimited source entries with all reference styles.<br />
-                  <strong>Pro:</strong> Everything in Plus, PLUS the Idea & Outline Generator, which analyzes your sources to suggest content ideas and generate complete document outlines.
+                  Both Plus and Pro include unlimited source entries and the Topic & Outline Generator. Pro adds premium AI analysis, advanced customization options, and all reference style options for power users who need the best output quality.
                 </p>
               </div>
             </StaggerItem>
@@ -469,7 +461,7 @@ const PricingPage = () => {
                   Is there a starter discount?
                 </h3>
                 <p className="text-secondary-700">
-                  Our Plus plan is designed for individual writers and creators at an affordable price. For additional institutional discounts, contact our sales team.
+                  Our Starter plan is completely free with 5 lifetime source entries — no credit card required. Plus is designed for individual writers at an affordable price, and Pro is for power users who need advanced features.
                 </p>
               </div>
             </StaggerItem>
@@ -480,7 +472,7 @@ const PricingPage = () => {
                   What payment methods do you accept?
                 </h3>
                 <p className="text-secondary-700">
-                  We accept all major credit cards, PayPal, and bank transfers for institutional plans. All payments are processed securely through Stripe.
+                  We accept all major credit cards and PayPal. All payments are processed securely through Stripe.
                 </p>
               </div>
             </StaggerItem>
