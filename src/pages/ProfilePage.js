@@ -330,7 +330,7 @@ const ProfilePage = () => {
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           userDocument?.preferences?.notificationsEnabled
                             ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
+                            : 'bg-secondary-100 text-secondary-700'
                         }`}>
                           {userDocument?.preferences?.notificationsEnabled ? 'Enabled' : 'Disabled'}
                         </span>

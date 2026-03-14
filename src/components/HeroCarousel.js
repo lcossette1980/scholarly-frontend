@@ -184,7 +184,7 @@ const HeroCarousel = () => {
 
                 {/* Right: Image */}
                 <div className="order-1 lg:order-2">
-                  <div className="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
+                  <div className="bg-white rounded-xl shadow-2xl border border-secondary-200 overflow-hidden">
                     <PlaceholderImage
                       label={placeholder.label}
                       prompt={placeholder.prompt}

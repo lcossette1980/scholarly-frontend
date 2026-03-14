@@ -1,6 +1,6 @@
 // src/components/RecentEntriesCard.js
 import React from 'react';
-import { Eye, Brain, Trash2, Calendar, BookOpen, ArrowRight } from 'lucide-react';
+import { Eye, Trash2, Calendar, BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FadeIn, StaggerChildren, StaggerItem } from './motion';
@@ -8,16 +8,16 @@ import { FadeIn, StaggerChildren, StaggerItem } from './motion';
 const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) => {
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="card">
         <div className="flex items-center justify-between mb-4">
-          <div className="h-6 bg-gray-200 rounded w-48 animate-pulse"></div>
-          <div className="h-5 bg-gray-200 rounded w-20 animate-pulse"></div>
+          <div className="h-6 bg-secondary-100 rounded w-48 loading-shimmer"></div>
+          <div className="h-5 bg-secondary-100 rounded w-20 loading-shimmer"></div>
         </div>
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="border border-gray-200 rounded-lg p-4">
-              <div className="h-5 bg-gray-200 rounded w-3/4 mb-2 animate-pulse"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+            <div key={i} className="border border-secondary-100 rounded-xl p-4 loading-shimmer">
+              <div className="h-5 bg-secondary-100 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-secondary-100 rounded w-1/2"></div>
             </div>
           ))}
         </div>
@@ -27,18 +27,18 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
 
   if (entries.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-        <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">No Source Summary Entries Yet</h3>
-        <p className="text-gray-600 mb-6">
-          Start by uploading a document to create your first source summary entry.
+      <div className="card p-12 text-center">
+        <p className="text-5xl mb-4 text-secondary-200 font-bold">0</p>
+        <h3 className="text-lg font-semibold text-secondary-800 mb-2">No Source Entries Yet</h3>
+        <p className="text-secondary-500 mb-6 text-sm">
+          Upload a document to create your first source summary entry.
         </p>
         <Link
           to="/create"
-          className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+          className="btn btn-primary inline-flex"
         >
           <span>Create Your First Entry</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4 ml-2" />
         </Link>
       </div>
     );
@@ -46,13 +46,13 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
 
   return (
     <FadeIn direction="up" delay={0.2}>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="card overflow-hidden p-0">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-secondary-900">Recent Source Summary Entries</h2>
+        <div className="flex items-center justify-between p-6 border-b border-secondary-100">
+          <h2 className="text-lg font-semibold text-secondary-900">Recent Source Entries</h2>
           <Link
             to="/bibliography"
-            className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center space-x-1 transition-colors"
+            className="text-accent hover:text-accent-700 font-medium text-sm flex items-center space-x-1 transition-colors"
           >
             <span>View All</span>
             <ArrowRight className="w-4 h-4" />
@@ -60,8 +60,8 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
         </div>
 
         {/* Entries List */}
-        <StaggerChildren className="divide-y divide-gray-200">
-          {entries.map((entry, index) => (
+        <StaggerChildren className="divide-y divide-secondary-100">
+          {entries.map((entry) => (
             <StaggerItem key={entry.id}>
               <EntryRow
                 entry={entry}
@@ -73,16 +73,16 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
           ))}
         </StaggerChildren>
 
-        {/* Footer Actions */}
-        <div className="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-          <p className="text-sm text-gray-600">
+        {/* Footer */}
+        <div className="p-4 bg-secondary-50/50 border-t border-secondary-100 flex items-center justify-between">
+          <p className="text-sm text-secondary-500">
             Showing {entries.length} most recent {entries.length === 1 ? 'entry' : 'entries'}
           </p>
           <Link
             to="/bibliography"
-            className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+            className="text-sm font-medium text-accent hover:text-accent-700 transition-colors"
           >
-            Manage All Entries →
+            Manage All Entries
           </Link>
         </div>
       </div>
@@ -91,17 +91,12 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
 };
 
 const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
-  // Parse citation to extract key info
   const parseAuthorYear = (citation) => {
     if (typeof citation === 'string') {
-      // Try to extract author and year from string
       const yearMatch = citation.match(/\((\d{4})\)/);
       const year = yearMatch ? yearMatch[1] : '';
-
-      // Get first author (everything before first comma or parenthesis)
       const authorMatch = citation.match(/^([^,(]+)/);
       const author = authorMatch ? authorMatch[1].trim() : 'Unknown Author';
-
       return { author, year };
     } else if (typeof citation === 'object') {
       return {
@@ -116,7 +111,6 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
     if (typeof entry.citation === 'object' && entry.citation.title) {
       return entry.citation.title;
     }
-    // If citation is a string, use narrative overview or first 80 chars of citation
     return entry.narrative_overview
       ? entry.narrative_overview.substring(0, 80) + (entry.narrative_overview.length > 80 ? '...' : '')
       : typeof entry.citation === 'string'
@@ -128,58 +122,40 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
   const title = getTitle(entry);
   const researchFocus = entry.researchFocus || entry.research_focus || 'Uncategorized';
 
-  // Format date
   const formatDate = (dateValue) => {
     if (!dateValue) return '';
     try {
-      // Handle Firestore Timestamp
       if (dateValue.toDate && typeof dateValue.toDate === 'function') {
-        return new Date(dateValue.toDate()).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric'
-        });
+        return new Date(dateValue.toDate()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       }
-      // Handle plain object with seconds
       if (dateValue.seconds) {
-        return new Date(dateValue.seconds * 1000).toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric'
-        });
+        return new Date(dateValue.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       }
-      // Handle date string or Date object
-      return new Date(dateValue).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
+      return new Date(dateValue).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     } catch (e) {
       return '';
     }
   };
 
   return (
-    <div className="p-4 hover:bg-gray-50 transition-colors group">
+    <div className="p-4 hover:bg-secondary-50/50 transition-colors group">
       <div className="flex items-start justify-between space-x-4">
         {/* Entry Info */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-secondary-900 mb-1 truncate group-hover:text-blue-600 transition-colors">
+          <h3 className="font-semibold text-secondary-900 mb-1 truncate group-hover:text-accent transition-colors text-sm">
             {title}
           </h3>
-          <div className="flex items-center space-x-3 text-sm text-gray-600">
-            <span className="flex items-center space-x-1">
-              <span className="font-medium">{author}</span>
-              {year && <span>({year})</span>}
-            </span>
-            <span className="text-gray-400">•</span>
+          <div className="flex items-center space-x-3 text-xs text-secondary-500">
+            <span className="font-medium">{author}</span>
+            {year && <span>({year})</span>}
+            <span className="text-secondary-300">·</span>
             <span className="flex items-center space-x-1">
               <BookOpen className="w-3 h-3" />
               <span className="truncate">{researchFocus}</span>
             </span>
             {entry.createdAt && (
               <>
-                <span className="text-gray-400 hidden sm:inline">•</span>
+                <span className="text-secondary-300 hidden sm:inline">·</span>
                 <span className="flex items-center space-x-1 hidden sm:inline-flex">
                   <Calendar className="w-3 h-3" />
                   <span>{formatDate(entry.createdAt)}</span>
@@ -190,30 +166,21 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center space-x-2 flex-shrink-0">
+        <div className="flex items-center space-x-1 flex-shrink-0">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => onView(entry)}
-            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+            className="p-2 text-secondary-400 hover:text-accent hover:bg-accent/5 rounded-lg transition-all"
             title="View Details"
           >
             <Eye className="w-4 h-4" />
           </motion.button>
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onAnalyze(entry)}
-            className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
-            title="Analyze & Generate Topics"
-          >
-            <Brain className="w-4 h-4" />
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => onDelete(entry)}
-            className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+            className="p-2 text-secondary-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
             title="Delete Entry"
           >
             <Trash2 className="w-4 h-4" />
