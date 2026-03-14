@@ -1,9 +1,12 @@
 // src/pages/SignUpPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, Brain } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Brain, Shield, Users } from 'lucide-react';
 import { signUp, signInWithGoogle } from '../services/auth';
 import { useAuth } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+import { ScaleIn } from '../components/motion';
+import PlaceholderImage from '../components/PlaceholderImage';
 import toast from 'react-hot-toast';
 
 const SignUpPage = () => {
@@ -16,7 +19,7 @@ const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const navigate = useNavigate();
   const { currentUser, refreshUserDocument } = useAuth();
 
@@ -24,10 +27,10 @@ const SignUpPage = () => {
   React.useEffect(() => {
     if (currentUser && !window.location.search.includes('code=')) {
       // Only redirect if we're not in the middle of processing a Google OAuth redirect
-      const isGoogleRedirect = window.location.search.includes('code=') || 
+      const isGoogleRedirect = window.location.search.includes('code=') ||
                               window.location.search.includes('state=') ||
                               document.referrer.includes('accounts.google.com');
-      
+
       if (!isGoogleRedirect) {
         navigate('/dashboard', { replace: true });
       }
@@ -46,29 +49,29 @@ const SignUpPage = () => {
       toast.error('Passwords do not match');
       return false;
     }
-    
+
     if (formData.password.length < 6) {
       toast.error('Password must be at least 6 characters');
       return false;
     }
-    
+
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
 
     try {
       const { error, emailVerificationSent } = await signUp(
-        formData.email, 
-        formData.password, 
+        formData.email,
+        formData.password,
         formData.displayName
       );
-      
+
       if (error) {
         toast.error(error);
       } else {
@@ -95,11 +98,11 @@ const SignUpPage = () => {
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
-    
+
     try {
       console.log('Starting Google sign-up from SignUpPage');
       const { error } = await signInWithGoogle();
-      
+
       if (error) {
         console.error('Google sign-up error in SignUpPage:', error);
         toast.error(error);
@@ -117,197 +120,296 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-brand rounded-2xl flex items-center justify-center">
-              <Brain className="w-8 h-8 text-white" />
+    <div className="min-h-screen flex">
+      {/* Left Panel - Brand/Hero (hidden on mobile) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden">
+        {/* Decorative orbs */}
+        <div className="gradient-orb w-64 h-64 top-10 -left-20 bg-white/10" />
+        <div className="gradient-orb w-48 h-48 bottom-20 right-10 bg-white/5" />
+
+        <div className="relative z-10 flex flex-col justify-center px-12 xl:px-16 w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <Brain className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-2xl font-bold text-white">DraftEngine</span>
+            </div>
+
+            <h2 className="text-3xl xl:text-4xl font-bold text-white mb-4 leading-tight">
+              From Sources to Finished Drafts in Minutes
+            </h2>
+
+            <p className="text-white/70 text-lg mb-8 max-w-md">
+              Join thousands of researchers who save hours on source analysis with AI-powered drafting.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-8"
+          >
+            <PlaceholderImage
+              label="AI Writing Assistant"
+              prompt="Abstract isometric illustration of a person at a modern desk with laptop, surrounded by floating document icons, citation cards, and AI sparkle effects. Indigo and violet gradient background, minimal modern flat illustration style. No text. 4K."
+              aspectRatio="4/3"
+              gradient="from-white/10 to-white/5"
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex items-center space-x-6"
+          >
+            <div className="flex items-center space-x-2 text-white/70">
+              <Users className="w-4 h-4" />
+              <span className="text-sm">10,000+ writers</span>
+            </div>
+            <div className="flex items-center space-x-2 text-white/70">
+              <Shield className="w-4 h-4" />
+              <span className="text-sm">Secure & Private</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Right Panel - Sign Up Form */}
+      <div className="w-full lg:w-1/2 bg-mesh flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full">
+          {/* Mobile Header (visible only on mobile) */}
+          <div className="text-center mb-8 lg:hidden">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-brand rounded-2xl flex items-center justify-center">
+                <Brain className="w-8 h-8 text-white" />
+              </div>
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-secondary-900 mb-2">
-            Create Account
-          </h1>
-          <p className="text-secondary-700">
-            Start your writing journey with DraftEngine
-          </p>
-        </div>
 
-        {/* Sign Up Form */}
-        <div className="card">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name Field */}
-            <div>
-              <label htmlFor="displayName" className="form-label">
-                Full Name
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-secondary-400" />
-                </div>
-                <input
-                  id="displayName"
-                  name="displayName"
-                  type="text"
-                  required
-                  className="form-input pl-10"
-                  placeholder="Enter your full name"
-                  value={formData.displayName}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="form-label">
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-secondary-400" />
-                </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  className="form-input pl-10"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-secondary-400" />
-                </div>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  className="form-input pl-10 pr-10"
-                  placeholder="Create a password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-secondary-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-secondary-400" />
-                  )}
-                </button>
-              </div>
-              <p className="mt-1 text-xs text-secondary-600">
-                Minimum 6 characters
+          <ScaleIn>
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-secondary-900 mb-2">
+                Create Account
+              </h1>
+              <p className="text-secondary-700">
+                Start your writing journey with DraftEngine
               </p>
             </div>
 
-            {/* Confirm Password Field */}
-            <div>
-              <label htmlFor="confirmPassword" className="form-label">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-secondary-400" />
-                </div>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  required
-                  className="form-input pl-10 pr-10"
-                  placeholder="Confirm your password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            {/* Sign Up Form */}
+            <div className="glass-card p-8 rounded-2xl">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Name Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
                 >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-secondary-400" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-secondary-400" />
-                  )}
-                </button>
+                  <label htmlFor="displayName" className="form-label">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <User className="h-5 w-5 text-secondary-400" />
+                    </div>
+                    <input
+                      id="displayName"
+                      name="displayName"
+                      type="text"
+                      required
+                      className="form-input pl-10"
+                      placeholder="Enter your full name"
+                      value={formData.displayName}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Email Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.4 }}
+                >
+                  <label htmlFor="email" className="form-label">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-secondary-400" />
+                    </div>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      className="form-input pl-10"
+                      placeholder="Enter your email"
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Password Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.4 }}
+                >
+                  <label htmlFor="password" className="form-label">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-secondary-400" />
+                    </div>
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      className="form-input pl-10 pr-10"
+                      placeholder="Create a password"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5 text-secondary-400" />
+                      ) : (
+                        <Eye className="h-5 w-5 text-secondary-400" />
+                      )}
+                    </button>
+                  </div>
+                  <p className="mt-1 text-xs text-secondary-600">
+                    Minimum 6 characters
+                  </p>
+                </motion.div>
+
+                {/* Confirm Password Field */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.4 }}
+                >
+                  <label htmlFor="confirmPassword" className="form-label">
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-secondary-400" />
+                    </div>
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      required
+                      className="form-input pl-10 pr-10"
+                      placeholder="Confirm your password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5 text-secondary-400" />
+                      ) : (
+                        <Eye className="h-5 w-5 text-secondary-400" />
+                      )}
+                    </button>
+                  </div>
+                </motion.div>
+
+                {/* Terms and Privacy */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                  className="text-xs text-secondary-600"
+                >
+                  By creating an account, you agree to our{' '}
+                  <Link to="/terms" className="text-accent hover:text-accent-600/80">
+                    Terms of Service
+                  </Link>{' '}
+                  and{' '}
+                  <Link to="/privacy" className="text-accent hover:text-accent-600/80">
+                    Privacy Policy
+                  </Link>
+                </motion.div>
+
+                {/* Submit Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.4 }}
+                >
+                  <motion.button
+                    type="submit"
+                    disabled={isLoading}
+                    className="btn btn-primary w-full justify-center"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {isLoading ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      'Create Account'
+                    )}
+                  </motion.button>
+                </motion.div>
+              </form>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-secondary-300/30" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white/80 text-secondary-600">Or continue with</span>
+                </div>
               </div>
+
+              {/* Google Sign Up */}
+              <motion.button
+                onClick={handleGoogleSignUp}
+                disabled={isLoading}
+                className="w-full flex items-center justify-center px-4 py-3 border border-secondary-300/30 rounded-lg bg-white hover:bg-secondary-50 transition-colors font-medium text-secondary-900"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continue with Google
+              </motion.button>
+
+              {/* Sign In Link */}
+              <p className="mt-6 text-center text-sm text-secondary-600">
+                Already have an account?{' '}
+                <Link to="/login" className="font-medium text-accent hover:text-accent-600/80">
+                  Sign in here
+                </Link>
+              </p>
             </div>
-
-            {/* Terms and Privacy */}
-            <div className="text-xs text-secondary-600">
-              By creating an account, you agree to our{' '}
-              <Link to="/terms" className="text-accent hover:text-accent-600/80">
-                Terms of Service
-              </Link>{' '}
-              and{' '}
-              <Link to="/privacy" className="text-accent hover:text-accent-600/80">
-                Privacy Policy
-              </Link>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="btn btn-primary w-full justify-center"
-            >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                'Create Account'
-              )}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-secondary-300/30" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-secondary-600">Or continue with</span>
-            </div>
-          </div>
-
-          {/* Google Sign Up */}
-          <button
-            onClick={handleGoogleSignUp}
-            disabled={isLoading}
-            className="w-full flex items-center justify-center px-4 py-3 border border-secondary-300/30 rounded-lg bg-white hover:bg-secondary-50 transition-colors font-medium text-secondary-900"
-          >
-            <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-            Continue with Google
-          </button>
-
-          {/* Sign In Link */}
-          <p className="mt-6 text-center text-sm text-secondary-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-accent hover:text-accent-600/80">
-              Sign in here
-            </Link>
-          </p>
+          </ScaleIn>
         </div>
       </div>
     </div>

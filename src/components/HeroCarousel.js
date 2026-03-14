@@ -1,6 +1,31 @@
 // src/components/HeroCarousel.js
 import React, { useState, useEffect } from 'react';
 import { FileText, Brain, BookOpen, Sparkles, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import PlaceholderImage from './PlaceholderImage';
+
+const placeholderConfigs = [
+  {
+    label: "DraftEngine Dashboard Overview",
+    gradient: "from-violet-100 to-indigo-100",
+    prompt: "Clean modern SaaS dashboard UI mockup showing an AI writing assistant platform with dark sidebar navigation, document editor with inline citations highlighted in indigo, floating cards showing word count and progress. Indigo and violet color scheme, white background, subtle shadows, Figma quality, 4K."
+  },
+  {
+    label: "Source Analyzer Interface",
+    gradient: "from-rose-100 to-orange-100",
+    prompt: "Modern SaaS interface showing PDF document being analyzed by AI. Left side shows PDF page, right side shows extracted citation card, key findings list, quotes with page numbers. Clean indigo/violet UI, white background, Figma quality, 4K."
+  },
+  {
+    label: "Idea & Outline Generator",
+    gradient: "from-emerald-100 to-teal-100",
+    prompt: "Modern SaaS UI showing AI-powered outline generator. Left panel with selected source cards, right panel with generated document outline with nested sections linked to sources. Green and teal accents on indigo theme, Figma quality, 4K."
+  },
+  {
+    label: "Document Generator",
+    gradient: "from-indigo-100 to-violet-100",
+    prompt: "Modern SaaS document generation interface with settings panel (document type, word count slider, citation style) on left, content preview with inline citations on right. Progress bar showing generation. Indigo/violet scheme, Figma quality, 4K."
+  }
+];
 
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -13,7 +38,6 @@ const HeroCarousel = () => {
       icon: Sparkles,
       iconColor: "text-purple-600",
       bgColor: "from-purple-50 via-white to-indigo-50",
-      image: "/images/hero-overview.png",
       isMainHero: true,
       features: [
         "Articles & essays",
@@ -29,7 +53,6 @@ const HeroCarousel = () => {
       icon: FileText,
       iconColor: "text-accent",
       bgColor: "from-red-50 via-white to-orange-50",
-      image: "/images/hero-bibliography.png",
       features: [
         "APA, MLA, Chicago, Harvard",
         "Auto-reference extraction",
@@ -44,7 +67,6 @@ const HeroCarousel = () => {
       icon: Brain,
       iconColor: "text-green-600",
       bgColor: "from-green-50 via-white to-teal-50",
-      image: "/images/hero-topic-outline.png",
       features: [
         "Identifies content opportunities",
         "3-5 topic suggestions",
@@ -59,7 +81,6 @@ const HeroCarousel = () => {
       icon: BookOpen,
       iconColor: "text-indigo-600",
       bgColor: "from-indigo-50 via-white to-violet-50",
-      image: "/images/hero-paper-generator.png",
       features: [
         "2,500-10,000 words",
         "Multiple document types",
@@ -86,61 +107,100 @@ const HeroCarousel = () => {
 
   const slide = slides[currentSlide];
   const Icon = slide.icon;
+  const placeholder = placeholderConfigs[currentSlide];
 
   return (
     <div className="relative">
+      {/* Decorative background orbs */}
+      <div className="gradient-orb w-72 h-72 bg-accent-400 top-0 right-0" />
+      <div className="gradient-orb w-96 h-96 bg-primary-400 -bottom-20 -left-20" />
+      <div className="gradient-orb w-64 h-64 bg-violet-400 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+
       {/* Carousel Container */}
-      <div className={`relative bg-gradient-to-br ${slide.bgColor} rounded-2xl overflow-hidden transition-all duration-500`}>
-        <div className="container mx-auto px-6 py-12 lg:py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Content */}
-            <div className="order-2 lg:order-1">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className={`w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md`}>
-                  <Icon className={`w-6 h-6 ${slide.iconColor}`} />
+      <div className={`relative bg-gradient-to-br ${slide.bgColor} rounded-2xl overflow-hidden`}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="container mx-auto px-6 py-12 lg:py-20">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                {/* Left: Content */}
+                <div className="order-2 lg:order-1">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0, duration: 0.4 }}
+                    className="flex items-center space-x-3 mb-4"
+                  >
+                    <div className={`w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md`}>
+                      <Icon className={`w-6 h-6 ${slide.iconColor}`} />
+                    </div>
+                    <span className="text-sm font-semibold text-secondary-600 uppercase tracking-wide">
+                      {slide.subtitle}
+                    </span>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1, duration: 0.4 }}
+                  >
+                    {slide.isMainHero ? (
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-6 leading-tight">
+                        {slide.title}
+                      </h1>
+                    ) : (
+                      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-6 leading-tight">
+                        {slide.title}
+                      </h2>
+                    )}
+                  </motion.div>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.4 }}
+                    className="text-lg text-secondary-800 mb-6 leading-relaxed"
+                  >
+                    {slide.description}
+                  </motion.p>
+
+                  {/* Features List */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.4 }}
+                    className="grid grid-cols-2 gap-3 mb-6"
+                  >
+                    {slide.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center space-x-2">
+                        <CheckCircle className={`w-4 h-4 ${slide.iconColor} flex-shrink-0`} />
+                        <span className="text-sm text-secondary-800">{feature}</span>
+                      </div>
+                    ))}
+                  </motion.div>
                 </div>
-                <span className="text-sm font-semibold text-secondary-600 uppercase tracking-wide">
-                  {slide.subtitle}
-                </span>
-              </div>
 
-              {slide.isMainHero ? (
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-6 leading-tight">
-                  {slide.title}
-                </h1>
-              ) : (
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary-900 mb-6 leading-tight">
-                  {slide.title}
-                </h2>
-              )}
-
-              <p className="text-lg text-secondary-800 mb-6 leading-relaxed">
-                {slide.description}
-              </p>
-
-              {/* Features List */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                {slide.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-center space-x-2">
-                    <CheckCircle className={`w-4 h-4 ${slide.iconColor} flex-shrink-0`} />
-                    <span className="text-sm text-secondary-800">{feature}</span>
+                {/* Right: Image */}
+                <div className="order-1 lg:order-2">
+                  <div className="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
+                    <PlaceholderImage
+                      label={placeholder.label}
+                      prompt={placeholder.prompt}
+                      aspectRatio="16/10"
+                      gradient={placeholder.gradient}
+                      className="w-full"
+                    />
                   </div>
-                ))}
+                </div>
               </div>
             </div>
-
-            {/* Right: Image */}
-            <div className="order-1 lg:order-2">
-              <div className="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       {/* Dots Navigation */}

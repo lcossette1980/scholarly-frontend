@@ -20,6 +20,8 @@ import { adminAPI, isAdmin } from '../services/admin';
 import toast from 'react-hot-toast';
 import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import { FadeIn, StaggerChildren, StaggerItem, AnimatedCounter } from '../components/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AdminDashboardPage = () => {
   const { currentUser } = useAuth();
@@ -174,11 +176,13 @@ const AdminDashboardPage = () => {
   };
 
   const StatCard = ({ icon: Icon, title, value, subtitle, color = 'chestnut' }) => (
-    <div className="card">
+    <div className="card card-floating">
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <p className="text-sm text-secondary-600 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-secondary-900 mb-1">{value}</p>
+          <p className="text-3xl font-bold text-secondary-900 mb-1">
+            {typeof value === 'number' ? <AnimatedCounter value={value} /> : value}
+          </p>
           {subtitle && (
             <p className="text-sm text-secondary-600">{subtitle}</p>
           )}
@@ -202,519 +206,583 @@ const AdminDashboardPage = () => {
   }
 
   return (
-    <div className="min-h-screen py-8">
+    <div className="min-h-screen py-8 bg-mesh">
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
-            <div>
-              <h1 className="text-4xl font-bold text-secondary-900">
-                Admin Dashboard
-              </h1>
-              <p className="text-secondary-700">
-                System overview and user management
-              </p>
+        <FadeIn>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-4">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => navigate('/dashboard')}
+                className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
+              >
+                <ArrowLeft className="w-6 h-6" />
+              </motion.button>
+              <div>
+                <h1 className="text-4xl font-bold text-secondary-900">
+                  Admin Dashboard
+                </h1>
+                <p className="text-secondary-700">
+                  System overview and user management
+                </p>
+              </div>
             </div>
-          </div>
 
-          {unreadCount > 0 && (
-            <div className="bg-red-100 text-red-700 px-4 py-2 rounded-lg flex items-center space-x-2">
-              <Mail className="w-5 h-5" />
-              <span className="font-semibold">{unreadCount} unread messages</span>
-            </div>
-          )}
-        </div>
+            {unreadCount > 0 && (
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="bg-red-100 text-red-700 px-4 py-2 rounded-lg flex items-center space-x-2"
+              >
+                <Mail className="w-5 h-5" />
+                <span className="font-semibold">{unreadCount} unread messages</span>
+              </motion.div>
+            )}
+          </div>
+        </FadeIn>
 
         {/* Tabs */}
         <div className="flex space-x-4 mb-8 border-b border-secondary-300/30">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`pb-3 px-4 font-semibold transition-colors ${
-              activeTab === 'overview'
-                ? 'text-accent border-b-2 border-accent-600'
-                : 'text-secondary-600 hover:text-secondary-900'
-            }`}
-          >
-            Overview
-          </button>
-          <button
-            onClick={() => setActiveTab('users')}
-            className={`pb-3 px-4 font-semibold transition-colors ${
-              activeTab === 'users'
-                ? 'text-accent border-b-2 border-accent-600'
-                : 'text-secondary-600 hover:text-secondary-900'
-            }`}
-          >
-            Users ({stats?.users?.total || 0})
-          </button>
-          <button
-            onClick={() => setActiveTab('messages')}
-            className={`pb-3 px-4 font-semibold transition-colors relative ${
-              activeTab === 'messages'
-                ? 'text-accent border-b-2 border-accent-600'
-                : 'text-secondary-600 hover:text-secondary-900'
-            }`}
-          >
-            Support Messages
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('entries')}
-            className={`pb-3 px-4 font-semibold transition-colors ${
-              activeTab === 'entries'
-                ? 'text-accent border-b-2 border-accent-600'
-                : 'text-secondary-600 hover:text-secondary-900'
-            }`}
-          >
-            All Entries
-          </button>
+          {[
+            { id: 'overview', label: 'Overview' },
+            { id: 'users', label: `Users (${stats?.users?.total || 0})` },
+            { id: 'messages', label: 'Support Messages', badge: unreadCount },
+            { id: 'entries', label: 'All Entries' }
+          ].map((tab) => (
+            <motion.button
+              key={tab.id}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setActiveTab(tab.id)}
+              className={`pb-3 px-4 font-semibold transition-colors relative ${
+                activeTab === tab.id
+                  ? 'text-accent border-b-2 border-accent-600'
+                  : 'text-secondary-600 hover:text-secondary-900'
+              }`}
+            >
+              {tab.label}
+              {tab.badge > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {tab.badge}
+                </span>
+              )}
+            </motion.button>
+          ))}
         </div>
 
         {/* Overview Tab */}
-        {activeTab === 'overview' && stats && stats.users && stats.revenue && stats.entries && (
-          <>
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <StatCard
-                icon={Users}
-                title="Total Users"
-                value={stats.users?.total || 0}
-                subtitle={`${stats.users?.active || 0} active (${stats.users?.active_percent || 0}%)`}
-                color="blue-600"
-              />
-              <StatCard
-                icon={DollarSign}
-                title="Monthly Revenue"
-                value={`$${stats.revenue?.mrr || 0}`}
-                subtitle={`${stats.revenue?.total_subscriptions || 0} subscriptions`}
-                color="green-600"
-              />
-              <StatCard
-                icon={FileText}
-                title="Total Entries"
-                value={stats.entries?.total || 0}
-                subtitle={`${stats.entries?.last_30_days || 0} last 30 days`}
-                color="purple-600"
-              />
-              <StatCard
-                icon={Mail}
-                title="Support Messages"
-                value={messages.length}
-                subtitle={`${unreadCount} unread`}
-                color="orange-600"
-              />
-            </div>
-
-            {/* Revenue Breakdown */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <div className="card">
-                <h2 className="text-xl font-bold text-secondary-900 mb-4">
-                  Revenue by Plan
-                </h2>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-secondary-700">Plus Plan</span>
-                    <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.student || 0}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-secondary-700">Pro Plan</span>
-                    <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.researcher || 0}</span>
-                  </div>
+        <AnimatePresence mode="wait">
+          {activeTab === 'overview' && stats && stats.users && stats.revenue && stats.entries && (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              {/* Stats Grid */}
+              <StaggerChildren>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  <StaggerItem>
+                    <StatCard
+                      icon={Users}
+                      title="Total Users"
+                      value={stats.users?.total || 0}
+                      subtitle={`${stats.users?.active || 0} active (${stats.users?.active_percent || 0}%)`}
+                      color="blue-600"
+                    />
+                  </StaggerItem>
+                  <StaggerItem>
+                    <StatCard
+                      icon={DollarSign}
+                      title="Monthly Revenue"
+                      value={`$${stats.revenue?.mrr || 0}`}
+                      subtitle={`${stats.revenue?.total_subscriptions || 0} subscriptions`}
+                      color="green-600"
+                    />
+                  </StaggerItem>
+                  <StaggerItem>
+                    <StatCard
+                      icon={FileText}
+                      title="Total Entries"
+                      value={stats.entries?.total || 0}
+                      subtitle={`${stats.entries?.last_30_days || 0} last 30 days`}
+                      color="purple-600"
+                    />
+                  </StaggerItem>
+                  <StaggerItem>
+                    <StatCard
+                      icon={Mail}
+                      title="Support Messages"
+                      value={messages.length}
+                      subtitle={`${unreadCount} unread`}
+                      color="orange-600"
+                    />
+                  </StaggerItem>
                 </div>
-              </div>
+              </StaggerChildren>
 
-              {/* Recent Messages Preview */}
-              <div className="card">
-                <h2 className="text-xl font-bold text-secondary-900 mb-4">
-                  Recent Messages
-                </h2>
-                <div className="space-y-3">
-                  {messages.slice(0, 3).map((msg) => (
-                    <div key={msg.id} className="flex items-start space-x-3 pb-3 border-b border-secondary-300/20 last:border-0">
-                      <div className={`w-2 h-2 rounded-full mt-2 ${msg.read ? 'bg-gray-400' : 'bg-red-500'}`} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-secondary-900 truncate">{msg.subject}</p>
-                        <p className="text-xs text-secondary-600">{msg.userEmail}</p>
+              {/* Revenue Breakdown */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <FadeIn>
+                  <div className="card card-floating">
+                    <h2 className="text-xl font-bold text-secondary-900 mb-4">
+                      Revenue by Plan
+                    </h2>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-secondary-700">Plus Plan</span>
+                        <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.student || 0}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-secondary-700">Pro Plan</span>
+                        <span className="text-xl font-bold text-secondary-900">${stats.revenue?.by_plan?.researcher || 0}</span>
                       </div>
                     </div>
-                  ))}
-                  {messages.length === 0 && (
-                    <p className="text-sm text-secondary-600">No messages yet</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </>
-        )}
+                  </div>
+                </FadeIn>
 
-        {/* Users Tab */}
-        {activeTab === 'users' && (
-          <div className="card">
-            <h2 className="text-xl font-bold text-secondary-900 mb-4">
-              All Users
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-secondary-300/30">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Email</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Display Name</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Plan</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Entries Used</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Created</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id} className="border-b border-secondary-300/10 hover:bg-pearl/30">
-                      <td className="py-3 px-4 text-sm text-secondary-900">{user.email}</td>
-                      <td className="py-3 px-4 text-sm text-secondary-900">{user.displayName || 'N/A'}</td>
-                      <td className="py-3 px-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          user.subscription?.plan === 'researcher' ? 'bg-purple-100 text-purple-800' :
-                          user.subscription?.plan === 'student' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {user.subscription?.plan || 'trial'}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-sm text-secondary-900">
-                        {user.subscription?.entriesUsed || 0} / {user.subscription?.entriesLimit === -1 ? '∞' : user.subscription?.entriesLimit || 5}
-                      </td>
-                      <td className="py-3 px-4 text-sm text-secondary-600">
-                        {user.createdAt ? (() => {
-                          try {
-                            // Handle Firestore Timestamp, Date object, or ISO string
-                            if (user.createdAt.toDate && typeof user.createdAt.toDate === 'function') {
-                              return new Date(user.createdAt.toDate()).toLocaleDateString();
-                            } else if (user.createdAt.seconds) {
-                              // Firestore Timestamp as plain object
-                              return new Date(user.createdAt.seconds * 1000).toLocaleDateString();
-                            } else {
-                              // Already a date string or Date object
-                              return new Date(user.createdAt).toLocaleDateString();
-                            }
-                          } catch (e) {
-                            return 'N/A';
-                          }
-                        })() : 'N/A'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* Messages Tab */}
-        {activeTab === 'messages' && (
-          <div className="space-y-4">
-            {messages.map((msg) => (
-              <div key={msg.id} className={`card ${msg.read ? 'opacity-75' : 'border-l-4 border-l-chestnut'}`}>
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      {!msg.read && <span className="w-2 h-2 bg-red-500 rounded-full" />}
-                      <h3 className="text-lg font-semibold text-secondary-900">{msg.subject}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        msg.category === 'bug' ? 'bg-red-100 text-red-800' :
-                        msg.category === 'feature' ? 'bg-blue-100 text-blue-800' :
-                        msg.category === 'billing' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {msg.category || 'general'}
-                      </span>
+                {/* Recent Messages Preview */}
+                <FadeIn delay={0.1}>
+                  <div className="card card-floating">
+                    <h2 className="text-xl font-bold text-secondary-900 mb-4">
+                      Recent Messages
+                    </h2>
+                    <div className="space-y-3">
+                      {messages.slice(0, 3).map((msg) => (
+                        <div key={msg.id} className="flex items-start space-x-3 pb-3 border-b border-secondary-300/20 last:border-0">
+                          <div className={`w-2 h-2 rounded-full mt-2 ${msg.read ? 'bg-gray-400' : 'bg-red-500'}`} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-secondary-900 truncate">{msg.subject}</p>
+                            <p className="text-xs text-secondary-600">{msg.userEmail}</p>
+                          </div>
+                        </div>
+                      ))}
+                      {messages.length === 0 && (
+                        <p className="text-sm text-secondary-600">No messages yet</p>
+                      )}
                     </div>
-                    <p className="text-sm text-secondary-600 mb-2">
-                      From: <span className="font-medium">{msg.userName || 'Unknown'}</span> ({msg.userEmail})
-                    </p>
-                    <p className="text-secondary-800 whitespace-pre-line">{msg.message}</p>
                   </div>
-                  <div className="flex flex-col items-end space-y-2 ml-4">
-                    <span className="text-xs text-secondary-600">
-                      {msg.createdAt ? new Date(msg.createdAt.toDate()).toLocaleString() : 'N/A'}
-                    </span>
-                    {!msg.read && (
-                      <button
-                        onClick={() => handleMarkRead(msg.id)}
-                        className="btn btn-sm btn-outline"
-                      >
-                        <CheckCircle className="w-4 h-4 mr-1" />
-                        Mark Read
-                      </button>
-                    )}
-                  </div>
+                </FadeIn>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Users Tab */}
+          {activeTab === 'users' && (
+            <motion.div
+              key="users"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="card card-floating">
+                <h2 className="text-xl font-bold text-secondary-900 mb-4">
+                  All Users
+                </h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-secondary-300/30">
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Email</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Display Name</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Plan</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Entries Used</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-secondary-900">Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users.map((user, idx) => (
+                        <motion.tr
+                          key={user.id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.03 }}
+                          className="border-b border-secondary-300/10 hover:bg-pearl/30"
+                        >
+                          <td className="py-3 px-4 text-sm text-secondary-900">{user.email}</td>
+                          <td className="py-3 px-4 text-sm text-secondary-900">{user.displayName || 'N/A'}</td>
+                          <td className="py-3 px-4">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              user.subscription?.plan === 'researcher' ? 'bg-purple-100 text-purple-800' :
+                              user.subscription?.plan === 'student' ? 'bg-blue-100 text-blue-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {user.subscription?.plan || 'trial'}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-sm text-secondary-900">
+                            {user.subscription?.entriesUsed || 0} / {user.subscription?.entriesLimit === -1 ? '∞' : user.subscription?.entriesLimit || 5}
+                          </td>
+                          <td className="py-3 px-4 text-sm text-secondary-600">
+                            {user.createdAt ? (() => {
+                              try {
+                                // Handle Firestore Timestamp, Date object, or ISO string
+                                if (user.createdAt.toDate && typeof user.createdAt.toDate === 'function') {
+                                  return new Date(user.createdAt.toDate()).toLocaleDateString();
+                                } else if (user.createdAt.seconds) {
+                                  // Firestore Timestamp as plain object
+                                  return new Date(user.createdAt.seconds * 1000).toLocaleDateString();
+                                } else {
+                                  // Already a date string or Date object
+                                  return new Date(user.createdAt).toLocaleDateString();
+                                }
+                              } catch (e) {
+                                return 'N/A';
+                              }
+                            })() : 'N/A'}
+                          </td>
+                        </motion.tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            ))}
+            </motion.div>
+          )}
 
-            {messages.length === 0 && (
-              <div className="card text-center py-12">
-                <Mail className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-secondary-900 mb-2">
-                  No support messages yet
-                </h3>
-                <p className="text-secondary-600">
-                  Messages from users will appear here
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Entries Tab */}
-        {activeTab === 'entries' && (
-          <div className="space-y-6">
-            {/* Search Bar */}
-            <div className="card">
-              <div className="flex items-center space-x-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary-400" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by title or subject..."
-                    className="w-full pl-10 pr-4 py-3 border border-secondary-300/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20"
-                  />
-                </div>
-                <div className="text-sm text-secondary-600 whitespace-nowrap">
-                  {entries.length} entries
-                </div>
-              </div>
-            </div>
-
-            {/* Entries Table */}
-            {entriesLoading ? (
-              <div className="card text-center py-12">
-                <RefreshCw className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
-                <p className="text-secondary-700">Loading entries...</p>
-              </div>
-            ) : (
-              <>
-                <div className="card overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-secondary-50/50 border-b border-secondary-300/30">
-                        <tr>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
-                            Title
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
-                            Subject
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
-                            User
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
-                            Citation Type
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
-                            Actions
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-khaki/20">
-                        {entries.map((entry) => (
-                          <tr key={entry.id} className="hover:bg-secondary-50/30 transition-colors">
-                            <td className="px-4 py-3">
-                              <div className="flex items-center space-x-2">
-                                <BookOpen className="w-4 h-4 text-accent flex-shrink-0" />
-                                <span className="text-sm text-secondary-900 font-medium line-clamp-2">
-                                  {entry.title}
-                                </span>
-                              </div>
-                            </td>
-                            <td className="px-4 py-3">
-                              <span className="text-sm text-secondary-700">
-                                {entry.subject}
+          {/* Messages Tab */}
+          {activeTab === 'messages' && (
+            <motion.div
+              key="messages"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <StaggerChildren>
+                <div className="space-y-4">
+                  {messages.map((msg) => (
+                    <StaggerItem key={msg.id}>
+                      <div className={`card card-floating ${msg.read ? 'opacity-75' : 'border-l-4 border-l-chestnut'}`}>
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-3 mb-2">
+                              {!msg.read && <span className="w-2 h-2 bg-red-500 rounded-full" />}
+                              <h3 className="text-lg font-semibold text-secondary-900">{msg.subject}</h3>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                msg.category === 'bug' ? 'bg-red-100 text-red-800' :
+                                msg.category === 'feature' ? 'bg-blue-100 text-blue-800' :
+                                msg.category === 'billing' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
+                                {msg.category || 'general'}
                               </span>
-                            </td>
-                            <td className="px-4 py-3">
-                              <div className="text-sm">
-                                <div className="text-secondary-900 font-medium">{entry.userEmail}</div>
-                                <div className="text-secondary-600 text-xs">{entry.userId.substring(0, 8)}...</div>
-                              </div>
-                            </td>
-                            <td className="px-4 py-3">
-                              <span className="text-sm text-secondary-700">
-                                {entry.date ? new Date(entry.date.toDate ? entry.date.toDate() : entry.date).toLocaleDateString() : 'N/A'}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent">
-                                {entry.citationType}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3">
-                              <button
-                                onClick={() => handleViewEntry(entry.id)}
+                            </div>
+                            <p className="text-sm text-secondary-600 mb-2">
+                              From: <span className="font-medium">{msg.userName || 'Unknown'}</span> ({msg.userEmail})
+                            </p>
+                            <p className="text-secondary-800 whitespace-pre-line">{msg.message}</p>
+                          </div>
+                          <div className="flex flex-col items-end space-y-2 ml-4">
+                            <span className="text-xs text-secondary-600">
+                              {msg.createdAt ? new Date(msg.createdAt.toDate()).toLocaleString() : 'N/A'}
+                            </span>
+                            {!msg.read && (
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleMarkRead(msg.id)}
                                 className="btn btn-sm btn-outline"
                               >
-                                <Eye className="w-4 h-4 mr-1" />
-                                View
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                                <CheckCircle className="w-4 h-4 mr-1" />
+                                Mark Read
+                              </motion.button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </StaggerItem>
+                  ))}
+
+                  {messages.length === 0 && (
+                    <div className="card card-floating text-center py-12">
+                      <Mail className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-secondary-900 mb-2">
+                        No support messages yet
+                      </h3>
+                      <p className="text-secondary-600">
+                        Messages from users will appear here
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </StaggerChildren>
+            </motion.div>
+          )}
+
+          {/* Entries Tab */}
+          {activeTab === 'entries' && (
+            <motion.div
+              key="entries"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="space-y-6">
+                {/* Search Bar */}
+                <div className="card card-floating">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary-400" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search by title or subject..."
+                        className="w-full pl-10 pr-4 py-3 border border-secondary-300/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20"
+                      />
+                    </div>
+                    <div className="text-sm text-secondary-600 whitespace-nowrap">
+                      {entries.length} entries
+                    </div>
                   </div>
                 </div>
 
-                {entries.length === 0 && !searchQuery && (
-                  <div className="card text-center py-12">
-                    <FileText className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-secondary-900 mb-2">
-                      No entries found
-                    </h3>
-                    <p className="text-secondary-600">
-                      Source summary entries will appear here
-                    </p>
+                {/* Entries Table */}
+                {entriesLoading ? (
+                  <div className="card card-floating text-center py-12">
+                    <RefreshCw className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
+                    <p className="text-secondary-700">Loading entries...</p>
                   </div>
-                )}
-
-                {entries.length === 0 && searchQuery && (
-                  <div className="card text-center py-12">
-                    <Search className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-secondary-900 mb-2">
-                      No results for "{searchQuery}"
-                    </h3>
-                    <p className="text-secondary-600">
-                      Try a different search term
-                    </p>
-                  </div>
-                )}
-              </>
-            )}
-
-            {/* Entry Details Modal */}
-            {selectedEntry && (
-              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedEntry(null)}>
-                <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-                  <div className="sticky top-0 bg-white border-b border-secondary-300/30 px-6 py-4 flex items-center justify-between">
-                    <h3 className="text-2xl font-bold text-secondary-900">Entry Details</h3>
-                    <button
-                      onClick={() => setSelectedEntry(null)}
-                      className="p-2 hover:bg-secondary-200/10 rounded-lg transition-colors"
-                    >
-                      <ArrowLeft className="w-6 h-6 text-secondary-900" />
-                    </button>
-                  </div>
-
-                  <div className="p-6 space-y-6">
-                    {/* User Info */}
-                    {selectedEntry.userInfo && (
-                      <div className="bg-secondary-50/30 rounded-lg p-4">
-                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">User Information</h4>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <span className="text-secondary-600">Email:</span>
-                            <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.email}</span>
-                          </div>
-                          <div>
-                            <span className="text-secondary-600">Name:</span>
-                            <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.displayName}</span>
-                          </div>
-                          <div>
-                            <span className="text-secondary-600">Plan:</span>
-                            <span className="ml-2 text-secondary-900 font-medium capitalize">{selectedEntry.userInfo.plan}</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Citation */}
-                    {selectedEntry.citation && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Citation ({selectedEntry.citation.type})</h4>
-                        <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-900">{selectedEntry.citation.formatted}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Summary */}
-                    {selectedEntry.summary && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Summary</h4>
-                        <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-800 whitespace-pre-line">{selectedEntry.summary}</p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Key Findings */}
-                    {selectedEntry.keyFindings && selectedEntry.keyFindings.length > 0 && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Key Findings</h4>
-                        <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <ul className="space-y-2">
-                            {selectedEntry.keyFindings.map((finding, index) => (
-                              <li key={index} className="flex items-start space-x-2">
-                                <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                                <span className="text-secondary-800">{finding}</span>
-                              </li>
+                ) : (
+                  <>
+                    <div className="card card-floating overflow-hidden">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-secondary-50/50 border-b border-secondary-300/30">
+                            <tr>
+                              <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
+                                Title
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
+                                Subject
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
+                                User
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
+                                Date
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
+                                Citation Type
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-semibold text-secondary-900 uppercase tracking-wider">
+                                Actions
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-khaki/20">
+                            {entries.map((entry, idx) => (
+                              <motion.tr
+                                key={entry.id}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: idx * 0.03 }}
+                                className="hover:bg-secondary-50/30 transition-colors"
+                              >
+                                <td className="px-4 py-3">
+                                  <div className="flex items-center space-x-2">
+                                    <BookOpen className="w-4 h-4 text-accent flex-shrink-0" />
+                                    <span className="text-sm text-secondary-900 font-medium line-clamp-2">
+                                      {entry.title}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <span className="text-sm text-secondary-700">
+                                    {entry.subject}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <div className="text-sm">
+                                    <div className="text-secondary-900 font-medium">{entry.userEmail}</div>
+                                    <div className="text-secondary-600 text-xs">{entry.userId.substring(0, 8)}...</div>
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <span className="text-sm text-secondary-700">
+                                    {entry.date ? new Date(entry.date.toDate ? entry.date.toDate() : entry.date).toLocaleDateString() : 'N/A'}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent">
+                                    {entry.citationType}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={() => handleViewEntry(entry.id)}
+                                    className="btn btn-sm btn-outline"
+                                  >
+                                    <Eye className="w-4 h-4 mr-1" />
+                                    View
+                                  </motion.button>
+                                </td>
+                              </motion.tr>
                             ))}
-                          </ul>
-                        </div>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    {entries.length === 0 && !searchQuery && (
+                      <div className="card card-floating text-center py-12">
+                        <FileText className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-secondary-900 mb-2">
+                          No entries found
+                        </h3>
+                        <p className="text-secondary-600">
+                          Source summary entries will appear here
+                        </p>
                       </div>
                     )}
 
-                    {/* Methodology */}
-                    {selectedEntry.methodology && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Methodology</h4>
-                        <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-800 whitespace-pre-line">{selectedEntry.methodology}</p>
-                        </div>
+                    {entries.length === 0 && searchQuery && (
+                      <div className="card card-floating text-center py-12">
+                        <Search className="w-16 h-16 text-secondary-900/20 mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-secondary-900 mb-2">
+                          No results for "{searchQuery}"
+                        </h3>
+                        <p className="text-secondary-600">
+                          Try a different search term
+                        </p>
                       </div>
                     )}
+                  </>
+                )}
 
-                    {/* Quotes */}
-                    {selectedEntry.quotes && selectedEntry.quotes.length > 0 && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Quotes</h4>
-                        <div className="space-y-3">
-                          {selectedEntry.quotes.map((quote, index) => (
-                            <div key={index} className="bg-secondary-50/30 rounded-lg p-4 border-l-4 border-accent-600">
-                              <p className="text-secondary-800 italic mb-2">"{quote.text}"</p>
-                              <p className="text-sm text-secondary-600">— Page {quote.page}</p>
+                {/* Entry Details Modal */}
+                <AnimatePresence>
+                  {selectedEntry && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                      onClick={() => setSelectedEntry(null)}
+                    >
+                      <motion.div
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.95, opacity: 0 }}
+                        className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="sticky top-0 bg-white border-b border-secondary-300/30 px-6 py-4 flex items-center justify-between">
+                          <h3 className="text-2xl font-bold text-secondary-900">Entry Details</h3>
+                          <button
+                            onClick={() => setSelectedEntry(null)}
+                            className="p-2 hover:bg-secondary-200/10 rounded-lg transition-colors"
+                          >
+                            <ArrowLeft className="w-6 h-6 text-secondary-900" />
+                          </button>
+                        </div>
+
+                        <div className="p-6 space-y-6">
+                          {/* User Info */}
+                          {selectedEntry.userInfo && (
+                            <div className="bg-secondary-50/30 rounded-lg p-4">
+                              <h4 className="text-sm font-semibold text-secondary-900 mb-2">User Information</h4>
+                              <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                  <span className="text-secondary-600">Email:</span>
+                                  <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.email}</span>
+                                </div>
+                                <div>
+                                  <span className="text-secondary-600">Name:</span>
+                                  <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.displayName}</span>
+                                </div>
+                                <div>
+                                  <span className="text-secondary-600">Plan:</span>
+                                  <span className="ml-2 text-secondary-900 font-medium capitalize">{selectedEntry.userInfo.plan}</span>
+                                </div>
+                              </div>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                          )}
 
-                    {/* Research Focus */}
-                    {selectedEntry.researchFocus && (
-                      <div>
-                        <h4 className="text-sm font-semibold text-secondary-900 mb-2">Research Focus</h4>
-                        <div className="bg-secondary-50/30 rounded-lg p-4">
-                          <p className="text-secondary-800">{selectedEntry.researchFocus}</p>
+                          {/* Citation */}
+                          {selectedEntry.citation && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-secondary-900 mb-2">Citation ({selectedEntry.citation.type})</h4>
+                              <div className="bg-secondary-50/30 rounded-lg p-4">
+                                <p className="text-secondary-900">{selectedEntry.citation.formatted}</p>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Summary */}
+                          {selectedEntry.summary && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-secondary-900 mb-2">Summary</h4>
+                              <div className="bg-secondary-50/30 rounded-lg p-4">
+                                <p className="text-secondary-800 whitespace-pre-line">{selectedEntry.summary}</p>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Key Findings */}
+                          {selectedEntry.keyFindings && selectedEntry.keyFindings.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-secondary-900 mb-2">Key Findings</h4>
+                              <div className="bg-secondary-50/30 rounded-lg p-4">
+                                <ul className="space-y-2">
+                                  {selectedEntry.keyFindings.map((finding, index) => (
+                                    <li key={index} className="flex items-start space-x-2">
+                                      <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                                      <span className="text-secondary-800">{finding}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Methodology */}
+                          {selectedEntry.methodology && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-secondary-900 mb-2">Methodology</h4>
+                              <div className="bg-secondary-50/30 rounded-lg p-4">
+                                <p className="text-secondary-800 whitespace-pre-line">{selectedEntry.methodology}</p>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Quotes */}
+                          {selectedEntry.quotes && selectedEntry.quotes.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-secondary-900 mb-2">Quotes</h4>
+                              <div className="space-y-3">
+                                {selectedEntry.quotes.map((quote, index) => (
+                                  <div key={index} className="bg-secondary-50/30 rounded-lg p-4 border-l-4 border-accent-600">
+                                    <p className="text-secondary-800 italic mb-2">"{quote.text}"</p>
+                                    <p className="text-sm text-secondary-600">— Page {quote.page}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Research Focus */}
+                          {selectedEntry.researchFocus && (
+                            <div>
+                              <h4 className="text-sm font-semibold text-secondary-900 mb-2">Research Focus</h4>
+                              <div className="bg-secondary-50/30 rounded-lg p-4">
+                                <p className="text-secondary-800">{selectedEntry.researchFocus}</p>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            )}
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

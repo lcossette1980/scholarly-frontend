@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { PenTool, Menu, X, User, LogOut, Settings, FileText, Shield } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { logOut } from '../services/auth';
 import { isAdmin } from '../services/admin';
@@ -10,10 +11,20 @@ import toast from 'react-hot-toast';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const profileRef = useRef(null);
   const { currentUser, userDocument } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Scroll-linked glass effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -57,14 +68,24 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="glass border-b border-white/20 sticky top-0 z-50">
+    <nav
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'bg-white/80 backdrop-blur-xl shadow-sm border-b border-white/20'
+          : 'bg-transparent'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+            <motion.div
+              whileHover={{ rotate: -5, scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className="w-10 h-10 bg-gradient-brand rounded-lg flex items-center justify-center"
+            >
               <PenTool className="w-6 h-6 text-white" />
-            </div>
+            </motion.div>
             <div>
               <h1 className="text-xl font-bold text-secondary-900">DraftEngine</h1>
               <p className="text-xs text-accent font-medium hidden sm:block">
@@ -89,7 +110,7 @@ const Navbar = () => {
                 <Link to="/pricing" className="text-secondary-900 hover:text-accent-600 transition-colors font-medium">
                   Pricing
                 </Link>
-                
+
                 {/* Profile Dropdown */}
                 <div className="relative" ref={profileRef}>
                   <button
@@ -106,60 +127,68 @@ const Navbar = () => {
                     <span className="font-medium">{currentUser.displayName || 'User'}</span>
                   </button>
 
-                  {isProfileOpen && (
-                    <div className="absolute right-0 mt-2 w-48 glass rounded-lg shadow-lg border border-white/20 py-2">
-                      <div className="px-4 py-2 border-b border-white/20">
-                        <p className="text-sm font-medium text-secondary-900">{currentUser.displayName}</p>
-                        <p className="text-xs text-secondary-600">{currentUser.email}</p>
-                        {userDocument?.subscription && (
-                          <p className="text-xs text-accent font-medium capitalize">
-                            {userDocument.subscription.plan} Plan
-                          </p>
-                        )}
-                      </div>
-                      <Link
-                        to="/profile"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
-                        onClick={() => setIsProfileOpen(false)}
+                  <AnimatePresence>
+                    {isProfileOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 mt-2 w-48 glass rounded-lg shadow-lg border border-white/20 py-2"
                       >
-                        <Settings className="w-4 h-4" />
-                        <span>Settings</span>
-                      </Link>
-                      <Link
-                        to="/dashboard"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <FileText className="w-4 h-4" />
-                        <span>My Entries</span>
-                      </Link>
-                      <Link
-                        to="/content/history"
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
-                        onClick={() => setIsProfileOpen(false)}
-                      >
-                        <FileText className="w-4 h-4" />
-                        <span>Content History</span>
-                      </Link>
-                      {isAdmin(currentUser) && (
+                        <div className="px-4 py-2 border-b border-white/20">
+                          <p className="text-sm font-medium text-secondary-900">{currentUser.displayName}</p>
+                          <p className="text-xs text-secondary-600">{currentUser.email}</p>
+                          {userDocument?.subscription && (
+                            <p className="text-xs text-accent font-medium capitalize">
+                              {userDocument.subscription.plan} Plan
+                            </p>
+                          )}
+                        </div>
                         <Link
-                          to="/admin"
-                          className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors border-t border-white/20"
+                          to="/profile"
+                          className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
                           onClick={() => setIsProfileOpen(false)}
                         >
-                          <Shield className="w-4 h-4" />
-                          <span>Admin Dashboard</span>
+                          <Settings className="w-4 h-4" />
+                          <span>Settings</span>
                         </Link>
-                      )}
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors w-full text-left border-t border-white/20"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        <span>Logout</span>
-                      </button>
-                    </div>
-                  )}
+                        <Link
+                          to="/dashboard"
+                          className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <FileText className="w-4 h-4" />
+                          <span>My Entries</span>
+                        </Link>
+                        <Link
+                          to="/content/history"
+                          className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <FileText className="w-4 h-4" />
+                          <span>Content History</span>
+                        </Link>
+                        {isAdmin(currentUser) && (
+                          <Link
+                            to="/admin"
+                            className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors border-t border-white/20"
+                            onClick={() => setIsProfileOpen(false)}
+                          >
+                            <Shield className="w-4 h-4" />
+                            <span>Admin Dashboard</span>
+                          </Link>
+                        )}
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-900 hover:bg-white/20 transition-colors w-full text-left border-t border-white/20"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>Logout</span>
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </>
             ) : (
@@ -190,88 +219,98 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-white/20">
-            <div className="space-y-4">
-              {currentUser ? (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    to="/create"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Create Entry
-                  </Link>
-                  <Link
-                    to="/features"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Features
-                  </Link>
-                  <Link
-                    to="/pricing"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Pricing
-                  </Link>
-                  <Link
-                    to="/profile"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium text-left"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/features"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Features
-                  </Link>
-                  <Link
-                    to="/pricing"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Pricing
-                  </Link>
-                  <Link
-                    to="/login"
-                    className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="btn btn-primary w-full justify-center"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Get Started
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="mt-4 py-4 border-t border-white/20">
+                <div className="space-y-4">
+                  {currentUser ? (
+                    <>
+                      <Link
+                        to="/dashboard"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        to="/create"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Create Entry
+                      </Link>
+                      <Link
+                        to="/features"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Features
+                      </Link>
+                      <Link
+                        to="/pricing"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Pricing
+                      </Link>
+                      <Link
+                        to="/profile"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium text-left"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/features"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Features
+                      </Link>
+                      <Link
+                        to="/pricing"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Pricing
+                      </Link>
+                      <Link
+                        to="/login"
+                        className="block text-secondary-900 hover:text-accent-600 transition-colors font-medium"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Sign In
+                      </Link>
+                      <Link
+                        to="/signup"
+                        className="btn btn-primary w-full justify-center"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Get Started
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );

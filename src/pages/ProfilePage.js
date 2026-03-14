@@ -18,6 +18,8 @@ import { updateProfile } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
 import toast from 'react-hot-toast';
+import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const ProfilePage = () => {
   const { currentUser, userDocument, refreshUserDocument } = useAuth();
@@ -156,396 +158,443 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen py-8">
+    <div className="min-h-screen py-8 bg-mesh">
       <div className="container mx-auto px-6 max-w-4xl">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-secondary-900 mb-2">
-            Profile Settings
-          </h1>
-          <p className="text-secondary-700">
-            Manage your account settings and preferences
-          </p>
-        </div>
+        <FadeIn direction="down">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-secondary-900 mb-2">
+              Profile Settings
+            </h1>
+            <p className="text-secondary-700">
+              Manage your account settings and preferences
+            </p>
+          </div>
+        </FadeIn>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Profile Information */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Basic Information */}
-            <div className="card">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                    <User className="w-5 h-5 text-accent" />
-                  </div>
-                  <h2 className="text-xl font-bold text-secondary-900">
-                    Basic Information
-                  </h2>
-                </div>
-                
-                {!isEditing ? (
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="btn btn-outline"
-                  >
-                    <Edit className="w-4 h-4 mr-2" />
-                    Edit
-                  </button>
-                ) : (
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={handleCancelEdit}
-                      className="btn btn-outline"
-                      disabled={isLoading}
-                    >
-                      <X className="w-4 h-4 mr-2" />
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSaveProfile}
-                      className="btn btn-primary"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+          <div className="lg:col-span-2">
+            <StaggerChildren>
+              {/* Basic Information */}
+              <StaggerItem>
+                <div className="card card-floating mb-6">
+                  <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400 rounded-t-lg -mt-6 -mx-6 mb-6" />
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <User className="w-5 h-5 text-accent" />
+                      </div>
+                      <h2 className="text-xl font-bold text-secondary-900">
+                        Basic Information
+                      </h2>
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                      {!isEditing ? (
+                        <motion.button
+                          key="edit"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => setIsEditing(true)}
+                          className="btn btn-outline"
+                        >
+                          <Edit className="w-4 h-4 mr-2" />
+                          Edit
+                        </motion.button>
                       ) : (
-                        <Save className="w-4 h-4 mr-2" />
+                        <motion.div
+                          key="save-cancel"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          className="flex space-x-2"
+                        >
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleCancelEdit}
+                            className="btn btn-outline"
+                            disabled={isLoading}
+                          >
+                            <X className="w-4 h-4 mr-2" />
+                            Cancel
+                          </motion.button>
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleSaveProfile}
+                            className="btn btn-primary"
+                            disabled={isLoading}
+                          >
+                            {isLoading ? (
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                            ) : (
+                              <Save className="w-4 h-4 mr-2" />
+                            )}
+                            Save
+                          </motion.button>
+                        </motion.div>
                       )}
-                      Save
-                    </button>
+                    </AnimatePresence>
                   </div>
-                )}
-              </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="form-label">Full Name</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="displayName"
-                      className="form-input"
-                      value={formData.displayName}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <p className="text-secondary-900 py-2">
-                      {currentUser?.displayName || 'Not set'}
-                    </p>
-                  )}
-                </div>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="form-label">Full Name</label>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          name="displayName"
+                          className="form-input"
+                          value={formData.displayName}
+                          onChange={handleInputChange}
+                        />
+                      ) : (
+                        <p className="text-secondary-900 py-2">
+                          {currentUser?.displayName || 'Not set'}
+                        </p>
+                      )}
+                    </div>
 
-                <div>
-                  <label className="form-label">Email Address</label>
-                  <p className="text-secondary-900 py-2">
-                    {currentUser?.email}
-                  </p>
-                  <p className="text-sm text-secondary-600">
-                    Email cannot be changed. Contact support if needed.
-                  </p>
-                </div>
+                    <div>
+                      <label className="form-label">Email Address</label>
+                      <p className="text-secondary-900 py-2">
+                        {currentUser?.email}
+                      </p>
+                      <p className="text-sm text-secondary-600">
+                        Email cannot be changed. Contact support if needed.
+                      </p>
+                    </div>
 
-                <div>
-                  <label className="form-label">Research Focus</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="researchFocus"
-                      className="form-input"
-                      placeholder="e.g., AI Leadership, Digital Transformation"
-                      value={formData.researchFocus}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <p className="text-secondary-900 py-2">
-                      {userDocument?.preferences?.researchFocus || 'Not set'}
-                    </p>
-                  )}
-                </div>
+                    <div>
+                      <label className="form-label">Research Focus</label>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          name="researchFocus"
+                          className="form-input"
+                          placeholder="e.g., AI Leadership, Digital Transformation"
+                          value={formData.researchFocus}
+                          onChange={handleInputChange}
+                        />
+                      ) : (
+                        <p className="text-secondary-900 py-2">
+                          {userDocument?.preferences?.researchFocus || 'Not set'}
+                        </p>
+                      )}
+                    </div>
 
-                <div>
-                  <label className="form-label">Account Created</label>
-                  <p className="text-secondary-900 py-2">
-                    {formatDate(userDocument?.createdAt)}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Preferences */}
-            <div className="card">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-accent" />
-                </div>
-                <h2 className="text-xl font-bold text-secondary-900">
-                  Preferences
-                </h2>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold text-secondary-900">Email Notifications</h3>
-                    <p className="text-sm text-secondary-600">
-                      Receive updates about your source summary entries and account
-                    </p>
+                    <div>
+                      <label className="form-label">Account Created</label>
+                      <p className="text-secondary-900 py-2">
+                        {formatDate(userDocument?.createdAt)}
+                      </p>
+                    </div>
                   </div>
-                  {isEditing ? (
-                    <input
-                      type="checkbox"
-                      name="notificationsEnabled"
-                      className="w-4 h-4 text-accent border-secondary-300/30 rounded focus:ring-accent"
-                      checked={formData.notificationsEnabled}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      userDocument?.preferences?.notificationsEnabled 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {userDocument?.preferences?.notificationsEnabled ? 'Enabled' : 'Disabled'}
-                    </span>
-                  )}
                 </div>
-              </div>
-            </div>
+              </StaggerItem>
 
+              {/* Preferences */}
+              <StaggerItem>
+                <div className="card card-floating mb-6">
+                  <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                      <Settings className="w-5 h-5 text-accent" />
+                    </div>
+                    <h2 className="text-xl font-bold text-secondary-900">
+                      Preferences
+                    </h2>
+                  </div>
 
-            {/* Danger Zone */}
-            <div className="card border-red-200 bg-red-50">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                  <Trash2 className="w-5 h-5 text-red-600" />
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-semibold text-secondary-900">Email Notifications</h3>
+                        <p className="text-sm text-secondary-600">
+                          Receive updates about your source summary entries and account
+                        </p>
+                      </div>
+                      {isEditing ? (
+                        <input
+                          type="checkbox"
+                          name="notificationsEnabled"
+                          className="w-4 h-4 text-accent border-secondary-300/30 rounded focus:ring-accent"
+                          checked={formData.notificationsEnabled}
+                          onChange={handleInputChange}
+                        />
+                      ) : (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          userDocument?.preferences?.notificationsEnabled
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-800'
+                        }`}>
+                          {userDocument?.preferences?.notificationsEnabled ? 'Enabled' : 'Disabled'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <h2 className="text-xl font-bold text-red-800">
-                  Danger Zone
-                </h2>
-              </div>
+              </StaggerItem>
 
-              <div className="space-y-4">
-                <p className="text-red-700">
-                  Once you delete your account, there is no going back. Please be certain.
-                </p>
-                <button className="btn bg-red-600 hover:bg-red-700 text-white">
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete Account
-                </button>
-              </div>
-            </div>
+              {/* Danger Zone */}
+              <StaggerItem>
+                <div className="card card-floating border-red-200 bg-red-50">
+                  <div className="flex items-center space-x-3 mb-6">
+                    <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                      <Trash2 className="w-5 h-5 text-red-600" />
+                    </div>
+                    <h2 className="text-xl font-bold text-red-800">
+                      Danger Zone
+                    </h2>
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-red-700">
+                      Once you delete your account, there is no going back. Please be certain.
+                    </p>
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="btn bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Account
+                    </motion.button>
+                  </div>
+                </div>
+              </StaggerItem>
+            </StaggerChildren>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Subscription Info */}
-            <div className="card">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                  <Crown className="w-5 h-5 text-accent" />
-                </div>
-                <h3 className="text-lg font-bold text-secondary-900">
-                  Subscription
-                </h3>
-              </div>
-
-              {userDocument?.subscription && (
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-secondary-600">Current Plan</p>
-                    <p className="font-semibold text-secondary-900 capitalize">
-                      {userDocument.subscription.plan}
-                    </p>
+          <div>
+            <StaggerChildren>
+              {/* Subscription Info */}
+              <StaggerItem>
+                <div className="card card-floating mb-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                      <Crown className="w-5 h-5 text-accent" />
+                    </div>
+                    <h3 className="text-lg font-bold text-secondary-900">
+                      Subscription
+                    </h3>
                   </div>
 
-                  <div>
-                    <p className="text-sm text-secondary-600">Usage this month</p>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <div className="flex-1 bg-secondary-200/30 rounded-full h-2">
-                        <div
-                          className="bg-accent h-2 rounded-full transition-all"
-                          style={{
-                            width: `${Math.min(
-                              (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
-                              100
-                            )}%`
-                          }}
-                        />
+                  {userDocument?.subscription && (
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm text-secondary-600">Current Plan</p>
+                        <p className="font-semibold text-secondary-900 capitalize">
+                          {userDocument.subscription.plan}
+                        </p>
                       </div>
-                      <span className="text-sm font-medium text-secondary-900">
-                        {userDocument.subscription.entriesUsed} / {
-                          userDocument.subscription.entriesLimit === -1
-                            ? '∞'
-                            : userDocument.subscription.entriesLimit
-                        }
+
+                      <div>
+                        <p className="text-sm text-secondary-600">Usage this month</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          <div className="flex-1 bg-secondary-200/30 rounded-full h-2">
+                            <div
+                              className="bg-accent h-2 rounded-full transition-all"
+                              style={{
+                                width: `${Math.min(
+                                  (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
+                                  100
+                                )}%`
+                              }}
+                            />
+                          </div>
+                          <span className="text-sm font-medium text-secondary-900">
+                            {userDocument.subscription.entriesUsed} / {
+                              userDocument.subscription.entriesLimit === -1
+                                ? '∞'
+                                : userDocument.subscription.entriesLimit
+                            }
+                          </span>
+                        </div>
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleManageBilling}
+                        disabled={isLoading}
+                        className="btn btn-outline w-full"
+                      >
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        Manage Billing
+                      </motion.button>
+
+                      {/* Fix Subscription Button - for paid users with old limits */}
+                      {(userDocument.subscription.plan === 'student' || userDocument.subscription.plan === 'researcher') &&
+                       userDocument.subscription.entriesLimit !== -1 && (
+                        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <p className="text-sm text-yellow-800 mb-2 font-semibold">⚠️ Subscription Limit Issue Detected</p>
+                          <p className="text-xs text-yellow-700 mb-3">
+                            Your paid plan should have unlimited entries, but it's showing a limit. Click below to fix this.
+                          </p>
+                          <motion.button
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={handleFixSubscription}
+                            disabled={isLoading}
+                            className="btn btn-sm bg-yellow-600 hover:bg-yellow-700 text-white w-full"
+                          >
+                            {isLoading ? 'Fixing...' : 'Fix My Subscription'}
+                          </motion.button>
+                        </div>
+                      )}
+
+                      {/* Temporary manual activation for debugging */}
+                      {process.env.NODE_ENV === 'development' && userDocument.subscription.plan === 'trial' && (
+                        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <p className="text-sm text-yellow-800 mb-2">Debug: Manual Subscription Activation</p>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={async () => {
+                                try {
+                                  setIsLoading(true);
+                                  await manuallyActivateSubscription(currentUser.uid, 'student');
+                                  await refreshUserDocument();
+                                  toast.success('Plus subscription activated!');
+                                } catch (error) {
+                                  toast.error('Failed to activate subscription');
+                                } finally {
+                                  setIsLoading(false);
+                                }
+                              }}
+                              className="btn btn-sm btn-outline"
+                              disabled={isLoading}
+                            >
+                              Activate Plus
+                            </button>
+                            <button
+                              onClick={async () => {
+                                try {
+                                  setIsLoading(true);
+                                  await manuallyActivateSubscription(currentUser.uid, 'researcher');
+                                  await refreshUserDocument();
+                                  toast.success('Pro subscription activated!');
+                                } catch (error) {
+                                  toast.error('Failed to activate subscription');
+                                } finally {
+                                  setIsLoading(false);
+                                }
+                              }}
+                              className="btn btn-sm btn-outline"
+                              disabled={isLoading}
+                            >
+                              Activate Pro
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </StaggerItem>
+
+              {/* Quick Stats */}
+              <StaggerItem>
+                <div className="card card-floating mb-6">
+                  <h3 className="text-lg font-bold text-secondary-900 mb-4">
+                    Quick Stats
+                  </h3>
+
+                  {statsLoading ? (
+                    <div className="space-y-3 animate-pulse">
+                      <div className="flex justify-between">
+                        <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
+                        <div className="h-4 bg-secondary-200/20 rounded w-8"></div>
+                      </div>
+                      <div className="flex justify-between">
+                        <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
+                        <div className="h-4 bg-secondary-200/20 rounded w-8"></div>
+                      </div>
+                      <div className="flex justify-between">
+                        <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
+                        <div className="h-4 bg-secondary-200/20 rounded w-16"></div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-secondary-700">Total Entries</span>
+                        <span className="font-semibold text-secondary-900">{entries.length}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-secondary-700">This Month</span>
+                        <span className="font-semibold text-secondary-900">
+                          {entries.filter(entry => {
+                            const entryDate = new Date(entry.createdAt);
+                            const now = new Date();
+                            return entryDate.getMonth() === now.getMonth() &&
+                                   entryDate.getFullYear() === now.getFullYear();
+                          }).length}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-secondary-700">Last Entry</span>
+                        <span className="font-semibold text-secondary-900">
+                          {entries.length > 0
+                            ? (() => {
+                                const sortedEntries = [...entries].sort((a, b) =>
+                                  new Date(b.createdAt) - new Date(a.createdAt)
+                                );
+                                const lastEntry = sortedEntries[0];
+                                const daysDiff = Math.floor(
+                                  (new Date() - new Date(lastEntry.createdAt)) / (1000 * 60 * 60 * 24)
+                                );
+                                if (daysDiff === 0) return 'Today';
+                                if (daysDiff === 1) return 'Yesterday';
+                                if (daysDiff < 7) return `${daysDiff} days ago`;
+                                if (daysDiff < 30) return `${Math.floor(daysDiff / 7)} weeks ago`;
+                                return `${Math.floor(daysDiff / 30)} months ago`;
+                              })()
+                            : 'No entries'
+                          }
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </StaggerItem>
+
+              {/* Account Security */}
+              <StaggerItem>
+                <div className="card card-floating">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-accent" />
+                    </div>
+                    <h3 className="text-lg font-bold text-secondary-900">
+                      Security
+                    </h3>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-secondary-700">Two-Factor Auth</span>
+                      <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+                        Not Setup
                       </span>
                     </div>
-                  </div>
-
-                  <button
-                    onClick={handleManageBilling}
-                    disabled={isLoading}
-                    className="btn btn-outline w-full"
-                  >
-                    <CreditCard className="w-4 h-4 mr-2" />
-                    Manage Billing
-                  </button>
-
-                  {/* Fix Subscription Button - for paid users with old limits */}
-                  {(userDocument.subscription.plan === 'student' || userDocument.subscription.plan === 'researcher') &&
-                   userDocument.subscription.entriesLimit !== -1 && (
-                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <p className="text-sm text-yellow-800 mb-2 font-semibold">⚠️ Subscription Limit Issue Detected</p>
-                      <p className="text-xs text-yellow-700 mb-3">
-                        Your paid plan should have unlimited entries, but it's showing a limit. Click below to fix this.
-                      </p>
-                      <button
-                        onClick={handleFixSubscription}
-                        disabled={isLoading}
-                        className="btn btn-sm bg-yellow-600 hover:bg-yellow-700 text-white w-full"
-                      >
-                        {isLoading ? 'Fixing...' : 'Fix My Subscription'}
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Temporary manual activation for debugging */}
-                  {process.env.NODE_ENV === 'development' && userDocument.subscription.plan === 'trial' && (
-                    <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <p className="text-sm text-yellow-800 mb-2">Debug: Manual Subscription Activation</p>
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={async () => {
-                            try {
-                              setIsLoading(true);
-                              await manuallyActivateSubscription(currentUser.uid, 'student');
-                              await refreshUserDocument();
-                              toast.success('Plus subscription activated!');
-                            } catch (error) {
-                              toast.error('Failed to activate subscription');
-                            } finally {
-                              setIsLoading(false);
-                            }
-                          }}
-                          className="btn btn-sm btn-outline"
-                          disabled={isLoading}
-                        >
-                          Activate Plus
-                        </button>
-                        <button
-                          onClick={async () => {
-                            try {
-                              setIsLoading(true);
-                              await manuallyActivateSubscription(currentUser.uid, 'researcher');
-                              await refreshUserDocument();
-                              toast.success('Pro subscription activated!');
-                            } catch (error) {
-                              toast.error('Failed to activate subscription');
-                            } finally {
-                              setIsLoading(false);
-                            }
-                          }}
-                          className="btn btn-sm btn-outline"
-                          disabled={isLoading}
-                        >
-                          Activate Pro
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Quick Stats */}
-            <div className="card">
-              <h3 className="text-lg font-bold text-secondary-900 mb-4">
-                Quick Stats
-              </h3>
-
-              {statsLoading ? (
-                <div className="space-y-3 animate-pulse">
-                  <div className="flex justify-between">
-                    <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
-                    <div className="h-4 bg-secondary-200/20 rounded w-8"></div>
-                  </div>
-                  <div className="flex justify-between">
-                    <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
-                    <div className="h-4 bg-secondary-200/20 rounded w-8"></div>
-                  </div>
-                  <div className="flex justify-between">
-                    <div className="h-4 bg-secondary-200/20 rounded w-24"></div>
-                    <div className="h-4 bg-secondary-200/20 rounded w-16"></div>
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="btn btn-outline w-full text-sm"
+                    >
+                      <Shield className="w-4 h-4 mr-2" />
+                      Change Password
+                    </motion.button>
                   </div>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-secondary-700">Total Entries</span>
-                    <span className="font-semibold text-secondary-900">{entries.length}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-secondary-700">This Month</span>
-                    <span className="font-semibold text-secondary-900">
-                      {entries.filter(entry => {
-                        const entryDate = new Date(entry.createdAt);
-                        const now = new Date();
-                        return entryDate.getMonth() === now.getMonth() &&
-                               entryDate.getFullYear() === now.getFullYear();
-                      }).length}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-secondary-700">Last Entry</span>
-                    <span className="font-semibold text-secondary-900">
-                      {entries.length > 0
-                        ? (() => {
-                            const sortedEntries = [...entries].sort((a, b) =>
-                              new Date(b.createdAt) - new Date(a.createdAt)
-                            );
-                            const lastEntry = sortedEntries[0];
-                            const daysDiff = Math.floor(
-                              (new Date() - new Date(lastEntry.createdAt)) / (1000 * 60 * 60 * 24)
-                            );
-                            if (daysDiff === 0) return 'Today';
-                            if (daysDiff === 1) return 'Yesterday';
-                            if (daysDiff < 7) return `${daysDiff} days ago`;
-                            if (daysDiff < 30) return `${Math.floor(daysDiff / 7)} weeks ago`;
-                            return `${Math.floor(daysDiff / 30)} months ago`;
-                          })()
-                        : 'No entries'
-                      }
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
-
-            {/* Account Security */}
-            <div className="card">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-accent" />
-                </div>
-                <h3 className="text-lg font-bold text-secondary-900">
-                  Security
-                </h3>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-secondary-700">Two-Factor Auth</span>
-                  <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
-                    Not Setup
-                  </span>
-                </div>
-                <button className="btn btn-outline w-full text-sm">
-                  <Shield className="w-4 h-4 mr-2" />
-                  Change Password
-                </button>
-              </div>
-            </div>
+              </StaggerItem>
+            </StaggerChildren>
           </div>
         </div>
       </div>
