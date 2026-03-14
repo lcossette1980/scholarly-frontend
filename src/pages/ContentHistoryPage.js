@@ -169,11 +169,11 @@ const ContentHistoryPage = () => {
       case 'completed':
         return <CheckCircle className="w-5 h-5 text-green-600" />;
       case 'processing':
-        return <Clock className="w-5 h-5 text-blue-600 animate-spin" />;
+        return <Clock className="w-5 h-5 text-accent animate-spin" />;
       case 'failed':
         return <XCircle className="w-5 h-5 text-red-600" />;
       default:
-        return <Clock className="w-5 h-5 text-gray-400" />;
+        return <Clock className="w-5 h-5 text-secondary-400" />;
     }
   };
 
@@ -182,11 +182,11 @@ const ContentHistoryPage = () => {
       case 'completed':
         return 'bg-green-100 text-green-800';
       case 'processing':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-accent/10 text-accent';
       case 'failed':
         return 'bg-red-100 text-red-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-secondary-100 text-secondary-700';
     }
   };
 
@@ -297,7 +297,7 @@ const ContentHistoryPage = () => {
                       <AnimatedCounter value={jobs.length} />
                     </p>
                   </div>
-                  <FileText className="w-8 h-8 text-blue-600" />
+                  <FileText className="w-8 h-8 text-accent" />
                 </div>
               </div>
             </StaggerItem>
@@ -319,11 +319,11 @@ const ContentHistoryPage = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-secondary-600">Processing</p>
-                    <p className="text-2xl font-bold text-blue-600">
+                    <p className="text-2xl font-bold text-accent">
                       <AnimatedCounter value={jobs.filter(j => j.status === 'processing').length} />
                     </p>
                   </div>
-                  <Clock className="w-8 h-8 text-blue-600" />
+                  <Clock className="w-8 h-8 text-accent" />
                 </div>
               </div>
             </StaggerItem>
@@ -336,7 +336,7 @@ const ContentHistoryPage = () => {
                       <AnimatedCounter value={jobs.filter(j => j.status === 'completed').reduce((sum, j) => sum + (j.wordCount || 0), 0)} />
                     </p>
                   </div>
-                  <Sparkles className="w-8 h-8 text-purple-600" />
+                  <Sparkles className="w-8 h-8 text-accent" />
                 </div>
               </div>
             </StaggerItem>
@@ -386,10 +386,10 @@ const ContentHistoryPage = () => {
                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(job.status)}`}>
                                   {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                                 </span>
-                                <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium capitalize">
+                                <span className="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium capitalize">
                                   {job.tier} Tier
                                 </span>
-                                <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium capitalize">
+                                <span className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs font-medium capitalize">
                                   {job.settings?.document_type?.replace('_', ' ')}
                                 </span>
                               </div>
@@ -432,7 +432,7 @@ const ContentHistoryPage = () => {
                               <span className="text-secondary-700">{job.currentSection || 'Processing...'}</span>
                               <span className="text-accent font-medium">{job.progress || 0}%</span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="w-full bg-secondary-200 rounded-full h-2">
                               <div
                                 className="bg-accent h-2 rounded-full transition-all"
                                 style={{ width: `${job.progress || 0}%` }}
@@ -456,7 +456,7 @@ const ContentHistoryPage = () => {
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleView(job)}
-                            className="p-2 text-secondary-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            className="p-2 text-secondary-600 hover:text-accent hover:bg-accent/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
                             title="View"
                             aria-label="View content"
                           >
@@ -466,7 +466,7 @@ const ContentHistoryPage = () => {
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleDownloadTxt(job)}
-                            className="p-2 text-secondary-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                            className="p-2 text-secondary-600 hover:text-accent hover:bg-accent/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
                             title="Download TXT"
                             aria-label="Download as TXT file"
                           >
@@ -476,7 +476,7 @@ const ContentHistoryPage = () => {
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleDownloadWord(job)}
-                            className="p-2 text-secondary-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                            className="p-2 text-secondary-600 hover:text-accent hover:bg-accent/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
                             title="Download Word"
                             aria-label="Download as Word document"
                           >

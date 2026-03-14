@@ -129,7 +129,7 @@ const DocsPage = () => {
               <div className="flex-1">
                 <h4 className="font-semibold text-secondary-900 mb-2">Navigate to Create Entry</h4>
                 <p className="text-secondary-700 mb-3">Click the "Create Entry" button from your dashboard or navigation menu.</p>
-                <div className="bg-gray-100 rounded-lg p-4">
+                <div className="bg-secondary-50 rounded-xl p-4 border border-secondary-100">
                   <code className="text-sm">Dashboard → Create New Entry</code>
                 </div>
               </div>
@@ -315,7 +315,7 @@ const DocsPage = () => {
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Bulk Operations</h3>
 
-          <div className="bg-gray-100 rounded-lg p-4">
+          <div className="bg-secondary-50 rounded-xl p-4 border border-secondary-100">
             <p className="text-secondary-800 mb-3">To perform bulk operations:</p>
             <ol className="list-decimal list-inside space-y-2 text-secondary-700">
               <li>Click the checkbox next to each entry you want to select</li>

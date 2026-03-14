@@ -194,10 +194,10 @@ const ContentViewPage = () => {
                   <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
                     {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                   </span>
-                  <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium capitalize">
+                  <span className="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium capitalize">
                     {job.tier} Tier
                   </span>
-                  <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium capitalize">
+                  <span className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs font-medium capitalize">
                     {job.settings?.document_type?.replace('_', ' ')}
                   </span>
                 </div>

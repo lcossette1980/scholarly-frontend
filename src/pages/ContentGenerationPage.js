@@ -218,7 +218,7 @@ const ContentGenerationPage = () => {
                         ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
                         : currentStep === step.number
                         ? 'bg-gradient-to-br from-accent to-charcoal text-white shadow-lg shadow-accent/30'
-                        : 'bg-gray-200 text-gray-500'
+                        : 'bg-secondary-200 text-secondary-400'
                     }`}>
                       {step.completed ? (
                         <ScaleIn>
@@ -227,13 +227,13 @@ const ContentGenerationPage = () => {
                       ) : step.number}
                     </div>
                     <span className={`text-xs mt-2 font-medium ${
-                      currentStep === step.number ? 'text-accent' : step.completed ? 'text-green-600' : 'text-gray-500'
+                      currentStep === step.number ? 'text-accent' : step.completed ? 'text-green-600' : 'text-secondary-400'
                     }`}>
                       {step.name}
                     </span>
                   </div>
                   {idx < steps.length - 1 && (
-                    <div className="flex-1 h-1 mx-2 rounded-full overflow-hidden bg-gray-200">
+                    <div className="flex-1 h-1 mx-2 rounded-full overflow-hidden bg-secondary-200">
                       <motion.div
                         className="h-full bg-green-500 rounded-full"
                         initial={{ width: 0 }}
