@@ -39,6 +39,7 @@ import NotFoundPage from './pages/NotFoundPage';
 // Components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 // Validate environment variables
 try {
@@ -140,6 +141,7 @@ function App() {
       <AuthProvider>
         <Router>
           <div className="min-h-screen bg-white flex flex-col">
+            <ScrollToTop />
             <Navbar />
           <main className="flex-1">
             <AnimatedRoutes />
