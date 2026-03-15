@@ -37,7 +37,7 @@ const HeroCarousel = () => {
       iconColor: "text-accent",
       bgColor: "from-red-50 via-white to-orange-50",
       features: [
-        "APA, MLA, Chicago, Harvard",
+        "Smart source summaries",
         "Auto-reference extraction",
         "Key findings summary",
         "Quotes with page numbers"
@@ -60,14 +60,14 @@ const HeroCarousel = () => {
     {
       title: "Complete Document Generator",
       subtitle: "Fully-referenced drafts in minutes",
-      description: "Turn your sources and outline into a complete document. Choose your document type, word count, reference style, and tone. AI generates properly formatted, fully-referenced content ready for editing.",
+      description: "Turn your sources and outline into a complete document. Choose your document type, word count, writing approach, and tone. AI generates polished, source-backed content ready for editing.",
       icon: BookOpen,
       iconColor: "text-indigo-600",
       bgColor: "from-indigo-50 via-white to-violet-50",
       features: [
         "2,500-10,000 words",
         "Multiple document types",
-        "Inline references",
+        "Natural source attribution",
         "Export to Word/PDF"
       ]
     }

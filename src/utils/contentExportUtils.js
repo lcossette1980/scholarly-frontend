@@ -105,8 +105,8 @@ const createContentFooter = () => {
  */
 const createContentTitlePage = (title, metadata = {}) => {
   const {
-    documentType = 'Research Paper',
-    citationStyle = 'APA',
+    documentType = 'Article',
+    approach = 'balanced',
     wordCount = null,
     author = null
   } = metadata;
@@ -162,7 +162,7 @@ const createContentTitlePage = (title, metadata = {}) => {
     new Paragraph({
       children: [
         new TextRun({
-          text: `Citation Style: ${citationStyle}`,
+          text: `Approach: ${approach.charAt(0).toUpperCase() + approach.slice(1)}`,
           font: STYLES.fonts.body,
           size: 22,
           color: STYLES.colors.secondary
@@ -430,8 +430,8 @@ export const exportGeneratedContent = async (job, options = {}) => {
     const metadata = {
       documentType: job.settings?.document_type ?
         job.settings.document_type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) :
-        'Research Paper',
-      citationStyle: job.settings?.citation_style || 'APA',
+        'Article',
+      approach: job.settings?.approach || job.settings?.citation_style || 'balanced',
       wordCount: wordCount,
       author: null // Could add user name here if available
     };

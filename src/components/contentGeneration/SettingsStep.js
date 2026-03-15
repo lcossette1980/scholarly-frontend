@@ -1,6 +1,6 @@
 // src/components/contentGeneration/SettingsStep.js
 import React from 'react';
-import { FileText, Target, Quote, Feather } from 'lucide-react';
+import { FileText, Target, Compass, Feather } from 'lucide-react';
 
 const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
   const updateSetting = (key, value) => {
@@ -8,14 +8,18 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
   };
 
   const documentTypes = [
-    { value: 'research_paper', label: 'Document', icon: FileText },
-    { value: 'essay', label: 'Essay', icon: Feather },
+    { value: 'blog_post', label: 'Blog Post', icon: Feather },
     { value: 'article', label: 'Article', icon: FileText },
-    { value: 'blog_post', label: 'Blog Post', icon: Feather }
+    { value: 'essay', label: 'Essay', icon: Feather },
+    { value: 'op_ed', label: 'Op-Ed', icon: FileText }
   ];
 
-  const citationStyles = ['APA', 'MLA', 'Chicago', 'Harvard'];
-  const tones = ['academic', 'professional', 'conversational', 'persuasive'];
+  const approaches = [
+    { value: 'emotional', label: 'Emotional', description: 'Heart, stories, human impact' },
+    { value: 'logical', label: 'Logical', description: 'Evidence, data, structured reasoning' },
+    { value: 'balanced', label: 'Balanced', description: 'Blend of both approaches' }
+  ];
+  const tones = ['conversational', 'professional', 'bold', 'intimate'];
 
   return (
     <div>
@@ -83,26 +87,29 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
           </div>
         </div>
 
-        {/* Citation Style */}
+        {/* Approach */}
         <div>
           <label className="block text-sm font-medium text-secondary-700 mb-3">
-            Reference Style
+            Approach
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {citationStyles.map(style => {
-              const isSelected = settings.citation_style === style;
+          <div className="grid grid-cols-3 gap-3">
+            {approaches.map(approach => {
+              const isSelected = settings.approach === approach.value;
               return (
                 <button
-                  key={style}
-                  onClick={() => updateSetting('citation_style', style)}
-                  className={`p-3 border-2 rounded-xl transition-all ${
+                  key={approach.value}
+                  onClick={() => updateSetting('approach', approach.value)}
+                  className={`p-4 border-2 rounded-xl transition-all text-center ${
                     isSelected
-                      ? 'border-accent bg-accent/5 text-accent'
-                      : 'border-secondary-200 hover:border-accent/40 text-secondary-700'
+                      ? 'border-accent bg-accent/5'
+                      : 'border-secondary-200 hover:border-accent/40'
                   }`}
                 >
-                  <Quote className={`w-5 h-5 mx-auto mb-1 ${isSelected ? 'text-accent' : 'text-secondary-400'}`} />
-                  <span className="text-sm font-medium">{style}</span>
+                  <Compass className={`w-5 h-5 mx-auto mb-1 ${isSelected ? 'text-accent' : 'text-secondary-400'}`} />
+                  <span className={`text-sm font-medium block ${isSelected ? 'text-accent' : 'text-secondary-700'}`}>
+                    {approach.label}
+                  </span>
+                  <span className="text-xs text-secondary-400 block mt-1">{approach.description}</span>
                 </button>
               );
             })}
@@ -143,13 +150,13 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
             <label className="flex items-center space-x-3 p-3 border border-secondary-200 rounded-xl hover:bg-secondary-50 cursor-pointer transition-colors">
               <input
                 type="checkbox"
-                checked={settings.include_abstract}
-                onChange={(e) => updateSetting('include_abstract', e.target.checked)}
+                checked={settings.include_hook}
+                onChange={(e) => updateSetting('include_hook', e.target.checked)}
                 className="w-4 h-4 text-accent rounded focus:ring-2 focus:ring-accent"
               />
               <div className="flex-1">
-                <span className="text-sm font-medium text-secondary-800">Include Abstract</span>
-                <p className="text-xs text-secondary-500">Add a summary at the beginning</p>
+                <span className="text-sm font-medium text-secondary-800">Include Opening Hook</span>
+                <p className="text-xs text-secondary-500">Start with an engaging hook to draw readers in</p>
               </div>
             </label>
 

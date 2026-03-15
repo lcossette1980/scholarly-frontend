@@ -37,11 +37,11 @@ const ContentGenerationPage = () => {
 
   // Step 3: Settings
   const [settings, setSettings] = useState({
-    document_type: 'research_paper',
+    document_type: 'article',
     target_words: 2500,
-    citation_style: 'APA',
-    tone: 'academic',
-    include_abstract: true,
+    approach: 'balanced',
+    tone: 'professional',
+    include_hook: true,
     include_conclusion: true
   });
 
