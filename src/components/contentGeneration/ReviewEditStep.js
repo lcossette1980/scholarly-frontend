@@ -308,7 +308,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
               You can now review, edit, and download your content.
             </p>
             <div className="flex items-center space-x-4 text-xs text-green-700">
-              <span>✓ Citations included</span>
+              <span>✓ Sources attributed</span>
               <span>✓ Properly formatted</span>
               <span>✓ Ready to use</span>
             </div>

@@ -27,8 +27,8 @@ const ContentGenerationCard = ({ entries }) => {
             </h3>
 
             <p className="text-secondary-600 mb-4 text-sm leading-relaxed">
-              Turn your source library into complete papers, articles, or blog posts.
-              AI uses <strong>your sources</strong> to generate well-cited content in minutes.
+              Turn your source library into complete articles, essays, or blog posts.
+              AI uses <strong>your sources</strong> to generate compelling, source-backed content in minutes.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
@@ -37,8 +37,8 @@ const ContentGenerationCard = ({ entries }) => {
                 <p className="text-xs text-secondary-500">In under 5 minutes</p>
               </div>
               <div>
-                <p className="text-xs font-semibold text-secondary-800">APA, MLA, Chicago</p>
-                <p className="text-xs text-secondary-500">Proper citations included</p>
+                <p className="text-xs font-semibold text-secondary-800">Natural attribution</p>
+                <p className="text-xs text-secondary-500">Sources woven naturally</p>
               </div>
               <div>
                 <p className="text-xs font-semibold text-secondary-800">From $1.49/page</p>

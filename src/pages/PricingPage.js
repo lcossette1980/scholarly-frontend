@@ -85,7 +85,7 @@ const PricingPage = () => {
         { text: 'Everything in Plus', bold: true },
         { text: 'Premium AI analysis', bold: false },
         { text: 'Advanced customization', bold: false },
-        { text: 'All reference styles', bold: false },
+        { text: 'All writing approaches', bold: false },
       ],
       ctaClass: 'btn btn-outline w-full justify-center',
       highlight: false,
@@ -250,7 +250,7 @@ const PricingPage = () => {
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>All reference styles (APA, MLA, Chicago, Harvard)</span>
+                    <span>Natural source attribution in all content</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
@@ -439,7 +439,7 @@ const PricingPage = () => {
                   What's the difference between Plus and Pro?
                 </h3>
                 <p className="text-secondary-700">
-                  Both Plus and Pro include unlimited source entries and the Topic & Outline Generator. Pro adds premium AI analysis, advanced customization options, and all reference style options for power users who need the best output quality.
+                  Both Plus and Pro include unlimited source entries and the Topic & Outline Generator. Pro adds premium AI analysis and advanced customization for power users who need the best output quality.
                 </p>
               </div>
             </StaggerItem>

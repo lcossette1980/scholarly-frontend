@@ -127,7 +127,7 @@ const HelpCenterPage = () => {
         },
         {
           subtitle: "Plus Plan - $9.99/month",
-          text: "Ideal for regular users. Includes 50 entries per month, all citation styles, and priority support."
+          text: "Ideal for regular users. Includes 50 entries per month, all writing features, and priority support."
         },
         {
           subtitle: "Pro Plan - $19.99/month",
@@ -193,8 +193,8 @@ const HelpCenterPage = () => {
           text: "Control when you receive emails about usage limits, new features, and account updates. Customize your notification frequency and types."
         },
         {
-          subtitle: "Default Citation Style",
-          text: "Set your preferred citation style (APA, MLA, Chicago) to save time. This becomes the default for all new entries, though you can change it per entry."
+          subtitle: "Default Writing Preferences",
+          text: "Set your preferred writing approach and tone to save time. This becomes the default for all new content, though you can change it per document."
         },
         {
           subtitle: "Institution",
@@ -354,8 +354,8 @@ const HelpCenterPage = () => {
       answer: "We use enterprise-grade security with encryption, secure cloud storage, and don't permanently store your uploaded documents. Your data is processed securely and temporarily."
     },
     {
-      question: "What citation styles are supported?",
-      answer: "We support APA, MLA, and Chicago citation styles, with more formats being added regularly based on user feedback."
+      question: "How are sources referenced in generated content?",
+      answer: "DraftEngine uses natural attribution — weaving source references conversationally into your writing (e.g., 'According to Smith...' or 'Research from MIT shows...'). This keeps content readable while maintaining credibility."
     },
     {
       question: "Can I cancel my subscription anytime?",

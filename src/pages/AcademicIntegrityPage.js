@@ -134,10 +134,10 @@ const AcademicIntegrityPage = () => {
                     5
                   </div>
                   <div>
-                    <h3 className="font-bold text-secondary-900 mb-2">Citation Formatting</h3>
+                    <h3 className="font-bold text-secondary-900 mb-2">Source Attribution</h3>
                     <p className="text-secondary-800">
-                      Finally, we format the complete citation in your chosen style (APA, MLA, Chicago, Harvard).
-                      All formatting follows the latest edition guidelines for each style.
+                      Finally, we format source references for natural attribution in your writing.
+                      Sources are woven conversationally into your content for readability and credibility.
                     </p>
                   </div>
                 </div>
@@ -172,7 +172,7 @@ const AcademicIntegrityPage = () => {
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <strong className="text-secondary-900">Full references list:</strong> A complete source summary
-                    is automatically generated at the end in your chosen citation style.
+                    is automatically generated at the end with proper attribution.
                   </div>
                 </li>
                 <li className="flex items-start space-x-3">
@@ -270,27 +270,27 @@ const AcademicIntegrityPage = () => {
             {/* Citation Style Accuracy */}
             <section className="card card-floating">
               <h2 className="text-3xl font-bold text-secondary-900 mb-6">
-                Citation Style <span className="text-gradient">Accuracy</span>
+                Source Attribution <span className="text-gradient">Approach</span>
               </h2>
               <p className="text-secondary-800 mb-6">
-                We support the latest editions of all major citation styles:
+                DraftEngine uses natural, conversational attribution to keep your writing credible and readable:
               </p>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">APA Style</h4>
-                  <p className="text-sm text-secondary-600">7th Edition (2020)</p>
+                  <h4 className="font-bold text-secondary-900 mb-1">Author Attribution</h4>
+                  <p className="text-sm text-secondary-600">"According to Smith..."</p>
                 </div>
                 <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">MLA Style</h4>
-                  <p className="text-sm text-secondary-600">9th Edition (2021)</p>
+                  <h4 className="font-bold text-secondary-900 mb-1">Research References</h4>
+                  <p className="text-sm text-secondary-600">"Research from MIT shows..."</p>
                 </div>
                 <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">Chicago</h4>
-                  <p className="text-sm text-secondary-600">17th Edition (2017)</p>
+                  <h4 className="font-bold text-secondary-900 mb-1">Evidence Integration</h4>
+                  <p className="text-sm text-secondary-600">"Studies have found that..."</p>
                 </div>
                 <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">Harvard</h4>
-                  <p className="text-sm text-secondary-600">Latest Guidelines</p>
+                  <h4 className="font-bold text-secondary-900 mb-1">Expert Voices</h4>
+                  <p className="text-sm text-secondary-600">"As Johnson argues..."</p>
                 </div>
               </div>
               <p className="text-sm text-secondary-600 mt-6 text-center">

@@ -217,7 +217,7 @@ const DocsPage = () => {
                 <h4 className="font-semibold text-secondary-900">Citation Generation</h4>
               </div>
               <p className="text-secondary-700 text-sm">
-                Automatically formats the citation in your chosen style (APA, MLA, Chicago).
+                Automatically extracts and formats source references for natural attribution in your writing.
               </p>
             </div>
 
@@ -411,12 +411,10 @@ const DocsPage = () => {
         </div>
 
         <div className="bg-secondary-50/50 border border-secondary-300/30 rounded-lg p-4">
-          <h4 className="font-semibold text-secondary-900 mb-2">Citation Styles Supported</h4>
-          <div className="grid grid-cols-3 gap-2 text-sm text-secondary-700">
-            <div>• APA 7th Edition</div>
-            <div>• MLA 9th Edition</div>
-            <div>• Chicago 17th Edition</div>
-          </div>
+          <h4 className="font-semibold text-secondary-900 mb-2">Attribution Style</h4>
+          <p className="text-sm text-secondary-700">
+            DraftEngine uses natural, conversational attribution — weaving source references into your text for readability and credibility.
+          </p>
         </div>
 
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">

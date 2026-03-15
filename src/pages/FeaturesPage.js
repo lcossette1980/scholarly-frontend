@@ -10,7 +10,7 @@ const FeaturesPage = () => {
       title: 'Source Analyzer',
       description: 'Upload PDFs and get complete source summary entries in 90 seconds. AI extracts references, summarizes content, identifies key approaches, and pulls relevant quotes with page numbers.',
       bullets: [
-        'APA, MLA, Chicago, Harvard reference styles',
+        'Multiple source format support',
         'Automatic reference extraction from PDFs',
         'Key findings and approach analysis',
         'Smart quotes with exact page numbers',
@@ -28,11 +28,11 @@ const FeaturesPage = () => {
     },
     {
       title: 'Complete Document Generator',
-      description: 'Turn your sources and outline into a fully-referenced document in minutes. Choose document type, word count, citation style, and tone. AI generates professional content ready for editing.',
+      description: 'Turn your sources and outline into a polished document in minutes. Choose document type, word count, approach, and tone. AI generates professional content ready for editing.',
       bullets: [
         '500-10,000 words (2-40 pages)',
-        'Multiple document types (article, essay, report, blog)',
-        'Inline references from YOUR sources',
+        'Multiple document types (blog post, article, essay, op-ed)',
+        'Natural source attribution woven into prose',
         '2-5 minute generation time',
       ],
     },
@@ -63,8 +63,8 @@ const FeaturesPage = () => {
       answer: 'Yes! Every field is fully editable. DraftEngine gives you a strong starting point that you can customize however you want.',
     },
     {
-      question: 'What citation styles are supported?',
-      answer: 'We support APA, MLA, Chicago, and Harvard reference styles. Choose your preferred style and AI formats everything correctly.',
+      question: 'How does source attribution work?',
+      answer: 'DraftEngine weaves source references naturally into your writing using phrases like "According to Smith..." or "Research from MIT shows...". This keeps your content readable and credible without formal academic citation formatting.',
     },
     {
       question: 'How accurate is the AI?',

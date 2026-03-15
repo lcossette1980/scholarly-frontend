@@ -34,8 +34,8 @@ const PricingConfirmationStep = ({
       model: 'GPT-4o',
       features: [
         'High-quality AI generation',
-        'Proper citations & references',
-        'APA, MLA, Chicago, Harvard styles',
+        'Natural source attribution',
+        'Multiple writing approaches & tones',
         'Basic editing & revision',
         'Download as Word/PDF'
       ],
@@ -50,7 +50,7 @@ const PricingConfirmationStep = ({
       features: [
         'Premium AI model (GPT-4 Turbo)',
         'Enhanced content depth',
-        'Advanced reference validation',
+        'Advanced content depth & polish',
         'Priority processing speed',
         'Unlimited revisions',
         'Priority support'
@@ -254,8 +254,8 @@ const PricingConfirmationStep = ({
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Reference Style</span>
-            <span className="font-medium text-secondary-900">{settings.citation_style}</span>
+            <span className="text-gray-600">Approach</span>
+            <span className="font-medium text-secondary-900 capitalize">{settings.approach}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Quality Tier</span>
