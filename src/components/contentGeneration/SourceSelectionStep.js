@@ -25,8 +25,8 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
         Select Your Sources
       </h2>
       <p className="text-gray-600 mb-6">
-        Choose the source summary entries you want to use as sources for your content.
-        Selected sources will be cited and referenced in the generated document.
+        Choose the sources you want to draw from for your content.
+        Selected sources will be woven naturally into the generated piece.
       </p>
 
       {/* Search */}

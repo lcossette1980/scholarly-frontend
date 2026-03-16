@@ -31,13 +31,13 @@ const PricingConfirmationStep = ({
       name: 'Standard',
       icon: Zap,
       pricePerPage: 1.49,
-      model: 'GPT-4o',
+      model: 'Claude Sonnet',
       features: [
-        'High-quality AI generation',
-        'Natural source attribution',
+        'High-quality AI writing',
+        'Natural source integration',
         'Multiple writing approaches & tones',
-        'Basic editing & revision',
-        'Download as Word/PDF'
+        'Edit & revise before download',
+        'Export as Word or text'
       ],
       color: 'blue'
     },
@@ -46,10 +46,10 @@ const PricingConfirmationStep = ({
       name: 'Professional',
       icon: Sparkles,
       pricePerPage: 2.49,
-      model: 'GPT-4 Turbo',
+      model: 'Claude Sonnet',
       features: [
-        'Premium AI model (GPT-4 Turbo)',
-        'Enhanced content depth',
+        'Premium AI writing engine',
+        'Deeper research synthesis',
         'Advanced content depth & polish',
         'Priority processing speed',
         'Unlimited revisions',

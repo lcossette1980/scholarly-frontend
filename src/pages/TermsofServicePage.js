@@ -2,10 +2,16 @@
 import React from 'react';
 import { FileText, AlertTriangle, CreditCard, Users, Gavel } from 'lucide-react';
 import { FadeIn } from '../components/motion';
+import SEO from '../components/SEO';
 
 const TermsOfServicePage = () => {
   return (
     <div className="min-h-screen py-12 bg-mesh">
+      <SEO
+        title="Terms of Service"
+        description="DraftEngine terms of service. Usage rules, intellectual property, and legal terms."
+        path="/terms"
+      />
       <div className="container mx-auto px-6 max-w-4xl">
         <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400" />
         <FadeIn direction="up">

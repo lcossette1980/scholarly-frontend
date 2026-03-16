@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { ScaleIn } from '../components/motion';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -92,6 +93,12 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex">
+      <SEO
+        title="Log In"
+        description="Log in to your DraftEngine account. Access your source library, outlines, and generated content."
+        path="/login"
+        noIndex={true}
+      />
       {/* Left Panel - Brand/Hero (hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden">
         {/* Decorative orbs */}

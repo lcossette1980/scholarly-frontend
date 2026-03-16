@@ -18,6 +18,7 @@ import { submitSupportMessage } from '../services/support';
 import toast from 'react-hot-toast';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const HelpCenterPage = () => {
   const { currentUser } = useAuth();
@@ -134,8 +135,8 @@ const HelpCenterPage = () => {
           text: "For power users and professionals. Includes 200 entries per month, advanced analysis features, team collaboration, and priority processing."
         },
         {
-          subtitle: "Institution Plan - Custom Pricing",
-          text: "For organizations and institutions. Includes unlimited entries, admin dashboard, usage analytics, custom integrations, and dedicated support."
+          subtitle: "Team Plan - Custom Pricing",
+          text: "For teams and organizations. Includes unlimited entries, admin dashboard, usage analytics, custom integrations, and dedicated support."
         }
       ]
     },
@@ -186,7 +187,7 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Basic Information",
-          text: "Update your name, email, and institution affiliation in Profile > Settings. Email changes require verification for security."
+          text: "Update your name, email, and profile details in Profile > Settings. Email changes require verification for security."
         },
         {
           subtitle: "Notification Preferences",
@@ -197,8 +198,8 @@ const HelpCenterPage = () => {
           text: "Set your preferred writing approach and tone to save time. This becomes the default for all new content, though you can change it per document."
         },
         {
-          subtitle: "Institution",
-          text: "Adding your institution helps us provide relevant features and may qualify you for educational discounts or institutional access."
+          subtitle: "Organization",
+          text: "Adding your organization helps us tailor features to your workflow and may unlock team pricing or collaboration tools."
         }
       ]
     },
@@ -339,7 +340,7 @@ const HelpCenterPage = () => {
   const faqs = [
     {
       question: "How accurate is the AI-generated content?",
-      answer: "Our AI uses advanced language models to produce high-quality content. While highly accurate, we recommend reviewing all generated content for accuracy and compliance with your institution's standards."
+      answer: "Our AI uses advanced language models to produce high-quality content. While highly accurate, we recommend reviewing all generated content for accuracy, tone, and alignment with your goals before publishing."
     },
     {
       question: "What file formats do you support?",
@@ -370,6 +371,11 @@ const HelpCenterPage = () => {
 
   return (
     <div className="min-h-screen py-12 bg-mesh">
+      <SEO
+        title="Help Center"
+        description="Get help with DraftEngine. FAQs, account management, billing, writing tips, and support resources for AI-powered content creation."
+        path="/help"
+      />
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <FadeIn>

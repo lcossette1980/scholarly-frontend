@@ -2,10 +2,16 @@
 import React from 'react';
 import { Cookie, Settings, BarChart3, Shield } from 'lucide-react';
 import { FadeIn } from '../components/motion';
+import SEO from '../components/SEO';
 
 const CookiePolicyPage = () => {
   return (
     <div className="min-h-screen py-12 bg-mesh">
+      <SEO
+        title="Cookie Policy"
+        description="DraftEngine cookie policy. How we use cookies and similar technologies."
+        path="/cookies"
+      />
       <div className="container mx-auto px-6 max-w-4xl">
         <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400" />
         <FadeIn direction="up">

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { FadeIn } from '../components/motion';
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const DocsPage = () => {
   const [activeSection, setActiveSection] = useState('getting-started');
@@ -434,6 +435,11 @@ const DocsPage = () => {
 
   return (
     <div className="min-h-screen py-12 bg-mesh">
+      <SEO
+        title="Documentation"
+        description="Learn how to use DraftEngine. Step-by-step guides for uploading sources, generating summaries, creating outlines, and drafting complete content."
+        path="/docs"
+      />
       <div className="container mx-auto px-6">
         {/* Header */}
         <FadeIn>

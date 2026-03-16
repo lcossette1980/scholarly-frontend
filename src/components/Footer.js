@@ -90,7 +90,7 @@ const Footer = () => {
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-3 text-white/70">
                 <li>
-                  <a href="mailto:support@scholarlyaiapp.com" className="hover:text-white transition-colors flex items-center space-x-2">
+                  <a href="mailto:support@draftengine.co" className="hover:text-white transition-colors flex items-center space-x-2">
                     <Mail className="w-4 h-4" />
                     <span>Email Support</span>
                   </a>
