@@ -1,6 +1,6 @@
 // src/utils/contentExportUtils.js
 /**
- * Professional content export utilities for generated academic papers
+ * Professional content export utilities for generated articles and essays
  * Provides formatted Word documents with headers, footers, and proper styling
  */
 

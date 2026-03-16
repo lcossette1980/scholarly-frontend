@@ -201,7 +201,7 @@ const ContentGenerationPage = () => {
               AI Content Generator
             </h1>
             <p className="text-secondary-700">
-              Generate well-cited content from your sources
+              Transform your sources into compelling, polished content
             </p>
           </div>
         </FadeIn>

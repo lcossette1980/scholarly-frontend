@@ -1,3 +1,11 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /dashboard
+Disallow: /create
+Disallow: /profile
+Disallow: /bibliography
+Disallow: /analyze
+Disallow: /content/
+Disallow: /admin
+
+Sitemap: https://www.scholarlyaiapp.com/sitemap.xml

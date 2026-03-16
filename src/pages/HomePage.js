@@ -9,6 +9,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import HeroCarousel from '../components/HeroCarousel';
 import { FadeIn, StaggerChildren, StaggerItem, AnimatedCounter } from '../components/motion';
+import SEO from '../components/SEO';
 
 const HomePage = () => {
   const { currentUser } = useAuth();
@@ -69,6 +70,10 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-mesh">
+      <SEO
+        description="AI writing assistant that transforms your source material into polished articles, essays, and blog posts. Upload PDFs, get source summaries, generate outlines, and draft complete documents."
+        path="/"
+      />
       {/* Hero Section with Carousel */}
       <section className="relative py-12 lg:py-20 overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">

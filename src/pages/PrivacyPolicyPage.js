@@ -2,10 +2,16 @@
 import React from 'react';
 import { Shield, Lock, Eye, Database, UserCheck, Mail } from 'lucide-react';
 import { FadeIn } from '../components/motion';
+import SEO from '../components/SEO';
 
 const PrivacyPolicyPage = () => {
   return (
     <div className="min-h-screen py-12 bg-mesh">
+      <SEO
+        title="Privacy Policy"
+        description="DraftEngine privacy policy. How we collect, use, and protect your data."
+        path="/privacy"
+      />
       <div className="container mx-auto px-6 max-w-4xl">
         <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400" />
         <FadeIn direction="up">

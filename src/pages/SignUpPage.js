@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { ScaleIn } from '../components/motion';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -120,6 +121,11 @@ const SignUpPage = () => {
 
   return (
     <div className="min-h-screen flex">
+      <SEO
+        title="Sign Up Free"
+        description="Create your free DraftEngine account. Start with 5 source entries, AI-powered summaries, and content generation. No credit card required."
+        path="/signup"
+      />
       {/* Left Panel - Brand/Hero (hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden">
         {/* Decorative orbs */}
@@ -144,7 +150,7 @@ const SignUpPage = () => {
             </h2>
 
             <p className="text-white/70 text-lg mb-8 max-w-md">
-              Join thousands of researchers who save hours on source analysis with AI-powered drafting.
+              Join thousands of writers who turn source material into polished drafts in minutes.
             </p>
           </motion.div>
 

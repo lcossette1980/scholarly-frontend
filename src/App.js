@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence } from 'framer-motion';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -137,6 +138,7 @@ function AnimatedRoutes() {
 
 function App() {
   return (
+    <HelmetProvider>
     <ErrorBoundary>
       <AuthProvider>
         <Router>
@@ -178,6 +180,7 @@ function App() {
         </Router>
       </AuthProvider>
     </ErrorBoundary>
+    </HelmetProvider>
   );
 }
 

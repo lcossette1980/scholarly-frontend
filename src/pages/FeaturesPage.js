@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Check, X } from 'lucide-react';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
+import SEO from '../components/SEO';
 
 const FeaturesPage = () => {
   const coreFeatures = [
@@ -74,6 +75,11 @@ const FeaturesPage = () => {
 
   return (
     <div className="min-h-screen py-12 bg-mesh">
+      <SEO
+        title="Features"
+        description="Source analysis in 90 seconds, AI topic and outline generation, complete document drafting up to 10,000 words, natural source attribution, and export to Word."
+        path="/features"
+      />
       <div className="container mx-auto px-6">
         {/* Hero Section */}
         <div className="text-center mb-16 relative overflow-hidden">

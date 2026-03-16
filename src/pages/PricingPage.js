@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../services/stripe';
 import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from '../components/motion';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const PricingPage = () => {
   const [isLoading, setIsLoading] = useState(null);
@@ -99,6 +100,11 @@ const PricingPage = () => {
 
   return (
     <div className="min-h-screen py-6 md:py-12 bg-mesh relative overflow-hidden">
+      <SEO
+        title="Pricing Plans"
+        description="Simple, transparent pricing for AI-powered writing. Start free with 5 source entries. Plus and Pro plans for writers who need more power."
+        path="/pricing"
+      />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Header */}
         <FadeIn direction="up">
