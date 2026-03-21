@@ -9,11 +9,11 @@ const FeaturesPage = () => {
   const coreFeatures = [
     {
       title: 'Source Analyzer',
-      description: 'Upload PDFs and get complete source summary entries in 90 seconds. AI extracts references, summarizes content, identifies key approaches, and pulls relevant quotes with page numbers.',
+      description: 'Upload PDFs and get complete source analyses in 90 seconds. AI identifies key arguments, discovers interesting angles, and selects notable passages with page numbers.',
       bullets: [
         'Multiple source format support',
-        'Automatic reference extraction from PDFs',
-        'Key findings and approach analysis',
+        'Key arguments identification',
+        'Interesting angles and notable passages',
         'Smart quotes with exact page numbers',
       ],
     },
@@ -52,7 +52,7 @@ const FeaturesPage = () => {
   const additionalFeatures = [
     { title: 'Topic Focus Customization', description: 'Tell AI your specific topic area for targeted, relevant analysis tailored to your needs.' },
     { title: 'GPT-4 Powered', description: 'Advanced AI with 98% accuracy for reference extraction and analysis.' },
-    { title: 'Approach Analysis', description: 'Deep analysis of methods, key findings, and limitations.' },
+    { title: 'Approach Analysis', description: 'Deep analysis of key arguments, interesting angles, and notable passages.' },
     { title: 'Private & Secure', description: "PDFs aren't stored after processing. Your data stays yours. GDPR compliant." },
     { title: 'Professional Standards', description: 'Proper references, clear language, professional formatting — ready to use.' },
     { title: 'Unlimited Revisions', description: 'Regenerate with different settings anytime (paid plans). No limit on iterations.' },

@@ -271,13 +271,13 @@ const ProfilePage = () => {
                     </div>
 
                     <div>
-                      <label className="form-label">Research Focus</label>
+                      <label className="form-label">Writing Focus</label>
                       {isEditing ? (
                         <input
                           type="text"
                           name="researchFocus"
                           className="form-input"
-                          placeholder="e.g., AI Leadership, Digital Transformation"
+                          placeholder="e.g., Technology Trends, Personal Development, Creative Nonfiction"
                           value={formData.researchFocus}
                           onChange={handleInputChange}
                         />

@@ -44,7 +44,7 @@ const PrivacyPolicyPage = () => {
                   <Database className="w-5 h-5 text-accent mt-1" />
                   <div>
                     <h3 className="font-semibold text-secondary-900">Usage Data</h3>
-                    <p className="text-secondary-700">Information about how you use our service, including bibliography entries created and research focus areas.</p>
+                    <p className="text-secondary-700">Information about how you use our service, including source entries created and writing focus areas.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -62,7 +62,7 @@ const PrivacyPolicyPage = () => {
                 How We Use Your Information
               </h2>
               <ul className="space-y-2 text-secondary-800">
-                <li>• Provide and improve our bibliography generation service</li>
+                <li>• Provide and improve our source analysis service</li>
                 <li>• Process your documents using AI technology</li>
                 <li>• Manage your account and subscription</li>
                 <li>• Send important service updates and support communications</li>

@@ -205,7 +205,7 @@ const DashboardPage = () => {
   };
 
   const handleExportAll = () => {
-    toast('Export functionality coming soon!', { icon: '📥' });
+    navigate('/sources');
   };
 
   const canCreate = canCreateEntry(userDocument);
@@ -287,7 +287,7 @@ const DashboardPage = () => {
                   className="card group block h-full"
                 >
                   <h3 className="font-semibold text-secondary-900 mb-1">Generate Content</h3>
-                  <p className="text-sm text-secondary-500 mb-3">Create papers from your sources</p>
+                  <p className="text-sm text-secondary-500 mb-3">Create content from your sources</p>
                   <span className="text-accent text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
                     Start <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </span>
@@ -298,7 +298,7 @@ const DashboardPage = () => {
             <StaggerItem>
               <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
                 <Link
-                  to="/bibliography"
+                  to="/sources"
                   className="card group block h-full"
                 >
                   <h3 className="font-semibold text-secondary-900 mb-1">Idea & Outline</h3>

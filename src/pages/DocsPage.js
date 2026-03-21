@@ -30,7 +30,7 @@ const DocsPage = () => {
     },
     {
       id: 'creating-entries',
-      title: 'Creating Source Summary Entries',
+      title: 'Creating Source Entries',
       icon: <FileText className="w-5 h-5" />
     },
     {
@@ -40,7 +40,7 @@ const DocsPage = () => {
     },
     {
       id: 'exporting',
-      title: 'Exporting Citations',
+      title: 'Exporting Sources',
       icon: <FileDown className="w-5 h-5" />
     }
   ];
@@ -52,7 +52,7 @@ const DocsPage = () => {
 
         <div className="bg-accent/10 border border-accent-600/20 rounded-lg p-4">
           <p className="text-secondary-900">
-            DraftEngine helps you transform documents into comprehensive source summary entries using AI-powered analysis.
+            DraftEngine helps you transform documents into comprehensive source entries using AI-powered analysis.
           </p>
         </div>
 
@@ -64,7 +64,7 @@ const DocsPage = () => {
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
                 <p className="font-semibold text-secondary-900">1. Sign up for a free account</p>
-                <p className="text-secondary-700 text-sm">Get 5 free source summary entries to try out the platform.</p>
+                <p className="text-secondary-700 text-sm">Get 5 free source entries to try out the platform.</p>
               </div>
             </div>
 
@@ -88,7 +88,7 @@ const DocsPage = () => {
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
                 <p className="font-semibold text-secondary-900">4. Review and export</p>
-                <p className="text-secondary-700 text-sm">Edit the generated content and export to Word or citation managers.</p>
+                <p className="text-secondary-700 text-sm">Edit the generated content and export to Word.</p>
               </div>
             </div>
           </div>
@@ -177,7 +177,7 @@ const DocsPage = () => {
 
     'creating-entries': (
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-secondary-900">Creating Source Summary Entries</h2>
+        <h2 className="text-3xl font-bold text-secondary-900">Creating Source Entries</h2>
 
         <div className="space-y-4">
           <h3 className="text-xl font-semibold text-secondary-900">Setting Your Focus</h3>
@@ -215,10 +215,10 @@ const DocsPage = () => {
                 <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
                   <Book className="w-6 h-6 text-accent" />
                 </div>
-                <h4 className="font-semibold text-secondary-900">Citation Generation</h4>
+                <h4 className="font-semibold text-secondary-900">Key Arguments</h4>
               </div>
               <p className="text-secondary-700 text-sm">
-                Automatically extracts and formats source references for natural attribution in your writing.
+                Automatically identifies and extracts the key arguments from your source for use in your writing.
               </p>
             </div>
 
@@ -227,10 +227,10 @@ const DocsPage = () => {
                 <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
                   <FileText className="w-6 h-6 text-accent" />
                 </div>
-                <h4 className="font-semibold text-secondary-900">Content Extraction</h4>
+                <h4 className="font-semibold text-secondary-900">Interesting Angles</h4>
               </div>
               <p className="text-secondary-700 text-sm">
-                Extracts summary, key findings, methodology, and relevant quotes based on your focus.
+                Discovers interesting angles, unique perspectives, and notable passages based on your focus.
               </p>
             </div>
 
@@ -261,9 +261,9 @@ const DocsPage = () => {
         <h2 className="text-3xl font-bold text-secondary-900">Managing Your Sources</h2>
 
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-secondary-900">Sources Dashboard</h3>
+          <h3 className="text-xl font-semibold text-secondary-900">Source Library Dashboard</h3>
           <p className="text-secondary-800">
-            Access your complete sources from the "Manage Sources" page. Here you can:
+            Access your complete source library from the "Manage Sources" page. Here you can:
           </p>
 
           <div className="grid md:grid-cols-2 gap-4">
@@ -298,7 +298,7 @@ const DocsPage = () => {
                 </li>
                 <li className="flex items-start space-x-2">
                   <CheckCircle className="w-4 h-4 text-accent mt-0.5" />
-                  <span className="text-sm">Edit citations and annotations</span>
+                  <span className="text-sm">Edit source details and notes</span>
                 </li>
                 <li className="flex items-start space-x-2">
                   <CheckCircle className="w-4 h-4 text-accent mt-0.5" />
@@ -355,7 +355,7 @@ const DocsPage = () => {
               </div>
               <h4 className="font-semibold text-secondary-900 mb-2">Word Document</h4>
               <p className="text-secondary-700 text-sm">
-                Export formatted source summary entries to .docx with proper styling and citations.
+                Export formatted source entries to .docx with proper styling and attribution.
               </p>
             </div>
 
@@ -365,7 +365,7 @@ const DocsPage = () => {
               </div>
               <h4 className="font-semibold text-secondary-900 mb-2">Plain Text</h4>
               <p className="text-secondary-700 text-sm">
-                Copy citations and annotations as plain text for easy pasting.
+                Copy source details and notes as plain text for easy pasting.
               </p>
             </div>
 
@@ -373,9 +373,9 @@ const DocsPage = () => {
               <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
                 <BookOpen className="w-6 h-6 text-accent" />
               </div>
-              <h4 className="font-semibold text-secondary-900 mb-2">Citation Managers</h4>
+              <h4 className="font-semibold text-secondary-900 mb-2">PDF Export</h4>
               <p className="text-secondary-700 text-sm">
-                Export to BibTeX, RIS, or EndNote formats for citation managers.
+                Export your source entries as professionally formatted PDF documents.
               </p>
             </div>
           </div>

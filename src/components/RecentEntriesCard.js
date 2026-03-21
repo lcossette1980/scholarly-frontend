@@ -51,7 +51,7 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
         <div className="flex items-center justify-between p-6 border-b border-secondary-100">
           <h2 className="text-lg font-semibold text-secondary-900">Recent Source Entries</h2>
           <Link
-            to="/bibliography"
+            to="/sources"
             className="text-accent hover:text-accent-700 font-medium text-sm flex items-center space-x-1 transition-colors"
           >
             <span>View All</span>
@@ -79,7 +79,7 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
             Showing {entries.length} most recent {entries.length === 1 ? 'entry' : 'entries'}
           </p>
           <Link
-            to="/bibliography"
+            to="/sources"
             className="text-sm font-medium text-accent hover:text-accent-700 transition-colors"
           >
             Manage All Entries
@@ -91,7 +91,16 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
 };
 
 const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
-  const parseAuthorYear = (citation) => {
+  const parseAuthorYear = (entry) => {
+    // Try new source_info format first
+    if (entry.source_info) {
+      return {
+        author: entry.source_info.author || 'Unknown Author',
+        year: entry.source_info.year || ''
+      };
+    }
+    // Fallback to old citation parsing
+    const citation = entry.citation;
     if (typeof citation === 'string') {
       const yearMatch = citation.match(/\((\d{4})\)/);
       const year = yearMatch ? yearMatch[1] : '';
@@ -108,17 +117,22 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
   };
 
   const getTitle = (entry) => {
+    // Try new source_info format first
+    if (entry.source_info?.title) {
+      return entry.source_info.title;
+    }
     if (typeof entry.citation === 'object' && entry.citation.title) {
       return entry.citation.title;
     }
-    return entry.narrative_overview
-      ? entry.narrative_overview.substring(0, 80) + (entry.narrative_overview.length > 80 ? '...' : '')
+    const preview = entry.key_arguments || entry.narrative_overview;
+    return preview
+      ? preview.substring(0, 80) + (preview.length > 80 ? '...' : '')
       : typeof entry.citation === 'string'
       ? entry.citation.substring(0, 80) + (entry.citation.length > 80 ? '...' : '')
       : 'Untitled';
   };
 
-  const { author, year } = parseAuthorYear(entry.citation);
+  const { author, year } = parseAuthorYear(entry);
   const title = getTitle(entry);
   const researchFocus = entry.researchFocus || entry.research_focus || 'Uncategorized';
 

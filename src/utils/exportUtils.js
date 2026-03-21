@@ -333,7 +333,7 @@ export const exportToBibliography = async (entries, format = 'word') => {
           new Paragraph({
             children: [
               new TextRun({
-                text: "ANNOTATED BIBLIOGRAPHY",
+                text: "SOURCE ANALYSIS",
                 bold: true,
                 size: 48,
               })
@@ -432,7 +432,7 @@ export const exportToBibliography = async (entries, format = 'word') => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `annotated-bibliography-${Date.now()}.docx`;
+      a.download = `source-analysis-${Date.now()}.docx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
