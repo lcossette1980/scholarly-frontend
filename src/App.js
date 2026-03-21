@@ -93,11 +93,12 @@ function AnimatedRoutes() {
             <PageTransition><ProfilePage /></PageTransition>
           </ProtectedRoute>
         } />
-        <Route path="/bibliography" element={
+        <Route path="/sources" element={
           <ProtectedRoute>
             <PageTransition><BibliographyPage /></PageTransition>
           </ProtectedRoute>
         } />
+        <Route path="/bibliography" element={<Navigate to="/sources" replace />} />
         <Route path="/analyze" element={
           <ProtectedRoute>
             <PageTransition><AnalyzePage /></PageTransition>

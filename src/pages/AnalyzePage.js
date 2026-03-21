@@ -35,7 +35,7 @@ const AnalyzePage = () => {
     // Redirect if no entries selected
     if (selectedEntryData.length < 2) {
       toast.error('Please select at least 2 entries to analyze');
-      navigate('/bibliography');
+      navigate('/sources');
     }
   }, [selectedEntryData, navigate]);
 
@@ -148,7 +148,6 @@ const AnalyzePage = () => {
           <motion.button
             onClick={() => {
               // TODO: Quick export functionality
-              toast.success('Export feature coming soon!');
             }}
             className="btn btn-outline"
             whileHover={{ scale: 1.05 }}
@@ -173,7 +172,7 @@ const AnalyzePage = () => {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
               <motion.button
-                onClick={() => navigate('/bibliography')}
+                onClick={() => navigate('/sources')}
                 className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
                 whileHover={{ x: -4 }}
                 whileTap={{ scale: 0.95 }}
@@ -238,7 +237,7 @@ const AnalyzePage = () => {
                         {[
                           { value: 'article', label: 'Article', desc: 'Well-structured written article' },
                           { value: 'blog', label: 'Blog Post', desc: 'Accessible content for general audience' },
-                          { value: 'paper', label: 'Conference Paper', desc: 'Formal conference paper' }
+                          { value: 'paper', label: 'Essay', desc: 'In-depth analytical essay' }
                         ].map(type => (
                           <motion.button
                             key={type.value}
@@ -289,7 +288,7 @@ const AnalyzePage = () => {
                       <input
                         type="text"
                         className="form-input"
-                        placeholder="e.g., ethical implications, practical applications, methodological approaches"
+                        placeholder="e.g., ethical implications, practical applications, creative angles"
                         value={focusArea}
                         onChange={(e) => setFocusArea(e.target.value)}
                         maxLength={200}

@@ -99,7 +99,7 @@ const BibliographyPage = () => {
   const handleDeleteEntry = async (entryId, e) => {
     e.stopPropagation();
 
-    if (window.confirm('Are you sure you want to delete this reference? This action cannot be undone.')) {
+    if (window.confirm('Are you sure you want to delete this source? This action cannot be undone.')) {
       try {
         const result = await deleteBibliographyEntry(entryId);
         if (result.success) {
@@ -109,13 +109,13 @@ const BibliographyPage = () => {
             newSet.delete(entryId);
             return newSet;
           });
-          toast.success('Reference deleted successfully');
+          toast.success('Source deleted successfully');
         } else {
-          toast.error('Failed to delete reference');
+          toast.error('Failed to delete source');
         }
       } catch (error) {
         console.error('Error deleting entry:', error);
-        toast.error('Failed to delete reference');
+        toast.error('Failed to delete source');
       }
     }
   };
@@ -157,7 +157,7 @@ const BibliographyPage = () => {
             new Paragraph({
               children: [
                 new TextRun({
-                  text: "REFERENCES",
+                  text: "SOURCES",
                   bold: true,
                   size: 32,
                 })
@@ -189,16 +189,16 @@ const BibliographyPage = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `references-list-${Date.now()}.docx`;
+      a.download = `sources-list-${Date.now()}.docx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
-      toast.success(`Exported ${selectedData.length} references`);
+      toast.success(`Exported ${selectedData.length} sources`);
     } catch (error) {
       console.error('Export failed:', error);
-      toast.error('Failed to export references');
+      toast.error('Failed to export sources');
     }
   };
 
@@ -241,7 +241,7 @@ const BibliographyPage = () => {
                   whileTap={{ scale: 0.9 }}
                   onClick={(e) => handleDeleteEntry(entry.id, e)}
                   className="p-1.5 text-secondary-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                  title="Delete reference"
+                  title="Delete source"
                 >
                   <Trash2 className="w-4 h-4" />
                 </motion.button>
@@ -404,7 +404,7 @@ const BibliographyPage = () => {
                   }`}
                 >
                   <List className="w-4 h-4 mr-2" />
-                  Export References
+                  Export Sources
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.02 }}

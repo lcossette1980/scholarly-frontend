@@ -47,8 +47,8 @@ const TermsOfServicePage = () => {
                 <div>
                   <p className="text-secondary-800">
                     DraftEngine provides AI-powered source analysis and document generation services.
-                    Our service analyzes uploaded PDF documents and generates comprehensive bibliography entries
-                    with citations, summaries, and key insights.
+                    Our service analyzes uploaded PDF documents and generates comprehensive source entries
+                    with key arguments, interesting angles, and notable passages.
                   </p>
                 </div>
               </div>
@@ -98,7 +98,7 @@ const TermsOfServicePage = () => {
                   <div>
                     <h3 className="font-semibold text-secondary-900">Usage Limits</h3>
                     <p className="text-secondary-700">
-                      Each plan includes a monthly limit on bibliography entries. Unused entries do not roll over.
+                      Each plan includes a monthly limit on source entries. Unused entries do not roll over.
                     </p>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ const TermsOfServicePage = () => {
                     <h3 className="font-semibold text-yellow-800 mb-2">Important Disclaimer</h3>
                     <p className="text-yellow-700">
                       AI-generated content should be reviewed and verified before use. DraftEngine is a tool
-                      to assist with research - users are responsible for ensuring accuracy and compliance
+                      to assist with writing - users are responsible for ensuring accuracy and compliance
                       with applicable standards.
                     </p>
                   </div>

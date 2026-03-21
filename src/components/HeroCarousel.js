@@ -32,14 +32,14 @@ const HeroCarousel = () => {
     {
       title: "Source Analyzer",
       subtitle: "Detailed summaries in 90 seconds",
-      description: "Upload any PDF and get a complete source summary entry. AI extracts references, summarizes findings, identifies key approaches, and pulls smart quotes with page numbers.",
+      description: "Upload any PDF and get a complete source analysis. AI identifies key arguments, discovers interesting angles, and pulls notable passages with page numbers.",
       icon: FileText,
       iconColor: "text-accent",
       bgColor: "from-red-50 via-white to-orange-50",
       features: [
-        "Smart source summaries",
-        "Auto-reference extraction",
-        "Key findings summary",
+        "Key Arguments",
+        "Interesting Angles",
+        "Notable Passages",
         "Quotes with page numbers"
       ]
     },

@@ -40,7 +40,7 @@ const createDocumentHeader = () => {
             text: "\t\t",
           }),
           new TextRun({
-            text: "Annotated Bibliography",
+            text: "Source Analysis",
             font: STYLES.fonts.heading,
             size: STYLES.sizes.footer,
             color: STYLES.colors.secondary
@@ -185,7 +185,7 @@ const createTitlePage = (entries) => {
     new Paragraph({
       children: [
         new TextRun({
-          text: "ANNOTATED BIBLIOGRAPHY",
+          text: "SOURCE ANALYSIS",
           font: STYLES.fonts.heading,
           size: 56,
           color: STYLES.colors.primary,
@@ -201,7 +201,7 @@ const createTitlePage = (entries) => {
     new Paragraph({
       children: [
         new TextRun({
-          text: "A Comprehensive Academic Reference Collection",
+          text: "A Curated Source Collection",
           font: STYLES.fonts.heading,
           size: 28,
           color: STYLES.colors.secondary,
@@ -283,9 +283,12 @@ const createTableOfContents = (entries) => {
   ];
   
   entries.forEach((entry, index) => {
-    const citation = cleanMarkdownContent(entry.citation);
-    const truncatedCitation = citation.length > 80 ? 
-      citation.substring(0, 77) + '...' : 
+    const citationRaw = entry.source_info
+      ? `${entry.source_info.author} (${entry.source_info.year}). ${entry.source_info.title}. ${entry.source_info.publication}`
+      : entry.citation || '';
+    const citation = cleanMarkdownContent(citationRaw);
+    const truncatedCitation = citation.length > 80 ?
+      citation.substring(0, 77) + '...' :
       citation;
     
     tocParagraphs.push(
@@ -352,7 +355,11 @@ const createEntrySection = (entry, index) => {
     })
   );
   
-  const cleanedCitation = cleanMarkdownContent(entry.citation);
+  // Citation: prefer source_info, fall back to citation
+  const citationText = entry.source_info
+    ? `${entry.source_info.author} (${entry.source_info.year}). ${entry.source_info.title}. ${entry.source_info.publication}`
+    : entry.citation || '';
+  const cleanedCitation = cleanMarkdownContent(citationText);
   paragraphs.push(
     createStyledParagraph(cleanedCitation, {
       font: STYLES.fonts.body,
@@ -361,31 +368,13 @@ const createEntrySection = (entry, index) => {
       spacingAfter: 360
     })
   );
-  
-  if (entry.narrative_overview) {
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: "Narrative Overview",
-            font: STYLES.fonts.heading,
-            size: 28,
-            color: STYLES.colors.primary,
-            bold: true
-          })
-        ],
-        heading: HeadingLevel.HEADING_2,
-        spacing: {
-          before: STYLES.spacing.beforeHeading,
-          after: STYLES.spacing.afterHeading
-        }
-      })
-    );
-    
-    const cleanedOverview = cleanMarkdownContent(entry.narrative_overview);
-    const overviewElements = parseMarkdownToDocxElements(cleanedOverview);
-    
-    overviewElements.forEach(element => {
+
+  // Helper to render a text section with markdown parsing
+  const renderTextSection = (content) => {
+    const cleaned = cleanMarkdownContent(content);
+    const elements = parseMarkdownToDocxElements(cleaned);
+
+    elements.forEach(element => {
       if (element.type === 'paragraph') {
         paragraphs.push(
           createStyledParagraph(element.content, {
@@ -405,14 +394,16 @@ const createEntrySection = (entry, index) => {
         });
       }
     });
-  }
-  
-  if (entry.research_components) {
+  };
+
+  // Key Arguments & Ideas: prefer key_arguments, fall back to core_findings
+  const keyArgumentsContent = entry.key_arguments || entry.core_findings;
+  if (keyArgumentsContent) {
     paragraphs.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: "Key Research Components",
+            text: "Key Arguments & Ideas",
             font: STYLES.fonts.heading,
             size: 28,
             color: STYLES.colors.primary,
@@ -426,42 +417,18 @@ const createEntrySection = (entry, index) => {
         }
       })
     );
-    
-    const components = [
-      { key: 'research_purpose', label: 'Research Purpose' },
-      { key: 'methodology', label: 'Methodology' },
-      { key: 'theoretical_framework', label: 'Theoretical Framework' }
-    ];
-    
-    components.forEach(({ key, label }) => {
-      if (entry.research_components[key]) {
-        paragraphs.push(
-          createStyledParagraph(label + ':', {
-            size: 24,
-            bold: true,
-            color: STYLES.colors.secondary,
-            spacingAfter: 120
-          })
-        );
-        
-        const cleanedText = cleanMarkdownContent(entry.research_components[key]);
-        paragraphs.push(
-          createStyledParagraph(cleanedText, {
-            size: 24,
-            spacingAfter: 300,
-            indent: { left: convertInchesToTwip(0.25) }
-          })
-        );
-      }
-    });
+
+    renderTextSection(keyArgumentsContent);
   }
-  
-  if (entry.core_findings) {
+
+  // Interesting Angles: prefer interesting_angles, fall back to narrative_overview
+  const interestingAnglesContent = entry.interesting_angles || entry.narrative_overview;
+  if (interestingAnglesContent) {
     paragraphs.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: "Core Findings & Key Statistics",
+            text: "Interesting Angles",
             font: STYLES.fonts.heading,
             size: 28,
             color: STYLES.colors.primary,
@@ -475,38 +442,18 @@ const createEntrySection = (entry, index) => {
         }
       })
     );
-    
-    const cleanedFindings = cleanMarkdownContent(entry.core_findings);
-    const findingsElements = parseMarkdownToDocxElements(cleanedFindings);
-    
-    findingsElements.forEach(element => {
-      if (element.type === 'paragraph') {
-        paragraphs.push(
-          createStyledParagraph(element.content, {
-            size: 24,
-            spacingAfter: 240
-          })
-        );
-      } else if (element.type === 'list') {
-        element.items.forEach(item => {
-          paragraphs.push(
-            createStyledParagraph(`• ${item}`, {
-              size: 24,
-              spacingAfter: 120,
-              indent: { left: convertInchesToTwip(0.25) }
-            })
-          );
-        });
-      }
-    });
+
+    renderTextSection(interestingAnglesContent);
   }
-  
-  if (entry.methodological_value) {
+
+  // Perspective & Value: prefer perspective_value, fall back to methodological_value.strengths
+  const perspectiveContent = entry.perspective_value || entry.methodological_value?.strengths;
+  if (perspectiveContent) {
     paragraphs.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: "Methodological Value",
+            text: "Perspective & Value",
             font: STYLES.fonts.heading,
             size: 28,
             color: STYLES.colors.primary,
@@ -520,54 +467,18 @@ const createEntrySection = (entry, index) => {
         }
       })
     );
-    
-    if (entry.methodological_value.strengths) {
-      paragraphs.push(
-        createStyledParagraph('Strengths:', {
-          size: 24,
-          bold: true,
-          color: STYLES.colors.secondary,
-          spacingAfter: 120
-        })
-      );
-      
-      const cleanedStrengths = cleanMarkdownContent(entry.methodological_value.strengths);
-      paragraphs.push(
-        createStyledParagraph(cleanedStrengths, {
-          size: 24,
-          spacingAfter: 300,
-          indent: { left: convertInchesToTwip(0.25) }
-        })
-      );
-    }
-    
-    if (entry.methodological_value.limitations) {
-      paragraphs.push(
-        createStyledParagraph('Limitations:', {
-          size: 24,
-          bold: true,
-          color: STYLES.colors.secondary,
-          spacingAfter: 120
-        })
-      );
-      
-      const cleanedLimitations = cleanMarkdownContent(entry.methodological_value.limitations);
-      paragraphs.push(
-        createStyledParagraph(cleanedLimitations, {
-          size: 24,
-          spacingAfter: 300,
-          indent: { left: convertInchesToTwip(0.25) }
-        })
-      );
-    }
+
+    renderTextSection(perspectiveContent);
   }
-  
-  if (entry.key_quotes && entry.key_quotes.length > 0) {
+
+  // Notable Passages: prefer notable_passages, fall back to key_quotes
+  const passagesContent = entry.notable_passages || entry.key_quotes;
+  if (passagesContent && passagesContent.length > 0) {
     paragraphs.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: "Key Quotes",
+            text: "Notable Passages",
             font: STYLES.fonts.heading,
             size: 28,
             color: STYLES.colors.primary,
@@ -581,11 +492,13 @@ const createEntrySection = (entry, index) => {
         }
       })
     );
-    
-    entry.key_quotes.forEach((quote, qIndex) => {
+
+    passagesContent.forEach((quote, qIndex) => {
+      const quoteText = typeof quote === 'string' ? quote : quote.text;
+      const pageRef = typeof quote === 'object' && quote.page ? ` (p. ${quote.page})` : '';
       paragraphs.push(
         createStyledParagraph(
-          `${qIndex + 1}. "${cleanMarkdownContent(quote.text)}" (p. ${quote.page})`,
+          `${qIndex + 1}. "${cleanMarkdownContent(quoteText)}"${pageRef}`,
           {
             size: 24,
             italics: true,
@@ -712,7 +625,7 @@ export const exportToWord = async (entries, options = {}) => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `annotated-bibliography-${Date.now()}.docx`;
+  a.download = `source-analysis-${Date.now()}.docx`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

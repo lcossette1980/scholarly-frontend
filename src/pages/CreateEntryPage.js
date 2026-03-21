@@ -39,12 +39,12 @@ const CreateEntryPage = () => {
   const navigate = useNavigate();
 
   const processingSteps = [
-    { icon: FileText, label: 'Extracting Text', description: 'Reading PDF content' },
-    { icon: Brain, label: 'Analyzing Content', description: 'Understanding structure' },
-    { icon: Brain, label: 'Generating Overview', description: 'Creating narrative' },
-    { icon: BarChart3, label: 'Finding Key Data', description: 'Extracting insights' },
-    { icon: Quote, label: 'Selecting Quotes', description: 'Identifying impact' },
-    { icon: CheckCircle, label: 'Finalizing Entry', description: 'Completing analysis' }
+    { icon: FileText, label: 'Reading Document', description: 'Extracting text from PDF...' },
+    { icon: Brain, label: 'Analyzing Structure', description: 'Understanding document structure...' },
+    { icon: Brain, label: 'Identifying Source', description: 'Extracting source details...' },
+    { icon: BarChart3, label: 'Finding Arguments', description: 'Identifying key claims and arguments...' },
+    { icon: Target, label: 'Discovering Angles', description: 'Finding surprising angles and unique perspectives...' },
+    { icon: Quote, label: 'Selecting Passages', description: 'Finding the most quotable passages...' }
   ];
 
   const steps = [
@@ -78,7 +78,7 @@ const CreateEntryPage = () => {
     }
 
     if (!researchFocus.trim()) {
-      toast.error('Please enter your research focus first');
+      toast.error('Please enter your writing focus first');
       return;
     }
 
@@ -336,31 +336,31 @@ const CreateEntryPage = () => {
             >
               <FadeIn>
                 <div className="space-y-8">
-                  {/* Research Focus */}
+                  {/* Writing Focus */}
                   <div className="card">
                     <div className="flex items-center space-x-3 mb-6">
                       <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
                         <Target className="w-5 h-5 text-accent" />
                       </div>
                       <h2 className="text-xl font-bold text-secondary-900">
-                        Topic Focus
+                        Writing Focus
                       </h2>
                     </div>
 
                     <div className="space-y-2">
                       <label className="form-label">
-                        What is your topic focus area?
+                        What is your writing focus area?
                       </label>
                       <input
                         type="text"
                         className="form-input"
-                        placeholder="e.g., AI Leadership, Digital Transformation, Machine Learning Ethics"
+                        placeholder="e.g., AI Ethics, Climate Narratives, Startup Culture, Leadership"
                         value={researchFocus}
                         onChange={(e) => setResearchFocus(sanitizeResearchFocus(e.target.value))}
                         maxLength={200}
                       />
                       <p className="text-sm text-secondary-600">
-                        This helps our AI tailor the analysis to your specific topic interests.
+                        This helps our AI tailor the analysis to your specific writing interests.
                       </p>
                     </div>
                   </div>
@@ -412,7 +412,7 @@ const CreateEntryPage = () => {
                             Drop your PDF here or click to browse
                           </h3>
                           <p className="text-sm sm:text-base text-secondary-600 mb-2">
-                            Supports research articles, journal papers, and academic reports
+                            Supports articles, books, reports, essays, and blog posts
                           </p>
                           <p className="text-sm text-secondary-500">
                             Maximum file size: 10MB
@@ -448,7 +448,7 @@ const CreateEntryPage = () => {
                       Analyzing Your Document
                     </h2>
                     <p className="text-secondary-700">
-                      Our AI is carefully reading and analyzing your research paper
+                      Our AI is carefully reading and analyzing your source
                     </p>
                   </div>
 
@@ -555,105 +555,79 @@ const CreateEntryPage = () => {
                     </div>
 
                     {/* Source Entry Preview */}
-                    <div className="bg-white rounded-lg border border-secondary-300/20 p-8" style={{ fontFamily: 'Times New Roman, serif' }}>
-                      <div className="space-y-6">
-                        {/* Citation */}
-                        <div className="font-bold text-secondary-900 leading-relaxed">
-                          {cleanMarkdownFormatting(bibliographyEntry.citation)}
+                    <div className="space-y-6">
+                      {/* Citation */}
+                      <div className="card-floating bg-secondary-50 rounded-lg p-6">
+                        <div className="font-bold text-secondary-900 leading-relaxed text-lg">
+                          {bibliographyEntry.source_info
+                            ? `${bibliographyEntry.source_info.author || 'Unknown Author'} (${bibliographyEntry.source_info.year || 'n.d.'}). ${bibliographyEntry.source_info.title || 'Untitled'}. ${bibliographyEntry.source_info.publication || ''}`
+                            : cleanMarkdownFormatting(bibliographyEntry.citation || '')}
                         </div>
+                      </div>
 
-                        {/* Narrative Overview */}
-                        <div>
-                          <h3 className="font-bold text-secondary-900 mb-3 text-lg">
-                            Narrative Overview
+                      {/* Key Arguments & Ideas */}
+                      {(bibliographyEntry.key_arguments || bibliographyEntry.core_findings) && (
+                        <div className="card-floating bg-secondary-50 rounded-lg p-6">
+                          <h3 className="font-bold text-secondary-900 mb-3 text-lg flex items-center space-x-2">
+                            <Brain className="w-5 h-5 text-accent" />
+                            <span>Key Arguments & Ideas</span>
                           </h3>
-                          <p className="text-secondary-900/90 leading-relaxed">
-                            {cleanMarkdownFormatting(bibliographyEntry.narrative_overview)}
-                          </p>
+                          <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
+                            {cleanMarkdownFormatting(bibliographyEntry.key_arguments || bibliographyEntry.core_findings)}
+                          </div>
                         </div>
+                      )}
 
-                        {/* Key Research Components */}
-                        <div>
-                          <h3 className="font-bold text-secondary-900 mb-3 text-lg">
-                            Key Research Components
+                      {/* Interesting Angles */}
+                      {(bibliographyEntry.interesting_angles || bibliographyEntry.narrative_overview) && (
+                        <div className="card-floating bg-secondary-50 rounded-lg p-6">
+                          <h3 className="font-bold text-secondary-900 mb-3 text-lg flex items-center space-x-2">
+                            <Target className="w-5 h-5 text-accent" />
+                            <span>Interesting Angles</span>
+                          </h3>
+                          <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
+                            {cleanMarkdownFormatting(bibliographyEntry.interesting_angles || bibliographyEntry.narrative_overview)}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Perspective & Value */}
+                      {(bibliographyEntry.perspective_value || bibliographyEntry.methodological_value?.strengths) && (
+                        <div className="card-floating bg-secondary-50 rounded-lg p-6">
+                          <h3 className="font-bold text-secondary-900 mb-3 text-lg flex items-center space-x-2">
+                            <Eye className="w-5 h-5 text-accent" />
+                            <span>Perspective & Value</span>
+                          </h3>
+                          <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
+                            {cleanMarkdownFormatting(bibliographyEntry.perspective_value || bibliographyEntry.methodological_value?.strengths)}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Notable Passages */}
+                      {((bibliographyEntry.notable_passages && bibliographyEntry.notable_passages.length > 0) ||
+                        (bibliographyEntry.key_quotes && bibliographyEntry.key_quotes.length > 0)) && (
+                        <div className="card-floating bg-secondary-50 rounded-lg p-6">
+                          <h3 className="font-bold text-secondary-900 mb-4 text-lg flex items-center space-x-2">
+                            <Quote className="w-5 h-5 text-accent" />
+                            <span>Notable Passages</span>
                           </h3>
                           <div className="space-y-3">
-                            {bibliographyEntry.research_components?.research_purpose && (
-                              <div>
-                                <span className="font-semibold text-secondary-900">Research Purpose:</span>
-                                <p className="text-secondary-900/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.research_purpose)}</p>
+                            {(bibliographyEntry.notable_passages || bibliographyEntry.key_quotes).map((passage, index) => (
+                              <div key={index} className="bg-white rounded-lg p-4 border border-secondary-300/20">
+                                <p className="text-secondary-900/90 italic leading-relaxed">
+                                  "{cleanMarkdownFormatting(passage.text)}"
+                                </p>
+                                {passage.page && (
+                                  <p className="text-sm text-secondary-600 mt-2 font-medium">
+                                    p. {passage.page}
+                                  </p>
+                                )}
                               </div>
-                            )}
-                            {bibliographyEntry.research_components?.methodology && (
-                              <div>
-                                <span className="font-semibold text-secondary-900">Methodology:</span>
-                                <p className="text-secondary-900/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.methodology)}</p>
-                              </div>
-                            )}
-                            {bibliographyEntry.research_components?.theoretical_framework && (
-                              <div>
-                                <span className="font-semibold text-secondary-900">Theoretical Framework:</span>
-                                <p className="text-secondary-900/90 mt-1">{cleanMarkdownFormatting(bibliographyEntry.research_components.theoretical_framework)}</p>
-                              </div>
-                            )}
+                            ))}
                           </div>
                         </div>
-
-                        {/* Core Findings & Key Statistics */}
-                        {bibliographyEntry.core_findings && (
-                          <div>
-                            <h3 className="font-bold text-secondary-900 mb-3 text-lg">
-                              Core Findings & Key Statistics
-                            </h3>
-                            <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
-                              {cleanMarkdownFormatting(bibliographyEntry.core_findings)}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Methodological Value */}
-                        {(bibliographyEntry.methodological_value?.strengths || bibliographyEntry.methodological_value?.limitations) && (
-                          <div>
-                            <h3 className="font-bold text-secondary-900 mb-3 text-lg">
-                              Methodological Value
-                            </h3>
-                            <div className="space-y-3">
-                              {bibliographyEntry.methodological_value?.strengths && (
-                                <div>
-                                  <span className="font-semibold text-secondary-900">Strengths:</span>
-                                  <div className="text-secondary-900/90 mt-1 whitespace-pre-wrap">
-                                    {cleanMarkdownFormatting(bibliographyEntry.methodological_value.strengths)}
-                                  </div>
-                                </div>
-                              )}
-                              {bibliographyEntry.methodological_value?.limitations && (
-                                <div>
-                                  <span className="font-semibold text-secondary-900">Limitations:</span>
-                                  <div className="text-secondary-900/90 mt-1 whitespace-pre-wrap">
-                                    {cleanMarkdownFormatting(bibliographyEntry.methodological_value.limitations)}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Key Quotes */}
-                        {bibliographyEntry.key_quotes && bibliographyEntry.key_quotes.length > 0 && (
-                          <div>
-                            <h3 className="font-bold text-secondary-900 mb-3 text-lg">
-                              Key Quotes
-                            </h3>
-                            <ol className="text-secondary-900/90 space-y-2 list-decimal ml-6">
-                              {bibliographyEntry.key_quotes.map((quote, index) => (
-                                <li key={index}>
-                                  "{quote.text}" (p. {quote.page})
-                                </li>
-                              ))}
-                            </ol>
-                          </div>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </div>
 

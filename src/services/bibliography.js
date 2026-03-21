@@ -19,15 +19,20 @@ const COLLECTION_NAME = 'bibliography_entries';
 // Save a new bibliography entry
 export const saveBibliographyEntry = async (userId, entryData, researchFocus) => {
   try {
+    // Build backward-compatible citation from source_info
+    const citation = entryData.source_info
+      ? `${entryData.source_info.author} (${entryData.source_info.year}). ${entryData.source_info.title}. ${entryData.source_info.publication}`
+      : entryData.citation || '';
+
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
       userId,
       researchFocus,
-      citation: entryData.citation,
-      narrative_overview: entryData.narrative_overview,
-      research_components: entryData.research_components,
-      core_findings: entryData.core_findings || null,
-      methodological_value: entryData.methodological_value || null,
-      key_quotes: entryData.key_quotes || [],
+      citation,
+      source_info: entryData.source_info || null,
+      key_arguments: entryData.key_arguments || null,
+      interesting_angles: entryData.interesting_angles || null,
+      notable_passages: entryData.notable_passages || [],
+      perspective_value: entryData.perspective_value || null,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -129,7 +134,17 @@ export const searchBibliographyEntries = async (userId, searchTerm) => {
     
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const searchableText = `${data.citation} ${data.narrative_overview} ${data.researchFocus}`.toLowerCase();
+      const searchableText = [
+        data.citation,
+        data.narrative_overview,
+        data.key_arguments,
+        data.interesting_angles,
+        data.core_findings,
+        data.perspective_value,
+        data.researchFocus,
+        data.source_info?.title,
+        data.source_info?.author
+      ].filter(Boolean).join(' ').toLowerCase();
       
       if (searchableText.includes(searchTerm.toLowerCase())) {
         entries.push({

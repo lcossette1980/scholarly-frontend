@@ -4,14 +4,25 @@ import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const EntryViewModal = ({ entry, onClose }) => {
-  const getCitation = () => {
+  const getSourceInfo = () => {
     if (!entry) return '';
+    // New format: source_info object with author, title, publication, year
+    if (entry.source_info) {
+      const { author, title, publication, year } = entry.source_info;
+      const parts = [];
+      if (author) parts.push(author);
+      if (year) parts.push(`(${year})`);
+      if (title) parts.push(`. ${title}`);
+      if (publication) parts.push(`. ${publication}`);
+      return parts.join('') || 'No source info available';
+    }
+    // Fallback to old citation field
     if (typeof entry.citation === 'string') {
       return entry.citation;
     } else if (typeof entry.citation === 'object') {
       return entry.citation.title || 'Untitled';
     }
-    return 'No citation available';
+    return 'No source info available';
   };
 
   return (
@@ -36,7 +47,7 @@ const EntryViewModal = ({ entry, onClose }) => {
             <div className="flex items-start justify-between p-6 border-b border-secondary-200">
               <div className="flex-1 pr-4">
                 <h2 className="text-2xl font-bold text-secondary-900 mb-1">
-                  Source Summary Entry
+                  Source Analysis
                 </h2>
                 <p className="text-sm text-secondary-500">
                   {entry.researchFocus || entry.research_focus || 'Uncategorized'}
@@ -52,75 +63,52 @@ const EntryViewModal = ({ entry, onClose }) => {
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {/* Citation */}
-              <Section title="Citation">
+              {/* Source Info */}
+              <Section title="Source Info">
                 <div className="bg-secondary-50 rounded-xl p-4 font-serif text-sm leading-relaxed text-secondary-800 border border-secondary-100">
-                  {getCitation()}
+                  {getSourceInfo()}
                 </div>
               </Section>
 
-              {/* Narrative Overview */}
-              {(entry.narrative_overview || entry.narrativeOverview) && (
-                <Section title="Narrative Overview">
+              {/* Key Arguments & Ideas */}
+              {(entry.key_arguments || entry.narrative_overview || entry.narrativeOverview) && (
+                <Section title="Key Arguments & Ideas">
                   <p className="text-secondary-700 leading-relaxed">
-                    {entry.narrative_overview || entry.narrativeOverview}
+                    {entry.key_arguments || entry.narrative_overview || entry.narrativeOverview}
                   </p>
                 </Section>
               )}
 
-              {/* Research Components */}
-              {entry.research_components && (
-                <Section title="Research Components">
-                  <div className="space-y-4">
-                    {Object.entries(entry.research_components).map(([key, value]) => (
-                      <div key={key}>
-                        <h4 className="font-semibold text-secondary-800 mb-1 capitalize text-sm">
-                          {key.replace(/_/g, ' ')}
-                        </h4>
-                        <p className="text-secondary-600 leading-relaxed text-sm">{value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </Section>
-              )}
-
-              {/* Core Findings */}
-              {(entry.core_findings || entry.coreFindingsSummary) && (
-                <Section title="Core Findings">
+              {/* Interesting Angles */}
+              {(entry.interesting_angles || entry.research_components || entry.narrative_overview) && (
+                <Section title="Interesting Angles">
                   <p className="text-secondary-700 leading-relaxed">
-                    {entry.core_findings || entry.coreFindingsSummary}
+                    {entry.interesting_angles || (typeof entry.research_components === 'string' ? entry.research_components : null) || entry.narrative_overview}
                   </p>
                 </Section>
               )}
 
-              {/* Methodological Value */}
-              {entry.methodological_value && (
-                <Section title="Methodological Value">
-                  <div className="space-y-4">
-                    {Object.entries(entry.methodological_value).map(([key, value]) => (
-                      <div key={key}>
-                        <h4 className="font-semibold text-secondary-800 mb-1 capitalize text-sm">
-                          {key.replace(/_/g, ' ')}
-                        </h4>
-                        <p className="text-secondary-600 leading-relaxed text-sm">{value}</p>
-                      </div>
-                    ))}
-                  </div>
+              {/* Perspective & Value */}
+              {(entry.perspective_value || entry.methodological_value) && (
+                <Section title="Perspective & Value">
+                  <p className="text-secondary-700 leading-relaxed">
+                    {entry.perspective_value || entry.methodological_value?.strengths || (typeof entry.methodological_value === 'string' ? entry.methodological_value : '')}
+                  </p>
                 </Section>
               )}
 
-              {/* Key Quotes */}
-              {entry.key_quotes && entry.key_quotes.length > 0 && (
-                <Section title="Key Quotes">
+              {/* Notable Passages */}
+              {((entry.notable_passages && entry.notable_passages.length > 0) || (entry.key_quotes && entry.key_quotes.length > 0)) && (
+                <Section title="Notable Passages">
                   <div className="space-y-3">
-                    {entry.key_quotes.map((quote, index) => (
+                    {(entry.notable_passages || entry.key_quotes).map((passage, index) => (
                       <div key={index} className="bg-secondary-50 border-l-2 border-accent p-4 rounded-r-xl">
-                        <p className="text-secondary-700 italic text-sm mb-1">"{quote.quote || quote}"</p>
-                        {quote.page && (
-                          <p className="text-xs text-secondary-500">Page {quote.page}</p>
+                        <p className="text-secondary-700 italic text-sm mb-1">"{passage.text || passage.quote || passage}"</p>
+                        {passage.page && (
+                          <p className="text-xs text-secondary-500">Page {passage.page}</p>
                         )}
-                        {quote.relevance && (
-                          <p className="text-xs text-secondary-500 mt-1">{quote.relevance}</p>
+                        {passage.relevance && (
+                          <p className="text-xs text-secondary-500 mt-1">{passage.relevance}</p>
                         )}
                       </div>
                     ))}
