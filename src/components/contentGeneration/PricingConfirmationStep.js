@@ -46,14 +46,14 @@ const PricingConfirmationStep = ({
       name: 'Professional',
       icon: Sparkles,
       pricePerPage: 2.49,
-      model: 'Claude Sonnet',
+      model: 'Claude Opus',
       features: [
-        'Premium AI writing engine',
-        'Deeper research synthesis',
-        'Advanced content depth & polish',
-        'Priority processing speed',
-        'Unlimited revisions',
-        'Priority support'
+        'Most capable AI writing model',
+        'Deeper research synthesis & nuance',
+        'Richer cross-source connections',
+        'More sophisticated prose architecture',
+        'Priority support',
+        'Export as Word or text'
       ],
       color: 'purple',
       badge: 'RECOMMENDED'
