@@ -189,7 +189,7 @@ const HomePage = () => {
                 ].map((item) => (
                   <StaggerItem key={item.step}>
                     <div className="card-floating text-center h-full flex flex-col">
-                      <div className="text-xs font-mono font-semibold text-accent/60 mb-4 tracking-widest">
+                      <div className="text-xs font-mono font-semibold text-primary/60 mb-4 tracking-widest">
                         {item.step}
                       </div>
                       <h3 className="text-xl font-bold text-secondary-900 mb-3">{item.title}</h3>
@@ -211,10 +211,10 @@ const HomePage = () => {
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
               <div className="flex gap-6 items-center">
-                <a href="/example.pdf" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent-700 font-medium text-sm">
+                <a href="/example.pdf" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-700 font-medium text-sm">
                   Sample Source Summary →
                 </a>
-                <a href="/content_example.docx" download className="text-accent hover:text-accent-700 font-medium text-sm">
+                <a href="/content_example.docx" download className="text-primary hover:text-primary-700 font-medium text-sm">
                   Sample Document →
                 </a>
               </div>
@@ -240,10 +240,10 @@ const HomePage = () => {
           <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
             {pricingCards.map((card, index) => (
               <FadeIn key={card.name} direction="up" delay={index * 0.1}>
-                <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-accent relative' : ''}`}>
+                <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-primary relative' : ''}`}>
                   {card.highlight && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">
+                      <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
                         Most Popular
                       </span>
                     </div>
@@ -294,7 +294,7 @@ const HomePage = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
                 <Link
                   to={currentUser ? "/create" : "/signup"}
-                  className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-xl font-semibold text-lg"
+                  className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-xl font-semibold text-lg"
                 >
                   {currentUser ? "Create Your First Entry" : "Start Free — No Credit Card"}
                 </Link>

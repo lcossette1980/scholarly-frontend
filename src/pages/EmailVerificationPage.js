@@ -81,7 +81,7 @@ const EmailVerificationPage = () => {
       <div className="min-h-screen bg-pearl flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 text-center">
           <div className="card">
-            <AlertCircle className="w-16 h-16 text-accent mx-auto mb-4" />
+            <AlertCircle className="w-16 h-16 text-primary mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-secondary-900 mb-2">
               Please Sign In
             </h2>
@@ -103,8 +103,8 @@ const EmailVerificationPage = () => {
         {!isVerified ? (
           /* Verification Required */
           <div className="card text-center">
-            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Mail className="w-8 h-8 text-accent" />
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Mail className="w-8 h-8 text-primary" />
             </div>
             
             <h2 className="text-2xl font-bold text-secondary-900 mb-2">
@@ -152,7 +152,7 @@ const EmailVerificationPage = () => {
               
               <Link
                 to="/profile"
-                className="text-accent hover:text-accent-600/80 text-sm font-medium"
+                className="text-primary hover:text-primary-600/80 text-sm font-medium"
               >
                 Update Email Address
               </Link>

@@ -15,12 +15,12 @@ const AcademicIntegrityPage = () => {
         path="/ethical-ai"
       />
       <div className="container mx-auto px-6">
-        <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400 max-w-5xl mx-auto" />
+        <div className="h-1 bg-gradient-to-r from-primary-400 via-primary-400 to-primary-400 max-w-5xl mx-auto" />
         <FadeIn direction="up">
           {/* Header */}
           <div className="max-w-4xl mx-auto text-center mb-12 mt-8">
-            <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Shield className="w-10 h-10 text-accent" />
+            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Shield className="w-10 h-10 text-primary" />
             </div>
             <h1 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-6">
               How We Handle <span className="text-gradient">Your Sources</span>
@@ -44,8 +44,8 @@ const AcademicIntegrityPage = () => {
               </p>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-secondary-50 rounded-lg p-6">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                    <FileText className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    <FileText className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-bold text-secondary-900 mb-2">Source-Grounded Content</h3>
                   <p className="text-sm text-secondary-800">
@@ -54,7 +54,7 @@ const AcademicIntegrityPage = () => {
                   </p>
                 </div>
                 <div className="bg-secondary-50 rounded-lg p-6">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <CheckCircle className="w-6 h-6 text-accent" />
                   </div>
                   <h3 className="font-bold text-secondary-900 mb-2">Traceable Attribution</h3>
@@ -64,8 +64,8 @@ const AcademicIntegrityPage = () => {
                   </p>
                 </div>
                 <div className="bg-secondary-50 rounded-lg p-6">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                    <BookOpen className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    <BookOpen className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-bold text-secondary-900 mb-2">Transparent Process</h3>
                   <p className="text-sm text-secondary-800">
@@ -79,7 +79,7 @@ const AcademicIntegrityPage = () => {
             {/* How Source Processing Works */}
             <section className="card card-floating">
               <div className="flex items-center space-x-3 mb-6">
-                <Search className="w-8 h-8 text-accent" />
+                <Search className="w-8 h-8 text-primary" />
                 <h2 className="text-3xl font-bold text-secondary-900">
                   How <span className="text-gradient">Source Processing</span> Works
                 </h2>
@@ -87,7 +87,7 @@ const AcademicIntegrityPage = () => {
 
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
                     1
                   </div>
                   <div>
@@ -100,7 +100,7 @@ const AcademicIntegrityPage = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
                     2
                   </div>
                   <div>
@@ -113,7 +113,7 @@ const AcademicIntegrityPage = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
                     3
                   </div>
                   <div>
@@ -126,7 +126,7 @@ const AcademicIntegrityPage = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
                     4
                   </div>
                   <div>
@@ -139,7 +139,7 @@ const AcademicIntegrityPage = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
                     5
                   </div>
                   <div>
@@ -154,7 +154,7 @@ const AcademicIntegrityPage = () => {
             </section>
 
             {/* Content Generation Integrity */}
-            <section className="card card-floating bg-gradient-to-br from-accent/5 to-secondary-50">
+            <section className="card card-floating bg-gradient-to-br from-primary/5 to-secondary-50">
               <h2 className="text-3xl font-bold text-secondary-900 mb-6">
                 Content Generation & <span className="text-gradient">Source Integrity</span>
               </h2>
@@ -320,7 +320,7 @@ const AcademicIntegrityPage = () => {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     to="/signup"
-                    className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-3 rounded-lg font-semibold inline-block"
+                    className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-3 rounded-lg font-semibold inline-block"
                   >
                     Get Started Free
                   </Link>
@@ -328,7 +328,7 @@ const AcademicIntegrityPage = () => {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     to="/features"
-                    className="border-2 border-white text-white hover:bg-white hover:text-accent-600 transition-colors px-8 py-3 rounded-lg font-semibold inline-block"
+                    className="border-2 border-white text-white hover:bg-white hover:text-primary-600 transition-colors px-8 py-3 rounded-lg font-semibold inline-block"
                   >
                     Explore Features
                   </Link>

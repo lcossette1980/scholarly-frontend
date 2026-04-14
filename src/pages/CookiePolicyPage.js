@@ -13,7 +13,7 @@ const CookiePolicyPage = () => {
         path="/cookies"
       />
       <div className="container mx-auto px-6 max-w-4xl">
-        <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400" />
+        <div className="h-1 bg-gradient-to-r from-primary-400 via-primary-400 to-primary-400" />
         <FadeIn direction="up">
           <div className="text-center mb-12 mt-8">
             <div className="w-16 h-16 bg-gradient-brand rounded-full flex items-center justify-center mx-auto mb-6">
@@ -45,8 +45,8 @@ const CookiePolicyPage = () => {
               </h2>
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-secondary-900 mb-2">Essential Cookies</h3>
@@ -58,8 +58,8 @@ const CookiePolicyPage = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Settings className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Settings className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-secondary-900 mb-2">Functional Cookies</h3>
@@ -71,8 +71,8 @@ const CookiePolicyPage = () => {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <BarChart3 className="w-6 h-6 text-accent" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <BarChart3 className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-secondary-900 mb-2">Analytics Cookies</h3>

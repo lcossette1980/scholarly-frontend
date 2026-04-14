@@ -112,7 +112,7 @@ const DashboardStats = ({ entries, loading }) => {
       {statItems.map((stat) => (
         <StaggerItem key={stat.title}>
           <motion.div
-            whileHover={{ scale: 1.03, y: -2 }}
+            whileHover={{ y: -1 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
             <div className="bg-white rounded-xl border border-secondary-200 p-6 hover:shadow-md transition-shadow">

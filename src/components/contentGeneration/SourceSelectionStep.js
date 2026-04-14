@@ -38,17 +38,17 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
             placeholder="Search sources by title or author..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       </div>
 
       {/* Selection summary */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <p className="text-sm font-medium text-blue-900">
+      <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
+        <p className="text-sm font-medium text-primary-900">
           {selectedSources.length} {selectedSources.length === 1 ? 'source' : 'sources'} selected
         </p>
-        <p className="text-xs text-blue-700 mt-1">
+        <p className="text-xs text-primary-700 mt-1">
           We recommend selecting 3-10 sources for best results
         </p>
       </div>
@@ -63,14 +63,14 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
               onClick={() => toggleSource(entry)}
               className={`border rounded-lg p-4 cursor-pointer transition-all ${
                 isSelected
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-blue-300'
+                  ? 'border-primary bg-primary-50'
+                  : 'border-gray-200 hover:border-primary/40'
               }`}
             >
               <div className="flex items-start space-x-3">
                 <div className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-1 transition-all ${
                   isSelected
-                    ? 'bg-blue-500 border-blue-500'
+                    ? 'bg-primary border-primary'
                     : 'border-gray-300'
                 }`}>
                   {isSelected && <Check className="w-3 h-3 text-white" />}
@@ -110,7 +110,7 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
           disabled={selectedSources.length === 0 || loading}
           className={`px-6 py-2 rounded-lg font-semibold transition-colors flex items-center space-x-2 ${
             selectedSources.length > 0 && !loading
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
+              ? 'bg-primary text-white hover:bg-primary-700'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >

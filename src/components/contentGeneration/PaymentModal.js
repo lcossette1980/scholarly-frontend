@@ -87,7 +87,7 @@ const PaymentForm = ({ onSuccess, onError, totalCost, tier, onCancel }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Payment Summary */}
-      <div className="bg-gradient-to-br from-accent/5 to-khaki/10 rounded-xl p-6 border border-accent-600/20">
+      <div className="bg-gradient-to-br from-primary/5 to-khaki/10 rounded-xl p-6 border border-primary-600/20">
         <div className="flex justify-between items-center mb-2">
           <span className="text-secondary-700">Total Amount:</span>
           <span className="text-3xl font-bold text-secondary-900">${totalCost}</span>
@@ -247,7 +247,7 @@ const PaymentModal = ({
             </Elements>
           ) : (
             <div className="text-center py-8">
-              <div className="w-16 h-16 border-4 border-accent-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <div className="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
               <p className="text-secondary-700">Loading payment form...</p>
             </div>
           )}

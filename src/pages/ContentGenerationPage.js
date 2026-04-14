@@ -217,7 +217,7 @@ const ContentGenerationPage = () => {
                       step.completed
                         ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
                         : currentStep === step.number
-                        ? 'bg-gradient-to-br from-accent to-charcoal text-white shadow-lg shadow-accent/30'
+                        ? 'bg-gradient-to-br from-primary to-charcoal text-white shadow-lg shadow-primary/30'
                         : 'bg-secondary-200 text-secondary-400'
                     }`}>
                       {step.completed ? (
@@ -227,7 +227,7 @@ const ContentGenerationPage = () => {
                       ) : step.number}
                     </div>
                     <span className={`text-xs mt-2 font-medium ${
-                      currentStep === step.number ? 'text-accent' : step.completed ? 'text-green-600' : 'text-secondary-400'
+                      currentStep === step.number ? 'text-primary' : step.completed ? 'text-green-600' : 'text-secondary-400'
                     }`}>
                       {step.name}
                     </span>

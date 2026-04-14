@@ -83,10 +83,6 @@ const FeaturesPage = () => {
       <div className="container mx-auto px-6">
         {/* Hero Section */}
         <div className="text-center mb-16 relative overflow-hidden">
-          {/* Decorative gradient orbs */}
-          <div className="gradient-orb w-96 h-96 bg-accent-300 -top-20 -right-20" />
-          <div className="gradient-orb w-72 h-72 bg-primary-300 top-40 -left-10" />
-
           <FadeIn direction="up">
             <h1 className="text-5xl font-bold text-secondary-900 mb-6 relative z-10">
               Everything You Need for <span className="text-gradient">Writing & Research</span>
@@ -299,7 +295,7 @@ const FeaturesPage = () => {
             <p className="text-xl text-white/90 mb-8">
               Join thousands of writers using DraftEngine to save 38+ hours per document.
             </p>
-            <Link to="/signup" className="inline-block bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg">
+            <Link to="/signup" className="inline-block bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg">
               Start Free Trial
             </Link>
           </div>

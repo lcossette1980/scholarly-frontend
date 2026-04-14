@@ -96,7 +96,7 @@ const AnalyzePage = () => {
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center space-x-2 mb-2">
-              <span className="w-8 h-8 bg-accent/10 text-accent rounded-full flex items-center justify-center font-semibold text-sm">
+              <span className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center font-semibold text-sm">
                 {index + 1}
               </span>
               <div className="flex items-center space-x-1">
@@ -105,7 +105,7 @@ const AnalyzePage = () => {
                     key={i}
                     className={`w-4 h-4 ${
                       i < Math.round((topic.relevance_score * 5))
-                        ? 'text-accent fill-chestnut'
+                        ? 'text-primary fill-chestnut'
                         : 'text-secondary-900/20'
                     }`}
                   />
@@ -193,10 +193,10 @@ const AnalyzePage = () => {
 
         {/* Selected Entries Summary */}
         <FadeIn delay={0.1}>
-          <div className="glass-card mb-8 bg-gradient-to-br from-accent/5 to-khaki/5">
+          <div className="glass-card mb-8 bg-gradient-to-br from-primary/5 to-khaki/5">
             <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
-                <FileText className="w-6 h-6 text-accent" />
+              <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                <FileText className="w-6 h-6 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-semibold text-secondary-900 mb-2">
@@ -220,8 +220,8 @@ const AnalyzePage = () => {
             <FadeIn delay={0.2}>
               <div className="glass-card mb-8">
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
-                    <Lightbulb className="w-6 h-6 text-accent" />
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Lightbulb className="w-6 h-6 text-primary" />
                   </div>
                   <h2 className="text-2xl font-bold text-secondary-900">
                     Configure Your Analysis
@@ -244,7 +244,7 @@ const AnalyzePage = () => {
                             onClick={() => setOutputType(type.value)}
                             className={`p-4 rounded-lg border-2 transition-all text-left ${
                               outputType === type.value
-                                ? 'border-accent-600 bg-accent/5'
+                                ? 'border-primary-600 bg-primary/5'
                                 : 'border-secondary-300/30 hover:border-secondary-300/50'
                             }`}
                             whileHover={{ scale: 1.02 }}
@@ -334,7 +334,7 @@ const AnalyzePage = () => {
               <div className="glass-card">
                 <div className="text-center space-y-6">
                   <ScaleIn>
-                    <div className="w-16 h-16 bg-gradient-to-br from-accent to-charcoal rounded-full flex items-center justify-center mx-auto">
+                    <div className="w-16 h-16 bg-gradient-to-br from-primary to-charcoal rounded-full flex items-center justify-center mx-auto">
                       <Brain className="w-8 h-8 text-white animate-pulse" />
                     </div>
                   </ScaleIn>
@@ -352,11 +352,11 @@ const AnalyzePage = () => {
                   <div className="max-w-md mx-auto space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-secondary-700">Progress</span>
-                      <span className="text-accent font-medium">{progress}%</span>
+                      <span className="text-primary font-medium">{progress}%</span>
                     </div>
                     <div className="w-full h-3 bg-pearl/50 rounded-full overflow-hidden">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-accent to-charcoal rounded-full"
+                        className="h-full bg-gradient-to-r from-primary to-charcoal rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.5, ease: 'easeOut' }}

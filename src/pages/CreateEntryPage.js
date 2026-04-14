@@ -287,7 +287,7 @@ const CreateEntryPage = () => {
                         isCompleted
                           ? 'bg-green-500 text-white'
                           : isActive
-                          ? 'bg-gradient-to-br from-accent to-indigo-600 text-white shadow-lg shadow-accent/25'
+                          ? 'bg-primary text-white shadow-soft'
                           : 'border-2 border-secondary-300 text-secondary-400 bg-white'
                       }`}
                     >
@@ -300,7 +300,7 @@ const CreateEntryPage = () => {
                       )}
                     </div>
                     <span className={`text-xs mt-2 font-medium ${
-                      isActive ? 'text-accent' : isCompleted ? 'text-green-600' : 'text-secondary-400'
+                      isActive ? 'text-primary' : isCompleted ? 'text-green-600' : 'text-secondary-400'
                     }`}>
                       {step.label}
                     </span>
@@ -310,7 +310,7 @@ const CreateEntryPage = () => {
                   {index < steps.length - 1 && (
                     <div className="w-16 sm:w-24 h-1 mx-2 rounded-full overflow-hidden bg-secondary-200 relative -mt-5">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-accent to-indigo-600 rounded-full"
+                        className="h-full bg-primary rounded-full"
                         initial={{ width: '0%' }}
                         animate={{ width: isCompleted ? '100%' : isActive ? '50%' : '0%' }}
                         transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -339,8 +339,8 @@ const CreateEntryPage = () => {
                   {/* Writing Focus */}
                   <div className="card">
                     <div className="flex items-center space-x-3 mb-6">
-                      <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                        <Target className="w-5 h-5 text-accent" />
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Target className="w-5 h-5 text-primary" />
                       </div>
                       <h2 className="text-xl font-bold text-secondary-900">
                         Writing Focus
@@ -368,8 +368,8 @@ const CreateEntryPage = () => {
                   {/* File Upload */}
                   <div className="card">
                     <div className="flex items-center space-x-3 mb-6">
-                      <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                        <Upload className="w-5 h-5 text-accent" />
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Upload className="w-5 h-5 text-primary" />
                       </div>
                       <h2 className="text-xl font-bold text-secondary-900">
                         Upload Document
@@ -385,7 +385,7 @@ const CreateEntryPage = () => {
                       transition={{ duration: 0.2 }}
                       style={{
                         borderImage: isDragOver
-                          ? 'linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7) 1'
+                          ? 'linear-gradient(135deg, #254a73, #316094, #4a7ab5) 1'
                           : undefined,
                         borderColor: isDragOver ? 'transparent' : undefined,
                         borderWidth: '2px',
@@ -404,8 +404,8 @@ const CreateEntryPage = () => {
                         }}
                       />
                       <div className="space-y-4">
-                        <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto">
-                          <Upload className="w-8 h-8 text-accent" />
+                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                          <Upload className="w-8 h-8 text-primary" />
                         </div>
                         <div>
                           <h3 className="text-base sm:text-lg font-semibold text-secondary-900 mb-2">
@@ -456,7 +456,7 @@ const CreateEntryPage = () => {
                   <div className="space-y-2 max-w-md mx-auto">
                     <div className="flex justify-between text-sm">
                       <span className="text-secondary-700">Progress</span>
-                      <span className="text-accent font-medium">{processingProgress}%</span>
+                      <span className="text-primary font-medium">{processingProgress}%</span>
                     </div>
                     <div className="w-full h-3 bg-pearl/50 rounded-full overflow-hidden">
                       <motion.div
@@ -480,7 +480,7 @@ const CreateEntryPage = () => {
                           key={index}
                           className={`p-4 rounded-lg border transition-all duration-300 ${
                             isActive
-                              ? 'bg-accent/10 border-accent-600/30 scale-105'
+                              ? 'bg-primary/10 border-primary/30 scale-105'
                               : isCompleted
                               ? 'bg-pearl/30 border-secondary-300/30'
                               : 'bg-white/50 border-secondary-300/20'
@@ -536,8 +536,8 @@ const CreateEntryPage = () => {
                   <div className="card">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                          <Eye className="w-5 h-5 text-accent" />
+                        <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Eye className="w-5 h-5 text-primary" />
                         </div>
                         <h2 className="text-2xl font-bold text-secondary-900">
                           Preview & Edit Your Entry
@@ -569,7 +569,7 @@ const CreateEntryPage = () => {
                       {(bibliographyEntry.key_arguments || bibliographyEntry.core_findings) && (
                         <div className="card-floating bg-secondary-50 rounded-lg p-6">
                           <h3 className="font-bold text-secondary-900 mb-3 text-lg flex items-center space-x-2">
-                            <Brain className="w-5 h-5 text-accent" />
+                            <Brain className="w-5 h-5 text-primary" />
                             <span>Key Arguments & Ideas</span>
                           </h3>
                           <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
@@ -582,7 +582,7 @@ const CreateEntryPage = () => {
                       {(bibliographyEntry.interesting_angles || bibliographyEntry.narrative_overview) && (
                         <div className="card-floating bg-secondary-50 rounded-lg p-6">
                           <h3 className="font-bold text-secondary-900 mb-3 text-lg flex items-center space-x-2">
-                            <Target className="w-5 h-5 text-accent" />
+                            <Target className="w-5 h-5 text-primary" />
                             <span>Interesting Angles</span>
                           </h3>
                           <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
@@ -595,7 +595,7 @@ const CreateEntryPage = () => {
                       {(bibliographyEntry.perspective_value || bibliographyEntry.methodological_value?.strengths) && (
                         <div className="card-floating bg-secondary-50 rounded-lg p-6">
                           <h3 className="font-bold text-secondary-900 mb-3 text-lg flex items-center space-x-2">
-                            <Eye className="w-5 h-5 text-accent" />
+                            <Eye className="w-5 h-5 text-primary" />
                             <span>Perspective & Value</span>
                           </h3>
                           <div className="text-secondary-900/90 leading-relaxed whitespace-pre-wrap">
@@ -609,7 +609,7 @@ const CreateEntryPage = () => {
                         (bibliographyEntry.key_quotes && bibliographyEntry.key_quotes.length > 0)) && (
                         <div className="card-floating bg-secondary-50 rounded-lg p-6">
                           <h3 className="font-bold text-secondary-900 mb-4 text-lg flex items-center space-x-2">
-                            <Quote className="w-5 h-5 text-accent" />
+                            <Quote className="w-5 h-5 text-primary" />
                             <span>Notable Passages</span>
                           </h3>
                           <div className="space-y-3">

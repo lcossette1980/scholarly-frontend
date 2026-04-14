@@ -102,7 +102,7 @@ const EntryViewModal = ({ entry, onClose }) => {
                 <Section title="Notable Passages">
                   <div className="space-y-3">
                     {(entry.notable_passages || entry.key_quotes).map((passage, index) => (
-                      <div key={index} className="bg-secondary-50 border-l-2 border-accent p-4 rounded-r-xl">
+                      <div key={index} className="bg-secondary-50 border-l-2 border-primary p-4 rounded-r-xl">
                         <p className="text-secondary-700 italic text-sm mb-1">"{passage.text || passage.quote || passage}"</p>
                         {passage.page && (
                           <p className="text-xs text-secondary-500">Page {passage.page}</p>

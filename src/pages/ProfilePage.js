@@ -150,7 +150,7 @@ const ProfilePage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-accent-600/30 border-t-chestnut rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-secondary-700">Loading profile...</p>
         </div>
       </div>
@@ -179,11 +179,11 @@ const ProfilePage = () => {
               {/* Basic Information */}
               <StaggerItem>
                 <div className="card card-floating mb-6">
-                  <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400 rounded-t-lg -mt-6 -mx-6 mb-6" />
+                  <div className="h-1 bg-gradient-to-r from-primary-400 via-accent-400 to-primary-400 rounded-t-lg -mt-6 -mx-6 mb-6" />
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                        <User className="w-5 h-5 text-accent" />
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <User className="w-5 h-5 text-primary" />
                       </div>
                       <h2 className="text-xl font-bold text-secondary-900">
                         Basic Information
@@ -302,8 +302,8 @@ const ProfilePage = () => {
               <StaggerItem>
                 <div className="card card-floating mb-6">
                   <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                      <Settings className="w-5 h-5 text-accent" />
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Settings className="w-5 h-5 text-primary" />
                     </div>
                     <h2 className="text-xl font-bold text-secondary-900">
                       Preferences
@@ -322,7 +322,7 @@ const ProfilePage = () => {
                         <input
                           type="checkbox"
                           name="notificationsEnabled"
-                          className="w-4 h-4 text-accent border-secondary-300/30 rounded focus:ring-accent"
+                          className="w-4 h-4 text-primary border-secondary-300/30 rounded focus:ring-primary"
                           checked={formData.notificationsEnabled}
                           onChange={handleInputChange}
                         />
@@ -377,8 +377,8 @@ const ProfilePage = () => {
               <StaggerItem>
                 <div className="card card-floating mb-6">
                   <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                      <Crown className="w-5 h-5 text-accent" />
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Crown className="w-5 h-5 text-primary" />
                     </div>
                     <h3 className="text-lg font-bold text-secondary-900">
                       Subscription
@@ -399,7 +399,7 @@ const ProfilePage = () => {
                         <div className="flex items-center space-x-2 mt-1">
                           <div className="flex-1 bg-secondary-200/30 rounded-full h-2">
                             <div
-                              className="bg-accent h-2 rounded-full transition-all"
+                              className="bg-primary h-2 rounded-full transition-all"
                               style={{
                                 width: `${Math.min(
                                   (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
@@ -568,8 +568,8 @@ const ProfilePage = () => {
               <StaggerItem>
                 <div className="card card-floating">
                   <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
-                      <Shield className="w-5 h-5 text-accent" />
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-primary" />
                     </div>
                     <h3 className="text-lg font-bold text-secondary-900">
                       Security

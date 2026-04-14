@@ -124,10 +124,10 @@ const PricingPage = () => {
             const isCurrent = isCurrentPlan(card.planId);
             return (
               <StaggerItem key={card.planId}>
-                <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-accent relative' : ''}`}>
+                <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-primary relative' : ''}`}>
                   {card.highlight && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">
+                      <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
                         Most Popular
                       </span>
                     </div>
@@ -178,14 +178,14 @@ const PricingPage = () => {
         {/* Current Plan Status */}
         {currentUser && userDocument?.subscription && (
           <FadeIn direction="up">
-            <div className="card max-w-2xl mx-auto mb-16 bg-accent/5 border-accent-600/20">
+            <div className="card max-w-2xl mx-auto mb-16 bg-primary/5 border-primary/20">
               <div className="text-center">
                 <h3 className="text-xl font-bold text-secondary-900 mb-2">
                   Your Current Plan
                 </h3>
                 <p className="text-secondary-700 mb-4">
                   You're currently on the{' '}
-                  <span className="font-semibold text-accent">
+                  <span className="font-semibold text-primary">
                     {getPlanDisplayName(userDocument.subscription.plan)}
                   </span>{' '}
                   plan
@@ -197,7 +197,7 @@ const PricingPage = () => {
                     <div className="flex items-center space-x-2">
                       <div className="flex-1 bg-secondary-200/30 rounded-full h-2 min-w-[200px]">
                         <div
-                          className="bg-accent h-2 rounded-full transition-all"
+                          className="bg-primary h-2 rounded-full transition-all"
                           style={{
                             width: `${Math.min(
                               (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
@@ -213,7 +213,7 @@ const PricingPage = () => {
                   </div>
                 ) : (
                   <div className="bg-white/50 rounded-lg p-4 inline-block">
-                    <p className="text-lg font-semibold text-accent">Unlimited Source Entries</p>
+                    <p className="text-lg font-semibold text-primary">Unlimited Source Entries</p>
                     <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator</p>
                   </div>
                 )}
@@ -270,15 +270,15 @@ const PricingPage = () => {
               </div>
 
               {/* Pro Tier */}
-              <div className="card flex flex-col h-full ring-2 ring-accent relative">
+              <div className="card flex flex-col h-full ring-2 ring-primary relative">
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-accent text-white text-xs font-medium px-3 py-1 rounded-full">
+                  <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
                     PREMIUM
                   </span>
                 </div>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-bold text-secondary-900">Pro</h3>
-                  <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium">
+                  <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
                     GPT-4 Turbo
                   </span>
                 </div>
@@ -328,11 +328,11 @@ const PricingPage = () => {
                       max="40"
                       value={estimatorPages}
                       onChange={(e) => setEstimatorPages(Number(e.target.value))}
-                      className="w-full h-2 bg-secondary-200 rounded-lg appearance-none cursor-pointer accent-accent"
+                      className="w-full h-2 bg-secondary-200 rounded-lg appearance-none cursor-pointer accent-primary"
                     />
                     <div className="flex justify-between text-sm text-secondary-600 mt-2">
                       <span>2 pages</span>
-                      <span className="font-bold text-accent">{estimatorPages} pages</span>
+                      <span className="font-bold text-primary">{estimatorPages} pages</span>
                       <span>40 pages</span>
                     </div>
                     <p className="text-xs text-secondary-600 mt-2 text-center">
@@ -348,7 +348,7 @@ const PricingPage = () => {
                         onClick={() => setEstimatorTier('standard')}
                         className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
                           estimatorTier === 'standard'
-                            ? 'border-accent bg-accent/5'
+                            ? 'border-primary bg-primary/5'
                             : 'border-secondary-300/30 hover:border-secondary-300'
                         }`}
                       >
@@ -359,7 +359,7 @@ const PricingPage = () => {
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                             estimatorTier === 'standard'
-                              ? 'bg-accent border-accent'
+                              ? 'bg-primary border-primary'
                               : 'border-secondary-300'
                           }`}>
                             {estimatorTier === 'standard' && (
@@ -372,7 +372,7 @@ const PricingPage = () => {
                         onClick={() => setEstimatorTier('pro')}
                         className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
                           estimatorTier === 'pro'
-                            ? 'border-accent bg-accent/5'
+                            ? 'border-primary bg-primary/5'
                             : 'border-secondary-300/30 hover:border-secondary-300'
                         }`}
                       >
@@ -383,7 +383,7 @@ const PricingPage = () => {
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                             estimatorTier === 'pro'
-                              ? 'bg-accent border-accent'
+                              ? 'bg-primary border-primary'
                               : 'border-secondary-300'
                           }`}>
                             {estimatorTier === 'pro' && (
@@ -399,7 +399,7 @@ const PricingPage = () => {
                 {/* Cost Display */}
                 <div className="bg-white rounded-xl p-6 text-center border border-secondary-300/30">
                   <p className="text-sm text-secondary-600 mb-2">Estimated Cost</p>
-                  <p className="text-5xl font-bold text-accent mb-2">
+                  <p className="text-5xl font-bold text-primary mb-2">
                     ${estimatedCost.toFixed(2)}
                   </p>
                   <p className="text-sm text-secondary-700">
@@ -502,13 +502,13 @@ const PricingPage = () => {
                 <>
                   <Link
                     to="/signup"
-                    className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
+                    className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
                   >
                     Start Free Trial
                   </Link>
                   <Link
                     to="/login"
-                    className="border-2 border-white text-white hover:bg-white hover:text-accent-600 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
+                    className="border-2 border-white text-white hover:bg-white hover:text-primary-600 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
                   >
                     Sign In
                   </Link>
@@ -516,7 +516,7 @@ const PricingPage = () => {
               ) : (
                 <Link
                   to="/create"
-                  className="bg-white text-accent hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
+                  className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
                 >
                   Create Your First Entry
                 </Link>

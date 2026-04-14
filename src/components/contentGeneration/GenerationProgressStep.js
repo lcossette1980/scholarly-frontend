@@ -49,7 +49,7 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
         <p className="text-gray-600 mb-6">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700"
+          className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-700"
         >
           Try Again
         </button>
@@ -86,7 +86,7 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
               cx="64"
               cy="64"
               r="56"
-              stroke="#3B82F6"
+              stroke="#316094"
               strokeWidth="8"
               fill="none"
               strokeDasharray={`${2 * Math.PI * 56}`}
@@ -97,20 +97,20 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600">{progress}%</p>
-              <Sparkles className="w-4 h-4 text-blue-400 mx-auto mt-1 animate-pulse" />
+              <p className="text-2xl font-bold text-primary">{progress}%</p>
+              <Sparkles className="w-4 h-4 text-primary-400 mx-auto mt-1 animate-pulse" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Current Section */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+      <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
         <div className="flex items-center space-x-3">
-          <Loader className="w-5 h-5 text-blue-600 animate-spin" />
+          <Loader className="w-5 h-5 text-primary animate-spin" />
           <div>
-            <p className="text-sm font-medium text-blue-900">Currently Writing</p>
-            <p className="text-sm text-blue-700">{currentSection}</p>
+            <p className="text-sm font-medium text-primary-900">Currently Writing</p>
+            <p className="text-sm text-primary-700">{currentSection}</p>
           </div>
         </div>
       </div>

@@ -198,7 +198,7 @@ const AdminDashboardPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
+          <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
           <p className="text-secondary-700">Loading admin dashboard...</p>
         </div>
       </div>
@@ -258,7 +258,7 @@ const AdminDashboardPage = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`pb-3 px-4 font-semibold transition-colors relative ${
                 activeTab === tab.id
-                  ? 'text-accent border-b-2 border-accent-600'
+                  ? 'text-primary border-b-2 border-primary'
                   : 'text-secondary-600 hover:text-secondary-900'
               }`}
             >
@@ -290,7 +290,7 @@ const AdminDashboardPage = () => {
                       title="Total Users"
                       value={stats.users?.total || 0}
                       subtitle={`${stats.users?.active || 0} active (${stats.users?.active_percent || 0}%)`}
-                      color="blue-600"
+                      color="primary"
                     />
                   </StaggerItem>
                   <StaggerItem>
@@ -308,7 +308,7 @@ const AdminDashboardPage = () => {
                       title="Total Entries"
                       value={stats.entries?.total || 0}
                       subtitle={`${stats.entries?.last_30_days || 0} last 30 days`}
-                      color="purple-600"
+                      color="primary-600"
                     />
                   </StaggerItem>
                   <StaggerItem>
@@ -405,8 +405,8 @@ const AdminDashboardPage = () => {
                           <td className="py-3 px-4 text-sm text-secondary-900">{user.displayName || 'N/A'}</td>
                           <td className="py-3 px-4">
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              user.subscription?.plan === 'researcher' ? 'bg-purple-100 text-purple-800' :
-                              user.subscription?.plan === 'student' ? 'bg-blue-100 text-blue-800' :
+                              user.subscription?.plan === 'researcher' ? 'bg-primary-100 text-primary-800' :
+                              user.subscription?.plan === 'student' ? 'bg-primary-50 text-primary-700' :
                               'bg-gray-100 text-gray-800'
                             }`}>
                               {user.subscription?.plan || 'trial'}
@@ -462,7 +462,7 @@ const AdminDashboardPage = () => {
                               <h3 className="text-lg font-semibold text-secondary-900">{msg.subject}</h3>
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                 msg.category === 'bug' ? 'bg-red-100 text-red-800' :
-                                msg.category === 'feature' ? 'bg-blue-100 text-blue-800' :
+                                msg.category === 'feature' ? 'bg-primary-100 text-primary-800' :
                                 msg.category === 'billing' ? 'bg-yellow-100 text-yellow-800' :
                                 'bg-gray-100 text-gray-800'
                               }`}>
@@ -530,7 +530,7 @@ const AdminDashboardPage = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search by title or subject..."
-                        className="w-full pl-10 pr-4 py-3 border border-secondary-300/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20"
+                        className="w-full pl-10 pr-4 py-3 border border-secondary-300/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
                       />
                     </div>
                     <div className="text-sm text-secondary-600 whitespace-nowrap">
@@ -542,7 +542,7 @@ const AdminDashboardPage = () => {
                 {/* Entries Table */}
                 {entriesLoading ? (
                   <div className="card card-floating text-center py-12">
-                    <RefreshCw className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
+                    <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
                     <p className="text-secondary-700">Loading entries...</p>
                   </div>
                 ) : (
@@ -583,7 +583,7 @@ const AdminDashboardPage = () => {
                               >
                                 <td className="px-4 py-3">
                                   <div className="flex items-center space-x-2">
-                                    <BookOpen className="w-4 h-4 text-accent flex-shrink-0" />
+                                    <BookOpen className="w-4 h-4 text-primary flex-shrink-0" />
                                     <span className="text-sm text-secondary-900 font-medium line-clamp-2">
                                       {entry.title}
                                     </span>
@@ -606,7 +606,7 @@ const AdminDashboardPage = () => {
                                   </span>
                                 </td>
                                 <td className="px-4 py-3">
-                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent">
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                                     {entry.citationType}
                                   </span>
                                 </td>
@@ -731,7 +731,7 @@ const AdminDashboardPage = () => {
                                 <ul className="space-y-2">
                                   {selectedEntry.keyFindings.map((finding, index) => (
                                     <li key={index} className="flex items-start space-x-2">
-                                      <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                                      <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                                       <span className="text-secondary-800">{finding}</span>
                                     </li>
                                   ))}
@@ -756,7 +756,7 @@ const AdminDashboardPage = () => {
                               <h4 className="text-sm font-semibold text-secondary-900 mb-2">Quotes</h4>
                               <div className="space-y-3">
                                 {selectedEntry.quotes.map((quote, index) => (
-                                  <div key={index} className="bg-secondary-50/30 rounded-lg p-4 border-l-4 border-accent-600">
+                                  <div key={index} className="bg-secondary-50/30 rounded-lg p-4 border-l-4 border-primary">
                                     <p className="text-secondary-800 italic mb-2">"{quote.text}"</p>
                                     <p className="text-sm text-secondary-600">— Page {quote.page}</p>
                                   </div>

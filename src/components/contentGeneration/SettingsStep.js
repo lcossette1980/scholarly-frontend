@@ -46,12 +46,12 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                   onClick={() => updateSetting('document_type', type.value)}
                   className={`p-4 border-2 rounded-xl transition-all text-center ${
                     isSelected
-                      ? 'border-accent bg-accent/5'
-                      : 'border-secondary-200 hover:border-accent/40'
+                      ? 'border-primary bg-primary/5'
+                      : 'border-secondary-200 hover:border-primary/40'
                   }`}
                 >
-                  <Icon className={`w-6 h-6 mx-auto mb-2 ${isSelected ? 'text-accent' : 'text-secondary-400'}`} />
-                  <span className={`text-sm font-medium ${isSelected ? 'text-accent' : 'text-secondary-700'}`}>
+                  <Icon className={`w-6 h-6 mx-auto mb-2 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
+                  <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
                     {type.label}
                   </span>
                 </button>
@@ -73,7 +73,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
               step="250"
               value={settings.target_words}
               onChange={(e) => updateSetting('target_words', parseInt(e.target.value))}
-              className="flex-1 h-2 bg-secondary-200 rounded-lg appearance-none cursor-pointer accent-accent"
+              className="flex-1 h-2 bg-secondary-200 rounded-lg appearance-none cursor-pointer accent-primary"
             />
             <div className="w-32 bg-secondary-50 rounded-xl px-4 py-2 text-center border border-secondary-100">
               <span className="font-semibold text-secondary-900">{settings.target_words}</span>
@@ -101,12 +101,12 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                   onClick={() => updateSetting('approach', approach.value)}
                   className={`p-4 border-2 rounded-xl transition-all text-center ${
                     isSelected
-                      ? 'border-accent bg-accent/5'
-                      : 'border-secondary-200 hover:border-accent/40'
+                      ? 'border-primary bg-primary/5'
+                      : 'border-secondary-200 hover:border-primary/40'
                   }`}
                 >
-                  <Compass className={`w-5 h-5 mx-auto mb-1 ${isSelected ? 'text-accent' : 'text-secondary-400'}`} />
-                  <span className={`text-sm font-medium block ${isSelected ? 'text-accent' : 'text-secondary-700'}`}>
+                  <Compass className={`w-5 h-5 mx-auto mb-1 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
+                  <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
                     {approach.label}
                   </span>
                   <span className="text-xs text-secondary-400 block mt-1">{approach.description}</span>
@@ -130,8 +130,8 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                   onClick={() => updateSetting('tone', tone)}
                   className={`p-3 border-2 rounded-xl transition-all capitalize ${
                     isSelected
-                      ? 'border-accent bg-accent/5 text-accent'
-                      : 'border-secondary-200 hover:border-accent/40 text-secondary-700'
+                      ? 'border-primary bg-primary/5 text-primary'
+                      : 'border-secondary-200 hover:border-primary/40 text-secondary-700'
                   }`}
                 >
                   <span className="text-sm font-medium">{tone}</span>
@@ -152,7 +152,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                 type="checkbox"
                 checked={settings.include_hook}
                 onChange={(e) => updateSetting('include_hook', e.target.checked)}
-                className="w-4 h-4 text-accent rounded focus:ring-2 focus:ring-accent"
+                className="w-4 h-4 text-primary rounded focus:ring-2 focus:ring-primary"
               />
               <div className="flex-1">
                 <span className="text-sm font-medium text-secondary-800">Include Opening Hook</span>
@@ -165,7 +165,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                 type="checkbox"
                 checked={settings.include_conclusion}
                 onChange={(e) => updateSetting('include_conclusion', e.target.checked)}
-                className="w-4 h-4 text-accent rounded focus:ring-2 focus:ring-accent"
+                className="w-4 h-4 text-primary rounded focus:ring-2 focus:ring-primary"
               />
               <div className="flex-1">
                 <span className="text-sm font-medium text-secondary-800">Include Conclusion</span>
@@ -176,9 +176,9 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
         </div>
 
         {/* Estimated Output */}
-        <div className="bg-accent/5 border border-accent/20 rounded-xl p-4">
+        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
           <h4 className="font-semibold text-secondary-900 mb-2 flex items-center space-x-2">
-            <Target className="w-4 h-4 text-accent" />
+            <Target className="w-4 h-4 text-primary" />
             <span>Estimated Output</span>
           </h4>
           <div className="grid grid-cols-2 gap-4 text-sm">

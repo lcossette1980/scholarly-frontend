@@ -19,8 +19,8 @@ const HeroCarousel = () => {
       subtitle: "Complete writing workflow in one platform",
       description: "Upload PDFs, generate source summaries, create ideas & outlines, draft complete documents. DraftEngine handles every step from sources to final draft.",
       icon: Sparkles,
-      iconColor: "text-purple-600",
-      bgColor: "from-purple-50 via-white to-indigo-50",
+      iconColor: "text-primary-600",
+      bgColor: "from-primary-50 via-white to-primary-50/30",
       isMainHero: true,
       features: [
         "Articles & essays",
@@ -34,8 +34,8 @@ const HeroCarousel = () => {
       subtitle: "Detailed summaries in 90 seconds",
       description: "Upload any PDF and get a complete source analysis. AI identifies key arguments, discovers interesting angles, and pulls notable passages with page numbers.",
       icon: FileText,
-      iconColor: "text-accent",
-      bgColor: "from-red-50 via-white to-orange-50",
+      iconColor: "text-primary",
+      bgColor: "from-primary-50 via-white to-accent-50/30",
       features: [
         "Key Arguments",
         "Interesting Angles",
@@ -48,8 +48,8 @@ const HeroCarousel = () => {
       subtitle: "AI-powered content ideas from YOUR sources",
       description: "After building your source library, generate content ideas and complete outlines based on your sources. AI identifies opportunities and creates structured document outlines tied directly to your sources.",
       icon: Brain,
-      iconColor: "text-green-600",
-      bgColor: "from-green-50 via-white to-teal-50",
+      iconColor: "text-accent-600",
+      bgColor: "from-accent-50 via-white to-primary-50/30",
       features: [
         "Identifies content opportunities",
         "3-5 topic suggestions",
@@ -62,8 +62,8 @@ const HeroCarousel = () => {
       subtitle: "Fully-referenced drafts in minutes",
       description: "Turn your sources and outline into a complete document. Choose your document type, word count, writing approach, and tone. AI generates polished, source-backed content ready for editing.",
       icon: BookOpen,
-      iconColor: "text-indigo-600",
-      bgColor: "from-indigo-50 via-white to-violet-50",
+      iconColor: "text-primary-600",
+      bgColor: "from-primary-50 via-white to-primary-50/30",
       features: [
         "2,500-10,000 words",
         "Multiple document types",
@@ -94,13 +94,8 @@ const HeroCarousel = () => {
 
   return (
     <div className="relative">
-      {/* Decorative background orbs */}
-      <div className="gradient-orb w-72 h-72 bg-accent-400 top-0 right-0" />
-      <div className="gradient-orb w-96 h-96 bg-primary-400 -bottom-20 -left-20" />
-      <div className="gradient-orb w-64 h-64 bg-violet-400 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-
       {/* Carousel Container */}
-      <div className={`relative bg-gradient-to-br ${slide.bgColor} rounded-2xl overflow-hidden`}>
+      <div className={`relative bg-gradient-to-br ${slide.bgColor} rounded-lg overflow-hidden`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
@@ -158,7 +153,7 @@ const HeroCarousel = () => {
                   >
                     {slide.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center space-x-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span className="text-sm text-secondary-700">{feature}</span>
                       </div>
                     ))}
@@ -189,7 +184,7 @@ const HeroCarousel = () => {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`p-2 transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded-full ${
+            className={`p-2 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full ${
               index === currentSlide
                 ? ''
                 : ''
@@ -198,8 +193,8 @@ const HeroCarousel = () => {
           >
             <div className={`transition-all ${
               index === currentSlide
-                ? 'w-8 h-2 bg-accent rounded-full'
-                : 'w-2 h-2 bg-primary-900/30 rounded-full hover:bg-primary-900/50'
+                ? 'w-8 h-2 bg-primary rounded-full'
+                : 'w-2 h-2 bg-primary/30 rounded-full hover:bg-primary/50'
             }`} />
           </button>
         ))}
@@ -213,9 +208,9 @@ const HeroCarousel = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 ${
+              className={`px-3 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                 index === currentSlide
-                  ? 'bg-accent text-white'
+                  ? 'bg-primary text-white'
                   : 'bg-white text-secondary-600 hover:bg-secondary-50 border border-secondary-300/30'
               }`}
             >

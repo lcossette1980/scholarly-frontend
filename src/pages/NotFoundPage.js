@@ -36,7 +36,7 @@ const NotFoundPage = () => {
               </Link>
             </motion.div>
             <div className="text-sm text-secondary-500">
-              Need help? <Link to="/help" className="text-accent hover:text-accent-600/80">Contact support</Link>
+              Need help? <Link to="/help" className="text-primary hover:text-primary-600/80">Contact support</Link>
             </div>
           </div>
         </FadeIn>

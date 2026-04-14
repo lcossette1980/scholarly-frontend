@@ -169,7 +169,7 @@ const ContentHistoryPage = () => {
       case 'completed':
         return <CheckCircle className="w-5 h-5 text-green-600" />;
       case 'processing':
-        return <Clock className="w-5 h-5 text-accent animate-spin" />;
+        return <Clock className="w-5 h-5 text-primary animate-spin" />;
       case 'failed':
         return <XCircle className="w-5 h-5 text-red-600" />;
       default:
@@ -182,7 +182,7 @@ const ContentHistoryPage = () => {
       case 'completed':
         return 'bg-green-100 text-green-800';
       case 'processing':
-        return 'bg-accent/10 text-accent';
+        return 'bg-primary/10 text-primary';
       case 'failed':
         return 'bg-red-100 text-red-800';
       default:
@@ -194,7 +194,7 @@ const ContentHistoryPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Sparkles className="w-16 h-16 text-accent mx-auto mb-4 animate-pulse" />
+          <Sparkles className="w-16 h-16 text-primary mx-auto mb-4 animate-pulse" />
           <p className="text-secondary-700">Loading your content history...</p>
         </div>
       </div>
@@ -297,7 +297,7 @@ const ContentHistoryPage = () => {
                       <AnimatedCounter value={jobs.length} />
                     </p>
                   </div>
-                  <FileText className="w-8 h-8 text-accent" />
+                  <FileText className="w-8 h-8 text-primary" />
                 </div>
               </div>
             </StaggerItem>
@@ -319,11 +319,11 @@ const ContentHistoryPage = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-secondary-600">Processing</p>
-                    <p className="text-2xl font-bold text-accent">
+                    <p className="text-2xl font-bold text-primary">
                       <AnimatedCounter value={jobs.filter(j => j.status === 'processing').length} />
                     </p>
                   </div>
-                  <Clock className="w-8 h-8 text-accent" />
+                  <Clock className="w-8 h-8 text-primary" />
                 </div>
               </div>
             </StaggerItem>
@@ -336,7 +336,7 @@ const ContentHistoryPage = () => {
                       <AnimatedCounter value={jobs.filter(j => j.status === 'completed').reduce((sum, j) => sum + (j.wordCount || 0), 0)} />
                     </p>
                   </div>
-                  <Sparkles className="w-8 h-8 text-accent" />
+                  <Sparkles className="w-8 h-8 text-primary" />
                 </div>
               </div>
             </StaggerItem>
@@ -386,7 +386,7 @@ const ContentHistoryPage = () => {
                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(job.status)}`}>
                                   {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                                 </span>
-                                <span className="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium capitalize">
+                                <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium capitalize">
                                   {job.tier} Tier
                                 </span>
                                 <span className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs font-medium capitalize">
@@ -430,11 +430,11 @@ const ContentHistoryPage = () => {
                           <div className="mb-3">
                             <div className="flex items-center justify-between text-sm mb-1">
                               <span className="text-secondary-700">{job.currentSection || 'Processing...'}</span>
-                              <span className="text-accent font-medium">{job.progress || 0}%</span>
+                              <span className="text-primary font-medium">{job.progress || 0}%</span>
                             </div>
                             <div className="w-full bg-secondary-200 rounded-full h-2">
                               <div
-                                className="bg-accent h-2 rounded-full transition-all"
+                                className="bg-primary h-2 rounded-full transition-all"
                                 style={{ width: `${job.progress || 0}%` }}
                               />
                             </div>
@@ -456,7 +456,7 @@ const ContentHistoryPage = () => {
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleView(job)}
-                            className="p-2 text-secondary-600 hover:text-accent hover:bg-accent/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+                            className="p-2 text-secondary-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                             title="View"
                             aria-label="View content"
                           >
@@ -466,7 +466,7 @@ const ContentHistoryPage = () => {
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleDownloadTxt(job)}
-                            className="p-2 text-secondary-600 hover:text-accent hover:bg-accent/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+                            className="p-2 text-secondary-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                             title="Download TXT"
                             aria-label="Download as TXT file"
                           >
@@ -476,7 +476,7 @@ const ContentHistoryPage = () => {
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => handleDownloadWord(job)}
-                            className="p-2 text-secondary-600 hover:text-accent hover:bg-accent/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+                            className="p-2 text-secondary-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                             title="Download Word"
                             aria-label="Download as Word document"
                           >

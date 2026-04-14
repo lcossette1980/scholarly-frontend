@@ -139,7 +139,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
         <p className="text-gray-600">Loading your content...</p>
       </div>
     );
@@ -180,7 +180,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
               </button>
               <button
                 onClick={handleDownloadWord}
-                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 bg-primary hover:bg-primary-700 text-white rounded-lg font-medium transition-colors"
               >
                 <Download className="w-4 h-4" />
                 <span>Word</span>
@@ -222,12 +222,12 @@ const ReviewEditStep = ({ jobId, onBack }) => {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
           <div className="flex items-center space-x-2 mb-1">
-            <FileText className="w-4 h-4 text-blue-600" />
-            <span className="text-sm font-medium text-blue-900">Word Count</span>
+            <FileText className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary-900">Word Count</span>
           </div>
-          <p className="text-2xl font-bold text-blue-700">{wordCount.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-primary-700">{wordCount.toLocaleString()}</p>
         </div>
 
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
@@ -238,12 +238,12 @@ const ReviewEditStep = ({ jobId, onBack }) => {
           <p className="text-2xl font-bold text-green-700">{pageCount}</p>
         </div>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
           <div className="flex items-center space-x-2 mb-1">
-            <Check className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-900">Status</span>
+            <Check className="w-4 h-4 text-accent" />
+            <span className="text-sm font-medium text-primary-900">Status</span>
           </div>
-          <p className="text-lg font-bold text-purple-700 capitalize">{jobData?.status}</p>
+          <p className="text-lg font-bold text-primary-700 capitalize">{jobData?.status}</p>
         </div>
       </div>
 
@@ -266,7 +266,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
               return (
                 <div key={idx} className="mb-8">
                   {heading && (
-                    <h2 className="text-2xl font-bold text-secondary-900 mb-4 pb-2 border-b-2 border-accent-600">
+                    <h2 className="text-2xl font-bold text-secondary-900 mb-4 pb-2 border-b-2 border-primary-600">
                       {heading}
                     </h2>
                   )}

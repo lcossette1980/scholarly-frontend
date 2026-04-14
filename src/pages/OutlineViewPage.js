@@ -390,7 +390,7 @@ const OutlineViewPage = () => {
             <FadeIn delay={0.3}>
               <div className="mb-8">
                 <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
-                  <FileText className="w-5 h-5 mr-2 text-accent" />
+                  <FileText className="w-5 h-5 mr-2 text-primary" />
                   Introduction
                 </h3>
                 <p className="text-secondary-800 leading-relaxed">
@@ -442,7 +442,7 @@ const OutlineViewPage = () => {
                                 <ul className="space-y-2">
                                   {section.key_points.map((point, pointIdx) => (
                                     <li key={pointIdx} className="flex items-start space-x-2">
-                                      <span className="text-accent mt-1">•</span>
+                                      <span className="text-primary mt-1">•</span>
                                       <span className="text-secondary-800">{point}</span>
                                     </li>
                                   ))}
@@ -451,14 +451,14 @@ const OutlineViewPage = () => {
 
                               <div className="bg-white rounded-lg p-4">
                                 <h4 className="text-sm font-semibold text-secondary-900 mb-2 flex items-center">
-                                  <LinkIcon className="w-4 h-4 mr-1 text-accent" />
+                                  <LinkIcon className="w-4 h-4 mr-1 text-primary" />
                                   Supporting Sources:
                                 </h4>
                                 <div className="space-y-2">
                                   {section.supporting_sources.map((sourceId, srcIdx) => {
                                     const source = outline.sources_used.find(s => s.id === sourceId);
                                     return (
-                                      <div key={srcIdx} className="text-sm text-secondary-700 pl-4 border-l-2 border-accent-600/30">
+                                      <div key={srcIdx} className="text-sm text-secondary-700 pl-4 border-l-2 border-primary/30">
                                         {source ? source.citation : `Source ${sourceId}`}
                                       </div>
                                     );
@@ -479,7 +479,7 @@ const OutlineViewPage = () => {
             <FadeIn delay={0.3}>
               <div className="mt-8 pt-6 border-t border-secondary-300/20">
                 <h3 className="text-xl font-bold text-secondary-900 mb-3 flex items-center">
-                  <BookOpen className="w-5 h-5 mr-2 text-accent" />
+                  <BookOpen className="w-5 h-5 mr-2 text-primary" />
                   Conclusion
                 </h3>
                 <p className="text-secondary-800 leading-relaxed">

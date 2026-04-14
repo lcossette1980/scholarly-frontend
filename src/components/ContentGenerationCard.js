@@ -19,7 +19,7 @@ const ContentGenerationCard = ({ entries }) => {
 
   return (
     <FadeIn direction="up">
-      <div className="card border border-accent/20 bg-accent/5 p-6 mb-6 hover:shadow-md transition-all duration-300">
+      <div className="card border border-primary/20 bg-primary/5 p-6 mb-6 hover:shadow-md transition-all duration-300">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h3 className="text-lg font-bold text-secondary-900 mb-2">
@@ -48,7 +48,6 @@ const ContentGenerationCard = ({ entries }) => {
 
             <div className="flex items-center space-x-3">
               <motion.button
-                whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={handleStart}
                 className="btn btn-primary text-sm px-5 py-2"

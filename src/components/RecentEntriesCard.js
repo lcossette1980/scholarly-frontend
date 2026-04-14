@@ -52,7 +52,7 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
           <h2 className="text-lg font-semibold text-secondary-900">Recent Source Entries</h2>
           <Link
             to="/sources"
-            className="text-accent hover:text-accent-700 font-medium text-sm flex items-center space-x-1 transition-colors"
+            className="text-primary hover:text-primary-700 font-medium text-sm flex items-center space-x-1 transition-colors"
           >
             <span>View All</span>
             <ArrowRight className="w-4 h-4" />
@@ -80,7 +80,7 @@ const RecentEntriesCard = ({ entries, loading, onView, onAnalyze, onDelete }) =>
           </p>
           <Link
             to="/sources"
-            className="text-sm font-medium text-accent hover:text-accent-700 transition-colors"
+            className="text-sm font-medium text-primary hover:text-primary-700 transition-colors"
           >
             Manage All Entries
           </Link>
@@ -156,7 +156,7 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
       <div className="flex items-start justify-between space-x-4">
         {/* Entry Info */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-secondary-900 mb-1 truncate group-hover:text-accent transition-colors text-sm">
+          <h3 className="font-semibold text-secondary-900 mb-1 truncate group-hover:text-primary transition-colors text-sm">
             {title}
           </h3>
           <div className="flex items-center space-x-3 text-xs text-secondary-500">
@@ -185,7 +185,7 @@ const EntryRow = ({ entry, onView, onAnalyze, onDelete }) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => onView(entry)}
-            className="p-2 text-secondary-400 hover:text-accent hover:bg-accent/5 rounded-lg transition-all"
+            className="p-2 text-secondary-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
             title="View Details"
           >
             <Eye className="w-4 h-4" />

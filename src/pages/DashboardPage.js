@@ -226,7 +226,7 @@ const DashboardPage = () => {
     : 0;
 
   return (
-    <div className="min-h-screen py-8 bg-gradient-to-br from-secondary-50 via-white to-accent-50/30">
+    <div className="min-h-screen py-8 bg-[#f5f6f8]">
       <div className="container mx-auto px-6">
         {/* Header */}
         <FadeIn direction="left">
@@ -241,10 +241,7 @@ const DashboardPage = () => {
             </div>
 
             <div className="mt-4 lg:mt-0">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
+              <motion.div>
                 <Link
                   to="/create"
                   onClick={handleCreateNew}
@@ -281,14 +278,14 @@ const DashboardPage = () => {
         {!loading && entries.length > 0 && (
           <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <StaggerItem>
-              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ y: -1 }}>
                 <Link
                   to="/content/generate"
                   className="card group block h-full"
                 >
                   <h3 className="font-semibold text-secondary-900 mb-1">Generate Content</h3>
                   <p className="text-sm text-secondary-500 mb-3">Create content from your sources</p>
-                  <span className="text-accent text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
+                  <span className="text-primary text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
                     Start <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </span>
                 </Link>
@@ -296,14 +293,14 @@ const DashboardPage = () => {
             </StaggerItem>
 
             <StaggerItem>
-              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ y: -1 }}>
                 <Link
                   to="/sources"
                   className="card group block h-full"
                 >
                   <h3 className="font-semibold text-secondary-900 mb-1">Idea & Outline</h3>
                   <p className="text-sm text-secondary-500 mb-3">Analyze sources for topics</p>
-                  <span className="text-accent text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
+                  <span className="text-primary text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
                     Start <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </span>
                 </Link>
@@ -311,14 +308,14 @@ const DashboardPage = () => {
             </StaggerItem>
 
             <StaggerItem>
-              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ y: -1 }}>
                 <button
                   onClick={handleExportAll}
                   className="card group text-left w-full h-full"
                 >
                   <h3 className="font-semibold text-secondary-900 mb-1">Export</h3>
                   <p className="text-sm text-secondary-500 mb-3">Download source summaries</p>
-                  <span className="text-accent text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
+                  <span className="text-primary text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
                     Export <Download className="w-3.5 h-3.5 ml-1" />
                   </span>
                 </button>
@@ -352,20 +349,20 @@ const DashboardPage = () => {
                       <span className="text-secondary-700">
                         {userDocument.subscription.entriesUsed} of {userDocument.subscription.entriesLimit} entries used
                       </span>
-                      <span className="text-accent font-medium">
+                      <span className="text-primary font-medium">
                         {Math.round(usagePercentage)}%
                       </span>
                     </div>
                     <div className="w-full bg-secondary-200/30 rounded-full h-2">
                       <motion.div
-                        className="bg-accent h-2 rounded-full"
+                        className="bg-primary h-2 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${usagePercentage}%` }}
                         transition={{ duration: 1, delay: 0.5, ease: 'easeOut' }}
                       />
                     </div>
                     {userDocument.subscription.entriesUsed >= userDocument.subscription.entriesLimit && (
-                      <p className="text-sm text-accent mt-2">
+                      <p className="text-sm text-primary mt-2">
                         You've reached your limit. Upgrade for unlimited entries!
                       </p>
                     )}
@@ -411,7 +408,7 @@ const DashboardPage = () => {
                         className="btn btn-outline btn-sm"
                       >
                         {refreshingSubscription ? (
-                          <div className="w-4 h-4 border-2 border-accent-600/30 border-t-accent rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                         ) : (
                           'Sync'
                         )}
@@ -441,7 +438,7 @@ const DashboardPage = () => {
                         <Lock className="w-5 h-5 text-secondary-300" />
                         <span className="text-secondary-600">
                           Idea & Outline Generator
-                          <Link to="/pricing" className="text-accent ml-2 hover:underline">Upgrade to unlock</Link>
+                          <Link to="/pricing" className="text-primary ml-2 hover:underline">Upgrade to unlock</Link>
                         </span>
                       </div>
                     )}

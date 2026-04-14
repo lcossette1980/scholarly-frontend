@@ -243,7 +243,7 @@ const ForgotPasswordPage = () => {
                     setEmailSent(false);
                     setEmail('');
                   }}
-                  className="text-accent hover:text-accent-600/80 font-medium"
+                  className="text-primary hover:text-primary-600/80 font-medium"
                 >
                   try again
                 </button>

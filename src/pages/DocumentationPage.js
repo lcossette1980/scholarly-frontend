@@ -90,7 +90,7 @@ const DocumentationPage = () => {
                     onClick={() => setActiveSection(section.id)}
                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                       activeSection === section.id
-                        ? 'bg-accent text-white'
+                        ? 'bg-primary text-white'
                         : 'text-secondary-900 hover:bg-secondary-200/10'
                     }`}
                   >
@@ -121,7 +121,7 @@ const DocumentationPage = () => {
                   <p className="text-secondary-700 mb-4">
                     Sign up for a free account to get started with 5 source summary entries per month.
                   </p>
-                  <div className="bg-accent/5 border border-accent-600/20 rounded-lg p-4">
+                  <div className="bg-primary/5 border border-primary-600/20 rounded-lg p-4">
                     <p className="text-secondary-800">
                       💡 <strong>Tip:</strong> Use your institutional email for potential educational discounts.
                     </p>
@@ -275,56 +275,56 @@ const { task_id } = await response.json();`}
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="card card-hover">
-                    <FileText className="w-8 h-8 text-accent mb-4" />
+                    <FileText className="w-8 h-8 text-primary mb-4" />
                     <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                       Optimizing Your Focus
                     </h3>
                     <p className="text-secondary-700 mb-4">
                       Learn how to write effective focus statements for better AI analysis.
                     </p>
-                    <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
+                    <button className="text-primary hover:text-primary-600/80 font-medium flex items-center space-x-1">
                       <span>Read Guide</span>
                       <ExternalLink className="w-4 h-4" />
                     </button>
                   </div>
 
                   <div className="card card-hover">
-                    <FileText className="w-8 h-8 text-accent mb-4" />
+                    <FileText className="w-8 h-8 text-primary mb-4" />
                     <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                       Citation Style Guide
                     </h3>
                     <p className="text-secondary-700 mb-4">
                       Understanding different citation formats and when to use them.
                     </p>
-                    <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
+                    <button className="text-primary hover:text-primary-600/80 font-medium flex items-center space-x-1">
                       <span>Read Guide</span>
                       <ExternalLink className="w-4 h-4" />
                     </button>
                   </div>
 
                   <div className="card card-hover">
-                    <FileText className="w-8 h-8 text-accent mb-4" />
+                    <FileText className="w-8 h-8 text-primary mb-4" />
                     <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                       Batch Processing
                     </h3>
                     <p className="text-secondary-700 mb-4">
                       Efficiently process multiple documents for large projects.
                     </p>
-                    <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
+                    <button className="text-primary hover:text-primary-600/80 font-medium flex items-center space-x-1">
                       <span>Read Guide</span>
                       <ExternalLink className="w-4 h-4" />
                     </button>
                   </div>
 
                   <div className="card card-hover">
-                    <FileText className="w-8 h-8 text-accent mb-4" />
+                    <FileText className="w-8 h-8 text-primary mb-4" />
                     <h3 className="text-lg font-semibold text-secondary-900 mb-2">
                       Team Collaboration
                     </h3>
                     <p className="text-secondary-700 mb-4">
                       Share and collaborate on source summary entries with your team.
                     </p>
-                    <button className="text-accent hover:text-accent-600/80 font-medium flex items-center space-x-1">
+                    <button className="text-primary hover:text-primary-600/80 font-medium flex items-center space-x-1">
                       <span>Read Guide</span>
                       <ExternalLink className="w-4 h-4" />
                     </button>

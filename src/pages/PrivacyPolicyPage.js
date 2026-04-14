@@ -13,7 +13,7 @@ const PrivacyPolicyPage = () => {
         path="/privacy"
       />
       <div className="container mx-auto px-6 max-w-4xl">
-        <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400" />
+        <div className="h-1 bg-gradient-to-r from-primary-400 via-primary-400 to-primary-400" />
         <FadeIn direction="up">
           <div className="text-center mb-12 mt-8">
             <div className="w-16 h-16 bg-gradient-brand rounded-full flex items-center justify-center mx-auto mb-6">
@@ -34,21 +34,21 @@ const PrivacyPolicyPage = () => {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <UserCheck className="w-5 h-5 text-accent mt-1" />
+                  <UserCheck className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold text-secondary-900">Account Information</h3>
                     <p className="text-secondary-700">Name, email address, and authentication data when you create an account.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <Database className="w-5 h-5 text-accent mt-1" />
+                  <Database className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold text-secondary-900">Usage Data</h3>
                     <p className="text-secondary-700">Information about how you use our service, including source entries created and writing focus areas.</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <Eye className="w-5 h-5 text-accent mt-1" />
+                  <Eye className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold text-secondary-900">Document Content</h3>
                     <p className="text-secondary-700">PDF documents you upload for analysis (processed securely and not stored permanently).</p>
@@ -74,9 +74,9 @@ const PrivacyPolicyPage = () => {
               <h2 className="text-2xl font-bold text-secondary-900 mb-4">
                 Data <span className="text-gradient">Security</span>
               </h2>
-              <div className="bg-accent/5 border border-accent-600/20 rounded-lg p-6">
+              <div className="bg-primary/5 border border-primary-600/20 rounded-lg p-6">
                 <div className="flex items-center space-x-3 mb-3">
-                  <Lock className="w-6 h-6 text-accent" />
+                  <Lock className="w-6 h-6 text-primary" />
                   <h3 className="font-semibold text-secondary-900">Enterprise-Grade Security</h3>
                 </div>
                 <p className="text-secondary-800">
@@ -115,12 +115,12 @@ const PrivacyPolicyPage = () => {
             <section>
               <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-6">
                 <div className="flex items-center space-x-3 mb-3">
-                  <Mail className="w-6 h-6 text-accent" />
+                  <Mail className="w-6 h-6 text-primary" />
                   <h3 className="font-semibold text-secondary-900">Contact Us</h3>
                 </div>
                 <p className="text-secondary-800">
                   For privacy questions or to exercise your rights, contact us at{' '}
-                  <a href="mailto:privacy@scholarlyaiapp.com" className="text-accent hover:text-accent-600/80">
+                  <a href="mailto:privacy@scholarlyaiapp.com" className="text-primary hover:text-primary-600/80">
                     privacy@scholarlyaiapp.com
                   </a>
                 </p>

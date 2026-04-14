@@ -159,8 +159,8 @@ const OutlineSelectionStep = ({
                   key={outline.id}
                   className={`border rounded-lg transition-all ${
                     isSelected
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300'
+                      ? 'border-primary bg-primary-50'
+                      : 'border-gray-200 hover:border-primary/40'
                   }`}
                 >
                   <div
@@ -170,7 +170,7 @@ const OutlineSelectionStep = ({
                     <div className="flex items-start space-x-3">
                       <div className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-1 transition-all ${
                         isSelected
-                          ? 'bg-blue-500 border-blue-500'
+                          ? 'bg-primary border-primary'
                           : 'border-gray-300'
                       }`}>
                         {isSelected && <Check className="w-3 h-3 text-white" />}
@@ -183,7 +183,7 @@ const OutlineSelectionStep = ({
                             value={editingTitle}
                             onChange={(e) => setEditingTitle(e.target.value)}
                             onClick={(e) => e.stopPropagation()}
-                            className="w-full px-3 py-1.5 border border-blue-300 rounded-lg font-semibold text-secondary-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-1.5 border border-primary/40 rounded-lg font-semibold text-secondary-900 focus:outline-none focus:ring-2 focus:ring-primary"
                           />
                         ) : (
                           <h4 className="font-semibold text-secondary-900 mb-1">{outline.title}</h4>
@@ -212,7 +212,7 @@ const OutlineSelectionStep = ({
                         ) : (
                           <button
                             onClick={(e) => startEditing(outline, e)}
-                            className="text-gray-400 hover:text-blue-600 p-1"
+                            className="text-gray-400 hover:text-primary p-1"
                             title="Edit outline"
                           >
                             <Edit3 className="w-4 h-4" />
@@ -245,14 +245,14 @@ const OutlineSelectionStep = ({
                                     value={section.heading}
                                     onChange={(e) => updateEditingSection(idx, 'heading', e.target.value)}
                                     placeholder="Section heading"
-                                    className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                                   />
                                   <textarea
                                     value={section.description}
                                     onChange={(e) => updateEditingSection(idx, 'description', e.target.value)}
                                     placeholder="Section description / argument (optional)"
                                     rows={2}
-                                    className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                                   />
                                 </div>
                                 {editingSections.length > 1 && (
@@ -269,7 +269,7 @@ const OutlineSelectionStep = ({
                           ))}
                           <button
                             onClick={addEditingSection}
-                            className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1"
+                            className="text-primary hover:text-primary-700 text-sm font-medium flex items-center space-x-1"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Add Section</span>
@@ -319,7 +319,7 @@ const OutlineSelectionStep = ({
               value={customTitle}
               onChange={(e) => setCustomTitle(e.target.value)}
               placeholder="e.g., The Impact of AI on Modern Education"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -328,7 +328,7 @@ const OutlineSelectionStep = ({
               <label className="block text-sm font-medium text-gray-700">Sections</label>
               <button
                 onClick={addCustomSection}
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1"
+                className="text-primary hover:text-primary-700 text-sm font-medium flex items-center space-x-1"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add Section</span>
@@ -346,14 +346,14 @@ const OutlineSelectionStep = ({
                         value={section.heading}
                         onChange={(e) => updateCustomSection(idx, 'heading', e.target.value)}
                         placeholder="Section heading"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                       <textarea
                         value={section.description}
                         onChange={(e) => updateCustomSection(idx, 'description', e.target.value)}
                         placeholder="Brief description (optional)"
                         rows={2}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                     </div>
                     {customSections.length > 1 && (
@@ -376,7 +376,7 @@ const OutlineSelectionStep = ({
               disabled={!customTitle.trim() || customSections.filter(s => s.heading.trim()).length === 0}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 customTitle.trim() && customSections.filter(s => s.heading.trim()).length > 0
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  ? 'bg-primary text-white hover:bg-primary-700'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >
@@ -407,7 +407,7 @@ const OutlineSelectionStep = ({
             disabled={!selectedItem}
             className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
               selectedItem
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-primary text-white hover:bg-primary-700'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >

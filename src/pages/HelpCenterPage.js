@@ -393,7 +393,7 @@ const HelpCenterPage = () => {
               <input
                 type="text"
                 placeholder="Search for help..."
-                className="form-input pl-10 focus:ring-2 focus:ring-accent/30 focus:shadow-lg focus:shadow-accent/10 transition-shadow"
+                className="form-input pl-10 focus:ring-2 focus:ring-primary/30 focus:shadow-lg focus:shadow-primary/10 transition-shadow"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -411,7 +411,7 @@ const HelpCenterPage = () => {
                   <motion.button
                     whileHover={{ x: -4 }}
                     onClick={() => setSelectedArticle(null)}
-                    className="flex items-center space-x-2 text-accent hover:text-accent-600/80 transition-colors mb-6"
+                    className="flex items-center space-x-2 text-primary hover:text-primary-600/80 transition-colors mb-6"
                   >
                     <ChevronRight className="w-4 h-4 transform rotate-180" />
                     <span className="">Back to Help Center</span>
@@ -451,7 +451,7 @@ const HelpCenterPage = () => {
                       <StaggerItem key={index}>
                         <div className="card card-floating card-hover">
                           <div className="flex items-center space-x-3 mb-4">
-                            <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
+                            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
                               {category.icon}
                             </div>
                             <div>
@@ -463,7 +463,7 @@ const HelpCenterPage = () => {
                             {category.articles.map((article, idx) => (
                               <li
                                 key={idx}
-                                className="text-sm text-secondary-700 hover:text-accent-600 cursor-pointer transition-colors"
+                                className="text-sm text-secondary-700 hover:text-primary-600 cursor-pointer transition-colors"
                                 onClick={() => setSelectedArticle(article)}
                               >
                                 {article}
@@ -528,8 +528,8 @@ const HelpCenterPage = () => {
                 <StaggerItem>
                   <div className="card card-floating">
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <MessageCircle className="w-8 h-8 text-accent" />
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <MessageCircle className="w-8 h-8 text-primary" />
                       </div>
                       <h3 className="font-semibold text-secondary-900  mb-2">Live Chat</h3>
                       <p className="text-secondary-700  mb-4 text-sm">
@@ -549,8 +549,8 @@ const HelpCenterPage = () => {
                 <StaggerItem>
                   <div className="card glass-card lg:col-span-2">
                     <div className="flex items-center space-x-3 mb-6">
-                      <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
-                        <Mail className="w-6 h-6 text-accent" />
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Mail className="w-6 h-6 text-primary" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-secondary-900 ">Contact Support</h3>
@@ -628,8 +628,8 @@ const HelpCenterPage = () => {
                 <StaggerItem>
                   <div className="card card-floating">
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Book className="w-8 h-8 text-accent" />
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Book className="w-8 h-8 text-primary" />
                       </div>
                       <h3 className="font-semibold text-secondary-900  mb-2">Documentation</h3>
                       <p className="text-secondary-700  mb-4 text-sm">

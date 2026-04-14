@@ -39,7 +39,7 @@ const PricingConfirmationStep = ({
         'Edit & revise before download',
         'Export as Word or text'
       ],
-      color: 'blue'
+      color: 'primary'
     },
     {
       id: 'pro',
@@ -55,7 +55,7 @@ const PricingConfirmationStep = ({
         'Priority support',
         'Export as Word or text'
       ],
-      color: 'purple',
+      color: 'accent',
       badge: 'RECOMMENDED'
     }
   ];
@@ -179,20 +179,24 @@ const PricingConfirmationStep = ({
               onClick={() => setSelectedTier(tier.id)}
               className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all ${
                 isSelected
-                  ? `border-${tier.color}-500 bg-${tier.color}-50 shadow-lg`
+                  ? tier.color === 'primary'
+                    ? 'border-primary bg-primary-50 shadow-lg'
+                    : 'border-primary bg-primary/5 shadow-lg'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
               {tier.badge && (
-                <span className="absolute -top-3 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                <span className="absolute -top-3 right-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
                   {tier.badge}
                 </span>
               )}
 
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className={`w-10 h-10 bg-${tier.color}-100 rounded-lg flex items-center justify-center`}>
-                    <Icon className={`w-6 h-6 text-${tier.color}-600`} />
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                    tier.color === 'primary' ? 'bg-primary-100' : 'bg-primary/10'
+                  }`}>
+                    <Icon className={`w-6 h-6 ${tier.color === 'primary' ? 'text-primary' : 'text-primary'}`} />
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-secondary-900">{tier.name}</h3>
@@ -202,7 +206,9 @@ const PricingConfirmationStep = ({
 
                 <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
                   isSelected
-                    ? `bg-${tier.color}-500 border-${tier.color}-500`
+                    ? tier.color === 'primary'
+                      ? 'bg-primary border-primary'
+                      : 'bg-primary border-primary'
                     : 'border-gray-300'
                 }`}>
                   {isSelected && <Check className="w-4 h-4 text-white" />}
@@ -222,7 +228,7 @@ const PricingConfirmationStep = ({
               <ul className="space-y-2">
                 {tier.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start space-x-2 text-sm text-gray-700">
-                    <Check className={`w-4 h-4 text-${tier.color}-600 mt-0.5 flex-shrink-0`} />
+                    <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${tier.color === 'primary' ? 'text-primary' : 'text-accent'}`} />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -274,22 +280,22 @@ const PricingConfirmationStep = ({
 
       {/* Admin Notice or Important Note */}
       {isAdmin(currentUser) ? (
-        <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-300 rounded-lg p-4 mb-6 flex items-start space-x-3">
-          <Crown className="w-6 h-6 text-purple-600 mt-0.5 flex-shrink-0" />
+        <div className="bg-primary/5 border-2 border-primary/40 rounded-lg p-4 mb-6 flex items-start space-x-3">
+          <Crown className="w-6 h-6 text-primary mt-0.5 flex-shrink-0" />
           <div>
-            <p className="text-sm font-bold text-purple-900 mb-1">Admin Access - Free Generation</p>
-            <p className="text-xs text-purple-700">
+            <p className="text-sm font-bold text-primary-900 mb-1">Admin Access - Free Generation</p>
+            <p className="text-xs text-primary-700">
               You have admin privileges. This generation will be <strong>FREE</strong> and bypass payment processing.
               The system will create the job directly for testing purposes.
             </p>
           </div>
         </div>
       ) : (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-start space-x-3">
-          <Lock className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+        <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6 flex items-start space-x-3">
+          <Lock className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
           <div>
-            <p className="text-sm font-medium text-blue-900 mb-1">Secure Payment Before Generation</p>
-            <p className="text-xs text-blue-700">
+            <p className="text-sm font-medium text-primary-900 mb-1">Secure Payment Before Generation</p>
+            <p className="text-xs text-primary-700">
               You'll pay <strong>${totalCost}</strong> before generation starts.
               If generation fails for any reason, you'll receive an automatic 100% refund.
             </p>
@@ -315,8 +321,8 @@ const PricingConfirmationStep = ({
               loading
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : isAdmin(currentUser)
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 shadow-lg'
-                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg'
+                ? 'bg-primary text-white hover:bg-primary-700 shadow-lg'
+                : 'bg-primary text-white hover:bg-primary-700 shadow-lg'
             }`}
           >
             {loading ? 'Processing...' : isAdmin(currentUser) ? 'Generate (Admin - Free)' : `Pay & Generate - $${totalCost}`}

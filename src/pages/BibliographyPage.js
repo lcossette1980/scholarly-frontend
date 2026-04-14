@@ -215,7 +215,7 @@ const BibliographyPage = () => {
       >
         <div
           className={`card-floating cursor-pointer transition-all ${
-            isSelected ? 'ring-2 ring-accent bg-accent-50/50' : ''
+            isSelected ? 'ring-2 ring-primary bg-primary-50/50' : ''
           }`}
           onClick={() => handleSelectEntry(entry.id)}
         >
@@ -225,7 +225,7 @@ const BibliographyPage = () => {
               whileTap={{ scale: 0.85 }}
             >
               {isSelected ? (
-                <CheckSquare className="w-5 h-5 text-accent" />
+                <CheckSquare className="w-5 h-5 text-primary" />
               ) : (
                 <Square className="w-5 h-5 text-secondary-400" />
               )}
@@ -233,7 +233,7 @@ const BibliographyPage = () => {
 
             <div className="flex-1">
               <div className="flex items-start justify-between mb-2">
-                <span className="px-3 py-1 bg-accent-50 text-accent-700 rounded-full text-xs font-medium">
+                <span className="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-medium">
                   {entry.researchFocus}
                 </span>
                 <motion.button
@@ -289,7 +289,7 @@ const BibliographyPage = () => {
         <FadeIn direction="up">
           <div className="mb-4">
             <div className="flex items-center space-x-2 text-sm">
-              <Link to="/dashboard" className="text-secondary-500 hover:text-accent transition-colors">
+              <Link to="/dashboard" className="text-secondary-500 hover:text-primary transition-colors">
                 Dashboard
               </Link>
               <span className="text-secondary-300">/</span>
@@ -330,7 +330,7 @@ const BibliographyPage = () => {
               <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
                 {/* Search */}
                 <div className="relative group">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary-400 group-focus-within:text-accent transition-colors" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary-400 group-focus-within:text-primary transition-colors" />
                   <input
                     type="text"
                     placeholder="Search entries..."
@@ -388,7 +388,7 @@ const BibliographyPage = () => {
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-primary-900 text-white text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
                       Idea & Outline Generator requires Researcher plan
                       <br />
-                      <Link to="/pricing" className="text-accent-300 hover:underline underline">
+                      <Link to="/pricing" className="text-primary-300 hover:underline underline">
                         Upgrade now →
                       </Link>
                     </div>
@@ -430,7 +430,7 @@ const BibliographyPage = () => {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={handleSelectAll}
-                  className="flex items-center space-x-2 text-secondary-900 hover:text-accent transition-colors"
+                  className="flex items-center space-x-2 text-secondary-900 hover:text-primary transition-colors"
                 >
                   {selectedEntries.size === filteredEntries.length && filteredEntries.length > 0 ? (
                     <CheckSquare className="w-5 h-5" />
@@ -509,7 +509,7 @@ const BibliographyPage = () => {
                 className="w-12 h-12 bg-accent-100 rounded-xl flex items-center justify-center"
                 whileHover={{ rotate: 5, scale: 1.05 }}
               >
-                <Brain className="w-6 h-6 text-accent-600" />
+                <Brain className="w-6 h-6 text-primary-600" />
               </motion.div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-secondary-900 mb-2">
@@ -527,9 +527,9 @@ const BibliographyPage = () => {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="mt-4 p-3 bg-accent-50 rounded-xl"
+                      className="mt-4 p-3 bg-primary-50 rounded-xl"
                     >
-                      <p className="text-accent-700 font-medium flex items-center">
+                      <p className="text-primary-700 font-medium flex items-center">
                         <Brain className="w-4 h-4 mr-2" />
                         You have {selectedEntries.size} entries selected - perfect for analysis!
                         <motion.button

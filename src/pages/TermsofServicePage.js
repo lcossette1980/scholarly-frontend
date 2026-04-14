@@ -13,7 +13,7 @@ const TermsOfServicePage = () => {
         path="/terms"
       />
       <div className="container mx-auto px-6 max-w-4xl">
-        <div className="h-1 bg-gradient-to-r from-accent-400 via-primary-400 to-accent-400" />
+        <div className="h-1 bg-gradient-to-r from-primary-400 via-primary-400 to-primary-400" />
         <FadeIn direction="up">
           <div className="text-center mb-12 mt-8">
             <div className="w-16 h-16 bg-gradient-brand rounded-full flex items-center justify-center mx-auto mb-6">
@@ -43,7 +43,7 @@ const TermsOfServicePage = () => {
                 Service <span className="text-gradient">Description</span>
               </h2>
               <div className="flex items-start space-x-3">
-                <FileText className="w-5 h-5 text-accent mt-1" />
+                <FileText className="w-5 h-5 text-primary mt-1" />
                 <div>
                   <p className="text-secondary-800">
                     DraftEngine provides AI-powered source analysis and document generation services.
@@ -60,19 +60,19 @@ const TermsOfServicePage = () => {
               </h2>
               <ul className="space-y-3 text-secondary-800">
                 <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <span>Upload only documents you have the right to use and analyze</span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <span>Use generated content for legitimate research and writing purposes</span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <span>Review and verify all AI-generated content before use</span>
                 </li>
                 <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></span>
+                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
                   <span>Comply with your institution's integrity policies</span>
                 </li>
               </ul>
@@ -84,7 +84,7 @@ const TermsOfServicePage = () => {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <CreditCard className="w-5 h-5 text-accent mt-1" />
+                  <CreditCard className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold text-secondary-900">Payment Terms</h3>
                     <p className="text-secondary-700">
@@ -94,7 +94,7 @@ const TermsOfServicePage = () => {
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <Users className="w-5 h-5 text-accent mt-1" />
+                  <Users className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <h3 className="font-semibold text-secondary-900">Usage Limits</h3>
                     <p className="text-secondary-700">
@@ -138,7 +138,7 @@ const TermsOfServicePage = () => {
               </h2>
               <p className="text-secondary-800">
                 For questions about these terms, please contact us at{' '}
-                <a href="mailto:legal@scholarlyaiapp.com" className="text-accent hover:text-accent-600/80">
+                <a href="mailto:legal@scholarlyaiapp.com" className="text-primary hover:text-primary-600/80">
                   legal@scholarlyaiapp.com
                 </a>
               </p>

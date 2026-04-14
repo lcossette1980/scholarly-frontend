@@ -116,7 +116,7 @@ const ContentViewPage = () => {
       return (
         <div key={idx} className="mb-8">
           {heading && (
-            <h2 className="text-2xl font-bold text-secondary-900 mb-4 pb-2 border-b-2 border-accent-600">
+            <h2 className="text-2xl font-bold text-secondary-900 mb-4 pb-2 border-b-2 border-primary">
               {heading}
             </h2>
           )}
@@ -137,7 +137,7 @@ const ContentViewPage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <Sparkles className="w-16 h-16 text-accent mx-auto mb-4 animate-pulse" />
+          <Sparkles className="w-16 h-16 text-primary mx-auto mb-4 animate-pulse" />
           <p className="text-secondary-700">Loading content...</p>
         </div>
       </div>
@@ -194,7 +194,7 @@ const ContentViewPage = () => {
                   <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
                     {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                   </span>
-                  <span className="px-2 py-1 bg-accent/10 text-accent rounded-full text-xs font-medium capitalize">
+                  <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium capitalize">
                     {job.tier} Tier
                   </span>
                   <span className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs font-medium capitalize">

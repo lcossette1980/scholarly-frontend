@@ -50,7 +50,7 @@ const DocsPage = () => {
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-secondary-900">Getting Started with DraftEngine</h2>
 
-        <div className="bg-accent/10 border border-accent-600/20 rounded-lg p-4">
+        <div className="bg-primary/10 border border-primary-600/20 rounded-lg p-4">
           <p className="text-secondary-900">
             DraftEngine helps you transform documents into comprehensive source entries using AI-powered analysis.
           </p>
@@ -96,7 +96,7 @@ const DocsPage = () => {
 
         <div className="bg-secondary-50/50 border border-secondary-300/30 rounded-lg p-4">
           <div className="flex items-start space-x-3">
-            <Info className="w-5 h-5 text-accent mt-0.5" />
+            <Info className="w-5 h-5 text-primary mt-0.5" />
             <div>
               <p className="font-semibold text-secondary-900 mb-1">Pro Tip</p>
               <p className="text-secondary-700 text-sm">
@@ -126,7 +126,7 @@ const DocsPage = () => {
 
           <div className="space-y-6">
             <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold">1</div>
+              <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">1</div>
               <div className="flex-1">
                 <h4 className="font-semibold text-secondary-900 mb-2">Navigate to Create Entry</h4>
                 <p className="text-secondary-700 mb-3">Click the "Create Entry" button from your dashboard or navigation menu.</p>
@@ -137,19 +137,19 @@ const DocsPage = () => {
             </div>
 
             <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold">2</div>
+              <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">2</div>
               <div className="flex-1">
                 <h4 className="font-semibold text-secondary-900 mb-2">Upload Your PDF</h4>
                 <p className="text-secondary-700 mb-3">Drag and drop your file or click to browse. The upload area accepts PDF files up to 10MB.</p>
-                <div className="bg-accent/10 border-2 border-dashed border-accent-600/30 rounded-lg p-6 text-center">
-                  <Upload className="w-12 h-12 text-accent mx-auto mb-2" />
+                <div className="bg-primary/10 border-2 border-dashed border-primary-600/30 rounded-lg p-6 text-center">
+                  <Upload className="w-12 h-12 text-primary mx-auto mb-2" />
                   <p className="text-secondary-700">Drag & drop or click to upload</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold">3</div>
+              <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">3</div>
               <div className="flex-1">
                 <h4 className="font-semibold text-secondary-900 mb-2">Wait for Processing</h4>
                 <p className="text-secondary-700">You'll see a progress bar while the file uploads. Processing typically takes 5-15 seconds.</p>
@@ -210,10 +210,10 @@ const DocsPage = () => {
           <h3 className="text-xl font-semibold text-secondary-900">AI Analysis Process</h3>
 
           <div className="space-y-3">
-            <div className="card card-floating bg-gradient-to-r from-accent/5 to-accent/10">
+            <div className="card card-floating bg-gradient-to-r from-primary/5 to-primary/10">
               <div className="flex items-center space-x-3 mb-2">
-                <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
-                  <Book className="w-6 h-6 text-accent" />
+                <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Book className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="font-semibold text-secondary-900">Key Arguments</h4>
               </div>
@@ -222,10 +222,10 @@ const DocsPage = () => {
               </p>
             </div>
 
-            <div className="card card-floating bg-gradient-to-r from-accent/5 to-accent/10">
+            <div className="card card-floating bg-gradient-to-r from-primary/5 to-primary/10">
               <div className="flex items-center space-x-3 mb-2">
-                <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-accent" />
+                <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <FileText className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="font-semibold text-secondary-900">Interesting Angles</h4>
               </div>
@@ -234,10 +234,10 @@ const DocsPage = () => {
               </p>
             </div>
 
-            <div className="card card-floating bg-gradient-to-r from-accent/5 to-accent/10">
+            <div className="card card-floating bg-gradient-to-r from-primary/5 to-primary/10">
               <div className="flex items-center space-x-3 mb-2">
-                <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-accent" />
+                <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="font-semibold text-secondary-900">Smart Analysis</h4>
               </div>
@@ -327,9 +327,9 @@ const DocsPage = () => {
           </div>
         </div>
 
-        <div className="bg-accent/10 border border-accent-600/20 rounded-lg p-4">
+        <div className="bg-primary/10 border border-primary-600/20 rounded-lg p-4">
           <div className="flex items-start space-x-3">
-            <Zap className="w-5 h-5 text-accent mt-0.5" />
+            <Zap className="w-5 h-5 text-primary mt-0.5" />
             <div>
               <p className="font-semibold text-secondary-900 mb-1">Quick Tip</p>
               <p className="text-secondary-700 text-sm">
@@ -350,8 +350,8 @@ const DocsPage = () => {
 
           <div className="grid md:grid-cols-3 gap-4">
             <div className="card card-floating">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
-                <FileDown className="w-6 h-6 text-accent" />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                <FileDown className="w-6 h-6 text-primary" />
               </div>
               <h4 className="font-semibold text-secondary-900 mb-2">Word Document</h4>
               <p className="text-secondary-700 text-sm">
@@ -360,8 +360,8 @@ const DocsPage = () => {
             </div>
 
             <div className="card card-floating">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
-                <FileText className="w-6 h-6 text-accent" />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                <FileText className="w-6 h-6 text-primary" />
               </div>
               <h4 className="font-semibold text-secondary-900 mb-2">Plain Text</h4>
               <p className="text-secondary-700 text-sm">
@@ -370,8 +370,8 @@ const DocsPage = () => {
             </div>
 
             <div className="card card-floating">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
-                <BookOpen className="w-6 h-6 text-accent" />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                <BookOpen className="w-6 h-6 text-primary" />
               </div>
               <h4 className="font-semibold text-secondary-900 mb-2">PDF Export</h4>
               <p className="text-secondary-700 text-sm">
@@ -386,7 +386,7 @@ const DocsPage = () => {
 
           <div className="space-y-3">
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
+              <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
               <div>
                 <p className="font-semibold text-secondary-900">Select Entries</p>
                 <p className="text-secondary-700 text-sm">Choose individual entries or select multiple for bulk export.</p>
@@ -394,7 +394,7 @@ const DocsPage = () => {
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
+              <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">2</div>
               <div>
                 <p className="font-semibold text-secondary-900">Choose Format</p>
                 <p className="text-secondary-700 text-sm">Select your preferred export format from the dropdown menu.</p>
@@ -402,7 +402,7 @@ const DocsPage = () => {
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
+              <div className="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">3</div>
               <div>
                 <p className="font-semibold text-secondary-900">Download</p>
                 <p className="text-secondary-700 text-sm">Click export and your file will download automatically.</p>
@@ -467,11 +467,11 @@ const DocsPage = () => {
                       onClick={() => setActiveSection(section.id)}
                       className={`w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-all ${
                         activeSection === section.id
-                          ? 'bg-accent text-white shadow-md shadow-accent/20'
+                          ? 'bg-primary text-white shadow-md shadow-primary/20'
                           : 'hover:bg-secondary-200/20 text-secondary-900'
                       }`}
                     >
-                      <span className={activeSection === section.id ? 'text-white' : 'text-accent'}>
+                      <span className={activeSection === section.id ? 'text-white' : 'text-primary'}>
                         {section.icon}
                       </span>
                       <span className="">{section.title}</span>
@@ -479,7 +479,7 @@ const DocsPage = () => {
                   ))}
                 </nav>
 
-                <div className="mt-8 card card-floating bg-accent/10 border-accent-600/20">
+                <div className="mt-8 card card-floating bg-primary/10 border-primary-600/20">
                   <h3 className="font-semibold text-secondary-900 mb-2">Need More Help?</h3>
                   <p className="text-secondary-700 text-sm mb-3">
                     Can't find what you're looking for? Contact our support team.

@@ -101,10 +101,6 @@ const LoginPage = () => {
       />
       {/* Left Panel - Brand/Hero (hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden">
-        {/* Decorative orbs */}
-        <div className="gradient-orb w-64 h-64 top-10 -left-20 bg-white/10" />
-        <div className="gradient-orb w-48 h-48 bottom-20 right-10 bg-white/5" />
-
         <div className="relative z-10 flex flex-col justify-center px-12 xl:px-16 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -112,7 +108,7 @@ const LoginPage = () => {
             transition={{ duration: 0.6 }}
           >
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold text-white">DraftEngine</span>
@@ -166,7 +162,7 @@ const LoginPage = () => {
           {/* Mobile Header (visible only on mobile) */}
           <div className="text-center mb-8 lg:hidden">
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-brand rounded-2xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center">
                 <Brain className="w-8 h-8 text-white" />
               </div>
             </div>
@@ -257,7 +253,7 @@ const LoginPage = () => {
                 >
                   <Link
                     to="/forgot-password"
-                    className="text-sm text-accent hover:text-accent-600/80 font-medium"
+                    className="text-sm text-primary hover:text-primary-700 font-medium"
                   >
                     Forgot password?
                   </Link>
@@ -273,8 +269,6 @@ const LoginPage = () => {
                     type="submit"
                     disabled={isLoading}
                     className="btn btn-primary w-full justify-center"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
                   >
                     {isLoading ? (
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -291,7 +285,7 @@ const LoginPage = () => {
                   <div className="w-full border-t border-secondary-300/30" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white/80 text-secondary-600">Or continue with</span>
+                  <span className="px-2 bg-white text-secondary-600">Or continue with</span>
                 </div>
               </div>
 
@@ -300,8 +294,6 @@ const LoginPage = () => {
                 onClick={handleGoogleSignIn}
                 disabled={isLoading}
                 className="w-full flex items-center justify-center px-4 py-3 border border-secondary-300/30 rounded-lg bg-white hover:bg-secondary-50 transition-colors font-medium text-secondary-900"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
                 <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -315,7 +307,7 @@ const LoginPage = () => {
               {/* Sign Up Link */}
               <p className="mt-6 text-center text-sm text-secondary-600">
                 Don't have an account?{' '}
-                <Link to="/signup" className="font-medium text-accent hover:text-accent-600/80">
+                <Link to="/signup" className="font-medium text-primary hover:text-primary-700">
                   Sign up for free
                 </Link>
               </p>
