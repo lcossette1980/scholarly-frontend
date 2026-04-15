@@ -133,6 +133,34 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Who It's For — right after hero for maximum impact */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-6">
+          <FadeIn direction="up">
+            <h2 className="text-3xl font-bold text-secondary-900 text-center mb-3">Built for Professionals Who Publish</h2>
+            <p className="text-secondary-500 text-center mb-10 max-w-2xl mx-auto">Research-backed content for teams that need credibility, speed, and depth.</p>
+          </FadeIn>
+          <StaggerChildren>
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {[
+                { title: 'Content Marketing Teams', desc: 'Thought leadership grounded in real research — 10x faster than freelancers.', image: '/images/usecase_marketing.png', link: '/for/marketing-teams' },
+                { title: 'Consultants & Analysts', desc: 'White papers and client deliverables in hours, not weeks.', image: '/images/usecase_consulting.png', link: '/for/consultants' },
+                { title: 'Startups & Founders', desc: 'Investor-facing content backed by real market research.', image: '/images/usecase_startup.png', link: '/for/startups' },
+              ].map(uc => (
+                <StaggerItem key={uc.title}>
+                  <Link to={uc.link} className="card card-hover group block h-full">
+                    <img src={uc.image} alt={uc.title} className="w-full h-40 object-cover rounded-lg mb-4" />
+                    <h3 className="text-lg font-bold text-secondary-900 mb-2 group-hover:text-primary transition-colors">{uc.title}</h3>
+                    <p className="text-secondary-600 text-sm mb-3">{uc.desc}</p>
+                    <span className="text-primary text-sm font-medium">Learn more →</span>
+                  </Link>
+                </StaggerItem>
+              ))}
+            </div>
+          </StaggerChildren>
+        </div>
+      </section>
+
       <div className="section-divider my-16" />
 
       {/* Quick Stats */}
@@ -217,30 +245,6 @@ const HomePage = () => {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider my-16" />
-
-      {/* Who It's For */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-secondary-900 text-center mb-4">Built for Professionals Who Publish</h2>
-          <p className="text-secondary-600 text-center mb-12 max-w-2xl mx-auto">Research-backed content for every team that needs credibility, speed, and depth.</p>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              { title: 'Content Marketing Teams', desc: 'Thought leadership grounded in real research — 10x faster than freelancers.', image: '/images/usecase_marketing.png', link: '/for/marketing-teams' },
-              { title: 'Consultants & Analysts', desc: 'White papers and client deliverables in hours, not weeks.', image: '/images/usecase_consulting.png', link: '/for/consultants' },
-              { title: 'Startups & Founders', desc: 'Investor-facing content backed by real market research.', image: '/images/usecase_startup.png', link: '/for/startups' },
-            ].map(uc => (
-              <Link key={uc.title} to={uc.link} className="card card-hover group">
-                <img src={uc.image} alt={uc.title} className="w-full h-40 object-cover rounded-lg mb-4" />
-                <h3 className="text-lg font-bold text-secondary-900 mb-2 group-hover:text-primary transition-colors">{uc.title}</h3>
-                <p className="text-secondary-600 text-sm">{uc.desc}</p>
-                <span className="text-primary text-sm font-medium mt-3 inline-block">Learn more →</span>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
