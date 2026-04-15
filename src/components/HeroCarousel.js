@@ -4,10 +4,10 @@ import { Upload, Search, PenTool, Rss } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const heroImages = [
-  { src: "/images/dashbioard.png", alt: "DraftEngine Dashboard Overview" },
-  { src: "/images/source_analyzer.png", alt: "Source Analyzer Interface" },
-  { src: "/images/outline_generator.png", alt: "Topic & Outline Generator" },
-  { src: "/images/document_generator.png", alt: "Research Feeds" }
+  { src: "/images/hero_workspace.png", alt: "DraftEngine workspace for importing research from anywhere" },
+  { src: "/images/feature_analysis.png", alt: "AI-powered source analysis interface" },
+  { src: "/images/feature_generate.png", alt: "Document generation with quality agents" },
+  { src: "/images/feature_feeds.png", alt: "Research feeds delivering new papers automatically" }
 ];
 
 const HeroCarousel = () => {

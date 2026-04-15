@@ -180,12 +180,13 @@ const HomePage = () => {
             <StaggerChildren>
               <div className="grid md:grid-cols-3 gap-8">
                 {[
-                  { step: '01', title: 'Import Your Sources', desc: 'Upload PDFs, paste URLs for automatic text extraction, look up DOIs through CrossRef, or connect RSS feeds to stay current.' },
-                  { step: '02', title: 'Generate & Refine', desc: 'AI writes your document with section-level quality review, auto-generated citations in APA, MLA, or Chicago, and DALL-E editorial illustrations.' },
-                  { step: '03', title: 'Download & Share', desc: 'Export to Word with images, references list, refined title, meta description, and a ready-to-use social media excerpt.' },
+                  { step: '01', title: 'Import Your Research', desc: 'Upload PDFs, paste URLs, look up DOIs through CrossRef, or connect RSS feeds to stay current with your field.', image: '/images/step_import.png', imageAlt: 'Import your research' },
+                  { step: '02', title: 'Generate & Review', desc: 'AI writes your document with section-level quality review, auto-generated citations, and DALL-E editorial illustrations. Two quality agents review every draft before you see it.', image: '/images/step_generate.png', imageAlt: 'Generate and review' },
+                  { step: '03', title: 'Publish & Share', desc: 'Export to Word with images, references, and formatting. Get a refined title, meta description, and social media excerpt — ready to publish.', image: '/images/step_export.png', imageAlt: 'Publish and share' },
                 ].map((item) => (
                   <StaggerItem key={item.step}>
                     <div className="card-floating text-center h-full flex flex-col">
+                      <img src={item.image} alt={item.imageAlt} className="w-full rounded-lg mb-4" />
                       <div className="text-xs font-mono font-semibold text-primary/60 mb-4 tracking-widest">
                         {item.step}
                       </div>

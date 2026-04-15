@@ -11,7 +11,10 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
     { value: 'blog_post', label: 'Blog Post', icon: Feather },
     { value: 'article', label: 'Article', icon: FileText },
     { value: 'essay', label: 'Essay', icon: Feather },
-    { value: 'op_ed', label: 'Op-Ed', icon: FileText }
+    { value: 'op_ed', label: 'Op-Ed', icon: FileText },
+    { value: 'white_paper', label: 'White Paper', icon: FileText },
+    { value: 'market_brief', label: 'Market Brief', icon: FileText },
+    { value: 'case_study', label: 'Case Study', icon: FileText }
   ];
 
   const approaches = [
@@ -19,7 +22,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
     { value: 'logical', label: 'Logical', description: 'Evidence, data, structured reasoning' },
     { value: 'balanced', label: 'Balanced', description: 'Blend of both approaches' }
   ];
-  const tones = ['conversational', 'professional', 'bold', 'intimate'];
+  const tones = ['conversational', 'professional', 'bold', 'intimate', 'executive', 'analytical'];
 
   const citationStyles = [
     { value: 'none', label: 'None', description: 'No formal citations. Sources referenced naturally in text.' },

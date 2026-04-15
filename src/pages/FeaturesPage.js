@@ -10,6 +10,8 @@ const FeaturesPage = () => {
     {
       title: 'Multi-Source Import',
       description: 'Bring your research from anywhere. Upload PDFs up to 50MB, paste any URL for automatic article extraction, look up papers by DOI via CrossRef, or subscribe to RSS feeds and cherry-pick the articles that matter.',
+      image: '/images/feature_import.png',
+      imageAlt: 'Multi-source import from PDFs, URLs, DOIs, and RSS feeds',
       bullets: [
         'PDF upload (up to 50MB per file)',
         'URL paste with automatic article extraction',
@@ -20,6 +22,8 @@ const FeaturesPage = () => {
     {
       title: 'AI Source Analysis',
       description: 'Every source you import is analyzed in roughly 90 seconds. DraftEngine surfaces the arguments, angles, and passages that matter most — so you spend your time writing, not re-reading.',
+      image: '/images/feature_analysis.png',
+      imageAlt: 'AI-powered source analysis identifying key arguments and passages',
       bullets: [
         'Key arguments — 3-4 main claims identified',
         'Interesting angles — surprising or counterintuitive elements',
@@ -30,6 +34,8 @@ const FeaturesPage = () => {
     {
       title: 'Topic & Outline Generator',
       description: 'Analyze your sources together and let AI propose 3 editorial-quality topic suggestions with argument-driven outlines. Section headings make claims, not labels — and sources are woven across sections, never siloed.',
+      image: '/images/hero_pipeline.png',
+      imageAlt: 'Topic and outline generation pipeline',
       bullets: [
         '3 editorial-quality topic suggestions per analysis',
         'Argument-driven outlines with claim-based headings',
@@ -40,6 +46,8 @@ const FeaturesPage = () => {
     {
       title: 'Document Generation',
       description: 'Turn your outline into a polished draft of 500 to 10,000 words. Choose your document type, tone, and approach — then let quality agents review every section before you ever see the result.',
+      image: '/images/feature_generate.png',
+      imageAlt: 'AI document generation with quality review agents',
       bullets: [
         '4 document types: article, essay, blog post, op-ed',
         '4 tones: professional, conversational, bold, intimate',
@@ -50,6 +58,8 @@ const FeaturesPage = () => {
     {
       title: 'Citations & References',
       description: 'Proper attribution without the tedious formatting. DraftEngine inserts inline citation markers and generates a complete reference list in your preferred style — automatically, after generation.',
+      image: '/images/feature_citations.png',
+      imageAlt: 'Automatic citations and reference list generation',
       bullets: [
         'APA, MLA, and Chicago citation styles',
         'Auto-generated reference list appended to your document',
@@ -60,6 +70,8 @@ const FeaturesPage = () => {
     {
       title: 'Research Feeds',
       description: 'Stay ahead of the literature without lifting a finger. Subscribe to research topics and DraftEngine surfaces new papers from Semantic Scholar, OpenAlex, and CrossRef — ready to import directly into your library.',
+      image: '/images/feature_feeds.png',
+      imageAlt: 'Research feeds delivering new papers from academic databases',
       bullets: [
         'Subscribe to any research topic',
         'Papers surfaced from 3 academic databases',
@@ -126,6 +138,7 @@ const FeaturesPage = () => {
               {coreFeatures.map((feature) => (
                   <StaggerItem key={feature.title}>
                     <div className="card-floating h-full flex flex-col">
+                      <img src={feature.image} alt={feature.imageAlt} className="w-full h-40 object-cover rounded-lg mb-4" />
                       <h3 className="text-2xl font-bold text-secondary-900 mb-4">
                         {feature.title}
                       </h3>

@@ -22,12 +22,11 @@ const Footer = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold">DraftEngine</h3>
-                  <p className="text-xs text-white/70">AI Writing Assistant</p>
+                  <p className="text-xs text-white/70">Research-to-Content Platform</p>
                 </div>
               </div>
               <p className="text-white/70 leading-relaxed text-sm">
-                Your complete AI writing platform. From sources to finished drafts in minutes, not hours.
-                Trusted by 10,000+ writers worldwide.
+                Turn research into publication-ready content. Source analysis, document generation, citations, and illustrations — built for professionals who publish.
               </p>
 
               {/* Social Links */}

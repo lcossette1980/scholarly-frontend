@@ -142,7 +142,7 @@ const SignUpPage = () => {
             </div>
 
             <h2 className="text-3xl xl:text-4xl font-bold text-white mb-4 leading-tight">
-              From Sources to Finished Drafts in Minutes
+              From Research to Published Content in Minutes
             </h2>
 
             <ul className="text-white/70 text-base mb-8 max-w-md space-y-2">
@@ -161,7 +161,7 @@ const SignUpPage = () => {
           >
             <img
               src="/images/auth_illustration.png"
-              alt="AI Writing Assistant"
+              alt="Research-to-Content Platform"
               className="w-full rounded-2xl object-cover"
               style={{ aspectRatio: '4/3' }}
               loading="eager"

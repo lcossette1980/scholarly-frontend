@@ -84,7 +84,7 @@ const Navbar = () => {
             <div>
               <h1 className="text-lg font-bold text-secondary-900">DraftEngine</h1>
               <p className="text-xs text-primary font-medium hidden sm:block">
-                AI Writing Assistant
+                Research-to-Content Platform
               </p>
             </div>
           </Link>

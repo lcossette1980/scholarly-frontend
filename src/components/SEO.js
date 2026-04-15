@@ -16,7 +16,7 @@ const SEO = ({
 }) => {
   const fullTitle = title
     ? `${title} | ${SITE_NAME}`
-    : `${SITE_NAME} — AI Writing Assistant | Source Summaries, Ideas, Outlines & Documents`;
+    : `${SITE_NAME} — Research-to-Content Platform | Source Summaries, Ideas, Outlines & Documents`;
   const url = `${SITE_URL}${path}`;
 
   return (
