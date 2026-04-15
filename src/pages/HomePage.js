@@ -99,9 +99,8 @@ const HomePage = () => {
               </div>
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 <a
-                  href="/example.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/example_source_analysis.docx"
+                  download
                   className="btn btn-secondary text-sm px-5 py-2.5 group flex items-center justify-center"
                 >
                   <Download className="w-4 h-4 mr-2" />
