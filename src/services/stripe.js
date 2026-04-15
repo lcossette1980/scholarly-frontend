@@ -1,6 +1,6 @@
 // src/services/stripe.js (FIXED VERSION)
 import { loadStripe } from '@stripe/stripe-js';
-import { doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp, getDoc, increment } from 'firebase/firestore';
 import { db } from './firebase';
 
 // Initialize Stripe
@@ -361,17 +361,15 @@ export const incrementEntriesUsed = async (userId) => {
     const userSnap = await getDoc(userRef);
     
     if (userSnap.exists()) {
-      const userData = userSnap.data();
-      const newEntriesUsed = (userData.subscription?.entriesUsed || 0) + 1;
-      const entriesRemaining = Math.max(0, (userData.subscription?.entriesLimit || 5) - newEntriesUsed);
-      
+      // Use atomic increment to prevent race conditions with simultaneous uploads
       await updateDoc(userRef, {
-        'subscription.entriesUsed': newEntriesUsed,
-        'subscription.entriesRemaining': entriesRemaining,
+        'subscription.entriesUsed': increment(1),
+        'subscription.entriesRemaining': increment(-1),
         updatedAt: serverTimestamp()
       });
-      
-      return newEntriesUsed;
+
+      const updatedSnap = await getDoc(userRef);
+      return updatedSnap.data()?.subscription?.entriesUsed || 1;
     }
   } catch (error) {
     console.error('Error incrementing entries used:', error);

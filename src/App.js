@@ -28,6 +28,7 @@ import ContentGenerationPage from './pages/ContentGenerationPage';
 import ContentHistoryPage from './pages/ContentHistoryPage';
 import ContentViewPage from './pages/ContentViewPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import ResearchFeedsPage from './pages/ResearchFeedsPage';
 import FeaturesPage from './pages/FeaturesPage';
 import DocsPage from './pages/DocsPage';
 import HelpCenterPage from './pages/HelpCenterPage';
@@ -122,6 +123,11 @@ function AnimatedRoutes() {
         <Route path="/content/view/:jobId" element={
           <ProtectedRoute>
             <PageTransition><ContentViewPage /></PageTransition>
+          </ProtectedRoute>
+        } />
+        <Route path="/feeds" element={
+          <ProtectedRoute>
+            <PageTransition><ResearchFeedsPage /></PageTransition>
           </ProtectedRoute>
         } />
         <Route path="/admin" element={

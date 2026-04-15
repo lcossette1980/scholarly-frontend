@@ -48,11 +48,6 @@ const AnalyzePage = () => {
     setIsAnalyzing(true);
     setProgress(0);
 
-    // Simulate progress
-    const progressInterval = setInterval(() => {
-      setProgress(prev => Math.min(prev + 5, 90));
-    }, 1000);
-
     try {
       const entryIds = selectedEntryData.map(e => e.id);
 
@@ -66,12 +61,10 @@ const AnalyzePage = () => {
         }
       );
 
-      clearInterval(progressInterval);
       setProgress(100);
       setTopics(result);
       toast.success(`Generated ${result.topics.length} content ideas!`);
     } catch (error) {
-      clearInterval(progressInterval);
       console.error('Error generating topics:', error);
       toast.error(error.response?.data?.detail || 'Failed to generate topics. Please try again.');
     } finally {

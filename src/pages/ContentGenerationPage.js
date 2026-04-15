@@ -42,7 +42,8 @@ const ContentGenerationPage = () => {
     approach: 'balanced',
     tone: 'professional',
     include_hook: true,
-    include_conclusion: true
+    include_conclusion: true,
+    citation_style: 'none'
   });
 
   // Step 4: Pricing

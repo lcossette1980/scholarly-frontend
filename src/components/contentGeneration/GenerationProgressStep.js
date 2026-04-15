@@ -4,6 +4,15 @@ import { Loader, CheckCircle, XCircle, FileText, Sparkles } from 'lucide-react';
 import { contentGenerationAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 
+const getPhaseLabel = (progress, currentSection) => {
+  if (progress <= 10) return 'Preparing sources...';
+  if (progress <= 65) return `Writing: ${currentSection || 'section'}`;
+  if (progress <= 75) return 'Reviewing writing quality...';
+  if (progress <= 80) return 'Checking document coherence...';
+  if (progress <= 90) return 'Refining title & description...';
+  return 'Generating illustrations...';
+};
+
 const GenerationProgressStep = ({ jobId, onComplete }) => {
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
@@ -60,6 +69,7 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
   const progress = status?.progress || 0;
   const currentSection = status?.current_section || 'Initializing...';
   const completedSections = status?.completed_sections || [];
+  const phaseLabel = getPhaseLabel(progress, currentSection);
 
   return (
     <div>
@@ -104,13 +114,12 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
         </div>
       </div>
 
-      {/* Current Section */}
+      {/* Current Phase Label */}
       <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
         <div className="flex items-center space-x-3">
           <Loader className="w-5 h-5 text-primary animate-spin" />
           <div>
-            <p className="text-sm font-medium text-primary-900">Currently Writing</p>
-            <p className="text-sm text-primary-700">{currentSection}</p>
+            <p className="text-sm font-medium text-primary-900">{phaseLabel}</p>
           </div>
         </div>
       </div>
@@ -148,7 +157,7 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
       {/* Info */}
       <div className="text-center mt-8">
         <p className="text-sm text-gray-500">
-          Step 5 of 6 • Don't close this page
+          Step 5 of 6 - Don't close this page
         </p>
       </div>
     </div>

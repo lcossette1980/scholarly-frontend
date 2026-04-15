@@ -105,6 +105,9 @@ const Navbar = () => {
                 <Link to="/pricing" className="text-secondary-700 hover:text-primary transition-colors font-medium text-sm">
                   Pricing
                 </Link>
+                <Link to="/feeds" className="text-secondary-700 hover:text-primary transition-colors font-medium text-sm">
+                  Research Feeds
+                </Link>
 
                 {/* Profile Dropdown */}
                 <div className="relative" ref={profileRef}>
@@ -231,6 +234,7 @@ const Navbar = () => {
                       <Link to="/create" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Create Entry</Link>
                       <Link to="/features" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Features</Link>
                       <Link to="/pricing" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
+                      <Link to="/feeds" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Research Feeds</Link>
                       <Link to="/profile" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Profile</Link>
                       <button onClick={handleLogout} className="block text-secondary-700 hover:text-primary transition-colors font-medium text-left">Logout</button>
                     </>

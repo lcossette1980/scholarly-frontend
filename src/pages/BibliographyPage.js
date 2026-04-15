@@ -16,10 +16,13 @@ import {
   X,
   Trash2,
   Brain,
-  Lock
+  Lock,
+  Pencil,
+  Save
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { getUserBibliographyEntries, deleteBibliographyEntry } from '../services/bibliography';
+import { bibliographyAPI } from '../services/api';
 import { canAccessFeature } from '../services/stripe';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 import LoadingSkeleton from '../components/LoadingSkeleton';
@@ -36,6 +39,9 @@ const BibliographyPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [categories, setCategories] = useState([]);
+  const [editingEntry, setEditingEntry] = useState(null);
+  const [editForm, setEditForm] = useState({});
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   useEffect(() => {
     fetchEntries();
@@ -117,6 +123,65 @@ const BibliographyPage = () => {
         console.error('Error deleting entry:', error);
         toast.error('Failed to delete source');
       }
+    }
+  };
+
+  const handleEditEntry = (entry, e) => {
+    e.stopPropagation();
+    setEditingEntry(entry);
+    setEditForm({
+      author: entry.source_info?.author || '',
+      title: entry.source_info?.title || '',
+      publication: entry.source_info?.publication || '',
+      year: entry.source_info?.year || '',
+      key_arguments: entry.key_arguments || '',
+      interesting_angles: entry.interesting_angles || '',
+      perspective_value: entry.perspective_value || '',
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingEntry) return;
+    setIsSavingEdit(true);
+    try {
+      await bibliographyAPI.updateEntry(editingEntry.id, {
+        source_info: {
+          author: editForm.author,
+          title: editForm.title,
+          publication: editForm.publication,
+          year: editForm.year,
+        },
+        key_arguments: editForm.key_arguments,
+        interesting_angles: editForm.interesting_angles,
+        perspective_value: editForm.perspective_value,
+      });
+
+      // Update the local state
+      setEntries(entries.map(e => {
+        if (e.id === editingEntry.id) {
+          return {
+            ...e,
+            source_info: {
+              author: editForm.author,
+              title: editForm.title,
+              publication: editForm.publication,
+              year: editForm.year,
+            },
+            key_arguments: editForm.key_arguments,
+            interesting_angles: editForm.interesting_angles,
+            perspective_value: editForm.perspective_value,
+          };
+        }
+        return e;
+      }));
+
+      toast.success('Entry updated successfully');
+      setEditingEntry(null);
+    } catch (error) {
+      console.error('Error updating entry:', error);
+      toast.error('Failed to update entry');
+    } finally {
+      setIsSavingEdit(false);
     }
   };
 
@@ -236,15 +301,26 @@ const BibliographyPage = () => {
                 <span className="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-xs font-medium">
                   {entry.researchFocus}
                 </span>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={(e) => handleDeleteEntry(entry.id, e)}
-                  className="p-1.5 text-secondary-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                  title="Delete source"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </motion.button>
+                <div className="flex items-center space-x-1">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={(e) => handleEditEntry(entry, e)}
+                    className="p-1.5 text-secondary-400 hover:text-primary hover:bg-primary-50 rounded-lg transition-colors"
+                    title="Edit source"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={(e) => handleDeleteEntry(entry.id, e)}
+                    className="p-1.5 text-secondary-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Delete source"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </motion.button>
+                </div>
               </div>
 
               <div className="font-semibold text-secondary-900 mb-2 line-clamp-3">
@@ -500,6 +576,143 @@ const BibliographyPage = () => {
             </div>
           </AnimatePresence>
         )}
+
+        {/* Edit Entry Modal */}
+        <AnimatePresence>
+          {editingEntry && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+              onClick={() => setEditingEntry(null)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-bold text-secondary-900">Edit Source Entry</h2>
+                  <button
+                    onClick={() => setEditingEntry(null)}
+                    className="p-2 text-secondary-400 hover:text-secondary-600 hover:bg-secondary-100 rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  {/* Source Info */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-secondary-700 mb-1">Author</label>
+                      <input
+                        type="text"
+                        value={editForm.author}
+                        onChange={(e) => setEditForm({ ...editForm, author: e.target.value })}
+                        className="form-input w-full"
+                        placeholder="Author name(s)"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-secondary-700 mb-1">Year</label>
+                      <input
+                        type="text"
+                        value={editForm.year}
+                        onChange={(e) => setEditForm({ ...editForm, year: e.target.value })}
+                        className="form-input w-full"
+                        placeholder="Publication year"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-secondary-700 mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={editForm.title}
+                      onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                      className="form-input w-full"
+                      placeholder="Document title"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-secondary-700 mb-1">Publication</label>
+                    <input
+                      type="text"
+                      value={editForm.publication}
+                      onChange={(e) => setEditForm({ ...editForm, publication: e.target.value })}
+                      className="form-input w-full"
+                      placeholder="Journal, publisher, or website"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-secondary-700 mb-1">Key Arguments</label>
+                    <textarea
+                      value={editForm.key_arguments}
+                      onChange={(e) => setEditForm({ ...editForm, key_arguments: e.target.value })}
+                      className="form-input w-full h-28 resize-none"
+                      placeholder="Main claims or arguments..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-secondary-700 mb-1">Interesting Angles</label>
+                    <textarea
+                      value={editForm.interesting_angles}
+                      onChange={(e) => setEditForm({ ...editForm, interesting_angles: e.target.value })}
+                      className="form-input w-full h-28 resize-none"
+                      placeholder="Surprising or counterintuitive insights..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-secondary-700 mb-1">Perspective Value</label>
+                    <textarea
+                      value={editForm.perspective_value}
+                      onChange={(e) => setEditForm({ ...editForm, perspective_value: e.target.value })}
+                      className="form-input w-full h-28 resize-none"
+                      placeholder="Unique perspective or lens this source brings..."
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end space-x-3 mt-6 pt-4 border-t border-secondary-200">
+                  <button
+                    onClick={() => setEditingEntry(null)}
+                    className="btn btn-outline"
+                  >
+                    Cancel
+                  </button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleSaveEdit}
+                    disabled={isSavingEdit}
+                    className="btn btn-primary flex items-center space-x-2"
+                  >
+                    {isSavingEdit ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4" />
+                        <span>Save Changes</span>
+                      </>
+                    )}
+                  </motion.button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* AI Analysis Feature Highlight */}
         <FadeIn direction="up" delay={0.2}>

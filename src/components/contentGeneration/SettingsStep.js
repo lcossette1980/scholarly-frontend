@@ -1,6 +1,6 @@
 // src/components/contentGeneration/SettingsStep.js
 import React from 'react';
-import { FileText, Target, Compass, Feather } from 'lucide-react';
+import { FileText, Target, Compass, Feather, BookOpen } from 'lucide-react';
 
 const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
   const updateSetting = (key, value) => {
@@ -20,6 +20,13 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
     { value: 'balanced', label: 'Balanced', description: 'Blend of both approaches' }
   ];
   const tones = ['conversational', 'professional', 'bold', 'intimate'];
+
+  const citationStyles = [
+    { value: 'none', label: 'None', description: 'No formal citations. Sources referenced naturally in text.' },
+    { value: 'apa', label: 'APA', description: 'Author-date style. Common in social sciences.' },
+    { value: 'mla', label: 'MLA', description: 'Author-page style. Common in humanities.' },
+    { value: 'chicago', label: 'Chicago', description: 'Numbered notes. Common in history and arts.' }
+  ];
 
   return (
     <div>
@@ -135,6 +142,35 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                   }`}
                 >
                   <span className="text-sm font-medium">{tone}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Citation Style */}
+        <div>
+          <label className="block text-sm font-medium text-secondary-700 mb-3">
+            <BookOpen className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+            Citation Style
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {citationStyles.map(style => {
+              const isSelected = (settings.citation_style || 'none') === style.value;
+              return (
+                <button
+                  key={style.value}
+                  onClick={() => updateSetting('citation_style', style.value)}
+                  className={`p-4 border-2 rounded-xl transition-all text-center ${
+                    isSelected
+                      ? 'border-primary bg-primary/5'
+                      : 'border-secondary-200 hover:border-primary/40'
+                  }`}
+                >
+                  <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
+                    {style.label}
+                  </span>
+                  <span className="text-xs text-secondary-400 block mt-1">{style.description}</span>
                 </button>
               );
             })}

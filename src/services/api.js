@@ -1,6 +1,7 @@
 // src/services/api.js
 import axios from 'axios';
 import { auth } from './firebase';
+import toast from 'react-hot-toast';
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -36,29 +37,41 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    // Enhanced error handling for better user experience
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
+    // Enhanced error handling with toast notifications
+    if (error.code === 'ERR_NETWORK' || !error.response) {
+      // Network error or no response — check this first before status codes
+      console.error('Network error:', error.message);
+      error.userMessage = 'Unable to connect. Please check your internet connection.';
+      toast.error('Unable to connect. Please check your internet connection.');
+    } else if (error.response?.status === 401) {
       console.error('Unauthorized access - redirecting to login');
-      // You could dispatch a logout action here
+      error.userMessage = 'Your session has expired. Please sign in again.';
+      toast.error('Your session has expired. Please sign in again.');
+      // Redirect to login after a short delay
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1500);
+    } else if (error.response?.status === 403) {
+      console.error('Forbidden:', error.response?.data);
+      error.userMessage = "You don't have permission for this action.";
+      toast.error("You don't have permission for this action.");
+    } else if (error.response?.status === 429) {
+      console.error('Rate limited:', error.response?.data);
+      error.userMessage = 'Too many requests. Please wait a moment and try again.';
+      toast.error('Too many requests. Please wait a moment and try again.');
     } else if (error.response?.status === 502 || error.response?.status === 503) {
-      // Backend is down or unavailable
       console.error('Backend service unavailable:', error.response?.data?.message || error.message);
       error.userMessage = 'Our service is temporarily unavailable. Please try again in a few minutes.';
-    } else if (error.code === 'ERR_NETWORK' || !error.response) {
-      // Network error or no response
-      console.error('Network error:', error.message);
-      error.userMessage = 'Unable to connect to our servers. Please check your internet connection and try again.';
+      toast.error('Our service is temporarily unavailable. Please try again in a few minutes.');
     } else if (error.response?.status >= 500) {
-      // Server errors
       console.error('Server error:', error.response?.status, error.response?.data);
-      error.userMessage = 'A server error occurred. Please try again later.';
+      error.userMessage = 'Something went wrong on our end. Please try again.';
+      toast.error('Something went wrong on our end. Please try again.');
     } else if (error.response?.status >= 400 && error.response?.status < 500) {
-      // Client errors
       console.error('Client error:', error.response?.status, error.response?.data);
-      error.userMessage = error.response?.data?.message || 'There was an issue with your request.';
+      error.userMessage = error.response?.data?.message || error.response?.data?.detail || 'There was an issue with your request.';
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -123,6 +136,24 @@ export const bibliographyAPI = {
     return response.data;
   },
 
+  // Upload URL for processing
+  uploadURL: async (url, researchFocus) => {
+    const response = await api.post('/upload-url', { url, research_focus: researchFocus, user_id: 'from_token' });
+    return response.data;
+  },
+
+  // Look up DOI
+  lookupDOI: async (doi, researchFocus) => {
+    const response = await api.post('/lookup-doi', { doi, research_focus: researchFocus, user_id: 'from_token' });
+    return response.data;
+  },
+
+  // Import RSS feed
+  importRSSFeed: async (feedUrl) => {
+    const response = await api.post('/import-rss-feed', { feed_url: feedUrl, user_id: 'from_token' });
+    return response.data;
+  },
+
   // Export entry to Word
   exportEntry: async (entryId, format = 'docx') => {
     const response = await api.get(`/entries/${entryId}/export`, {
@@ -180,7 +211,8 @@ export const contentGenerationAPI = {
       source_entry_ids: sourceEntryIds,
       outline: outline,
       settings: settings,
-      tier: tier
+      tier: tier,
+      citation_style: settings.citation_style || 'none'
     }, {
       timeout: 60000 // 60 seconds for job creation
     });
@@ -201,6 +233,44 @@ export const contentGenerationAPI = {
     });
     return response.data;
   }
+};
+
+// Research Topic Feeds API calls
+export const feedsAPI = {
+  subscribe: async (topic, sources, frequency) => {
+    const response = await api.post('/feeds/subscribe', { topic, sources, frequency });
+    return response.data;
+  },
+
+  getSubscriptions: async () => {
+    const response = await api.get('/feeds/subscriptions');
+    return response.data;
+  },
+
+  deleteSubscription: async (id) => {
+    const response = await api.delete(`/feeds/subscriptions/${id}`);
+    return response.data;
+  },
+
+  getItems: async () => {
+    const response = await api.get('/feeds/items');
+    return response.data;
+  },
+
+  importItem: async (itemId) => {
+    const response = await api.post(`/feeds/items/${itemId}/import`);
+    return response.data;
+  },
+
+  dismissItem: async (itemId) => {
+    const response = await api.post(`/feeds/items/${itemId}/dismiss`);
+    return response.data;
+  },
+
+  checkFeeds: async () => {
+    const response = await api.post('/feeds/check');
+    return response.data;
+  },
 };
 
 // Health check with enhanced error reporting

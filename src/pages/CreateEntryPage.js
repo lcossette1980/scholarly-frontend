@@ -13,7 +13,10 @@ import {
   Plus,
   Target,
   ArrowLeft,
-  X
+  X,
+  Globe,
+  Search,
+  Rss
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry, incrementEntriesUsed } from '../services/stripe';
@@ -35,6 +38,12 @@ const CreateEntryPage = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [taskId, setTaskId] = useState(null);
+  const [importTab, setImportTab] = useState('pdf');
+  const [urlInput, setUrlInput] = useState('');
+  const [doiInput, setDoiInput] = useState('');
+  const [rssInput, setRssInput] = useState('');
+  const [rssArticles, setRssArticles] = useState([]);
+  const [selectedRssArticles, setSelectedRssArticles] = useState([]);
   const { currentUser, userDocument } = useAuth();
   const navigate = useNavigate();
 
@@ -121,6 +130,156 @@ const CreateEntryPage = () => {
     }
   };
 
+  const handleURLImport = async () => {
+    if (!urlInput.trim()) {
+      toast.error('Please enter a URL');
+      return;
+    }
+
+    try {
+      new URL(urlInput);
+    } catch {
+      toast.error('Please enter a valid URL');
+      return;
+    }
+
+    if (!researchFocus.trim()) {
+      toast.error('Please enter your writing focus first');
+      return;
+    }
+
+    if (!currentUser) {
+      toast.error('Please sign in to import articles');
+      navigate('/login');
+      return;
+    }
+
+    setCurrentStep('processing');
+    setIsLoading(true);
+
+    try {
+      await healthCheck();
+      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
+      const response = await bibliographyAPI.uploadURL(urlInput, sanitizedResearchFocus);
+      const { task_id } = response;
+      setTaskId(task_id);
+      pollProcessingStatus(task_id);
+    } catch (error) {
+      console.error('Error importing URL:', error);
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to import URL. Please try again.';
+      toast.error(errorMessage);
+      setCurrentStep('upload');
+      setIsLoading(false);
+    }
+  };
+
+  const handleDOILookup = async () => {
+    if (!doiInput.trim()) {
+      toast.error('Please enter a DOI');
+      return;
+    }
+
+    if (!researchFocus.trim()) {
+      toast.error('Please enter your writing focus first');
+      return;
+    }
+
+    if (!currentUser) {
+      toast.error('Please sign in to look up DOIs');
+      navigate('/login');
+      return;
+    }
+
+    setCurrentStep('processing');
+    setIsLoading(true);
+
+    try {
+      await healthCheck();
+      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
+      const response = await bibliographyAPI.lookupDOI(doiInput, sanitizedResearchFocus);
+      const { task_id } = response;
+      setTaskId(task_id);
+      pollProcessingStatus(task_id);
+    } catch (error) {
+      console.error('Error looking up DOI:', error);
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to look up DOI. Please try again.';
+      toast.error(errorMessage);
+      setCurrentStep('upload');
+      setIsLoading(false);
+    }
+  };
+
+  const handleRSSLoad = async () => {
+    if (!rssInput.trim()) {
+      toast.error('Please enter an RSS feed URL');
+      return;
+    }
+
+    try {
+      new URL(rssInput);
+    } catch {
+      toast.error('Please enter a valid RSS feed URL');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await bibliographyAPI.importRSSFeed(rssInput);
+      setRssArticles(response.articles || []);
+      setSelectedRssArticles([]);
+      if (!response.articles || response.articles.length === 0) {
+        toast.error('No articles found in this feed');
+      }
+    } catch (error) {
+      console.error('Error loading RSS feed:', error);
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to load RSS feed. Please try again.';
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRSSImport = async () => {
+    if (selectedRssArticles.length === 0) {
+      toast.error('Please select at least one article');
+      return;
+    }
+
+    if (!researchFocus.trim()) {
+      toast.error('Please enter your writing focus first');
+      return;
+    }
+
+    if (!currentUser) {
+      toast.error('Please sign in to import articles');
+      navigate('/login');
+      return;
+    }
+
+    setCurrentStep('processing');
+    setIsLoading(true);
+
+    try {
+      await healthCheck();
+      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
+      const firstArticle = rssArticles.find(a => selectedRssArticles.includes(a.url));
+      if (!firstArticle) {
+        throw new Error('No valid article selected');
+      }
+      const response = await bibliographyAPI.uploadURL(firstArticle.url, sanitizedResearchFocus);
+      const { task_id } = response;
+      setTaskId(task_id);
+      pollProcessingStatus(task_id);
+    } catch (error) {
+      console.error('Error importing RSS articles:', error);
+      const errorMessage = error.response?.data?.detail || error.response?.data?.message || 'Failed to import article. Please try again.';
+      toast.error(errorMessage);
+      setCurrentStep('upload');
+      setIsLoading(false);
+    }
+  };
+
   const pollProcessingStatus = async (taskId) => {
     const interval = setInterval(async () => {
       try {
@@ -128,8 +287,17 @@ const CreateEntryPage = () => {
 
         const { status, progress } = response;
 
-        setProcessingProgress(progress);
-        setCurrentProcessingStep(Math.floor(progress / 17));
+        setProcessingProgress(progress || 0);
+
+        // Map progress ranges to processing step states
+        let step = 0;
+        if (progress >= 85) step = 5;
+        else if (progress >= 65) step = 4;
+        else if (progress >= 45) step = 3;
+        else if (progress >= 30) step = 2;
+        else if (progress >= 20) step = 1;
+        else step = 0;
+        setCurrentProcessingStep(step);
 
         if (status === 'completed') {
           clearInterval(interval);
@@ -232,6 +400,12 @@ const CreateEntryPage = () => {
     setTaskId(null);
     setBibliographyEntry(null);
     setIsLoading(false);
+    setImportTab('pdf');
+    setUrlInput('');
+    setDoiInput('');
+    setRssInput('');
+    setRssArticles([]);
+    setSelectedRssArticles([]);
   };
 
   return (
@@ -365,61 +539,224 @@ const CreateEntryPage = () => {
                     </div>
                   </div>
 
-                  {/* File Upload */}
+                  {/* Import Source */}
                   <div className="card">
                     <div className="flex items-center space-x-3 mb-6">
                       <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
                         <Upload className="w-5 h-5 text-primary" />
                       </div>
                       <h2 className="text-xl font-bold text-secondary-900">
-                        Upload Document
+                        Import Source
                       </h2>
                     </div>
 
-                    <motion.div
-                      className={`upload-zone relative ${isDragOver ? 'dragover' : ''}`}
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                      animate={isDragOver ? { scale: 1.02 } : { scale: 1 }}
-                      transition={{ duration: 0.2 }}
-                      style={{
-                        borderImage: isDragOver
-                          ? 'linear-gradient(135deg, #254a73, #316094, #4a7ab5) 1'
-                          : undefined,
-                        borderColor: isDragOver ? 'transparent' : undefined,
-                        borderWidth: '2px',
-                        borderStyle: 'dashed'
-                      }}
-                    >
-                      <input
-                        id="file-input"
-                        type="file"
-                        accept=".pdf"
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        onChange={(e) => {
-                          if (e.target.files && e.target.files[0]) {
-                            handleFileUpload(e.target.files[0]);
-                          }
+                    {/* Tab Bar */}
+                    <div className="flex border-b border-[#e5e7eb] mb-6">
+                      {[
+                        { id: 'pdf', label: 'Upload PDF', icon: FileText },
+                        { id: 'url', label: 'From URL', icon: Globe },
+                        { id: 'doi', label: 'DOI Lookup', icon: Search },
+                        { id: 'rss', label: 'RSS Feed', icon: Rss }
+                      ].map(tab => (
+                        <button
+                          key={tab.id}
+                          onClick={() => setImportTab(tab.id)}
+                          className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                            importTab === tab.id
+                              ? 'border-primary text-primary'
+                              : 'border-transparent text-secondary-600 hover:text-primary'
+                          }`}
+                        >
+                          <tab.icon className="w-4 h-4" />
+                          <span>{tab.label}</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* PDF Tab */}
+                    {importTab === 'pdf' && (
+                      <motion.div
+                        className={`upload-zone relative ${isDragOver ? 'dragover' : ''}`}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        animate={isDragOver ? { scale: 1.02 } : { scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                        style={{
+                          borderImage: isDragOver
+                            ? 'linear-gradient(135deg, #254a73, #316094, #4a7ab5) 1'
+                            : undefined,
+                          borderColor: isDragOver ? 'transparent' : undefined,
+                          borderWidth: '2px',
+                          borderStyle: 'dashed'
                         }}
-                      />
+                      >
+                        <input
+                          id="file-input"
+                          type="file"
+                          accept=".pdf"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files[0]) {
+                              handleFileUpload(e.target.files[0]);
+                            }
+                          }}
+                        />
+                        <div className="space-y-4">
+                          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                            <Upload className="w-8 h-8 text-primary" />
+                          </div>
+                          <div>
+                            <h3 className="text-base sm:text-lg font-semibold text-secondary-900 mb-2">
+                              Drop your PDF here or click to browse
+                            </h3>
+                            <p className="text-sm sm:text-base text-secondary-600 mb-2">
+                              Supports articles, books, reports, essays, and blog posts
+                            </p>
+                            <p className="text-sm text-secondary-500">
+                              Maximum file size: 10MB
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {/* URL Tab */}
+                    {importTab === 'url' && (
                       <div className="space-y-4">
-                        <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                          <Upload className="w-8 h-8 text-primary" />
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Globe className="w-5 h-5 text-secondary-400" />
+                          </div>
+                          <input
+                            type="url"
+                            className="form-input pl-10"
+                            placeholder="https://example.com/article"
+                            value={urlInput}
+                            onChange={(e) => setUrlInput(e.target.value)}
+                          />
                         </div>
-                        <div>
-                          <h3 className="text-base sm:text-lg font-semibold text-secondary-900 mb-2">
-                            Drop your PDF here or click to browse
-                          </h3>
-                          <p className="text-sm sm:text-base text-secondary-600 mb-2">
-                            Supports articles, books, reports, essays, and blog posts
-                          </p>
-                          <p className="text-sm text-secondary-500">
-                            Maximum file size: 10MB
-                          </p>
-                        </div>
+                        <motion.button
+                          onClick={handleURLImport}
+                          disabled={isLoading || !urlInput.trim()}
+                          className="bg-primary text-white hover:bg-primary-700 rounded-lg px-6 py-2.5 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          Import Article
+                        </motion.button>
                       </div>
-                    </motion.div>
+                    )}
+
+                    {/* DOI Tab */}
+                    {importTab === 'doi' && (
+                      <div className="space-y-4">
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Search className="w-5 h-5 text-secondary-400" />
+                          </div>
+                          <input
+                            type="text"
+                            className="form-input pl-10"
+                            placeholder="e.g., 10.1038/s41586-021-03819-2"
+                            value={doiInput}
+                            onChange={(e) => setDoiInput(e.target.value)}
+                          />
+                        </div>
+                        <motion.button
+                          onClick={handleDOILookup}
+                          disabled={isLoading || !doiInput.trim()}
+                          className="bg-primary text-white hover:bg-primary-700 rounded-lg px-6 py-2.5 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          Look Up
+                        </motion.button>
+                      </div>
+                    )}
+
+                    {/* RSS Tab */}
+                    {importTab === 'rss' && (
+                      <div className="space-y-4">
+                        <div className="flex space-x-3">
+                          <div className="relative flex-1">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              <Rss className="w-5 h-5 text-secondary-400" />
+                            </div>
+                            <input
+                              type="url"
+                              className="form-input pl-10"
+                              placeholder="https://example.com/feed.xml"
+                              value={rssInput}
+                              onChange={(e) => setRssInput(e.target.value)}
+                            />
+                          </div>
+                          <motion.button
+                            onClick={handleRSSLoad}
+                            disabled={isLoading || !rssInput.trim()}
+                            className="bg-primary text-white hover:bg-primary-700 rounded-lg px-6 py-2.5 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            Load Feed
+                          </motion.button>
+                        </div>
+
+                        {/* RSS Article List */}
+                        {rssArticles.length > 0 && (
+                          <div className="space-y-3">
+                            <p className="text-sm text-secondary-700 font-medium">
+                              {rssArticles.length} article{rssArticles.length !== 1 ? 's' : ''} found
+                            </p>
+                            <div className="max-h-80 overflow-y-auto space-y-2 border border-[#e5e7eb] rounded-lg p-3">
+                              {rssArticles.map((article, index) => (
+                                <label
+                                  key={index}
+                                  className="flex items-start space-x-3 p-3 rounded-lg hover:bg-secondary-50 cursor-pointer transition-colors"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    className="mt-1 rounded border-secondary-300 text-primary focus:ring-primary"
+                                    checked={selectedRssArticles.includes(article.url)}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setSelectedRssArticles([...selectedRssArticles, article.url]);
+                                      } else {
+                                        setSelectedRssArticles(selectedRssArticles.filter(u => u !== article.url));
+                                      }
+                                    }}
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-secondary-900 truncate">
+                                      {article.title}
+                                    </p>
+                                    {article.published && (
+                                      <p className="text-xs text-secondary-500 mt-0.5">
+                                        {new Date(article.published).toLocaleDateString()}
+                                      </p>
+                                    )}
+                                    {article.summary && (
+                                      <p className="text-xs text-secondary-600 mt-1 line-clamp-2">
+                                        {article.summary}
+                                      </p>
+                                    )}
+                                  </div>
+                                </label>
+                              ))}
+                            </div>
+                            <motion.button
+                              onClick={handleRSSImport}
+                              disabled={isLoading || selectedRssArticles.length === 0}
+                              className="bg-primary text-white hover:bg-primary-700 rounded-lg px-6 py-2.5 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              Import Selected ({selectedRssArticles.length})
+                            </motion.button>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </FadeIn>
