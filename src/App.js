@@ -36,6 +36,9 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsofServicePage from './pages/TermsofServicePage';
 import CookiePolicyPage from './pages/CookiePolicyPage';
 import AcademicIntegrityPage from './pages/AcademicIntegrityPage';
+import UseCaseMarketingPage from './pages/UseCaseMarketingPage';
+import UseCaseConsultingPage from './pages/UseCaseConsultingPage';
+import UseCaseStartupPage from './pages/UseCaseStartupPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Components
@@ -77,6 +80,9 @@ function AnimatedRoutes() {
         <Route path="/cookies" element={<PageTransition><CookiePolicyPage /></PageTransition>} />
         <Route path="/ethical-ai" element={<PageTransition><AcademicIntegrityPage /></PageTransition>} />
         <Route path="/academic-integrity" element={<Navigate to="/ethical-ai" replace />} />
+        <Route path="/for/marketing-teams" element={<PageTransition><UseCaseMarketingPage /></PageTransition>} />
+        <Route path="/for/consultants" element={<PageTransition><UseCaseConsultingPage /></PageTransition>} />
+        <Route path="/for/startups" element={<PageTransition><UseCaseStartupPage /></PageTransition>} />
 
         {/* Protected Routes */}
         <Route path="/dashboard" element={

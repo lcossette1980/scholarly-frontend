@@ -223,6 +223,30 @@ const HomePage = () => {
 
       <div className="section-divider my-16" />
 
+      {/* Who It's For */}
+      <section className="py-16">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold text-secondary-900 text-center mb-4">Built for Professionals Who Publish</h2>
+          <p className="text-secondary-600 text-center mb-12 max-w-2xl mx-auto">Research-backed content for every team that needs credibility, speed, and depth.</p>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              { title: 'Content Marketing Teams', desc: 'Thought leadership grounded in real research — 10x faster than freelancers.', image: '/images/usecase_marketing.png', link: '/for/marketing-teams' },
+              { title: 'Consultants & Analysts', desc: 'White papers and client deliverables in hours, not weeks.', image: '/images/usecase_consulting.png', link: '/for/consultants' },
+              { title: 'Startups & Founders', desc: 'Investor-facing content backed by real market research.', image: '/images/usecase_startup.png', link: '/for/startups' },
+            ].map(uc => (
+              <Link key={uc.title} to={uc.link} className="card card-hover group">
+                <img src={uc.image} alt={uc.title} className="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 className="text-lg font-bold text-secondary-900 mb-2 group-hover:text-primary transition-colors">{uc.title}</h3>
+                <p className="text-secondary-600 text-sm">{uc.desc}</p>
+                <span className="text-primary text-sm font-medium mt-3 inline-block">Learn more →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider my-16" />
+
       {/* Pricing Preview */}
       <section className="py-20 lg:py-24">
         <div className="container mx-auto px-6">
