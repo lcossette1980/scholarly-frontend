@@ -31,7 +31,7 @@ const StaggerChildren = ({
   once = true
 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once, margin: '-30px' });
+  const isInView = useInView(ref, { once, margin: '100px' });
 
   const variants = {
     ...containerVariants,

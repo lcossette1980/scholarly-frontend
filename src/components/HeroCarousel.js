@@ -17,6 +17,7 @@ const HeroCarousel = () => {
     {
       title: "Import from Anywhere",
       subtitle: "Bring your sources in seconds",
+      label: "Import",
       description: "PDFs, URLs, DOIs, RSS feeds — bring your sources into DraftEngine in seconds. Paste a URL and article text is extracted automatically. Look up any DOI through CrossRef. Your research, one library.",
       icon: Upload,
       iconColor: "text-primary-600",
@@ -32,6 +33,7 @@ const HeroCarousel = () => {
     {
       title: "AI Source Analysis",
       subtitle: "Deep analysis in 90 seconds",
+      label: "Analyze",
       description: "Every source is analyzed by AI to surface what matters most. Key arguments, interesting angles, perspective value, and notable passages — extracted and organized so you can write with confidence.",
       icon: Search,
       iconColor: "text-primary",
@@ -46,6 +48,7 @@ const HeroCarousel = () => {
     {
       title: "Generate with Quality Agents",
       subtitle: "Editorial-quality documents, automatically",
+      label: "Generate",
       description: "Full documents from 500 to 10,000 words with built-in quality review. Quality agents evaluate every section, check document coherence, and auto-regenerate weak passages. Citations and AI illustrations included.",
       icon: PenTool,
       iconColor: "text-accent-600",
@@ -60,6 +63,7 @@ const HeroCarousel = () => {
     {
       title: "Research Feeds",
       subtitle: "New papers, delivered automatically",
+      label: "Feeds",
       description: "Subscribe to the topics that matter to your work. DraftEngine pulls new papers from Semantic Scholar, OpenAI, and CrossRef and delivers them straight to your library — so you never miss a relevant study.",
       icon: Rss,
       iconColor: "text-primary-600",
@@ -217,7 +221,7 @@ const HeroCarousel = () => {
               <div className="flex items-center space-x-1">
                 <SlideIcon className="w-3 h-3" />
                 <span className="hidden sm:inline">
-                  {s.subtitle.split(' ').slice(0, 2).join(' ')}
+                  {s.label || s.title}
                 </span>
               </div>
             </button>
