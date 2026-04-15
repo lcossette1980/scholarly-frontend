@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   CheckCircle,
-  Download
+  Download,
+  Cpu,
+  Zap
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import HeroCarousel from '../components/HeroCarousel';
@@ -19,11 +21,11 @@ const HomePage = () => {
       name: 'Starter',
       price: '$0',
       period: '/forever',
-      description: 'Perfect for trying it out',
+      description: 'Try the full workflow',
       features: [
         { text: '5 source entries (lifetime)', bold: false },
-        { text: 'AI-powered source analysis', bold: false },
-        { text: 'Standard export formats', bold: false },
+        { text: 'AI source analysis', bold: false },
+        { text: 'Standard export to Word', bold: false },
         { text: 'Email support', bold: false },
       ],
       cta: 'Start Free',
@@ -39,9 +41,9 @@ const HomePage = () => {
       description: 'For regular writing',
       features: [
         { text: 'Unlimited source entries', bold: true },
-        { text: 'Advanced AI analysis', bold: false },
-        { text: 'All reference styles', bold: false },
-        { text: 'Priority support', bold: false },
+        { text: 'Topic & Outline Generator', bold: true },
+        { text: 'Research feeds', bold: false },
+        { text: 'All citation styles', bold: false },
       ],
       cta: 'Start Trial',
       ctaLink: '/pricing',
@@ -56,9 +58,9 @@ const HomePage = () => {
       description: 'For power users',
       features: [
         { text: 'Everything in Plus', bold: true },
-        { text: 'Topic & Outline Generator', bold: true },
-        { text: 'Source synthesis tools', bold: false },
-        { text: 'Advanced customization', bold: false },
+        { text: 'Premium AI analysis', bold: true },
+        { text: 'All writing approaches', bold: false },
+        { text: 'Priority support', bold: false },
       ],
       cta: 'Start Trial',
       ctaLink: '/pricing',
@@ -71,7 +73,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-mesh">
       <SEO
-        description="AI writing assistant that transforms your source material into polished articles, essays, and blog posts. Upload PDFs, get source summaries, generate outlines, and draft complete documents."
+        description="AI writing platform that transforms source material into polished documents. Import PDFs, URLs, DOIs, and RSS feeds. Generate articles, essays, and blog posts with citations, quality review, and AI illustrations."
         path="/"
       />
       {/* Hero Section with Carousel */}
@@ -120,18 +122,14 @@ const HomePage = () => {
           {/* Trust Indicators */}
           <FadeIn direction="up">
             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-secondary-500 mt-8">
-              <span>5 free entries</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> 10,000+ writers</span>
               <span className="hidden sm:inline text-secondary-300">·</span>
-              <span>90-second setup</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> 4 source import methods</span>
               <span className="hidden sm:inline text-secondary-300">·</span>
-              <span>Export to Word/PDF</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> APA, MLA, Chicago citations</span>
               <span className="hidden sm:inline text-secondary-300">·</span>
-              <span>Cancel anytime</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> AI quality review on every document</span>
             </div>
-
-            <p className="text-center text-sm text-secondary-400 mt-4">
-              Join 10,000+ writers saving an average of 18 hours per month
-            </p>
           </FadeIn>
         </div>
       </section>
@@ -146,8 +144,8 @@ const HomePage = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {[
                   { target: 10000, suffix: '+', label: 'Active Writers' },
-                  { target: 18, suffix: 'hrs', label: 'Saved Per Month' },
-                  { target: 90, suffix: 'sec', label: 'Average Generation' },
+                  { target: 4, suffix: '', label: 'Import Methods' },
+                  { target: 90, suffix: 'sec', label: 'Source Analysis' },
                   { target: 4.9, suffix: '/5', label: 'User Rating' },
                 ].map((stat) => (
                   <StaggerItem key={stat.label}>
@@ -172,10 +170,10 @@ const HomePage = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
-              Three steps to finished drafts
+              Three steps to finished content
             </h2>
             <p className="text-lg text-secondary-500 max-w-2xl mx-auto">
-              No complex setup. No learning curve. Just upload and go.
+              Import your research, generate polished documents, and export — all in one workflow.
             </p>
           </div>
 
@@ -183,9 +181,9 @@ const HomePage = () => {
             <StaggerChildren>
               <div className="grid md:grid-cols-3 gap-8">
                 {[
-                  { step: '01', title: 'Upload Sources', desc: 'Drop your PDF documents or manually enter details. We support any PDF, any length.' },
-                  { step: '02', title: 'AI Generates', desc: 'Our AI creates source summaries, ideas, outlines, or complete documents. Takes 90 seconds to 5 minutes.' },
-                  { step: '03', title: 'Download & Submit', desc: 'Get professionally formatted documents ready for submission. Export to Word, PDF, or clipboard.' },
+                  { step: '01', title: 'Import Your Sources', desc: 'Upload PDFs, paste URLs for automatic text extraction, look up DOIs through CrossRef, or connect RSS feeds to stay current.' },
+                  { step: '02', title: 'Generate & Refine', desc: 'AI writes your document with section-level quality review, auto-generated citations in APA, MLA, or Chicago, and DALL-E editorial illustrations.' },
+                  { step: '03', title: 'Download & Share', desc: 'Export to Word with images, references list, refined title, meta description, and a ready-to-use social media excerpt.' },
                 ].map((item) => (
                   <StaggerItem key={item.step}>
                     <div className="card-floating text-center h-full flex flex-col">
@@ -272,7 +270,102 @@ const HomePage = () => {
           </div>
 
           <p className="text-center text-sm text-secondary-400 mt-8">
-            All plans include secure data handling and Word/PDF export
+            All plans include secure data handling and Word export
+          </p>
+        </div>
+      </section>
+
+      <div className="section-divider my-16" />
+
+      {/* Content Generation Pricing */}
+      <section className="py-20 lg:py-24">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
+              Pay per page, only when you generate
+            </h2>
+            <p className="text-lg text-secondary-500 max-w-2xl mx-auto">
+              Document generation is pay-as-you-go. Every page includes quality agents, citations, and AI illustrations.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
+            <FadeIn direction="up" delay={0}>
+              <div className="card flex flex-col h-full">
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-secondary-900">Standard</h3>
+                </div>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-secondary-900">$1.49</span>
+                  <span className="text-secondary-400 text-sm">/page</span>
+                </div>
+                <p className="text-sm text-secondary-500 mb-6">Powered by Claude Sonnet</p>
+                <ul className="space-y-3">
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Quality agents review every section</span>
+                  </li>
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>DALL-E editorial illustrations</span>
+                  </li>
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Auto-generated citations</span>
+                  </li>
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Enhanced title & meta description</span>
+                  </li>
+                </ul>
+              </div>
+            </FadeIn>
+
+            <FadeIn direction="up" delay={0.1}>
+              <div className="card flex flex-col h-full ring-2 ring-primary relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
+                    Deeper Synthesis
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Cpu className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-secondary-900">Professional</h3>
+                </div>
+                <div className="mb-4">
+                  <span className="text-4xl font-bold text-secondary-900">$2.49</span>
+                  <span className="text-secondary-400 text-sm">/page</span>
+                </div>
+                <p className="text-sm text-secondary-500 mb-6">Powered by Claude Opus</p>
+                <ul className="space-y-3">
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Deeper source synthesis</span>
+                  </li>
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Quality agents review every section</span>
+                  </li>
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>DALL-E editorial illustrations</span>
+                  </li>
+                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Auto-generated citations</span>
+                  </li>
+                </ul>
+              </div>
+            </FadeIn>
+          </div>
+
+          <p className="text-center text-sm text-secondary-400 mt-8">
+            500 to 10,000 words per document. Articles, essays, blog posts, and op-eds.
           </p>
         </div>
       </section>
@@ -285,10 +378,10 @@ const HomePage = () => {
           <div className="container mx-auto px-6">
             <div className="max-w-3xl mx-auto text-center text-white">
               <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-                Ready to save hours on every draft?
+                From Sources to Published Content in Minutes
               </h2>
               <p className="text-xl text-white/70 mb-8">
-                Join 10,000+ writers who've transformed their writing workflow.
+                Import research, generate documents with citations and illustrations, export to Word.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
@@ -296,7 +389,7 @@ const HomePage = () => {
                   to={currentUser ? "/create" : "/signup"}
                   className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-xl font-semibold text-lg"
                 >
-                  {currentUser ? "Create Your First Entry" : "Start Free — No Credit Card"}
+                  Start Free — No Credit Card Required
                 </Link>
                 <Link
                   to="/features"
@@ -309,7 +402,7 @@ const HomePage = () => {
               <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/50">
                 <span>5 free entries to start</span>
                 <span>·</span>
-                <span>2-minute setup</span>
+                <span>4 import methods</span>
                 <span>·</span>
                 <span>Cancel anytime</span>
               </div>

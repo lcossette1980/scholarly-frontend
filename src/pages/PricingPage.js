@@ -51,11 +51,12 @@ const PricingPage = () => {
       name: 'Starter',
       price: '$0',
       period: '/forever',
-      description: 'Perfect for trying it out',
+      description: 'Try DraftEngine with no commitment',
       features: [
-        { text: '5 source entries (lifetime)', bold: false },
-        { text: 'AI-powered source analysis', bold: false },
-        { text: 'Standard export formats', bold: false },
+        { text: '5 lifetime source entries', bold: false },
+        { text: 'AI source analysis (arguments, angles, passages)', bold: false },
+        { text: 'PDF upload', bold: false },
+        { text: 'Standard export (Word, text)', bold: false },
         { text: 'Email support', bold: false },
       ],
       ctaClass: 'btn btn-outline w-full justify-center',
@@ -66,11 +67,12 @@ const PricingPage = () => {
       name: 'Plus',
       price: '$9.99',
       period: '/month',
-      description: 'For regular writing',
+      description: 'For writers who publish regularly',
       features: [
         { text: 'Unlimited source entries', bold: true },
+        { text: 'All 4 import methods (PDF, URL, DOI, RSS)', bold: true },
         { text: 'Topic & Outline Generator', bold: true },
-        { text: 'Advanced AI analysis', bold: false },
+        { text: 'Research Feeds (subscribe to topics)', bold: true },
         { text: 'Priority support', bold: false },
       ],
       ctaClass: 'btn btn-primary w-full justify-center',
@@ -81,12 +83,13 @@ const PricingPage = () => {
       name: 'Pro',
       price: '$19.99',
       period: '/month',
-      description: 'For power users',
+      description: 'Maximum control and output quality',
       features: [
         { text: 'Everything in Plus', bold: true },
         { text: 'Premium AI analysis', bold: false },
-        { text: 'Advanced customization', bold: false },
-        { text: 'All writing approaches', bold: false },
+        { text: 'All writing approaches & tones', bold: false },
+        { text: 'Advanced outline customization', bold: false },
+        { text: 'Priority support', bold: false },
       ],
       ctaClass: 'btn btn-outline w-full justify-center',
       highlight: false,
@@ -102,7 +105,7 @@ const PricingPage = () => {
     <div className="min-h-screen py-6 md:py-12 bg-mesh relative overflow-hidden">
       <SEO
         title="Pricing Plans"
-        description="Simple, transparent pricing for AI-powered writing. Start free with 5 source entries. Plus and Pro plans for writers who need more power."
+        description="Simple, transparent pricing for AI-powered writing. Start free with 5 source entries. Plus and Pro plans for unlimited access. Pay-per-use document generation available to all plans."
         path="/pricing"
       />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -113,7 +116,7 @@ const PricingPage = () => {
               Simple, Transparent <span className="text-gradient">Pricing</span>
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-secondary-700 max-w-3xl mx-auto leading-relaxed">
-              Start free with 5 lifetime entries, or upgrade for unlimited access. No contracts, cancel anytime.
+              Choose a plan for source management and analysis. Generate documents on any plan with simple pay-per-use pricing.
             </p>
           </div>
         </FadeIn>
@@ -214,7 +217,7 @@ const PricingPage = () => {
                 ) : (
                   <div className="bg-white/50 rounded-lg p-4 inline-block">
                     <p className="text-lg font-semibold text-primary">Unlimited Source Entries</p>
-                    <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator</p>
+                    <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator + Research Feeds</p>
                   </div>
                 )}
               </div>
@@ -229,10 +232,13 @@ const PricingPage = () => {
         <FadeIn direction="up">
           <div className="max-w-5xl mx-auto mb-16">
             <h2 className="text-3xl font-bold text-secondary-900 text-center mb-4">
-              AI <span className="text-gradient">Content Generation</span> Pricing
+              AI <span className="text-gradient">Document Generation</span>
             </h2>
-            <p className="text-center text-secondary-700 mb-8">
-              Pay only for what you generate. No subscription required for document generation.
+            <p className="text-center text-secondary-700 mb-2">
+              Pay only for what you generate. Available to <strong>all plans</strong> — including Starter.
+            </p>
+            <p className="text-center text-sm text-secondary-500 mb-8">
+              1 page = ~250 words. DALL-E illustrations included at no extra cost.
             </p>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -241,35 +247,39 @@ const PricingPage = () => {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-bold text-secondary-900">Standard</h3>
                   <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
-                    GPT-4o
+                    Claude Sonnet
                   </span>
                 </div>
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-secondary-900">$1.49</span>
                   <span className="text-secondary-600">/page</span>
                 </div>
-                <p className="text-sm text-secondary-700 mb-6">High-quality generation for most use cases</p>
+                <p className="text-sm text-secondary-700 mb-6">High-quality generation for most writing needs</p>
                 <ul className="space-y-3 flex-1">
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Fast generation (2-3 min for 10 pages)</span>
+                    <span>Quality agents review every section (7 dimensions)</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Natural source attribution in all content</span>
+                    <span>Document Coherence Agent for full-draft review</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Multiple document types</span>
+                    <span>DALL-E 3 editorial illustrations per section</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Export to Word/PDF</span>
+                    <span>APA, MLA, or Chicago citations with reference list</span>
+                  </li>
+                  <li className="flex items-start space-x-2 text-sm">
+                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+                    <span>Refined title, meta description, social excerpt</span>
                   </li>
                 </ul>
               </div>
 
-              {/* Pro Tier */}
+              {/* Professional Tier */}
               <div className="card flex flex-col h-full ring-2 ring-primary relative">
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                   <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
@@ -277,16 +287,16 @@ const PricingPage = () => {
                   </span>
                 </div>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-secondary-900">Pro</h3>
+                  <h3 className="text-2xl font-bold text-secondary-900">Professional</h3>
                   <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                    GPT-4 Turbo
+                    Claude Opus
                   </span>
                 </div>
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-secondary-900">$2.49</span>
                   <span className="text-secondary-600">/page</span>
                 </div>
-                <p className="text-sm text-secondary-700 mb-6">Premium quality with priority processing</p>
+                <p className="text-sm text-secondary-700 mb-6">Deeper synthesis and superior prose from our most capable model</p>
                 <ul className="space-y-3 flex-1">
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
@@ -294,15 +304,15 @@ const PricingPage = () => {
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Superior writing quality & coherence</span>
+                    <span>Deeper source synthesis and argumentation</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Priority queue (2x faster)</span>
+                    <span>Superior writing quality and coherence</span>
                   </li>
                   <li className="flex items-start space-x-2 text-sm">
                     <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Better source integration</span>
+                    <span>More nuanced source integration</span>
                   </li>
                 </ul>
               </div>
@@ -336,7 +346,7 @@ const PricingPage = () => {
                       <span>40 pages</span>
                     </div>
                     <p className="text-xs text-secondary-600 mt-2 text-center">
-                      ≈ {estimatorPages * 250} words
+                      = {estimatorPages * 250} words
                     </p>
                   </div>
 
@@ -355,7 +365,7 @@ const PricingPage = () => {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-semibold text-secondary-900">Standard</p>
-                            <p className="text-xs text-secondary-600">GPT-4o — $1.49/page</p>
+                            <p className="text-xs text-secondary-600">Claude Sonnet — $1.49/page</p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                             estimatorTier === 'standard'
@@ -378,8 +388,8 @@ const PricingPage = () => {
                       >
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="font-semibold text-secondary-900">Pro</p>
-                            <p className="text-xs text-secondary-600">GPT-4 Turbo — $2.49/page</p>
+                            <p className="font-semibold text-secondary-900">Professional</p>
+                            <p className="text-xs text-secondary-600">Claude Opus — $2.49/page</p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                             estimatorTier === 'pro'
@@ -403,7 +413,7 @@ const PricingPage = () => {
                     ${estimatedCost.toFixed(2)}
                   </p>
                   <p className="text-sm text-secondary-700">
-                    {estimatorPages} pages × ${estimatorTier === 'standard' ? '1.49' : '2.49'} per page
+                    {estimatorPages} pages x ${estimatorTier === 'standard' ? '1.49' : '2.49'} per page
                   </p>
                   <div className="mt-4 pt-4 border-t border-secondary-300/30">
                     <p className="text-xs text-secondary-600">
@@ -431,10 +441,43 @@ const PricingPage = () => {
             <StaggerItem>
               <div className="card">
                 <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  Can I change plans at any time?
+                  Can free users generate documents?
                 </h3>
                 <p className="text-secondary-700">
-                  Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate the billing accordingly.
+                  Yes. Document generation is pay-per-use and available to all plans, including Starter. You choose Standard ($1.49/page with Claude Sonnet) or Professional ($2.49/page with Claude Opus) each time you generate.
+                </p>
+              </div>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="card">
+                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                  What's included in document generation?
+                </h3>
+                <p className="text-secondary-700">
+                  Every generated document includes quality agent review (section-level and full-document coherence), DALL-E 3 editorial illustrations for each section, auto-generated citations in your chosen style (APA, MLA, or Chicago), a refined title with 3 alternatives, a 150-word meta description, and a social media excerpt. All of this is included in the per-page price.
+                </p>
+              </div>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="card">
+                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                  What citation styles are supported?
+                </h3>
+                <p className="text-secondary-700">
+                  DraftEngine supports APA, MLA, and Chicago citation styles. Inline citation markers are inserted automatically after generation, and a complete reference list is appended to your document.
+                </p>
+              </div>
+            </StaggerItem>
+
+            <StaggerItem>
+              <div className="card">
+                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                  How do Research Feeds work?
+                </h3>
+                <p className="text-secondary-700">
+                  Subscribe to any research topic and DraftEngine will surface relevant new papers from three academic databases — Semantic Scholar, OpenAlex, and CrossRef. Choose daily or weekly delivery, review what's new, and import papers directly into your source library. Research Feeds are available on Plus and Pro plans.
                 </p>
               </div>
             </StaggerItem>
@@ -445,7 +488,7 @@ const PricingPage = () => {
                   What's the difference between Plus and Pro?
                 </h3>
                 <p className="text-secondary-700">
-                  Both Plus and Pro include unlimited source entries and the Topic & Outline Generator. Pro adds premium AI analysis and advanced customization for power users who need the best output quality.
+                  Both plans include unlimited source entries, all 4 import methods, the Topic & Outline Generator, and Research Feeds. Pro adds premium AI analysis, access to all writing approaches and tones, and advanced outline customization for writers who need maximum control over their output.
                 </p>
               </div>
             </StaggerItem>
@@ -453,21 +496,10 @@ const PricingPage = () => {
             <StaggerItem>
               <div className="card">
                 <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  How does content generation pricing work?
+                  Can I change plans at any time?
                 </h3>
                 <p className="text-secondary-700">
-                  Content generation (AI document writing) is pay-per-use. You only pay for documents you generate, based on length. Choose Standard ($1.49/page) or Pro ($2.49/page) tier. This is separate from source analysis subscriptions.
-                </p>
-              </div>
-            </StaggerItem>
-
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  Is there a starter discount?
-                </h3>
-                <p className="text-secondary-700">
-                  Our Starter plan is completely free with 5 lifetime source entries — no credit card required. Plus is designed for individual writers at an affordable price, and Pro is for power users who need advanced features.
+                  Yes. You can upgrade or downgrade your plan at any time. Changes take effect immediately, and billing is prorated accordingly.
                 </p>
               </div>
             </StaggerItem>
@@ -495,7 +527,7 @@ const PricingPage = () => {
               Ready to Transform Your Writing?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Join thousands of writers who save hours every week with DraftEngine.
+              Start free with 5 source entries. Generate documents on any plan. No credit card required.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
               {!currentUser ? (
@@ -504,7 +536,7 @@ const PricingPage = () => {
                     to="/signup"
                     className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
                   >
-                    Start Free Trial
+                    Start Free — No Credit Card
                   </Link>
                   <Link
                     to="/login"

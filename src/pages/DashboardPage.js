@@ -284,7 +284,7 @@ const DashboardPage = () => {
                   className="card group block h-full"
                 >
                   <h3 className="font-semibold text-secondary-900 mb-1">Generate Content</h3>
-                  <p className="text-sm text-secondary-500 mb-3">Create content from your sources</p>
+                  <p className="text-sm text-secondary-500 mb-3">AI drafts with citations, DALL-E images, and quality review</p>
                   <span className="text-primary text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
                     Start <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </span>
@@ -298,8 +298,8 @@ const DashboardPage = () => {
                   to="/sources"
                   className="card group block h-full"
                 >
-                  <h3 className="font-semibold text-secondary-900 mb-1">Idea & Outline</h3>
-                  <p className="text-sm text-secondary-500 mb-3">Analyze sources for topics</p>
+                  <h3 className="font-semibold text-secondary-900 mb-1">Topic & Outline Generator</h3>
+                  <p className="text-sm text-secondary-500 mb-3">Generate topics and outlines from your sources</p>
                   <span className="text-primary text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
                     Start <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </span>
@@ -431,14 +431,14 @@ const DashboardPage = () => {
                     {userDocument.subscription.plan === 'researcher' ? (
                       <div className="flex items-center space-x-3">
                         <Check className="w-5 h-5 text-accent" />
-                        <span className="text-secondary-900">Idea & Outline Generator (Unlimited)</span>
+                        <span className="text-secondary-900">Topic & Outline Generator (Unlimited)</span>
                       </div>
                     ) : (
                       <div className="flex items-center space-x-3">
                         <Lock className="w-5 h-5 text-secondary-300" />
                         <span className="text-secondary-600">
-                          Idea & Outline Generator
-                          <Link to="/pricing" className="text-primary ml-2 hover:underline">Upgrade to unlock</Link>
+                          Topic & Outline Generator — Upgrade to Plus to unlock
+                          <Link to="/pricing" className="text-primary ml-2 hover:underline">View plans</Link>
                         </span>
                       </div>
                     )}

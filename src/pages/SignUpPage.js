@@ -1,7 +1,7 @@
 // src/pages/SignUpPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, Brain, Shield, Users } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Brain, Shield, Users, CreditCard } from 'lucide-react';
 import { signUp, signInWithGoogle } from '../services/auth';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -145,9 +145,12 @@ const SignUpPage = () => {
               From Sources to Finished Drafts in Minutes
             </h2>
 
-            <p className="text-white/70 text-lg mb-8 max-w-md">
-              Join thousands of writers who turn source material into polished drafts in minutes.
-            </p>
+            <ul className="text-white/70 text-base mb-8 max-w-md space-y-2">
+              <li>Import from PDFs, URLs, DOIs, and RSS feeds</li>
+              <li>AI-generated documents with citations and illustrations</li>
+              <li>Quality-reviewed by editorial AI agents</li>
+              <li>Start with 5 free source entries</li>
+            </ul>
           </motion.div>
 
           <motion.div
@@ -178,6 +181,10 @@ const SignUpPage = () => {
             <div className="flex items-center space-x-2 text-white/70">
               <Shield className="w-4 h-4" />
               <span className="text-sm">Secure & Private</span>
+            </div>
+            <div className="flex items-center space-x-2 text-white/70">
+              <CreditCard className="w-4 h-4" />
+              <span className="text-sm">No credit card required</span>
             </div>
           </motion.div>
         </div>
@@ -371,6 +378,9 @@ const SignUpPage = () => {
                       'Create Account'
                     )}
                   </motion.button>
+                  <p className="text-xs text-secondary-500 text-center mt-2">
+                    No credit card required. Start with 5 free source entries.
+                  </p>
                 </motion.div>
               </form>
 

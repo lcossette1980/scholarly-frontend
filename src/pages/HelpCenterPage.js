@@ -64,8 +64,8 @@ const HelpCenterPage = () => {
       title: "Creating Your First Entry",
       content: [
         {
-          subtitle: "Step 1: Upload Your Document",
-          text: "Click the 'Create Entry' button from your dashboard. Upload a PDF file (up to 10MB) of the document you want to analyze. Supported formats include papers, journal articles, and documents."
+          subtitle: "Step 1: Import Your Source",
+          text: "Click the 'Create Entry' button from your dashboard. You can import sources in four ways:\n\n• Upload a PDF file (up to 10MB)\n• Paste a URL to extract content from web articles\n• Enter a DOI to pull metadata from CrossRef\n• Subscribe to an RSS feed to automatically discover new sources\n\nSupported source types include papers, journal articles, blog posts, and web documents."
         },
         {
           subtitle: "Step 2: Set Your Focus",
@@ -73,7 +73,7 @@ const HelpCenterPage = () => {
         },
         {
           subtitle: "Step 3: Review Generated Content",
-          text: "The AI will analyze your document and generate a comprehensive source summary entry including key findings, methodology insights, and relevant quotes with page citations."
+          text: "The AI will analyze your document in about 90 seconds and generate a comprehensive source summary entry including key findings, methodology insights, and relevant quotes with page citations."
         },
         {
           subtitle: "Step 4: Edit and Export",
@@ -98,24 +98,28 @@ const HelpCenterPage = () => {
         }
       ]
     },
-    "Uploading documents": {
-      title: "Uploading Documents",
+    "Importing sources": {
+      title: "Importing Sources",
       content: [
         {
-          subtitle: "Supported File Types",
-          text: "Currently, we support PDF files up to 10MB in size. We're working on adding support for Word documents, PowerPoint presentations, and other formats."
+          subtitle: "PDF Upload",
+          text: "Upload PDF files up to 10MB in size. Ensure your PDF is text-based (not just scanned images), remove any password protection, and check that all pages are properly formatted. Simply drag and drop your file or click to browse."
         },
         {
-          subtitle: "Best Practices",
-          text: "• Ensure your PDF is text-based (not just scanned images)\n• Papers with clear structure work best\n• Remove any password protection before uploading\n• Check that all pages are properly formatted"
+          subtitle: "URL Import",
+          text: "Paste any web URL to extract the article content automatically. DraftEngine will pull the title, author, publication date, and full text from blog posts, news articles, and web pages."
         },
         {
-          subtitle: "Upload Process",
-          text: "Simply drag and drop your file or click to browse. The upload typically takes 5-15 seconds depending on file size. You'll see a progress bar during upload."
+          subtitle: "DOI Lookup",
+          text: "Enter a DOI (Digital Object Identifier) to retrieve metadata from CrossRef, including title, authors, journal, publication date, and abstract. This is the fastest way to add academic papers to your library."
+        },
+        {
+          subtitle: "RSS Feeds",
+          text: "Subscribe to RSS feeds from journals, blogs, or news outlets. DraftEngine checks your subscriptions regularly and surfaces new articles matching your research interests."
         },
         {
           subtitle: "Troubleshooting",
-          text: "If upload fails, check your internet connection and ensure the file isn't corrupted. Contact support if you continue experiencing issues."
+          text: "If upload fails, check your internet connection and ensure the file isn't corrupted. For URL imports, make sure the page is publicly accessible. Contact support if you continue experiencing issues."
         }
       ]
     },
@@ -123,20 +127,16 @@ const HelpCenterPage = () => {
       title: "Choosing the Right Plan",
       content: [
         {
-          subtitle: "Free Plan",
-          text: "Perfect for trying DraftEngine. Includes 5 source summary entries to test our features and see if the platform meets your needs."
+          subtitle: "Free / Starter Plan - $0",
+          text: "Perfect for trying DraftEngine. Includes 5 source summary entries with no credit card required. Test our AI analysis, import from PDF or URL, and see if the platform meets your needs."
         },
         {
           subtitle: "Plus Plan - $9.99/month",
-          text: "Ideal for regular users. Includes 50 entries per month, all writing features, and priority support."
+          text: "Ideal for regular users. Includes unlimited source entries, the Topic & Outline Generator, and access to the document generator on a pay-per-use basis. Content generation starts at $1.49/page (Standard, Claude Sonnet) or $2.49/page (Professional, Claude Opus)."
         },
         {
           subtitle: "Pro Plan - $19.99/month",
-          text: "For power users and professionals. Includes 200 entries per month, advanced analysis features, team collaboration, and priority processing."
-        },
-        {
-          subtitle: "Team Plan - Custom Pricing",
-          text: "For teams and organizations. Includes unlimited entries, admin dashboard, usage analytics, custom integrations, and dedicated support."
+          text: "For power users and professionals. Includes unlimited entries, all Plus features, Research Feeds, advanced analysis, priority processing, and team collaboration tools."
         }
       ]
     },
@@ -250,7 +250,7 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Creating Teams",
-          text: "Available on Pro and Institution plans. Create teams for groups, classes, or collaborative projects. Invite members via email."
+          text: "Available on the Pro plan. Create teams for groups, classes, or collaborative projects. Invite members via email."
         },
         {
           subtitle: "Shared Libraries",
@@ -315,7 +315,7 @@ const HelpCenterPage = () => {
       icon: <FileText className="w-6 h-6" />,
       title: "Getting Started",
       description: "Learn the basics of using DraftEngine",
-      articles: ["Creating your first entry", "Understanding research focus", "Uploading documents"]
+      articles: ["Creating your first entry", "Understanding research focus", "Importing sources"]
     },
     {
       icon: <CreditCard className="w-6 h-6" />,
@@ -340,11 +340,11 @@ const HelpCenterPage = () => {
   const faqs = [
     {
       question: "How accurate is the AI-generated content?",
-      answer: "Our AI uses advanced language models to produce high-quality content. While highly accurate, we recommend reviewing all generated content for accuracy, tone, and alignment with your goals before publishing."
+      answer: "Our AI uses advanced language models to produce high-quality content. Generated documents are reviewed by editorial AI agents for accuracy, coherence, and quality. We still recommend reviewing all generated content before publishing."
     },
     {
-      question: "What file formats do you support?",
-      answer: "Currently, we support PDF files up to 10MB in size. We're working on adding support for Word documents and other formats."
+      question: "What import methods do you support?",
+      answer: "DraftEngine supports four import methods: PDF upload (up to 10MB), URL import (paste any web link), DOI lookup (pull metadata from CrossRef), and RSS feed subscriptions (automatically discover new sources from journals and blogs)."
     },
     {
       question: "Can I edit the generated source summary entries?",
@@ -356,7 +356,15 @@ const HelpCenterPage = () => {
     },
     {
       question: "How are sources referenced in generated content?",
-      answer: "DraftEngine uses natural attribution — weaving source references conversationally into your writing (e.g., 'According to Smith...' or 'Research from MIT shows...'). This keeps content readable while maintaining credibility."
+      answer: "DraftEngine supports APA, MLA, and Chicago citation styles. You can choose your preferred style when generating content, and citations are formatted automatically throughout your document."
+    },
+    {
+      question: "What are Research Feeds?",
+      answer: "Research Feeds let you subscribe to topics relevant to your work. DraftEngine monitors academic and web sources and surfaces new articles matching your interests, so you never miss important publications in your field. Available on the Pro plan."
+    },
+    {
+      question: "Does DraftEngine include AI-generated images?",
+      answer: "Yes! Generated documents can include DALL-E illustrations that complement your content. Images are created to match your topic and document style, adding visual depth to your drafts."
     },
     {
       question: "Can I cancel my subscription anytime?",

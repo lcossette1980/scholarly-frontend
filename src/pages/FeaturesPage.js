@@ -8,68 +8,90 @@ import SEO from '../components/SEO';
 const FeaturesPage = () => {
   const coreFeatures = [
     {
-      title: 'Source Analyzer',
-      description: 'Upload PDFs and get complete source analyses in 90 seconds. AI identifies key arguments, discovers interesting angles, and selects notable passages with page numbers.',
+      title: 'Multi-Source Import',
+      description: 'Bring your research from anywhere. Upload PDFs up to 50MB, paste any URL for automatic article extraction, look up papers by DOI via CrossRef, or subscribe to RSS feeds and cherry-pick the articles that matter.',
       bullets: [
-        'Multiple source format support',
-        'Key arguments identification',
-        'Interesting angles and notable passages',
-        'Smart quotes with exact page numbers',
+        'PDF upload (up to 50MB per file)',
+        'URL paste with automatic article extraction',
+        'DOI lookup via CrossRef API (metadata + abstract)',
+        'RSS feed import — parse feeds and select articles',
+      ],
+    },
+    {
+      title: 'AI Source Analysis',
+      description: 'Every source you import is analyzed in roughly 90 seconds. DraftEngine surfaces the arguments, angles, and passages that matter most — so you spend your time writing, not re-reading.',
+      bullets: [
+        'Key arguments — 3-4 main claims identified',
+        'Interesting angles — surprising or counterintuitive elements',
+        'Perspective value — the unique viewpoint each source brings',
+        'Notable passages — 3-4 quotable excerpts with page numbers',
       ],
     },
     {
       title: 'Topic & Outline Generator',
-      description: 'Analyze your sources together to identify content opportunities and generate compelling topics with complete outlines. Every suggestion is backed by your actual sources.',
+      description: 'Analyze your sources together and let AI propose 3 editorial-quality topic suggestions with argument-driven outlines. Section headings make claims, not labels — and sources are woven across sections, never siloed.',
       bullets: [
-        'Automatic content opportunity identification',
-        '3-5 topic suggestions per analysis',
-        'Complete document outlines with sections',
-        'Source mapping to outline sections',
+        '3 editorial-quality topic suggestions per analysis',
+        'Argument-driven outlines with claim-based headings',
+        'Edit AI outlines or create your own from scratch',
+        'Sources mapped across sections for cohesive arguments',
       ],
     },
     {
-      title: 'Complete Document Generator',
-      description: 'Turn your sources and outline into a polished document in minutes. Choose document type, word count, approach, and tone. AI generates professional content ready for editing.',
+      title: 'Document Generation',
+      description: 'Turn your outline into a polished draft of 500 to 10,000 words. Choose your document type, tone, and approach — then let quality agents review every section before you ever see the result.',
       bullets: [
-        '500-10,000 words (2-40 pages)',
-        'Multiple document types (blog post, article, essay, op-ed)',
+        '4 document types: article, essay, blog post, op-ed',
+        '4 tones: professional, conversational, bold, intimate',
+        '3 approaches: emotional, logical, balanced',
+        'Quality agents auto-review and regenerate weak sections',
+      ],
+    },
+    {
+      title: 'Citations & References',
+      description: 'Proper attribution without the tedious formatting. DraftEngine inserts inline citation markers and generates a complete reference list in your preferred style — automatically, after generation.',
+      bullets: [
+        'APA, MLA, and Chicago citation styles',
+        'Auto-generated reference list appended to your document',
+        'Inline citation markers inserted post-generation',
         'Natural source attribution woven into prose',
-        '2-5 minute generation time',
       ],
     },
     {
-      title: 'Export & Editing Tools',
-      description: 'Download your work in multiple formats with professional formatting. Edit inline before downloading, manage versions, and organize your content library.',
+      title: 'Research Feeds',
+      description: 'Stay ahead of the literature without lifting a finger. Subscribe to research topics and DraftEngine surfaces new papers from Semantic Scholar, OpenAlex, and CrossRef — ready to import directly into your library.',
       bullets: [
-        'Export to Word, PDF, and TXT',
-        'Inline editing before download',
-        'Content history and management',
-        'Professional document formatting',
+        'Subscribe to any research topic',
+        'Papers surfaced from 3 academic databases',
+        'Import new papers directly to your library',
+        'Daily or weekly delivery frequency',
       ],
     },
   ];
 
   const additionalFeatures = [
-    { title: 'Topic Focus Customization', description: 'Tell AI your specific topic area for targeted, relevant analysis tailored to your needs.' },
-    { title: 'GPT-4 Powered', description: 'Advanced AI with 98% accuracy for reference extraction and analysis.' },
-    { title: 'Approach Analysis', description: 'Deep analysis of key arguments, interesting angles, and notable passages.' },
-    { title: 'Private & Secure', description: "PDFs aren't stored after processing. Your data stays yours. GDPR compliant." },
-    { title: 'Professional Standards', description: 'Proper references, clear language, professional formatting — ready to use.' },
-    { title: 'Unlimited Revisions', description: 'Regenerate with different settings anytime (paid plans). No limit on iterations.' },
+    { title: 'DALL-E Editorial Illustrations', description: 'Every section receives a custom DALL-E 3 illustration — included at no extra cost with document generation.' },
+    { title: 'Quality Review Agents', description: 'Section Quality Agent checks 7 dimensions per section. Document Coherence Agent reviews argument arc, contradictions, and pacing across the full draft.' },
+    { title: 'Multiple Document Types', description: 'Article, essay, blog post, or op-ed — each type follows distinct structural conventions tuned for its audience.' },
+    { title: '4 Writing Tones', description: 'Professional, conversational, bold, or intimate. Set the voice that matches your audience and publication.' },
+    { title: 'Word & Text Export', description: 'Download as Word (.docx) with formatting, inline images, and references — or as plain text. Section illustrations embedded automatically.' },
+    { title: 'Enhanced Output', description: 'Every document comes with a refined title (3 alternatives), a 150-word meta description, and a social media excerpt ready to share.' },
+    { title: 'Private & Secure', description: 'Your sources and documents remain yours. Data is processed securely and never shared with third parties.' },
+    { title: 'Edit Before Download', description: 'Review and refine every field — title, outline, body — before you export. DraftEngine gives you a strong draft, not a locked file.' },
   ];
 
   const faqItems = [
     {
       question: 'Can I edit the AI-generated content?',
-      answer: 'Yes! Every field is fully editable. DraftEngine gives you a strong starting point that you can customize however you want.',
+      answer: 'Yes. Every field is fully editable — title, outline, body text, and more. DraftEngine gives you a strong starting point that you can customize however you want before exporting.',
     },
     {
       question: 'How does source attribution work?',
-      answer: 'DraftEngine weaves source references naturally into your writing using phrases like "According to Smith..." or "Research from MIT shows...". This keeps your content readable and credible without formal academic citation formatting.',
+      answer: 'DraftEngine supports APA, MLA, and Chicago citation styles. Inline citation markers are inserted automatically after generation, and a complete reference list is appended to your document. Sources are also woven naturally into prose for readability.',
     },
     {
-      question: 'How accurate is the AI?',
-      answer: "Our AI has 98% accuracy for citation extraction and key finding identification. Always review output, but trust that you're starting from a strong foundation.",
+      question: 'What do the quality agents do?',
+      answer: 'Two AI agents review your document before you see it. The Section Quality Agent evaluates 7 dimensions per section — structural tics, source accuracy, paragraph architecture, and more. The Document Coherence Agent checks argument arc, contradictions, orphaned threads, and pacing across the full draft. Sections scoring below threshold are automatically regenerated.',
     },
   ];
 
@@ -77,7 +99,7 @@ const FeaturesPage = () => {
     <div className="min-h-screen py-12 bg-mesh">
       <SEO
         title="Features"
-        description="Source analysis in 90 seconds, AI topic and outline generation, complete document drafting up to 10,000 words, natural source attribution, and export to Word."
+        description="Multi-source import, AI analysis in 90 seconds, topic and outline generation, full document drafting up to 10,000 words, quality agents, citations, DALL-E illustrations, and export to Word."
         path="/features"
       />
       <div className="container mx-auto px-6">
@@ -85,18 +107,19 @@ const FeaturesPage = () => {
         <div className="text-center mb-16 relative overflow-hidden">
           <FadeIn direction="up">
             <h1 className="text-5xl font-bold text-secondary-900 mb-6 relative z-10">
-              Everything You Need for <span className="text-gradient">Writing & Research</span>
+              Everything You Need to Turn Research into{' '}
+              <span className="text-gradient">Published Content</span>
             </h1>
             <p className="text-xl text-secondary-700 max-w-3xl mx-auto relative z-10">
-              From source analysis to complete document drafting, DraftEngine provides a comprehensive toolkit for writing success.
+              Import sources from anywhere, analyze them in seconds, and generate quality-reviewed documents complete with citations, illustrations, and export-ready formatting.
             </p>
           </FadeIn>
         </div>
 
-        {/* Core Features - 4 Main Tools */}
+        {/* Core Features - 6 Main Tools */}
         <div className="mb-20">
           <h2 className="text-3xl font-bold text-secondary-900 text-center mb-12">
-            Four <span className="text-gradient">Powerful Tools</span>, One Platform
+            Six <span className="text-gradient">Powerful Tools</span>, One Platform
           </h2>
           <StaggerChildren>
             <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
@@ -138,42 +161,43 @@ const FeaturesPage = () => {
                 <div className="bg-white rounded-xl border-2 border-red-200 p-6 shadow-lg">
                   <div className="mb-6">
                     <h3 className="text-xl font-bold text-red-700">Manual Method</h3>
-                    <p className="text-sm text-red-600 font-semibold">40+ hours per paper</p>
+                    <p className="text-sm text-red-600 font-semibold">38+ hours per document</p>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex items-start space-x-3">
                       <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-800 font-medium">Reading each paper (90 min/paper x 10 papers)</p>
+                        <p className="text-secondary-800 font-medium">Reading and annotating each source</p>
                         <p className="text-secondary-500 text-xs">~15 hours</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
                       <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-800 font-medium">Writing source summaries</p>
+                        <p className="text-secondary-800 font-medium">Writing source summaries and pulling quotes</p>
                         <p className="text-secondary-500 text-xs">~6 hours</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
                       <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-800 font-medium">Identifying topics & outlining</p>
+                        <p className="text-secondary-800 font-medium">Brainstorming topics and building an outline</p>
                         <p className="text-secondary-500 text-xs">~4 hours</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
                       <X className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-800 font-medium">Writing complete document draft</p>
-                        <p className="text-secondary-500 text-xs">~15 hours</p>
+                        <p className="text-secondary-800 font-medium">Drafting, formatting citations, and revising</p>
+                        <p className="text-secondary-500 text-xs">~13 hours</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="pt-4 border-t border-red-200 mt-4">
-                    <p className="text-red-700 font-bold text-center">Total: 40+ hours</p>
+                    <p className="text-red-700 font-bold text-center">Total: 38+ hours</p>
+                    <p className="text-xs text-red-600 text-center mt-1">Inconsistent quality, no review process</p>
                   </div>
                 </div>
               </FadeIn>
@@ -194,43 +218,43 @@ const FeaturesPage = () => {
                     <div className="flex items-start space-x-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-900 font-medium">Upload 10 PDFs to Source Analyzer</p>
+                        <p className="text-secondary-900 font-medium">Import sources via PDF, URL, DOI, or RSS</p>
                         <p className="text-secondary-500 text-xs">~2 minutes</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-900 font-medium">AI generates complete source summaries</p>
-                        <p className="text-secondary-500 text-xs">~15 minutes</p>
+                        <p className="text-secondary-900 font-medium">AI analyzes arguments, angles, and passages</p>
+                        <p className="text-secondary-500 text-xs">~90 seconds per source</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-900 font-medium">Generate topics & select outline</p>
+                        <p className="text-secondary-900 font-medium">Generate topics, select and customize outline</p>
                         <p className="text-secondary-500 text-xs">~3 minutes</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-900 font-medium">AI writes complete document draft</p>
-                        <p className="text-secondary-500 text-xs">~5 minutes</p>
+                        <p className="text-secondary-900 font-medium">AI generates quality-reviewed document with citations</p>
+                        <p className="text-secondary-500 text-xs">2-5 minutes</p>
                       </div>
                     </div>
                     <div className="flex items-start space-x-3">
                       <Check className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                       <div className="text-sm">
-                        <p className="text-secondary-900 font-medium">Review, edit & refine</p>
-                        <p className="text-secondary-500 text-xs">~2 hours</p>
+                        <p className="text-secondary-900 font-medium">Review, edit, and export to Word</p>
+                        <p className="text-secondary-500 text-xs">~90 minutes</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="pt-4 border-t border-green-200 mt-4">
                     <p className="text-green-700 font-bold text-center">Total: ~2 hours</p>
-                    <p className="text-xs text-green-700 text-center mt-1">Time saved: 38 hours</p>
+                    <p className="text-xs text-green-700 text-center mt-1">Quality-reviewed by AI agents before you see it</p>
                   </div>
                 </div>
               </FadeIn>
@@ -246,7 +270,7 @@ const FeaturesPage = () => {
             Everything Else You Need
           </h2>
           <StaggerChildren>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
               {additionalFeatures.map((feature) => (
                   <StaggerItem key={feature.title}>
                     <div className="card-floating h-full flex flex-col">
@@ -293,10 +317,10 @@ const FeaturesPage = () => {
               Ready to Transform Your Writing?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Join thousands of writers using DraftEngine to save 38+ hours per document.
+              Start free with 5 source entries — no credit card required. See what DraftEngine can do with your research.
             </p>
             <Link to="/signup" className="inline-block bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg">
-              Start Free Trial
+              Start Free — 5 Source Entries, No Credit Card
             </Link>
           </div>
         </FadeIn>

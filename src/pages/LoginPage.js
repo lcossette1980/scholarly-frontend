@@ -1,7 +1,7 @@
 // src/pages/LoginPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, Brain, Shield, Users } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Brain, Shield, Users, CreditCard } from 'lucide-react';
 import { signIn, signInWithGoogle } from '../services/auth';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -118,9 +118,11 @@ const LoginPage = () => {
               From Sources to Finished Drafts in Minutes
             </h2>
 
-            <p className="text-white/70 text-lg mb-8 max-w-md">
-              Let AI analyze your research papers and generate comprehensive source entries automatically.
-            </p>
+            <ul className="text-white/70 text-base mb-8 max-w-md space-y-2">
+              <li>Import from PDFs, URLs, DOIs, and RSS feeds</li>
+              <li>AI-generated documents with citations and illustrations</li>
+              <li>Quality-reviewed by editorial AI agents</li>
+            </ul>
           </motion.div>
 
           <motion.div
@@ -151,6 +153,10 @@ const LoginPage = () => {
             <div className="flex items-center space-x-2 text-white/70">
               <Shield className="w-4 h-4" />
               <span className="text-sm">Secure & Private</span>
+            </div>
+            <div className="flex items-center space-x-2 text-white/70">
+              <CreditCard className="w-4 h-4" />
+              <span className="text-sm">No credit card required</span>
             </div>
           </motion.div>
         </div>

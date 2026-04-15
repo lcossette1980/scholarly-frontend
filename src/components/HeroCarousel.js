@@ -1,13 +1,13 @@
 // src/components/HeroCarousel.js
 import React, { useState, useEffect } from 'react';
-import { FileText, Brain, BookOpen, Sparkles } from 'lucide-react';
+import { Upload, Search, PenTool, Rss } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const heroImages = [
   { src: "/images/dashbioard.png", alt: "DraftEngine Dashboard Overview" },
   { src: "/images/source_analyzer.png", alt: "Source Analyzer Interface" },
-  { src: "/images/outline_generator.png", alt: "Idea & Outline Generator" },
-  { src: "/images/document_generator.png", alt: "Document Generator" }
+  { src: "/images/outline_generator.png", alt: "Topic & Outline Generator" },
+  { src: "/images/document_generator.png", alt: "Research Feeds" }
 ];
 
 const HeroCarousel = () => {
@@ -15,60 +15,60 @@ const HeroCarousel = () => {
 
   const slides = [
     {
-      title: "AI Writing Assistant — From Sources to Finished Drafts in Minutes",
-      subtitle: "Complete writing workflow in one platform",
-      description: "Upload PDFs, generate source summaries, create ideas & outlines, draft complete documents. DraftEngine handles every step from sources to final draft.",
-      icon: Sparkles,
+      title: "Import from Anywhere",
+      subtitle: "Bring your sources in seconds",
+      description: "PDFs, URLs, DOIs, RSS feeds — bring your sources into DraftEngine in seconds. Paste a URL and article text is extracted automatically. Look up any DOI through CrossRef. Your research, one library.",
+      icon: Upload,
       iconColor: "text-primary-600",
       bgColor: "from-primary-50 via-white to-primary-50/30",
       isMainHero: true,
       features: [
-        "Articles & essays",
-        "Reports & briefs",
-        "Blog posts & content",
-        "500-10,000 words"
+        "Upload PDFs, any length",
+        "Paste URLs, auto-extract text",
+        "DOI lookup via CrossRef",
+        "RSS feed import"
       ]
     },
     {
-      title: "Source Analyzer",
-      subtitle: "Detailed summaries in 90 seconds",
-      description: "Upload any PDF and get a complete source analysis. AI identifies key arguments, discovers interesting angles, and pulls notable passages with page numbers.",
-      icon: FileText,
+      title: "AI Source Analysis",
+      subtitle: "Deep analysis in 90 seconds",
+      description: "Every source is analyzed by AI to surface what matters most. Key arguments, interesting angles, perspective value, and notable passages — extracted and organized so you can write with confidence.",
+      icon: Search,
       iconColor: "text-primary",
       bgColor: "from-primary-50 via-white to-accent-50/30",
       features: [
-        "Key Arguments",
-        "Interesting Angles",
-        "Notable Passages",
-        "Quotes with page numbers"
+        "Key arguments identified",
+        "Interesting angles surfaced",
+        "Perspective value assessed",
+        "Notable passages extracted"
       ]
     },
     {
-      title: "Idea & Outline Generator",
-      subtitle: "AI-powered content ideas from YOUR sources",
-      description: "After building your source library, generate content ideas and complete outlines based on your sources. AI identifies opportunities and creates structured document outlines tied directly to your sources.",
-      icon: Brain,
+      title: "Generate with Quality Agents",
+      subtitle: "Editorial-quality documents, automatically",
+      description: "Full documents from 500 to 10,000 words with built-in quality review. Quality agents evaluate every section, check document coherence, and auto-regenerate weak passages. Citations and AI illustrations included.",
+      icon: PenTool,
       iconColor: "text-accent-600",
       bgColor: "from-accent-50 via-white to-primary-50/30",
       features: [
-        "Identifies content opportunities",
-        "3-5 topic suggestions",
-        "Complete document outlines",
-        "Source-backed sections"
+        "Section-level quality review",
+        "APA, MLA, Chicago citations",
+        "DALL-E editorial illustrations",
+        "4 document types, 4 tones"
       ]
     },
     {
-      title: "Complete Document Generator",
-      subtitle: "Fully-referenced drafts in minutes",
-      description: "Turn your sources and outline into a complete document. Choose your document type, word count, writing approach, and tone. AI generates polished, source-backed content ready for editing.",
-      icon: BookOpen,
+      title: "Research Feeds",
+      subtitle: "New papers, delivered automatically",
+      description: "Subscribe to the topics that matter to your work. DraftEngine pulls new papers from Semantic Scholar, OpenAI, and CrossRef and delivers them straight to your library — so you never miss a relevant study.",
+      icon: Rss,
       iconColor: "text-primary-600",
       bgColor: "from-primary-50 via-white to-primary-50/30",
       features: [
-        "2,500-10,000 words",
-        "Multiple document types",
-        "Natural source attribution",
-        "Export to Word/PDF"
+        "Subscribe to any topic",
+        "Semantic Scholar integration",
+        "OpenAI & CrossRef sources",
+        "Auto-delivered to your library"
       ]
     }
   ];
