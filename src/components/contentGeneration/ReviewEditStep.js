@@ -263,7 +263,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
 
       {/* Meta Description & Social Excerpt Cards */}
       {(jobData?.metaDescription || jobData?.socialExcerpt) && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
           {jobData?.metaDescription && (
             <div className="border border-[#e5e7eb] rounded-lg shadow-card bg-white p-4">
               <div className="flex items-center justify-between mb-2">
@@ -298,7 +298,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-3 gap-5 mb-6">
         <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
           <div className="flex items-center space-x-2 mb-1">
             <FileText className="w-4 h-4 text-primary" />

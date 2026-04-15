@@ -102,18 +102,18 @@ const HomePage = () => {
                   href="/example.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-secondary text-base px-6 py-3 group flex items-center justify-center"
+                  className="btn btn-secondary text-sm px-5 py-2.5 group flex items-center justify-center"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  <span>Sample Source Summary</span>
+                  <span>Sample Source Analysis</span>
                 </a>
                 <a
                   href="/content_example.docx"
                   download
-                  className="btn btn-secondary text-base px-6 py-3 group flex items-center justify-center"
+                  className="btn btn-secondary text-sm px-5 py-2.5 group flex items-center justify-center"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  <span>Sample Document</span>
+                  <span>Sample Generated Document</span>
                 </a>
               </div>
             </div>
@@ -210,10 +210,10 @@ const HomePage = () => {
               </Link>
               <div className="flex gap-6 items-center">
                 <a href="/example.pdf" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary-700 font-medium text-sm">
-                  Sample Source Summary →
+                  Sample Source Analysis →
                 </a>
                 <a href="/content_example.docx" download className="text-primary hover:text-primary-700 font-medium text-sm">
-                  Sample Document →
+                  Sample Generated Document →
                 </a>
               </div>
             </div>
@@ -235,7 +235,7 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
             {pricingCards.map((card, index) => (
               <FadeIn key={card.name} direction="up" delay={index * 0.1}>
                 <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-primary relative' : ''}`}>
@@ -289,7 +289,7 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
+          <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-8">
             <FadeIn direction="up" delay={0}>
               <div className="card flex flex-col h-full">
                 <div className="flex items-center space-x-3 mb-4">

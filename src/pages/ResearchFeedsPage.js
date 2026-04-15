@@ -215,7 +215,7 @@ const ResearchFeedsPage = () => {
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
                   Subscribe to Topic
                 </h2>
-                <form onSubmit={handleSubscribe} className="space-y-3">
+                <form onSubmit={handleSubscribe} className="space-y-4">
                   <div>
                     <input
                       type="text"
@@ -269,7 +269,7 @@ const ResearchFeedsPage = () => {
                     No subscriptions yet. Add a topic above to get started.
                   </p>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <AnimatePresence>
                       {subscriptions.map((sub) => (
                         <motion.div
@@ -353,7 +353,7 @@ const ResearchFeedsPage = () => {
                       </p>
                     </div>
                   ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-5">
                       <AnimatePresence>
                         {filteredItems.map((item) => (
                           <motion.div

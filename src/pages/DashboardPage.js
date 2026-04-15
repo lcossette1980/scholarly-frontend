@@ -276,7 +276,7 @@ const DashboardPage = () => {
 
         {/* Quick Actions */}
         {!loading && entries.length > 0 && (
-          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-7 mb-8">
             <StaggerItem>
               <motion.div whileHover={{ y: -1 }}>
                 <Link

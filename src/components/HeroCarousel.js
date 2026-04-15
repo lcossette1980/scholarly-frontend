@@ -149,7 +149,7 @@ const HeroCarousel = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.4 }}
-                    className="grid grid-cols-2 gap-3 mb-6"
+                    className="grid grid-cols-2 gap-4 mb-6"
                   >
                     {slide.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center space-x-2">

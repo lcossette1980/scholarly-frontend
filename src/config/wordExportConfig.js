@@ -27,9 +27,9 @@ export const wordExportConfig = {
   
   // Color scheme
   colors: {
-    primary: '2C3E50',      // Dark blue-gray
-    secondary: '34495E',    // Medium blue-gray
-    accent: '3498DB',       // Bright blue
+    primary: '1a1a1a',      // Text dark
+    secondary: '4a4a4a',    // Text secondary
+    accent: '316094',       // Steel blue
     text: '000000',         // Black
     muted: '7F8C8D'        // Light gray
   },
@@ -82,7 +82,7 @@ export const wordExportConfig = {
       spacing: 'large'
     },
     overview: {
-      title: 'Narrative Overview',
+      title: 'Key Arguments',
       style: 'justified'
     },
     components: {
@@ -102,6 +102,32 @@ export const wordExportConfig = {
       title: 'Key Quotes',
       style: 'italic',
       includePageNumbers: true
+    },
+    refinedTitle: {
+      style: 'bold',
+      font: 'heading',
+      size: 44,
+      alignment: 'center'
+    },
+    metaDescription: {
+      style: 'italic',
+      font: 'body',
+      size: 24,
+      alignment: 'justified'
+    },
+    socialExcerpt: {
+      style: 'italic',
+      font: 'body',
+      size: 22,
+      alignment: 'left',
+      indent: true
+    },
+    referencesList: {
+      title: 'References',
+      style: 'normal',
+      font: 'body',
+      size: 22,
+      hangingIndent: true
     }
   }
 };

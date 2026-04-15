@@ -122,7 +122,7 @@ const PricingPage = () => {
         </FadeIn>
 
         {/* Pricing Cards — 3 columns */}
-        <StaggerChildren className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+        <StaggerChildren className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
           {planCards.map((card) => {
             const isCurrent = isCurrentPlan(card.planId);
             return (
@@ -241,7 +241,7 @@ const PricingPage = () => {
               1 page = ~250 words. DALL-E illustrations included at no extra cost.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-8">
               {/* Standard Tier */}
               <div className="card flex flex-col h-full">
                 <div className="flex items-center justify-between mb-4">

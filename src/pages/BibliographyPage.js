@@ -539,7 +539,7 @@ const BibliographyPage = () => {
 
         {/* Entries Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {[...Array(6)].map((_, i) => (
               <LoadingSkeleton key={i} variant="entry-card" />
             ))}
@@ -569,7 +569,7 @@ const BibliographyPage = () => {
           </FadeIn>
         ) : (
           <AnimatePresence>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {filteredEntries.map((entry, index) => (
                 <EntryCard key={entry.id} entry={entry} index={index} />
               ))}

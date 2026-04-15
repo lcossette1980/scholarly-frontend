@@ -270,7 +270,7 @@ const FeaturesPage = () => {
             Everything Else You Need
           </h2>
           <StaggerChildren>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
               {additionalFeatures.map((feature) => (
                   <StaggerItem key={feature.title}>
                     <div className="card-floating h-full flex flex-col">
