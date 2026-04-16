@@ -21,7 +21,8 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry, incrementEntriesUsed } from '../services/stripe';
 import { saveBibliographyEntry } from '../services/bibliography';
-import { sanitizeResearchFocus, sanitizeBibliographyContent, cleanMarkdownFormatting } from '../utils/sanitization';
+import { sanitizeBibliographyContent, cleanMarkdownFormatting } from '../utils/sanitization';
+import SampleProjectCard from '../components/SampleProjectCard';
 import { bibliographyAPI, healthCheck } from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, ScaleIn } from '../components/motion';
@@ -30,7 +31,8 @@ import { exportToBibliography } from '../utils/exportUtils';
 
 const CreateEntryPage = () => {
   const [currentStep, setCurrentStep] = useState('upload');
-  const [researchFocus, setResearchFocus] = useState('');
+  const [focusTags, setFocusTags] = useState([]);
+  const [focusInput, setFocusInput] = useState('');
   const [processingProgress, setProcessingProgress] = useState(0);
   const [currentProcessingStep, setCurrentProcessingStep] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -73,6 +75,24 @@ const CreateEntryPage = () => {
     }
   }, [canCreate, navigate]);
 
+  const handleTagKeyDown = (e) => {
+    if ((e.key === 'Enter' || e.key === ',' || e.key === 'Tab') && focusInput.trim()) {
+      e.preventDefault();
+      const newTag = focusInput.trim().replace(/,$/,'');
+      if (newTag && !focusTags.includes(newTag)) {
+        setFocusTags([...focusTags, newTag]);
+      }
+      setFocusInput('');
+    }
+    if (e.key === 'Backspace' && !focusInput && focusTags.length > 0) {
+      setFocusTags(focusTags.slice(0, -1));
+    }
+  };
+
+  const removeTag = (index) => {
+    setFocusTags(focusTags.filter((_, i) => i !== index));
+  };
+
   const handleFileUpload = async (file) => {
     if (!file) return;
 
@@ -86,8 +106,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (!researchFocus.trim()) {
-      toast.error('Please enter your writing focus first');
+    if (focusTags.length === 0) {
+      toast.error('Please add at least one research topic first');
       return;
     }
 
@@ -107,12 +127,11 @@ const CreateEntryPage = () => {
       await healthCheck();
       console.log('Backend is accessible');
 
-      // Sanitize research focus before sending
-      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
+      const researchFocus = focusTags.join(', ');
 
       // Upload file to backend using the API service
       console.log('Starting file upload...');
-      const response = await bibliographyAPI.uploadDocument(file, sanitizedResearchFocus);
+      const response = await bibliographyAPI.uploadDocument(file, researchFocus);
 
       const { task_id } = response;
       setTaskId(task_id);
@@ -143,8 +162,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (!researchFocus.trim()) {
-      toast.error('Please enter your writing focus first');
+    if (focusTags.length === 0) {
+      toast.error('Please add at least one research topic first');
       return;
     }
 
@@ -159,8 +178,8 @@ const CreateEntryPage = () => {
 
     try {
       await healthCheck();
-      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
-      const response = await bibliographyAPI.uploadURL(urlInput, sanitizedResearchFocus);
+      const researchFocus = focusTags.join(', ');
+      const response = await bibliographyAPI.uploadURL(urlInput, researchFocus);
       const { task_id } = response;
       setTaskId(task_id);
       pollProcessingStatus(task_id);
@@ -179,8 +198,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (!researchFocus.trim()) {
-      toast.error('Please enter your writing focus first');
+    if (focusTags.length === 0) {
+      toast.error('Please add at least one research topic first');
       return;
     }
 
@@ -195,8 +214,8 @@ const CreateEntryPage = () => {
 
     try {
       await healthCheck();
-      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
-      const response = await bibliographyAPI.lookupDOI(doiInput, sanitizedResearchFocus);
+      const researchFocus = focusTags.join(', ');
+      const response = await bibliographyAPI.lookupDOI(doiInput, researchFocus);
       const { task_id } = response;
       setTaskId(task_id);
       pollProcessingStatus(task_id);
@@ -246,8 +265,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (!researchFocus.trim()) {
-      toast.error('Please enter your writing focus first');
+    if (focusTags.length === 0) {
+      toast.error('Please add at least one research topic first');
       return;
     }
 
@@ -262,12 +281,12 @@ const CreateEntryPage = () => {
 
     try {
       await healthCheck();
-      const sanitizedResearchFocus = sanitizeResearchFocus(researchFocus);
+      const researchFocus = focusTags.join(', ');
       const firstArticle = rssArticles.find(a => selectedRssArticles.includes(a.url));
       if (!firstArticle) {
         throw new Error('No valid article selected');
       }
-      const response = await bibliographyAPI.uploadURL(firstArticle.url, sanitizedResearchFocus);
+      const response = await bibliographyAPI.uploadURL(firstArticle.url, researchFocus);
       const { task_id } = response;
       setTaskId(task_id);
       pollProcessingStatus(task_id);
@@ -338,7 +357,7 @@ const CreateEntryPage = () => {
       const saveResult = await saveBibliographyEntry(
         currentUser.uid,
         response,
-        researchFocus
+        focusTags.join(', ')
       );
 
       if (saveResult.success) {
@@ -397,6 +416,8 @@ const CreateEntryPage = () => {
     setUploadedFile(null);
     setProcessingProgress(0);
     setCurrentProcessingStep(0);
+    setFocusTags([]);
+    setFocusInput('');
     setTaskId(null);
     setBibliographyEntry(null);
     setIsLoading(false);
@@ -523,18 +544,34 @@ const CreateEntryPage = () => {
 
                     <div className="space-y-2">
                       <label className="form-label">
-                        What is your writing focus area?
+                        Research Topics
                       </label>
-                      <input
-                        type="text"
-                        className="form-input"
-                        placeholder="e.g., AI Ethics, Climate Narratives, Startup Culture, Leadership"
-                        value={researchFocus}
-                        onChange={(e) => setResearchFocus(sanitizeResearchFocus(e.target.value))}
-                        maxLength={200}
-                      />
+                      <div className="border border-[#d1d5db] rounded-lg p-2 focus-within:ring-2 focus-within:ring-primary/30 focus-within:border-primary transition-all">
+                        {/* Tags */}
+                        {focusTags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {focusTags.map((tag, idx) => (
+                              <span key={idx} className="inline-flex items-center bg-primary/10 text-primary text-sm px-3 py-1 rounded-full">
+                                {tag}
+                                <button onClick={() => removeTag(idx)} className="ml-2 text-primary/60 hover:text-primary">
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {/* Input */}
+                        <input
+                          type="text"
+                          className="w-full outline-none text-sm text-secondary-900 placeholder-secondary-400"
+                          placeholder={focusTags.length === 0 ? "e.g., AI Ethics, Climate Policy, Leadership" : "Add another topic..."}
+                          value={focusInput}
+                          onChange={(e) => setFocusInput(e.target.value)}
+                          onKeyDown={handleTagKeyDown}
+                        />
+                      </div>
                       <p className="text-sm text-secondary-600">
-                        This helps our AI tailor the analysis to your specific writing interests.
+                        Add one or more topics. Press Enter or comma to add a tag.
                       </p>
                     </div>
                   </div>
@@ -758,6 +795,40 @@ const CreateEntryPage = () => {
                       </div>
                     )}
                   </div>
+
+                  {/* Sample Projects */}
+                  {userDocument?.subscription?.entriesUsed === 0 && (
+                    <div className="mt-8">
+                      <h3 className="text-lg font-bold text-secondary-900 mb-4">Try a Sample Project</h3>
+                      <p className="text-sm text-secondary-500 mb-6">See how DraftEngine works before importing your own sources.</p>
+                      <div className="grid md:grid-cols-3 gap-5">
+                        <SampleProjectCard
+                          title="SaaS Thought Leadership"
+                          description="See how 4 analyst reports become a thought leadership article"
+                          sourceCount={4}
+                          outputDesc="2,500-word article with citations"
+                          sampleKey="thought-leadership"
+                          icon="FileText"
+                        />
+                        <SampleProjectCard
+                          title="Industry White Paper"
+                          description="See how 5 research papers become an executive white paper"
+                          sourceCount={5}
+                          outputDesc="5,000-word white paper with references"
+                          sampleKey="white-paper"
+                          icon="BarChart3"
+                        />
+                        <SampleProjectCard
+                          title="Competitive Analysis"
+                          description="See how reports and URLs become a competitive landscape brief"
+                          sourceCount={3}
+                          outputDesc="3,000-word competitive analysis"
+                          sampleKey="competitive-analysis"
+                          icon="Target"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </FadeIn>
             </motion.div>
