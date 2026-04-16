@@ -1,5 +1,4 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -13,12 +12,12 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 12 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.4,
       ease: [0.21, 0.47, 0.32, 0.98],
     },
   },
@@ -27,12 +26,8 @@ const itemVariants = {
 const StaggerChildren = ({
   children,
   className = '',
-  staggerDelay = 0.1,
-  once = true
+  staggerDelay = 0.08,
 }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once, margin: '100px' });
-
   const variants = {
     ...containerVariants,
     visible: {
@@ -46,10 +41,10 @@ const StaggerChildren = ({
 
   return (
     <motion.div
-      ref={ref}
       variants={variants}
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      whileInView="visible"
+      viewport={{ once: true, margin: '200px' }}
       className={className}
     >
       {children}
