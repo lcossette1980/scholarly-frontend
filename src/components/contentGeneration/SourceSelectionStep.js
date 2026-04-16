@@ -49,7 +49,7 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
           {selectedSources.length} {selectedSources.length === 1 ? 'source' : 'sources'} selected
         </p>
         <p className="text-xs text-primary-700 mt-1">
-          Select at least 2 sources. We recommend 3-10 for best results.
+          Select at least 2 sources. We recommend 3-15 for best results.
         </p>
       </div>
 
