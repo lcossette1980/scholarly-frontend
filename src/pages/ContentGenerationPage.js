@@ -101,8 +101,8 @@ const ContentGenerationPage = () => {
 
   // Generate outlines from selected sources
   const generateOutlines = async () => {
-    if (selectedSources.length === 0) {
-      toast.error('Please select at least one source');
+    if (selectedSources.length < 2) {
+      toast.error('Please select at least 2 sources for topic generation');
       return false;
     }
 

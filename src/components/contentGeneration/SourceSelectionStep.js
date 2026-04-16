@@ -49,7 +49,7 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
           {selectedSources.length} {selectedSources.length === 1 ? 'source' : 'sources'} selected
         </p>
         <p className="text-xs text-primary-700 mt-1">
-          We recommend selecting 3-10 sources for best results
+          Select at least 2 sources. We recommend 3-10 for best results.
         </p>
       </div>
 
@@ -107,7 +107,7 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
         </p>
         <button
           onClick={onNext}
-          disabled={selectedSources.length === 0 || loading}
+          disabled={selectedSources.length < 2 || loading}
           className={`px-6 py-2 rounded-lg font-semibold transition-colors flex items-center space-x-2 ${
             selectedSources.length > 0 && !loading
               ? 'bg-primary text-white hover:bg-primary-700'
