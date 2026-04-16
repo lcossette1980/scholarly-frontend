@@ -46,16 +46,18 @@ const ContentHistoryPage = () => {
       const jobsRef = collection(db, 'content_generation_jobs');
       const q = query(
         jobsRef,
-        where('userId', '==', currentUser.uid),
-        orderBy('createdAt', 'desc')
+        where('userId', '==', currentUser.uid)
       );
       const snapshot = await getDocs(q);
 
-      const jobsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate ? doc.data().createdAt.toDate() : new Date(doc.data().createdAt)
+      const jobsData = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data(),
+        createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate() : new Date(d.data().createdAt || 0)
       }));
+
+      // Sort by createdAt descending (avoids Firestore composite index requirement)
+      jobsData.sort((a, b) => b.createdAt - a.createdAt);
 
       setJobs(jobsData);
     } catch (error) {

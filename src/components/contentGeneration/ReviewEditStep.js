@@ -14,18 +14,30 @@ const ReviewEditStep = ({ jobId, onBack }) => {
   const [editableTitle, setEditableTitle] = useState('');
 
   useEffect(() => {
-    const fetchJobData = async () => {
-      try {
-        const data = await contentGenerationAPI.getJobStatus(jobId);
-        setJobData(data);
-        setContent(data.content || '');
-        setEditableTitle(data.refinedTitle || data.metadata?.title || '');
-      } catch (error) {
-        console.error('Error fetching job data:', error);
-        toast.error('Failed to load generated content');
-      } finally {
-        setLoading(false);
+    const fetchJobData = async (retries = 3) => {
+      for (let attempt = 0; attempt < retries; attempt++) {
+        try {
+          const data = await contentGenerationAPI.getJobStatus(jobId);
+          if (data && data.content) {
+            setJobData(data);
+            setContent(data.content || '');
+            setEditableTitle(data.refinedTitle || data.metadata?.title || '');
+            setLoading(false);
+            return;
+          }
+          // Content not ready yet, wait and retry
+          if (attempt < retries - 1) {
+            await new Promise(r => setTimeout(r, 2000));
+          }
+        } catch (error) {
+          console.error(`Error fetching job data (attempt ${attempt + 1}):`, error);
+          if (attempt < retries - 1) {
+            await new Promise(r => setTimeout(r, 2000));
+          }
+        }
       }
+      toast.error('Failed to load generated content. Please check your content history.');
+      setLoading(false);
     };
 
     if (jobId) {
