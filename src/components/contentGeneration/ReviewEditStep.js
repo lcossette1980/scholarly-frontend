@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Download, Edit3, Save, X, Check, FileText, Home, File, Copy, ChevronDown, ChevronUp, Image, AlertTriangle, XCircle, CheckCircle } from 'lucide-react';
 import { contentGenerationAPI } from '../../services/api';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
+import { exportGeneratedContent } from '../../utils/contentExportUtils';
 import toast from 'react-hot-toast';
 
 const ReviewEditStep = ({ jobId, onBack }) => {
@@ -69,72 +69,16 @@ const ReviewEditStep = ({ jobId, onBack }) => {
 
   const handleDownloadWord = async () => {
     try {
-      const sections = content.split(/\n## /).filter(s => s.trim());
+      // Build job object that contentExportUtils expects
+      const exportJob = {
+        ...jobData,
+        content: content, // Use possibly-edited content
+        refinedTitle: editableTitle || jobData?.refinedTitle,
+        outline: jobData?.outline || {},
+        settings: jobData?.settings || {},
+      };
 
-      const docSections = sections.map((section, idx) => {
-        const lines = section.split('\n').filter(l => l.trim());
-        const title = idx === 0 ? editableTitle || 'Generated Content' : lines[0];
-        const paragraphContent = idx === 0 ? lines : lines.slice(1);
-
-        const paragraphs = [
-          new Paragraph({
-            text: title,
-            heading: idx === 0 ? HeadingLevel.TITLE : HeadingLevel.HEADING_1,
-            spacing: { after: 240, before: idx === 0 ? 0 : 240 },
-            alignment: idx === 0 ? AlignmentType.CENTER : AlignmentType.LEFT
-          })
-        ];
-
-        paragraphContent.forEach(line => {
-          if (line.trim()) {
-            if (line.startsWith('### ')) {
-              paragraphs.push(
-                new Paragraph({
-                  text: line.replace('### ', ''),
-                  heading: HeadingLevel.HEADING_2,
-                  spacing: { after: 120, before: 120 }
-                })
-              );
-            } else {
-              paragraphs.push(
-                new Paragraph({
-                  children: [new TextRun({ text: line, size: 24 })],
-                  spacing: { after: 120, line: 360 },
-                  alignment: AlignmentType.JUSTIFIED
-                })
-              );
-            }
-          }
-        });
-
-        return paragraphs;
-      });
-
-      const doc = new Document({
-        sections: [{
-          properties: {
-            page: {
-              margin: {
-                top: 1440,
-                right: 1440,
-                bottom: 1440,
-                left: 1440
-              }
-            }
-          },
-          children: docSections.flat()
-        }]
-      });
-
-      const blob = await Packer.toBlob(doc);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${editableTitle || 'generated-content'}-${Date.now()}.docx`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      await exportGeneratedContent(exportJob);
       toast.success('Downloaded as Word document!');
     } catch (error) {
       console.error('Error generating Word document:', error);
@@ -154,13 +98,86 @@ const ReviewEditStep = ({ jobId, onBack }) => {
     return 'bg-red-100 text-red-800 border-red-300';
   };
 
-  // Build a map of section heading -> image data for quick lookup
-  const sectionImageMap = {};
-  if (jobData?.sectionImages) {
-    jobData.sectionImages.forEach(img => {
-      sectionImageMap[img.heading] = img;
+  /**
+   * Renders markdown content as formatted React elements.
+   * Handles headings (h1, h2, h3), paragraphs, and inline section images.
+   */
+  const renderContent = (text) => {
+    if (!text) return null;
+
+    return text.split('\n').map((line, idx) => {
+      const trimmed = line.trim();
+      if (!trimmed) return <div key={idx} className="h-4" />;
+
+      // Main title (# Heading)
+      if (trimmed.startsWith('# ') && !trimmed.startsWith('## ')) {
+        return (
+          <h1 key={idx} className="text-3xl font-bold text-secondary-900 mb-6 mt-2">
+            {trimmed.replace(/^# /, '')}
+          </h1>
+        );
+      }
+
+      // Section heading (## Heading) with optional section image
+      if (trimmed.startsWith('## ')) {
+        const sectionTitle = trimmed.replace(/^## /, '');
+        const sectionImage = jobData?.sectionImages?.find(
+          img => img.section === sectionTitle || img.heading === sectionTitle
+        );
+
+        return (
+          <React.Fragment key={idx}>
+            <h2 className="text-2xl font-bold text-secondary-900 mt-10 mb-4 pb-2 border-b border-[#e5e7eb]">
+              {sectionTitle}
+            </h2>
+            {sectionImage?.url && (
+              <div className="my-4 rounded-lg overflow-hidden border border-[#e5e7eb]">
+                <img src={sectionImage.url} alt={sectionTitle} className="w-full rounded-lg" />
+                <div className="px-3 py-2 bg-[#f5f6f8] flex items-center space-x-2 text-xs text-gray-500">
+                  <Image className="w-3 h-3" />
+                  <span>AI-generated illustration</span>
+                </div>
+              </div>
+            )}
+            {sectionImage?.imageUrl && !sectionImage?.url && (
+              <div className="my-4 rounded-lg overflow-hidden border border-[#e5e7eb]">
+                <img src={sectionImage.imageUrl} alt={sectionTitle} className="w-full rounded-lg" />
+                <div className="px-3 py-2 bg-[#f5f6f8] flex items-center space-x-2 text-xs text-gray-500">
+                  <Image className="w-3 h-3" />
+                  <span>AI-generated illustration</span>
+                </div>
+              </div>
+            )}
+          </React.Fragment>
+        );
+      }
+
+      // Sub heading (### Heading)
+      if (trimmed.startsWith('### ')) {
+        return (
+          <h3 key={idx} className="text-xl font-semibold text-secondary-900 mt-6 mb-3">
+            {trimmed.replace(/^### /, '')}
+          </h3>
+        );
+      }
+
+      // Bullet points
+      if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        return (
+          <li key={idx} className="text-secondary-800 leading-relaxed mb-2 text-[15px] ml-6 list-disc">
+            {trimmed.replace(/^[-*]\s+/, '')}
+          </li>
+        );
+      }
+
+      // Regular paragraph
+      return (
+        <p key={idx} className="text-secondary-800 leading-relaxed mb-4 text-[15px]">
+          {trimmed}
+        </p>
+      );
     });
-  }
+  };
 
   if (loading) {
     return (
@@ -333,53 +350,10 @@ const ReviewEditStep = ({ jobId, onBack }) => {
             placeholder="Your generated content will appear here..."
           />
         ) : (
-          <div className="p-8 max-h-[600px] overflow-y-auto prose prose-lg max-w-none">
-            {content.split(/\n## /).map((section, idx) => {
-              const lines = section.split('\n').filter(l => l.trim());
-              const heading = idx === 0 ? null : lines[0];
-              const paragraphs = idx === 0 ? lines : lines.slice(1);
-              const sectionImage = heading ? sectionImageMap[heading] : null;
-
-              return (
-                <div key={idx} className="mb-8">
-                  {heading && (
-                    <h2 className="text-2xl font-bold text-secondary-900 mb-4 pb-2 border-b-2 border-primary-600">
-                      {heading}
-                    </h2>
-                  )}
-                  {sectionImage && (
-                    <div className="mb-4 rounded-lg overflow-hidden border border-[#e5e7eb]">
-                      <img
-                        src={sectionImage.imageUrl}
-                        alt={sectionImage.heading}
-                        className="w-full h-auto object-cover max-h-80"
-                      />
-                      <div className="px-3 py-2 bg-[#f5f6f8] flex items-center space-x-2 text-xs text-gray-500">
-                        <Image className="w-3 h-3" />
-                        <span>AI-generated illustration</span>
-                      </div>
-                    </div>
-                  )}
-                  {paragraphs.map((para, pidx) => {
-                    if (!para.trim()) return null;
-
-                    if (para.startsWith('### ')) {
-                      return (
-                        <h3 key={pidx} className="text-xl font-semibold text-secondary-900 mt-6 mb-3">
-                          {para.replace('### ', '')}
-                        </h3>
-                      );
-                    }
-
-                    return (
-                      <p key={pidx} className="text-secondary-800 leading-relaxed mb-4 text-justify">
-                        {para}
-                      </p>
-                    );
-                  })}
-                </div>
-              );
-            })}
+          <div className="p-8 max-h-[600px] overflow-y-auto">
+            <div className="prose max-w-none">
+              {renderContent(content)}
+            </div>
           </div>
         )}
       </div>
