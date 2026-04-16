@@ -326,7 +326,11 @@ export const logOut = async () => {
 // Reset password
 export const resetPassword = async (email) => {
   try {
-    await sendPasswordResetEmail(auth, email);
+    const actionCodeSettings = {
+      url: window.location.origin + '/login',
+      handleCodeInApp: false,
+    };
+    await sendPasswordResetEmail(auth, email, actionCodeSettings);
     return { error: null };
   } catch (error) {
     throw error; // Let the calling component handle specific errors
