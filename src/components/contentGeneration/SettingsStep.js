@@ -1,6 +1,6 @@
 // src/components/contentGeneration/SettingsStep.js
 import React from 'react';
-import { FileText, Target, Compass, Feather, BookOpen } from 'lucide-react';
+import { FileText, Target, Compass, Feather, BookOpen, Users } from 'lucide-react';
 
 const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
   const updateSetting = (key, value) => {
@@ -14,7 +14,11 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
     { value: 'op_ed', label: 'Op-Ed', icon: FileText },
     { value: 'white_paper', label: 'White Paper', icon: FileText },
     { value: 'market_brief', label: 'Market Brief', icon: FileText },
-    { value: 'case_study', label: 'Case Study', icon: FileText }
+    { value: 'case_study', label: 'Case Study', icon: FileText },
+    { value: 'competitive_analysis', label: 'Competitive Analysis', icon: FileText, description: 'Compare market players with evidence-backed positioning' },
+    { value: 'executive_briefing', label: 'Executive Briefing', icon: FileText, description: 'Decision-ready intelligence for senior leadership' },
+    { value: 'proposal_memo', label: 'Proposal Memo', icon: FileText, description: 'Research-backed case for a specific course of action' },
+    { value: 'industry_brief', label: 'Industry Brief', icon: FileText, description: 'Sector-specific research distilled into actionable intelligence' }
   ];
 
   const approaches = [
@@ -22,7 +26,23 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
     { value: 'logical', label: 'Logical', description: 'Evidence, data, structured reasoning' },
     { value: 'balanced', label: 'Balanced', description: 'Blend of both approaches' }
   ];
-  const tones = ['conversational', 'professional', 'bold', 'intimate', 'executive', 'analytical'];
+  const tones = [
+    { value: 'executive', label: 'Executive', description: 'Authoritative, data-driven, boardroom-ready' },
+    { value: 'analytical', label: 'Analytical', description: 'Precise, evidence-focused, methodical' },
+    { value: 'authoritative', label: 'Authoritative', description: 'Confident, expert-level, commanding' },
+    { value: 'persuasive', label: 'Persuasive', description: 'Evidence-backed argumentation, calls to action' },
+    { value: 'professional', label: 'Professional', description: 'Clear, balanced, business-appropriate' },
+    { value: 'conversational', label: 'Conversational', description: 'Accessible, engaging, approachable' },
+    { value: 'concise', label: 'Concise', description: 'Tight, scannable, no-filler' }
+  ];
+
+  const targetAudiences = [
+    { value: 'c_suite', label: 'C-Suite / Executives' },
+    { value: 'board_investors', label: 'Board / Investors' },
+    { value: 'industry_peers', label: 'Industry Peers' },
+    { value: 'general_professional', label: 'General Professional' },
+    { value: 'public', label: 'Public / General Audience' }
+  ];
 
   const citationStyles = [
     { value: 'none', label: 'None', description: 'No formal citations. Sources referenced naturally in text.' },
@@ -61,9 +81,12 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                   }`}
                 >
                   <Icon className={`w-6 h-6 mx-auto mb-2 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
-                  <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
+                  <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
                     {type.label}
                   </span>
+                  {type.description && (
+                    <span className="text-xs text-secondary-400 block mt-1">{type.description}</span>
+                  )}
                 </button>
               );
             })}
@@ -133,18 +156,49 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
           </label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {tones.map(tone => {
-              const isSelected = settings.tone === tone;
+              const isSelected = settings.tone === tone.value;
               return (
                 <button
-                  key={tone}
-                  onClick={() => updateSetting('tone', tone)}
-                  className={`p-3 border-2 rounded-xl transition-all capitalize ${
+                  key={tone.value}
+                  onClick={() => updateSetting('tone', tone.value)}
+                  className={`p-3 border-2 rounded-xl transition-all text-center ${
                     isSelected
-                      ? 'border-primary bg-primary/5 text-primary'
-                      : 'border-secondary-200 hover:border-primary/40 text-secondary-700'
+                      ? 'border-primary bg-primary/5'
+                      : 'border-secondary-200 hover:border-primary/40'
                   }`}
                 >
-                  <span className="text-sm font-medium">{tone}</span>
+                  <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
+                    {tone.label}
+                  </span>
+                  <span className="text-xs text-secondary-400 block mt-1">{tone.description}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Target Audience */}
+        <div>
+          <label className="block text-sm font-medium text-secondary-700 mb-3">
+            <Users className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+            Target Audience
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {targetAudiences.map(audience => {
+              const isSelected = (settings.target_audience || 'general_professional') === audience.value;
+              return (
+                <button
+                  key={audience.value}
+                  onClick={() => updateSetting('target_audience', audience.value)}
+                  className={`p-3 border-2 rounded-xl transition-all text-center ${
+                    isSelected
+                      ? 'border-primary bg-primary/5'
+                      : 'border-secondary-200 hover:border-primary/40'
+                  }`}
+                >
+                  <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
+                    {audience.label}
+                  </span>
                 </button>
               );
             })}

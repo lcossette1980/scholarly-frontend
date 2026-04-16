@@ -9,6 +9,8 @@ import {
   Download
   } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry } from '../services/stripe';
 import { getUserBibliographyEntries, deleteBibliographyEntry } from '../services/bibliography';
@@ -17,6 +19,7 @@ import ContentGenerationCard from '../components/ContentGenerationCard';
 import DashboardStats from '../components/DashboardStats';
 import RecentEntriesCard from '../components/RecentEntriesCard';
 import EntryViewModal from '../components/EntryViewModal';
+import OnboardingModal from '../components/OnboardingModal';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 import toast from 'react-hot-toast';
 
@@ -206,6 +209,24 @@ const DashboardPage = () => {
 
   const handleExportAll = () => {
     navigate('/sources');
+  };
+
+  // Onboarding logic
+  const showOnboarding = currentUser && userDocument && !userDocument.onboardingCompleted && entries.length === 0 && !loading;
+
+  const handleOnboardingComplete = async (role, purpose) => {
+    try {
+      await updateDoc(doc(db, 'users', currentUser.uid), {
+        onboardingRole: role,
+        onboardingPurpose: purpose,
+        onboardingCompleted: true
+      });
+      await refreshUserDocument();
+      navigate('/create');
+    } catch (error) {
+      console.error('Error completing onboarding:', error);
+      toast.error('Failed to save onboarding preferences');
+    }
   };
 
   const canCreate = canCreateEntry(userDocument);
@@ -456,6 +477,12 @@ const DashboardPage = () => {
             onClose={() => setSelectedEntry(null)}
           />
         )}
+
+        {/* Onboarding Modal */}
+        <OnboardingModal
+          isOpen={showOnboarding}
+          onComplete={handleOnboardingComplete}
+        />
       </div>
     </div>
   );

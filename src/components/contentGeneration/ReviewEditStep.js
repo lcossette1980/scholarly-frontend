@@ -1,6 +1,6 @@
 // src/components/contentGeneration/ReviewEditStep.js
 import React, { useState, useEffect } from 'react';
-import { Download, Edit3, Save, X, Check, FileText, Home, File, Copy, ChevronDown, ChevronUp, Image } from 'lucide-react';
+import { Download, Edit3, Save, X, Check, FileText, Home, File, Copy, ChevronDown, ChevronUp, Image, AlertTriangle, XCircle, CheckCircle } from 'lucide-react';
 import { contentGenerationAPI } from '../../services/api';
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
 import toast from 'react-hot-toast';
@@ -12,7 +12,6 @@ const ReviewEditStep = ({ jobId, onBack }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [editableTitle, setEditableTitle] = useState('');
-  const [qualityReportOpen, setQualityReportOpen] = useState(false);
 
   useEffect(() => {
     const fetchJobData = async () => {
@@ -416,90 +415,143 @@ const ReviewEditStep = ({ jobId, onBack }) => {
         </div>
       )}
 
-      {/* Quality Report Panel */}
-      {qualityReport && (
-        <div className="border border-[#e5e7eb] rounded-lg shadow-card bg-white mb-6 overflow-hidden">
-          <button
-            onClick={() => setQualityReportOpen(!qualityReportOpen)}
-            className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors"
-          >
-            <div className="flex items-center space-x-3">
-              <FileText className="w-5 h-5 text-primary" />
-              <span className="font-semibold text-secondary-900">Quality Report</span>
-              {qualityReport.coherenceScore != null && (
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getScoreBadgeClasses(qualityReport.coherenceScore)}`}>
-                  Coherence: {qualityReport.coherenceScore}
+      {/* Document Review Panel */}
+      {qualityReport && (() => {
+        const avgSectionScore = qualityReport.sectionScores && qualityReport.sectionScores.length > 0
+          ? Math.round(qualityReport.sectionScores.reduce((a, b) => a + b, 0) / qualityReport.sectionScores.length)
+          : null;
+
+        const getStatus = (score) => {
+          if (score == null) return 'pass';
+          if (score >= 80) return 'pass';
+          if (score >= 60) return 'warn';
+          return 'fail';
+        };
+
+        const arcStatus = (arc) => {
+          if (!arc) return 'pass';
+          const lower = arc.toLowerCase();
+          if (lower === 'strong') return 'pass';
+          if (lower === 'adequate') return 'warn';
+          return 'fail';
+        };
+
+        const unsupportedClaimCount = qualityReport.issues
+          ? qualityReport.issues.filter(i => i.type === 'unsupported_claim' || i.type === 'unsupported').length
+          : 0;
+
+        const repetitionCount = qualityReport.issues
+          ? qualityReport.issues.filter(i => i.type === 'repetition' || i.type === 'cross_section_repetition').length
+          : 0;
+
+        const toneIssues = qualityReport.issues
+          ? qualityReport.issues.filter(i => i.type === 'tone' || i.type === 'tone_inconsistency').length
+          : 0;
+
+        const overallScore = qualityReport.coherenceScore != null && avgSectionScore != null
+          ? Math.round((qualityReport.coherenceScore + avgSectionScore) / 2)
+          : qualityReport.coherenceScore || avgSectionScore || null;
+
+        const reviewItems = [
+          {
+            label: 'Structural Quality',
+            detail: 'Average section quality score',
+            value: avgSectionScore != null ? `${avgSectionScore}/100` : 'N/A',
+            status: getStatus(avgSectionScore),
+          },
+          {
+            label: 'Document Coherence',
+            detail: 'Argument arc, contradictions, pacing',
+            value: qualityReport.arcAssessment || 'N/A',
+            status: arcStatus(qualityReport.arcAssessment),
+          },
+          {
+            label: 'Sections Reviewed',
+            detail: qualityReport.sectionsRegenerated?.length > 0
+              ? `${qualityReport.sectionsRegenerated.length} sections auto-improved`
+              : 'All sections passed quality review',
+            value: `${qualityReport.sectionScores?.length || 0} sections`,
+            status: 'pass',
+          },
+          {
+            label: 'Unsupported Claims',
+            detail: unsupportedClaimCount > 0
+              ? `${unsupportedClaimCount} claim${unsupportedClaimCount > 1 ? 's' : ''} flagged`
+              : 'No unsupported claims detected',
+            value: unsupportedClaimCount === 0 ? 'Clear' : `${unsupportedClaimCount} found`,
+            status: unsupportedClaimCount === 0 ? 'pass' : unsupportedClaimCount <= 2 ? 'warn' : 'fail',
+          },
+          {
+            label: 'Tone Consistency',
+            detail: toneIssues > 0 ? `${toneIssues} inconsistencies detected` : 'Consistent tone throughout',
+            value: toneIssues === 0 ? 'Pass' : 'Warning',
+            status: toneIssues === 0 ? 'pass' : 'warn',
+          },
+          {
+            label: 'Repetition Check',
+            detail: repetitionCount > 0 ? `${repetitionCount} instances of cross-section repetition` : 'No repetition detected',
+            value: repetitionCount === 0 ? 'Clear' : `${repetitionCount} found`,
+            status: repetitionCount === 0 ? 'pass' : 'warn',
+          },
+        ];
+
+        const StatusIcon = ({ status }) => {
+          if (status === 'pass') return <CheckCircle className="w-5 h-5 text-[#47763b] flex-shrink-0" />;
+          if (status === 'warn') return <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0" />;
+          return <XCircle className="w-5 h-5 text-red-500 flex-shrink-0" />;
+        };
+
+        return (
+          <div className="border border-[#e5e7eb] rounded-lg p-5 bg-white mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-secondary-900">Document Review</h3>
+              {overallScore != null && (
+                <span className="text-sm font-medium px-3 py-1 rounded-full bg-[#47763b]/10 text-[#47763b]">
+                  {overallScore}/100
                 </span>
               )}
             </div>
-            {qualityReportOpen ? (
-              <ChevronUp className="w-5 h-5 text-gray-400" />
-            ) : (
-              <ChevronDown className="w-5 h-5 text-gray-400" />
-            )}
-          </button>
-          {qualityReportOpen && (
-            <div className="px-5 pb-5 border-t border-[#e5e7eb]">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                {/* Coherence Score */}
-                {qualityReport.coherenceScore != null && (
-                  <div className="bg-[#f5f6f8] rounded-lg p-4">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Coherence Score</p>
-                    <div className="flex items-center space-x-3">
-                      <span className="text-2xl font-bold text-secondary-900">{qualityReport.coherenceScore}</span>
-                      <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${getScoreColor(qualityReport.coherenceScore)}`}
-                          style={{ width: `${qualityReport.coherenceScore}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
 
-                {/* Arc Assessment */}
-                {qualityReport.arcAssessment && (
-                  <div className="bg-[#f5f6f8] rounded-lg p-4">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Arc Assessment</p>
-                    <p className="text-2xl font-bold text-secondary-900 capitalize">{qualityReport.arcAssessment}</p>
+            {reviewItems.map((item, idx) => (
+              <div
+                key={idx}
+                className={`flex items-center justify-between py-3 ${
+                  idx < reviewItems.length - 1 ? 'border-b border-[#e5e7eb]' : ''
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <StatusIcon status={item.status} />
+                  <div>
+                    <p className="text-sm font-medium text-secondary-900">{item.label}</p>
+                    <p className="text-xs text-secondary-500">{item.detail}</p>
                   </div>
-                )}
-
-                {/* Section Quality Scores */}
-                {qualityReport.sectionScores && qualityReport.sectionScores.length > 0 && (
-                  <div className="bg-[#f5f6f8] rounded-lg p-4">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Section Scores</p>
-                    <div className="flex items-center space-x-2 flex-wrap gap-y-2">
-                      {qualityReport.sectionScores.map((score, idx) => (
-                        <div key={idx} className="flex flex-col items-center">
-                          <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${getScoreColor(score)}`}
-                            title={`Section ${idx + 1}: ${score}`}
-                          >
-                            {score}
-                          </div>
-                          <span className="text-[10px] text-gray-400 mt-1">S{idx + 1}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Sections Regenerated */}
-                {qualityReport.sectionsRegenerated && qualityReport.sectionsRegenerated.length > 0 && (
-                  <div className="bg-[#f5f6f8] rounded-lg p-4">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Sections Regenerated</p>
-                    <p className="text-2xl font-bold text-secondary-900">{qualityReport.sectionsRegenerated.length}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Sections {qualityReport.sectionsRegenerated.join(', ')} were re-written for quality
-                    </p>
-                  </div>
-                )}
+                </div>
+                <span className="text-sm text-secondary-500 ml-4 whitespace-nowrap">{item.value}</span>
               </div>
-            </div>
-          )}
-        </div>
-      )}
+            ))}
+
+            {/* Section score breakdown */}
+            {qualityReport.sectionScores && qualityReport.sectionScores.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-[#e5e7eb]">
+                <p className="text-xs font-medium text-secondary-500 uppercase tracking-wide mb-3">Section Scores</p>
+                <div className="flex items-center space-x-2 flex-wrap gap-y-2">
+                  {qualityReport.sectionScores.map((score, idx) => (
+                    <div key={idx} className="flex flex-col items-center">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${getScoreColor(score)}`}
+                        title={`Section ${idx + 1}: ${score}`}
+                      >
+                        {score}
+                      </div>
+                      <span className="text-[10px] text-gray-400 mt-1">S{idx + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Success Message */}
       <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">

@@ -41,6 +41,7 @@ const ContentGenerationPage = () => {
     target_words: 2500,
     approach: 'balanced',
     tone: 'professional',
+    target_audience: 'general_professional',
     include_hook: true,
     include_conclusion: true,
     citation_style: 'none'

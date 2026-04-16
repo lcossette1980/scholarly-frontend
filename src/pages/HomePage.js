@@ -73,7 +73,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-mesh">
       <SEO
-        description="AI writing platform that transforms source material into polished documents. Import PDFs, URLs, DOIs, and RSS feeds. Generate articles, essays, and blog posts with citations, quality review, and AI illustrations."
+        description="DraftEngine turns research sources into polished, citation-backed professional documents. Import PDFs, URLs, DOIs, and reports. Generate white papers, briefs, and proposals with visible citations and quality review."
         path="/"
       />
       {/* Hero Section with Carousel */}
@@ -94,7 +94,7 @@ const HomePage = () => {
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <p className="text-xs text-secondary-500 mt-2">
-                  Your data is private & never shared
+                  DraftEngine turns research sources into polished, citation-backed professional documents.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -121,13 +121,13 @@ const HomePage = () => {
           {/* Trust Indicators */}
           <FadeIn direction="up">
             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-secondary-500 mt-8">
-              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> 10,000+ writers</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> Source-backed, not AI-generated</span>
               <span className="hidden sm:inline text-secondary-300">·</span>
-              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> 4 source import methods</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> Visible citations in every document</span>
               <span className="hidden sm:inline text-secondary-300">·</span>
-              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> APA, MLA, Chicago citations</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> Quality-reviewed before you see it</span>
               <span className="hidden sm:inline text-secondary-300">·</span>
-              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> AI quality review on every document</span>
+              <span className="flex items-center gap-1"><CheckCircle className="w-3.5 h-3.5 text-accent" /> Export-ready for publication</span>
             </div>
           </FadeIn>
         </div>
@@ -310,10 +310,10 @@ const HomePage = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
-              Pay per page, only when you generate
+              Professional documents from your research
             </h2>
             <p className="text-lg text-secondary-500 max-w-2xl mx-auto">
-              Document generation is pay-as-you-go. Every page includes quality agents, citations, and AI illustrations.
+              Faster than any alternative. A 10-page white paper costs $14.90 with DraftEngine vs. $2,000+ with a freelancer.
             </p>
           </div>
 

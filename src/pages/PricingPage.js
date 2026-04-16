@@ -234,11 +234,14 @@ const PricingPage = () => {
             <h2 className="text-3xl font-bold text-secondary-900 text-center mb-4">
               AI <span className="text-gradient">Document Generation</span>
             </h2>
-            <p className="text-center text-secondary-700 mb-2">
-              Pay only for what you generate. Available to <strong>all plans</strong> — including Starter.
+            <p className="text-center text-lg text-secondary-700 mb-2">
+              Professional documents from your research — faster than any alternative
+            </p>
+            <p className="text-center text-sm font-medium text-primary mb-2">
+              A 10-page white paper costs $14.90 with DraftEngine vs. $2,000+ with a freelancer.
             </p>
             <p className="text-center text-sm text-secondary-500 mb-8">
-              1 page = ~250 words. DALL-E illustrations included at no extra cost.
+              Pay only for what you generate. Available to <strong>all plans</strong>. 1 page = ~250 words. DALL-E illustrations included.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8">

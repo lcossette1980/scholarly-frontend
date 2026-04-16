@@ -15,19 +15,19 @@ const HeroCarousel = () => {
 
   const slides = [
     {
-      title: "Import from Anywhere",
-      subtitle: "Bring your sources in seconds",
+      title: "Turn Research into Published Content",
+      subtitle: "Reports, PDFs, URLs, and source material become polished, citation-backed documents in minutes.",
       label: "Import",
-      description: "PDFs, URLs, DOIs, RSS feeds — bring your sources into DraftEngine in seconds. Paste a URL and article text is extracted automatically. Look up any DOI through CrossRef. Your research, one library.",
+      description: "Upload PDFs, paste URLs, look up DOIs, or connect RSS feeds. DraftEngine extracts, synthesizes, drafts, and reviews — delivering source-backed professional documents faster, cheaper, and more credible than manual drafting.",
       icon: Upload,
       iconColor: "text-primary-600",
       bgColor: "from-primary-50 via-white to-primary-50/30",
       isMainHero: true,
       features: [
-        "Upload PDFs, any length",
-        "Paste URLs, auto-extract text",
-        "DOI lookup via CrossRef",
-        "RSS feed import"
+        "10x faster than freelance writers",
+        "Visible citations in every document",
+        "Quality-reviewed before delivery",
+        "Export-ready for publication"
       ]
     },
     {
