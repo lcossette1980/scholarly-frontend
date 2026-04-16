@@ -553,6 +553,40 @@ const ReviewEditStep = ({ jobId, onBack }) => {
         );
       })()}
 
+      {/* Source Traceability */}
+      {jobData?.sourceMapping && jobData?.sourceList && (
+        <div className="border border-[#e5e7eb] rounded-lg p-5 bg-white mb-6">
+          <h3 className="font-bold text-secondary-900 mb-4">Source Traceability</h3>
+
+          {/* Source List */}
+          <div className="mb-4 space-y-2">
+            {jobData.sourceList.map((source, idx) => (
+              <div key={idx} className="flex items-start space-x-2 text-sm">
+                <span className="bg-primary/10 text-primary text-xs font-mono font-bold px-2 py-0.5 rounded min-w-[28px] text-center">{idx + 1}</span>
+                <span className="text-secondary-700">{source.author} ({source.year}). <span className="italic">{source.title}</span></span>
+              </div>
+            ))}
+          </div>
+
+          {/* Section to Source Mapping */}
+          <div className="border-t border-[#e5e7eb] pt-4 space-y-3">
+            <p className="text-xs font-medium text-secondary-500 uppercase tracking-wide">Sources per section</p>
+            {jobData.sourceMapping.map((mapping, idx) => (
+              <div key={idx} className="flex items-center justify-between py-2">
+                <span className="text-sm text-secondary-900 font-medium">{mapping.section}</span>
+                <div className="flex gap-1">
+                  {mapping.sources.map(srcIdx => (
+                    <span key={srcIdx} className="bg-primary/10 text-primary text-xs font-mono font-bold px-2 py-0.5 rounded">
+                      {srcIdx + 1}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Success Message */}
       <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
         <div className="flex items-start space-x-3">
