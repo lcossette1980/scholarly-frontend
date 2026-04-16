@@ -120,8 +120,8 @@ const PrivacyPolicyPage = () => {
                 </div>
                 <p className="text-secondary-800">
                   For privacy questions or to exercise your rights, contact us at{' '}
-                  <a href="mailto:privacy@scholarlyaiapp.com" className="text-primary hover:text-primary-600/80">
-                    privacy@scholarlyaiapp.com
+                  <a href="mailto:privacy@draftengineapp.com" className="text-primary hover:text-primary-600/80">
+                    privacy@draftengineapp.com
                   </a>
                 </p>
               </div>

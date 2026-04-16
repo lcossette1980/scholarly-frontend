@@ -1,57 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.scholarlyaiapp.com/</loc>
+    <loc>https://www.draftengineapp.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/features</loc>
+    <loc>https://www.draftengineapp.com/features</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/pricing</loc>
+    <loc>https://www.draftengineapp.com/pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/docs</loc>
+    <loc>https://www.draftengineapp.com/docs</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/help</loc>
+    <loc>https://www.draftengineapp.com/help</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/ethical-ai</loc>
+    <loc>https://www.draftengineapp.com/ethical-ai</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/signup</loc>
+    <loc>https://www.draftengineapp.com/for/marketing-teams</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/login</loc>
+    <loc>https://www.draftengineapp.com/for/consultants</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.draftengineapp.com/for/startups</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.draftengineapp.com/feeds</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.draftengineapp.com/signup</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.draftengineapp.com/login</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/privacy</loc>
+    <loc>https://www.draftengineapp.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/terms</loc>
+    <loc>https://www.draftengineapp.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.scholarlyaiapp.com/cookies</loc>
+    <loc>https://www.draftengineapp.com/cookies</loc>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>
   </url>

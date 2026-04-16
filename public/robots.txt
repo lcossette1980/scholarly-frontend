@@ -8,4 +8,4 @@ Disallow: /analyze
 Disallow: /content/
 Disallow: /admin
 
-Sitemap: https://www.scholarlyaiapp.com/sitemap.xml
+Sitemap: https://www.draftengineapp.com/sitemap.xml

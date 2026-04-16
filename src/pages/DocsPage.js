@@ -781,7 +781,7 @@ const DocsPage = () => {
                   <motion.a
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    href="mailto:support@draftengine.com"
+                    href="mailto:support@draftengineapp.com"
                     className="btn btn-sm btn-primary w-full"
                   >
                     Contact Support

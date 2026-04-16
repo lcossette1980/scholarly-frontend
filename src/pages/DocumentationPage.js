@@ -198,7 +198,7 @@ const DocumentationPage = () => {
 const token = await user.getIdToken();
 
 // Include in API requests
-const response = await fetch('https://api.draftengine.com/upload', {
+const response = await fetch('https://api.draftengineapp.com/upload', {
   method: 'POST',
   headers: {
     'Authorization': \`Bearer \${token}\`,

@@ -138,8 +138,8 @@ const TermsOfServicePage = () => {
               </h2>
               <p className="text-secondary-800">
                 For questions about these terms, please contact us at{' '}
-                <a href="mailto:legal@scholarlyaiapp.com" className="text-primary hover:text-primary-600/80">
-                  legal@scholarlyaiapp.com
+                <a href="mailto:legal@draftengineapp.com" className="text-primary hover:text-primary-600/80">
+                  legal@draftengineapp.com
                 </a>
               </p>
             </section>
