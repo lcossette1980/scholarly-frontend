@@ -1,11 +1,10 @@
 import { db } from './firebase';
 import { 
-  collection, 
-  addDoc, 
-  query, 
-  where, 
-  orderBy, 
-  limit, 
+  collection,
+  addDoc,
+  query,
+  where,
+  limit,
   getDocs,
   doc,
   getDoc,
@@ -49,22 +48,27 @@ export const getUserBibliographyEntries = async (userId, limitCount = 10) => {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
-      where('userId', '==', userId),
-      orderBy('createdAt', 'desc'),
-      limit(limitCount)
+      where('userId', '==', userId)
     );
-    
+
     const querySnapshot = await getDocs(q);
     const entries = [];
-    
-    querySnapshot.forEach((doc) => {
+
+    querySnapshot.forEach((d) => {
       entries.push({
-        id: doc.id,
-        ...doc.data()
+        id: d.id,
+        ...d.data()
       });
     });
-    
-    return { success: true, entries };
+
+    // Sort by createdAt descending in JS (avoids Firestore compound index)
+    entries.sort((a, b) => {
+      const aTime = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+      const bTime = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+      return bTime - aTime;
+    });
+
+    return { success: true, entries: entries.slice(0, limitCount) };
   } catch (error) {
     console.error('Error fetching bibliography entries:', error);
     return { success: false, error: error.message };
@@ -125,10 +129,9 @@ export const searchBibliographyEntries = async (userId, searchTerm) => {
     // Algolia or Elasticsearch integration
     const q = query(
       collection(db, COLLECTION_NAME),
-      where('userId', '==', userId),
-      orderBy('createdAt', 'desc')
+      where('userId', '==', userId)
     );
-    
+
     const querySnapshot = await getDocs(q);
     const entries = [];
     

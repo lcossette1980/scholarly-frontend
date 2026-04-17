@@ -78,19 +78,42 @@ const CreateEntryPage = () => {
   const handleTagKeyDown = (e) => {
     if ((e.key === 'Enter' || e.key === ',' || e.key === 'Tab') && focusInput.trim()) {
       e.preventDefault();
-      const newTag = focusInput.trim().replace(/,$/,'');
-      if (newTag && !focusTags.includes(newTag)) {
-        setFocusTags([...focusTags, newTag]);
-      }
-      setFocusInput('');
+      addTagFromInput();
     }
     if (e.key === 'Backspace' && !focusInput && focusTags.length > 0) {
       setFocusTags(focusTags.slice(0, -1));
     }
   };
 
+  const addTagFromInput = () => {
+    const newTag = focusInput.trim().replace(/,$/,'');
+    if (newTag && !focusTags.includes(newTag)) {
+      setFocusTags(prev => [...prev, newTag]);
+    }
+    setFocusInput('');
+  };
+
+  // Auto-add pending input as tag when clicking away
+  const handleTagBlur = () => {
+    if (focusInput.trim()) {
+      addTagFromInput();
+    }
+  };
+
   const removeTag = (index) => {
     setFocusTags(focusTags.filter((_, i) => i !== index));
+  };
+
+  // Get current research focus (tags + any pending input)
+  const getCurrentFocus = () => {
+    const tags = [...focusTags];
+    if (focusInput.trim()) {
+      const pending = focusInput.trim().replace(/,$/,'');
+      if (pending && !tags.includes(pending)) {
+        tags.push(pending);
+      }
+    }
+    return tags;
   };
 
   const handleFileUpload = async (file) => {
@@ -106,7 +129,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (focusTags.length === 0) {
+    const currentTags = getCurrentFocus();
+    if (currentTags.length === 0) {
       toast.error('Please add at least one research topic first');
       return;
     }
@@ -127,7 +151,7 @@ const CreateEntryPage = () => {
       await healthCheck();
       console.log('Backend is accessible');
 
-      const researchFocus = focusTags.join(', ');
+      const researchFocus = getCurrentFocus().join(', ');
 
       // Upload file to backend using the API service
       console.log('Starting file upload...');
@@ -162,7 +186,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (focusTags.length === 0) {
+    const currentTags = getCurrentFocus();
+    if (currentTags.length === 0) {
       toast.error('Please add at least one research topic first');
       return;
     }
@@ -178,7 +203,7 @@ const CreateEntryPage = () => {
 
     try {
       await healthCheck();
-      const researchFocus = focusTags.join(', ');
+      const researchFocus = getCurrentFocus().join(', ');
       const response = await bibliographyAPI.uploadURL(urlInput, researchFocus);
       const { task_id } = response;
       setTaskId(task_id);
@@ -198,7 +223,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (focusTags.length === 0) {
+    const currentTags = getCurrentFocus();
+    if (currentTags.length === 0) {
       toast.error('Please add at least one research topic first');
       return;
     }
@@ -214,7 +240,7 @@ const CreateEntryPage = () => {
 
     try {
       await healthCheck();
-      const researchFocus = focusTags.join(', ');
+      const researchFocus = getCurrentFocus().join(', ');
       const response = await bibliographyAPI.lookupDOI(doiInput, researchFocus);
       const { task_id } = response;
       setTaskId(task_id);
@@ -265,7 +291,8 @@ const CreateEntryPage = () => {
       return;
     }
 
-    if (focusTags.length === 0) {
+    const currentTags = getCurrentFocus();
+    if (currentTags.length === 0) {
       toast.error('Please add at least one research topic first');
       return;
     }
@@ -281,7 +308,7 @@ const CreateEntryPage = () => {
 
     try {
       await healthCheck();
-      const researchFocus = focusTags.join(', ');
+      const researchFocus = getCurrentFocus().join(', ');
       const firstArticle = rssArticles.find(a => selectedRssArticles.includes(a.url));
       if (!firstArticle) {
         throw new Error('No valid article selected');
@@ -357,7 +384,7 @@ const CreateEntryPage = () => {
       const saveResult = await saveBibliographyEntry(
         currentUser.uid,
         response,
-        focusTags.join(', ')
+        getCurrentFocus().join(', ')
       );
 
       if (saveResult.success) {
@@ -568,6 +595,7 @@ const CreateEntryPage = () => {
                           value={focusInput}
                           onChange={(e) => setFocusInput(e.target.value)}
                           onKeyDown={handleTagKeyDown}
+                          onBlur={handleTagBlur}
                         />
                       </div>
                       <p className="text-sm text-secondary-600">
