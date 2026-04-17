@@ -5,7 +5,44 @@ import { contentGenerationAPI } from '../../services/api';
 import { exportGeneratedContent } from '../../utils/contentExportUtils';
 import toast from 'react-hot-toast';
 
-const ReviewEditStep = ({ jobId, onBack }) => {
+// Error boundary wrapper to catch render crashes
+class ReviewEditStepErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error('ReviewEditStep crashed:', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="text-center py-12">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-lg mx-auto">
+            <h3 className="text-lg font-bold text-red-900 mb-2">Display Error</h3>
+            <p className="text-sm text-red-700 mb-4">
+              Your content was generated successfully but there was an error displaying it.
+              You can view it from your Content History.
+            </p>
+            <p className="text-xs text-red-500 mb-4 font-mono bg-red-100 p-2 rounded">
+              {this.state.error?.message || 'Unknown error'}
+            </p>
+            <div className="flex gap-3 justify-center">
+              <a href="/content/history" className="btn btn-primary text-sm">View Content History</a>
+              <button onClick={() => window.location.reload()} className="btn btn-secondary text-sm">Refresh</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+const ReviewEditStepInner = ({ jobId, onBack }) => {
   const [jobData, setJobData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState('');
@@ -632,5 +669,12 @@ const ReviewEditStep = ({ jobId, onBack }) => {
     </div>
   );
 };
+
+// Wrap with error boundary so render crashes show a useful message instead of blue screen
+const ReviewEditStep = (props) => (
+  <ReviewEditStepErrorBoundary>
+    <ReviewEditStepInner {...props} />
+  </ReviewEditStepErrorBoundary>
+);
 
 export default ReviewEditStep;
