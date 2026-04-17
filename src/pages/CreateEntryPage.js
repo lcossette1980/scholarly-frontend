@@ -400,8 +400,7 @@ const CreateEntryPage = () => {
     setUploadedFile(null);
     setProcessingProgress(0);
     setCurrentProcessingStep(0);
-    setFocusTags([]);
-    setFocusInput('');
+    setResearchFocus('');
     setTaskId(null);
     setBibliographyEntry(null);
     setIsLoading(false);
