@@ -19,7 +19,7 @@ import { useAuth } from '../context/AuthContext';
 import { collection, query, where, orderBy, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import toast from 'react-hot-toast';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
+import { exportGeneratedContent } from '../utils/contentExportUtils';
 import { FadeIn, StaggerChildren, StaggerItem, AnimatedCounter } from '../components/motion';
 import { motion } from 'framer-motion';
 
@@ -94,12 +94,20 @@ const ContentHistoryPage = () => {
     }
   };
 
+  const getDocTitle = (job) => {
+    return (job.refinedTitle || job.outline?.topic || job.outline?.title || 'Generated Content')
+      .replace(/[^a-zA-Z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .substring(0, 60);
+  };
+
   const handleDownloadTxt = (job) => {
     const blob = new Blob([job.content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${job.outline?.title || 'content'}-${job.id}.txt`;
+    a.download = `${getDocTitle(job)}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -109,56 +117,11 @@ const ContentHistoryPage = () => {
 
   const handleDownloadWord = async (job) => {
     try {
-      // Parse markdown-style content into structured sections
-      const sections = job.content.split(/\n## /).filter(s => s.trim());
-
-      const docSections = sections.map((section, idx) => {
-        const lines = section.split('\n').filter(l => l.trim());
-        const title = idx === 0 ? job.outline?.title || 'Generated Content' : lines[0];
-        const content = idx === 0 ? lines : lines.slice(1);
-
-        const paragraphs = [
-          new Paragraph({
-            text: title,
-            heading: idx === 0 ? HeadingLevel.TITLE : HeadingLevel.HEADING_1,
-            spacing: { after: 200 }
-          })
-        ];
-
-        content.forEach(line => {
-          if (line.trim()) {
-            paragraphs.push(
-              new Paragraph({
-                children: [new TextRun(line)],
-                spacing: { after: 120 }
-              })
-            );
-          }
-        });
-
-        return paragraphs;
-      });
-
-      const doc = new Document({
-        sections: [{
-          properties: {},
-          children: docSections.flat()
-        }]
-      });
-
-      const blob = await Packer.toBlob(doc);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${job.outline?.title || 'content'}-${job.id}.docx`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      await exportGeneratedContent(job);
       toast.success('Downloaded as Word document');
     } catch (error) {
-      console.error('Error generating Word document:', error);
-      toast.error('Failed to generate Word document');
+      console.error('Error downloading Word:', error);
+      toast.error('Failed to download Word document');
     }
   };
 

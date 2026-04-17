@@ -71,7 +71,8 @@ const ReviewEditStep = ({ jobId, onBack }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${editableTitle || 'generated-content'}-${Date.now()}.txt`;
+    const safeTitle = (editableTitle || 'generated-content').replace(/[^a-zA-Z0-9\s-]/g, '').trim().replace(/\s+/g, '-').substring(0, 60);
+    a.download = `${safeTitle}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

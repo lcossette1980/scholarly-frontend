@@ -750,7 +750,8 @@ export const exportGeneratedContent = async (job, options = {}) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${job.id}.docx`;
+    const safeTitle = title.replace(/[^a-zA-Z0-9\s-]/g, '').trim().replace(/\s+/g, '-').substring(0, 60);
+    a.download = `${safeTitle}.docx`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
