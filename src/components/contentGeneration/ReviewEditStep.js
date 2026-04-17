@@ -404,8 +404,9 @@ const ReviewEditStep = ({ jobId, onBack }) => {
 
       {/* Document Review Panel */}
       {qualityReport && (() => {
-        const avgSectionScore = qualityReport.sectionScores && qualityReport.sectionScores.length > 0
-          ? Math.round(qualityReport.sectionScores.reduce((a, b) => a + b, 0) / qualityReport.sectionScores.length)
+        const sectionScoreValues = (qualityReport.sectionScores || []).map(s => typeof s === 'number' ? s : (s?.score || s?.overall_score || 0));
+        const avgSectionScore = sectionScoreValues.length > 0
+          ? Math.round(sectionScoreValues.reduce((a, b) => a + b, 0) / sectionScoreValues.length)
           : null;
 
         const getStatus = (score) => {
