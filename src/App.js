@@ -10,6 +10,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { initErrorMonitoring } from './services/errorMonitoring';
 import { validateEnvironment } from './config/environment';
 import { PageTransition } from './components/motion';
+import { Analytics } from '@vercel/analytics/react';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -189,6 +190,7 @@ function App() {
               },
             }}
           />
+          <Analytics />
           </div>
         </Router>
       </AuthProvider>

@@ -201,9 +201,20 @@ const ReviewEditStep = ({ jobId, onBack }) => {
     );
   }
 
-  const wordCount = content.split(/\s+/).filter(w => w).length;
+  if (!jobData || !content) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600 mb-4">Content not available yet. It may still be generating.</p>
+        <button onClick={() => window.location.reload()} className="btn btn-secondary text-sm">
+          Refresh
+        </button>
+      </div>
+    );
+  }
+
+  const wordCount = content ? content.split(/\s+/).filter(w => w).length : 0;
   const pageCount = Math.ceil(wordCount / 250);
-  const qualityReport = jobData?.qualityReport;
+  const qualityReport = jobData?.qualityReport || null;
 
   return (
     <div>
@@ -404,6 +415,7 @@ const ReviewEditStep = ({ jobId, onBack }) => {
 
       {/* Document Review Panel */}
       {qualityReport && (() => {
+        try {
         const sectionScoreValues = (qualityReport.sectionScores || []).map(s => typeof s === 'number' ? s : (s?.score || s?.overall_score || 0));
         const avgSectionScore = sectionScoreValues.length > 0
           ? Math.round(sectionScoreValues.reduce((a, b) => a + b, 0) / sectionScoreValues.length)
@@ -539,6 +551,14 @@ const ReviewEditStep = ({ jobId, onBack }) => {
             )}
           </div>
         );
+        } catch (e) {
+          console.error('Error rendering quality report:', e);
+          return (
+            <div className="border border-[#e5e7eb] rounded-lg p-5 bg-white mb-6">
+              <p className="text-sm text-secondary-500">Quality report available but could not be displayed.</p>
+            </div>
+          );
+        }
       })()}
 
       {/* Source Traceability */}
