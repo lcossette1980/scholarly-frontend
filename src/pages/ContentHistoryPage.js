@@ -16,7 +16,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { collection, query, where, orderBy, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import toast from 'react-hot-toast';
 import { exportGeneratedContent } from '../utils/contentExportUtils';

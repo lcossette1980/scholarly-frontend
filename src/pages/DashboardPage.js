@@ -16,7 +16,7 @@ import {
   Rss,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { doc, updateDoc, collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
+import { doc, updateDoc, collection, query, where, limit, getDocs } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import { canCreateEntry } from '../services/stripe';
@@ -238,17 +238,16 @@ const DashboardPage = () => {
         const jobsRef = collection(db, 'content_generation_jobs');
         const q = query(
           jobsRef,
-          where('userId', '==', currentUser.uid),
-          orderBy('createdAt', 'desc'),
-          limit(5)
+          where('userId', '==', currentUser.uid)
         );
         const snapshot = await getDocs(q);
         const jobsData = snapshot.docs.map(d => ({
           id: d.id,
           ...d.data(),
-          createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate() : new Date(d.data().createdAt),
+          createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate() : new Date(d.data().createdAt || 0),
         }));
-        setRecentJobs(jobsData);
+        jobsData.sort((a, b) => b.createdAt - a.createdAt);
+        setRecentJobs(jobsData.slice(0, 5));
       } catch (error) {
         console.error('Error fetching content jobs:', error);
       } finally {
