@@ -215,7 +215,7 @@ const ContentGenerationPage = () => {
               {steps.map((step, idx) => (
                 <React.Fragment key={step.number}>
                   <div className="flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all ${
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
                       step.completed
                         ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
                         : currentStep === step.number
@@ -224,7 +224,7 @@ const ContentGenerationPage = () => {
                     }`}>
                       {step.completed ? (
                         <ScaleIn>
-                          <CheckCircle className="w-5 h-5" />
+                          <CheckCircle className="w-4 h-4" />
                         </ScaleIn>
                       ) : step.number}
                     </div>
@@ -251,7 +251,7 @@ const ContentGenerationPage = () => {
         </FadeIn>
 
         {/* Step Content */}
-        <div className="glass-card rounded-xl p-8">
+        <div className="glass-card rounded-xl p-5">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}

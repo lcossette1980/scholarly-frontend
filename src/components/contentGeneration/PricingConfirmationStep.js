@@ -177,7 +177,7 @@ const PricingConfirmationStep = ({
             <div
               key={tier.id}
               onClick={() => setSelectedTier(tier.id)}
-              className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all ${
+              className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all ${
                 isSelected
                   ? tier.color === 'primary'
                     ? 'border-primary bg-primary-50 shadow-lg'
@@ -225,10 +225,10 @@ const PricingConfirmationStep = ({
                 </p>
               </div>
 
-              <ul className="space-y-2">
+              <ul className="space-y-1.5">
                 {tier.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start space-x-2 text-sm text-gray-700">
-                    <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${tier.color === 'primary' ? 'text-primary' : 'text-accent'}`} />
+                    <Check className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${tier.color === 'primary' ? 'text-primary' : 'text-accent'}`} />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -239,7 +239,7 @@ const PricingConfirmationStep = ({
       </div>
 
       {/* Order Summary */}
-      <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-6">
+      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-6">
         <h3 className="font-bold text-lg text-secondary-900 mb-4">Order Summary</h3>
 
         <div className="space-y-3 mb-4 pb-4 border-b border-gray-200">

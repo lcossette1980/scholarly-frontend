@@ -96,12 +96,6 @@ const Navbar = () => {
                 <Link to="/dashboard" className="text-secondary-700 hover:text-primary transition-colors font-medium text-sm">
                   Dashboard
                 </Link>
-                <Link to="/create" className="text-secondary-700 hover:text-primary transition-colors font-medium text-sm">
-                  Create Entry
-                </Link>
-                <Link to="/features" className="text-secondary-700 hover:text-primary transition-colors font-medium text-sm">
-                  Features
-                </Link>
                 <Link to="/pricing" className="text-secondary-700 hover:text-primary transition-colors font-medium text-sm">
                   Pricing
                 </Link>
@@ -157,7 +151,7 @@ const Navbar = () => {
                           onClick={() => setIsProfileOpen(false)}
                         >
                           <FileText className="w-4 h-4" />
-                          <span>My Entries</span>
+                          <span>Source Library</span>
                         </Link>
                         <Link
                           to="/content/history"
@@ -231,8 +225,6 @@ const Navbar = () => {
                   {currentUser ? (
                     <>
                       <Link to="/dashboard" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
-                      <Link to="/create" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Create Entry</Link>
-                      <Link to="/features" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Features</Link>
                       <Link to="/pricing" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
                       <Link to="/feeds" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Research Feeds</Link>
                       <Link to="/profile" className="block text-secondary-700 hover:text-primary transition-colors font-medium" onClick={() => setIsMenuOpen(false)}>Profile</Link>

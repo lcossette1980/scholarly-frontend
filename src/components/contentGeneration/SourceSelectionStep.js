@@ -1,6 +1,6 @@
 // src/components/contentGeneration/SourceSelectionStep.js
 import React, { useState } from 'react';
-import { Check, BookOpen, Calendar, Search, Loader } from 'lucide-react';
+import { Check, Search, Loader } from 'lucide-react';
 
 const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onNext, loading }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,7 +44,7 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
       </div>
 
       {/* Selection summary */}
-      <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
+      <div className="bg-primary-50 border border-primary-200 rounded-lg p-3 mb-4">
         <p className="text-sm font-medium text-primary-900">
           {selectedSources.length} {selectedSources.length === 1 ? 'source' : 'sources'} selected
         </p>
@@ -54,47 +54,42 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
       </div>
 
       {/* Sources list */}
-      <div className="space-y-3 mb-6 max-h-96 overflow-y-auto">
+      <div className="space-y-2 mb-6 max-h-[500px] overflow-y-auto">
         {filteredEntries.map(entry => {
           const isSelected = selectedSources.find(s => s.id === entry.id);
           return (
             <div
               key={entry.id}
               onClick={() => toggleSource(entry)}
-              className={`border rounded-lg p-4 cursor-pointer transition-all ${
+              className={`border rounded-lg p-3 cursor-pointer transition-all ${
                 isSelected
                   ? 'border-primary bg-primary-50'
                   : 'border-gray-200 hover:border-primary/40'
               }`}
             >
-              <div className="flex items-start space-x-3">
-                <div className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-1 transition-all ${
+              <div className="flex items-center space-x-3">
+                <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all ${
                   isSelected
                     ? 'bg-primary border-primary'
                     : 'border-gray-300'
                 }`}>
-                  {isSelected && <Check className="w-3 h-3 text-white" />}
+                  {isSelected && <Check className="w-2.5 h-2.5 text-white" />}
                 </div>
 
-                <div className="flex-1">
-                  <h3 className="font-semibold text-secondary-900 mb-1">
+                <div className="flex-1 min-w-0 flex items-center justify-between">
+                  <h3 className="font-semibold text-sm text-secondary-900 truncate">
                     {entry.title || 'Untitled'}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {entry.authors || 'Unknown Author'}
-                  </p>
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
-                    <span className="flex items-center space-x-1">
-                      <Calendar className="w-3 h-3" />
-                      <span>{entry.year || 'N/A'}</span>
-                    </span>
-                    <span className="flex items-center space-x-1">
-                      <BookOpen className="w-3 h-3" />
-                      <span>{entry.journal || entry.researchFocus || 'N/A'}</span>
-                    </span>
-                  </div>
+                  <span className="text-xs text-gray-500 flex-shrink-0 ml-3">
+                    {entry.authors || 'Unknown Author'} {entry.year ? `\u00B7 ${entry.year}` : ''}
+                  </span>
                 </div>
               </div>
+              {(entry.journal || entry.researchFocus) && (
+                <p className="text-xs text-gray-400 ml-7 mt-0.5 truncate">
+                  {entry.journal || entry.researchFocus}
+                </p>
+              )}
             </div>
           );
         })}

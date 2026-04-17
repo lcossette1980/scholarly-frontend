@@ -56,17 +56,17 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
       <h2 className="text-2xl font-bold text-secondary-900 mb-4">
         Configure Your Document
       </h2>
-      <p className="text-secondary-600 mb-8">
+      <p className="text-secondary-600 mb-6">
         Customize the style, length, and format of your generated content.
       </p>
 
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Document Type */}
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-3">
+          <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             Document Type
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
             {documentTypes.map(type => {
               const Icon = type.icon;
               const isSelected = settings.document_type === type.value;
@@ -74,19 +74,16 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                 <button
                   key={type.value}
                   onClick={() => updateSetting('document_type', type.value)}
-                  className={`p-4 border-2 rounded-xl transition-all text-center ${
+                  className={`p-2.5 border-2 rounded-xl transition-all text-center flex items-center justify-center space-x-1.5 ${
                     isSelected
                       ? 'border-primary bg-primary/5'
                       : 'border-secondary-200 hover:border-primary/40'
                   }`}
                 >
-                  <Icon className={`w-6 h-6 mx-auto mb-2 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
-                  <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
+                  <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
                     {type.label}
                   </span>
-                  {type.description && (
-                    <span className="text-xs text-secondary-400 block mt-1">{type.description}</span>
-                  )}
                 </button>
               );
             })}
@@ -95,7 +92,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
         {/* Target Word Count */}
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-3">
+          <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             Target Word Count
           </label>
           <div className="flex items-center space-x-4">
@@ -108,7 +105,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
               onChange={(e) => updateSetting('target_words', parseInt(e.target.value))}
               className="flex-1 h-2 bg-secondary-200 rounded-lg appearance-none cursor-pointer accent-primary"
             />
-            <div className="w-32 bg-secondary-50 rounded-xl px-4 py-2 text-center border border-secondary-100">
+            <div className="w-24 bg-secondary-50 rounded-xl px-3 py-2 text-center border border-secondary-100">
               <span className="font-semibold text-secondary-900">{settings.target_words}</span>
               <span className="text-xs text-secondary-500 block">words</span>
               <span className="text-xs text-secondary-400">≈{Math.ceil(settings.target_words / 250)} pages</span>
@@ -122,27 +119,26 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
         {/* Approach */}
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-3">
+          <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             Approach
           </label>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             {approaches.map(approach => {
               const isSelected = settings.approach === approach.value;
               return (
                 <button
                   key={approach.value}
                   onClick={() => updateSetting('approach', approach.value)}
-                  className={`p-4 border-2 rounded-xl transition-all text-center ${
+                  className={`p-3 border-2 rounded-xl transition-all text-center ${
                     isSelected
                       ? 'border-primary bg-primary/5'
                       : 'border-secondary-200 hover:border-primary/40'
                   }`}
                 >
-                  <Compass className={`w-5 h-5 mx-auto mb-1 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
+                  <Compass className={`w-4 h-4 mx-auto mb-1 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
                   <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
                     {approach.label}
                   </span>
-                  <span className="text-xs text-secondary-400 block mt-1">{approach.description}</span>
                 </button>
               );
             })}
@@ -151,10 +147,10 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
         {/* Tone */}
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-3">
+          <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             Writing Tone
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {tones.map(tone => {
               const isSelected = settings.tone === tone.value;
               return (
@@ -170,7 +166,6 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                   <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
                     {tone.label}
                   </span>
-                  <span className="text-xs text-secondary-400 block mt-1">{tone.description}</span>
                 </button>
               );
             })}
@@ -179,18 +174,18 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
         {/* Target Audience */}
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-3">
+          <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             <Users className="w-4 h-4 inline mr-1.5 -mt-0.5" />
             Target Audience
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
             {targetAudiences.map(audience => {
               const isSelected = (settings.target_audience || 'general_professional') === audience.value;
               return (
                 <button
                   key={audience.value}
                   onClick={() => updateSetting('target_audience', audience.value)}
-                  className={`p-3 border-2 rounded-xl transition-all text-center ${
+                  className={`p-2.5 border-2 rounded-xl transition-all text-center ${
                     isSelected
                       ? 'border-primary bg-primary/5'
                       : 'border-secondary-200 hover:border-primary/40'
@@ -207,18 +202,18 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
         {/* Citation Style */}
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-3">
+          <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             <BookOpen className="w-4 h-4 inline mr-1.5 -mt-0.5" />
             Citation Style
           </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {citationStyles.map(style => {
               const isSelected = (settings.citation_style || 'none') === style.value;
               return (
                 <button
                   key={style.value}
                   onClick={() => updateSetting('citation_style', style.value)}
-                  className={`p-4 border-2 rounded-xl transition-all text-center ${
+                  className={`p-2.5 border-2 rounded-xl transition-all text-center ${
                     isSelected
                       ? 'border-primary bg-primary/5'
                       : 'border-secondary-200 hover:border-primary/40'
@@ -227,7 +222,6 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                   <span className={`text-sm font-medium block ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
                     {style.label}
                   </span>
-                  <span className="text-xs text-secondary-400 block mt-1">{style.description}</span>
                 </button>
               );
             })}
@@ -236,7 +230,7 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
 
         {/* Additional Options */}
         <div>
-          <label className="block text-sm font-medium text-secondary-700 mb-3">
+          <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             Additional Options
           </label>
           <div className="space-y-2">
