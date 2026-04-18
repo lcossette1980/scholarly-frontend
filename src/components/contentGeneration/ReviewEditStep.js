@@ -499,8 +499,10 @@ const ReviewEditStepInner = ({ jobId, onBack }) => {
           {
             label: 'Document Coherence',
             detail: 'Argument arc, contradictions, pacing',
-            value: qualityReport.arcAssessment || 'N/A',
-            status: arcStatus(qualityReport.arcAssessment),
+            value: typeof qualityReport.arcAssessment === 'string'
+              ? qualityReport.arcAssessment.charAt(0).toUpperCase() + qualityReport.arcAssessment.slice(1).toLowerCase()
+              : 'N/A',
+            status: arcStatus(typeof qualityReport.arcAssessment === 'string' ? qualityReport.arcAssessment : ''),
           },
           {
             label: 'Sections Reviewed',
@@ -563,7 +565,7 @@ const ReviewEditStepInner = ({ jobId, onBack }) => {
                     <p className="text-xs text-secondary-500">{item.detail}</p>
                   </div>
                 </div>
-                <span className="text-sm text-secondary-500 ml-4 whitespace-nowrap">{item.value}</span>
+                <span className="text-sm text-secondary-500 ml-4 whitespace-nowrap truncate max-w-[120px]">{typeof item.value === 'string' ? item.value : String(item.value || 'N/A')}</span>
               </div>
             ))}
 
