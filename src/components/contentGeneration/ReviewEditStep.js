@@ -572,17 +572,21 @@ const ReviewEditStepInner = ({ jobId, onBack }) => {
               <div className="mt-4 pt-4 border-t border-[#e5e7eb]">
                 <p className="text-xs font-medium text-secondary-500 uppercase tracking-wide mb-3">Section Scores</p>
                 <div className="flex items-center space-x-2 flex-wrap gap-y-2">
-                  {qualityReport.sectionScores.map((score, idx) => (
-                    <div key={idx} className="flex flex-col items-center">
-                      <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${getScoreColor(score)}`}
-                        title={`Section ${idx + 1}: ${score}`}
-                      >
-                        {score}
+                  {qualityReport.sectionScores.map((item, idx) => {
+                    const scoreVal = typeof item === 'number' ? item : (item?.score || item?.overall_score || 0);
+                    const sectionName = typeof item === 'object' ? (item?.section || `S${idx + 1}`) : `S${idx + 1}`;
+                    return (
+                      <div key={idx} className="flex flex-col items-center">
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${getScoreColor(scoreVal)}`}
+                          title={`${sectionName}: ${scoreVal}`}
+                        >
+                          {scoreVal}
+                        </div>
+                        <span className="text-[10px] text-gray-400 mt-1">S{idx + 1}</span>
                       </div>
-                      <span className="text-[10px] text-gray-400 mt-1">S{idx + 1}</span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
