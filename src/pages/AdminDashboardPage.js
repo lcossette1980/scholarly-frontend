@@ -681,14 +681,14 @@ const AdminDashboardPage = () => {
                                 <td className="px-4 py-2 text-secondary-700 text-xs">
                                   {u.onboardingRole || <span className="text-secondary-400">unset</span>}
                                 </td>
-                                <td className="px-4 py-2 text-secondary-700">{u.entries_count}</td>
+                                <td className="px-4 py-2 text-secondary-700">{u.entries_count ?? 0}</td>
                                 <td className="px-4 py-2 text-secondary-700">
-                                  {u.completed_jobs > 0 ? (
+                                  {(u.completed_jobs ?? 0) > 0 ? (
                                     <span className="text-green-700 font-medium">{u.completed_jobs}</span>
                                   ) : (
                                     <span className="text-secondary-400">0</span>
                                   )}
-                                  {u.failed_jobs > 0 && (
+                                  {(u.failed_jobs ?? 0) > 0 && (
                                     <span className="ml-2 text-red-600 text-xs">({u.failed_jobs} failed)</span>
                                   )}
                                 </td>
@@ -852,19 +852,19 @@ const AdminDashboardPage = () => {
                                   <div className="flex items-center space-x-2">
                                     <BookOpen className="w-4 h-4 text-primary flex-shrink-0" />
                                     <span className="text-sm text-secondary-900 font-medium line-clamp-2">
-                                      {entry.title}
+                                      {entry.title || 'Untitled'}
                                     </span>
                                   </div>
                                 </td>
                                 <td className="px-4 py-3">
                                   <span className="text-sm text-secondary-700">
-                                    {entry.subject}
+                                    {entry.subject || '—'}
                                   </span>
                                 </td>
                                 <td className="px-4 py-3">
                                   <div className="text-sm">
-                                    <div className="text-secondary-900 font-medium">{entry.userEmail}</div>
-                                    <div className="text-secondary-600 text-xs">{entry.userId.substring(0, 8)}...</div>
+                                    <div className="text-secondary-900 font-medium">{entry.userEmail || '—'}</div>
+                                    <div className="text-secondary-600 text-xs">{entry.userId ? `${entry.userId.substring(0, 8)}...` : ''}</div>
                                   </div>
                                 </td>
                                 <td className="px-4 py-3">
@@ -874,7 +874,7 @@ const AdminDashboardPage = () => {
                                 </td>
                                 <td className="px-4 py-3">
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                                    {entry.citationType}
+                                    {entry.citationType || 'N/A'}
                                   </span>
                                 </td>
                                 <td className="px-4 py-3">
@@ -956,15 +956,15 @@ const AdminDashboardPage = () => {
                               <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div>
                                   <span className="text-secondary-600">Email:</span>
-                                  <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.email}</span>
+                                  <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.email || '—'}</span>
                                 </div>
                                 <div>
                                   <span className="text-secondary-600">Name:</span>
-                                  <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.displayName}</span>
+                                  <span className="ml-2 text-secondary-900 font-medium">{selectedEntry.userInfo.displayName || '—'}</span>
                                 </div>
                                 <div>
                                   <span className="text-secondary-600">Plan:</span>
-                                  <span className="ml-2 text-secondary-900 font-medium capitalize">{selectedEntry.userInfo.plan}</span>
+                                  <span className="ml-2 text-secondary-900 font-medium capitalize">{selectedEntry.userInfo.plan || 'trial'}</span>
                                 </div>
                               </div>
                             </div>
@@ -1024,8 +1024,10 @@ const AdminDashboardPage = () => {
                               <div className="space-y-3">
                                 {selectedEntry.quotes.map((quote, index) => (
                                   <div key={index} className="bg-secondary-50/30 rounded-lg p-4 border-l-4 border-primary">
-                                    <p className="text-secondary-800 italic mb-2">"{quote.text}"</p>
-                                    <p className="text-sm text-secondary-600">— Page {quote.page}</p>
+                                    <p className="text-secondary-800 italic mb-2">"{quote.text || ''}"</p>
+                                    {quote.page && (
+                                      <p className="text-sm text-secondary-600">— Page {quote.page}</p>
+                                    )}
                                   </div>
                                 ))}
                               </div>
