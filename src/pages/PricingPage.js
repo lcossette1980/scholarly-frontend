@@ -67,32 +67,32 @@ const PricingPage = () => {
       name: 'Plus',
       price: '$9.99',
       period: '/month',
-      description: 'For writers who publish regularly',
+      description: 'For researchers and writers',
       features: [
         { text: 'Unlimited source entries', bold: true },
         { text: 'All 4 import methods (PDF, URL, DOI, RSS)', bold: true },
         { text: 'Topic & Outline Generator', bold: true },
-        { text: 'Research Feeds (subscribe to topics)', bold: true },
-        { text: 'Priority support', bold: false },
+        { text: 'Content generation at full pay-per-page rates', bold: false },
+        { text: 'Email support', bold: false },
       ],
-      ctaClass: 'btn btn-primary w-full justify-center',
-      highlight: true,
+      ctaClass: 'btn btn-secondary w-full justify-center',
+      highlight: false,
     },
     {
       planId: 'researcher',
       name: 'Pro',
       price: '$19.99',
       period: '/month',
-      description: 'Maximum control and output quality',
+      description: 'Best value for content publishers',
       features: [
         { text: 'Everything in Plus', bold: true },
-        { text: 'Premium AI analysis', bold: false },
-        { text: 'All writing approaches & tones', bold: false },
-        { text: 'Advanced outline customization', bold: false },
+        { text: '10 content pages included every month', bold: true },
+        { text: 'Discounted overage: $1/page Standard, $2/page Pro', bold: true },
+        { text: 'Research Feeds (auto-import new papers by topic)', bold: true },
         { text: 'Priority support', bold: false },
       ],
-      ctaClass: 'btn btn-outline w-full justify-center',
-      highlight: false,
+      ctaClass: 'btn btn-primary w-full justify-center',
+      highlight: true,
     },
   ];
 
@@ -521,7 +521,7 @@ const PricingPage = () => {
                   What's the difference between Plus and Pro?
                 </h3>
                 <p className="text-secondary-700">
-                  Both plans include unlimited source entries, all 4 import methods, the Topic & Outline Generator, and Research Feeds. Pro adds premium AI analysis, access to all writing approaches and tones, and advanced outline customization for writers who need maximum control over their output.
+                  Plus ($9.99/mo) gives you unlimited sources, all import methods, and the Topic & Outline Generator. Content generation is pay-per-page at standard rates ($1.49-$2.49/page). Pro ($19.99/mo) adds 10 included content pages every month (worth $14.90), discounted overage pricing ($1/$2 per page), and Research Feeds that auto-import new papers by topic. If you publish even one document a month, Pro pays for itself.
                 </p>
               </div>
             </StaggerItem>
