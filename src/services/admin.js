@@ -75,6 +75,21 @@ export const adminAPI = {
     const api = await createAdminRequest();
     const response = await api.get('/admin/health-check');
     return response.data;
+  },
+
+  // Run the full end-to-end test suite (takes 3-5 min, costs ~$0.50)
+  runE2ETests: async () => {
+    const api = await createAdminRequest();
+    // E2E run can take several minutes — override default timeout
+    const response = await api.post('/admin/run-e2e-tests', null, { timeout: 360000 });
+    return response.data;
+  },
+
+  // Fetch history of the last 20 e2e test runs
+  getE2ETestHistory: async () => {
+    const api = await createAdminRequest();
+    const response = await api.get('/admin/e2e-test-history');
+    return response.data;
   }
 };
 

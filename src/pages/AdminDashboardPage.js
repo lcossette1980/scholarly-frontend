@@ -14,7 +14,11 @@ import {
   Search,
   Eye,
   BookOpen,
-  XCircle
+  XCircle,
+  PlayCircle,
+  ChevronDown,
+  ChevronRight,
+  Beaker
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adminAPI, isAdmin } from '../services/admin';
@@ -39,6 +43,68 @@ const AdminDashboardPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [healthResults, setHealthResults] = useState(null);
   const [healthLoading, setHealthLoading] = useState(false);
+  const [e2eRunning, setE2eRunning] = useState(false);
+  const [e2eHistory, setE2eHistory] = useState([]);
+  const [e2eHistoryLoading, setE2eHistoryLoading] = useState(false);
+  const [e2eExpandedRunId, setE2eExpandedRunId] = useState(null);
+
+  // Fetch e2e test history
+  const loadE2EHistory = async () => {
+    setE2eHistoryLoading(true);
+    try {
+      const data = await adminAPI.getE2ETestHistory();
+      setE2eHistory(data.runs || []);
+    } catch (error) {
+      console.error('E2E history error:', error);
+      toast.error('Failed to load test history');
+    } finally {
+      setE2eHistoryLoading(false);
+    }
+  };
+
+  // Trigger an e2e test run (long running — 3-5 min)
+  const runE2ETests = async () => {
+    if (e2eRunning) return;
+    if (!window.confirm('Running tests takes 3-5 minutes and costs approximately $0.50 in API calls. Continue?')) {
+      return;
+    }
+    setE2eRunning(true);
+    const startToast = toast.loading('Running e2e tests (this takes a few minutes)...');
+    try {
+      const result = await adminAPI.runE2ETests();
+      toast.dismiss(startToast);
+      const status = result.overall_status || 'unknown';
+      if (status === 'pass') {
+        toast.success('All e2e tests passed');
+      } else if (status === 'partial') {
+        toast.error('Some e2e tests failed');
+      } else {
+        toast.error(`E2E tests: ${status}`);
+      }
+      // Refresh history to include the new run
+      await loadE2EHistory();
+      // Auto-expand the run that just finished
+      if (result.run_id) {
+        setE2eExpandedRunId(result.run_id);
+      }
+    } catch (error) {
+      toast.dismiss(startToast);
+      console.error('E2E run error:', error);
+      toast.error(`E2E run failed: ${error.message || 'unknown error'}`);
+      // Try to refresh history anyway — the run doc may have been written
+      try { await loadE2EHistory(); } catch (e) { /* ignore */ }
+    } finally {
+      setE2eRunning(false);
+    }
+  };
+
+  // Auto-load history when the tab opens
+  useEffect(() => {
+    if (activeTab === 'e2e' && e2eHistory.length === 0 && !e2eHistoryLoading) {
+      loadE2EHistory();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
 
   // Run health check
   const runHealthCheck = async () => {
@@ -286,7 +352,8 @@ const AdminDashboardPage = () => {
             { id: 'users', label: `Users (${stats?.users?.total || 0})` },
             { id: 'messages', label: 'Support Messages', badge: unreadCount },
             { id: 'entries', label: 'All Entries' },
-            { id: 'health', label: 'System Health' }
+            { id: 'health', label: 'System Health' },
+            { id: 'e2e', label: 'E2E Tests' }
           ].map((tab) => (
             <motion.button
               key={tab.id}
@@ -929,6 +996,244 @@ const AdminDashboardPage = () => {
                   <li><strong>Stripe</strong> — Payment API connectivity</li>
                   <li><strong>Firestore Queries</strong> — Critical queries that previously failed (compound index issues)</li>
                 </ul>
+              </div>
+            </motion.div>
+          )}
+
+          {/* E2E Tests Tab */}
+          {activeTab === 'e2e' && (
+            <motion.div
+              key="e2e"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="bg-white rounded-lg border border-[#e5e7eb] shadow-card p-6 mb-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold text-secondary-900 mb-1 flex items-center gap-2">
+                      <Beaker className="w-5 h-5 text-[#316094]" />
+                      End-to-End Test Suite
+                    </h2>
+                    <p className="text-sm text-secondary-600">
+                      Runs the full user workflow (source import &rarr; topics &rarr; outline &rarr; content generation)
+                    </p>
+                  </div>
+                  <button
+                    onClick={runE2ETests}
+                    disabled={e2eRunning}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#316094] text-white rounded-lg hover:bg-[#27517f] disabled:bg-secondary-300 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                  >
+                    {e2eRunning ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        Running...
+                      </>
+                    ) : (
+                      <>
+                        <PlayCircle className="w-4 h-4" />
+                        Run Tests Now
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Warning banner */}
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 text-sm text-secondary-800">
+                    <p className="font-semibold mb-1">Heads up</p>
+                    <p>
+                      A full e2e run takes <strong>3-5 minutes</strong> and costs approximately
+                      <strong> $0.50</strong> in real API calls (OpenAI + Claude).
+                      Test entries and content jobs are auto-cleaned up afterwards.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Running indicator */}
+                {e2eRunning && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-center gap-3">
+                    <RefreshCw className="w-5 h-5 text-[#316094] animate-spin" />
+                    <div className="text-sm text-secondary-800">
+                      <p className="font-semibold">Tests in progress</p>
+                      <p className="text-xs text-secondary-600">
+                        Source extraction &rarr; topic generation &rarr; outline &rarr; 500-word content draft &rarr; query checks
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Recent runs header */}
+                <div className="flex items-center justify-between mb-3 mt-2">
+                  <h3 className="text-sm font-semibold text-secondary-900">Recent Test Runs</h3>
+                  <button
+                    onClick={loadE2EHistory}
+                    disabled={e2eHistoryLoading}
+                    className="text-xs text-secondary-600 hover:text-secondary-900 flex items-center gap-1"
+                  >
+                    <RefreshCw className={`w-3 h-3 ${e2eHistoryLoading ? 'animate-spin' : ''}`} />
+                    Refresh
+                  </button>
+                </div>
+
+                {/* History list */}
+                {e2eHistoryLoading && e2eHistory.length === 0 ? (
+                  <div className="text-center py-8">
+                    <RefreshCw className="w-6 h-6 text-[#316094] animate-spin mx-auto mb-2" />
+                    <p className="text-sm text-secondary-600">Loading test history...</p>
+                  </div>
+                ) : e2eHistory.length === 0 ? (
+                  <div className="bg-secondary-50/30 border border-dashed border-secondary-300 rounded-lg p-8 text-center">
+                    <Beaker className="w-10 h-10 text-secondary-400 mx-auto mb-3" />
+                    <p className="text-sm font-medium text-secondary-700 mb-1">No test runs yet</p>
+                    <p className="text-xs text-secondary-500">Click "Run Tests Now" above to start your first end-to-end test</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {e2eHistory.slice(0, 5).map((run) => {
+                      const isExpanded = e2eExpandedRunId === run.run_id;
+                      const status = run.overall_status || run.status || 'unknown';
+                      const tests = run.tests || [];
+                      const passedCount = tests.filter(t => t.status === 'pass').length;
+                      const totalCount = tests.length;
+                      const startedAt = run.startedAt ? new Date(run.startedAt) : null;
+                      const durationSec = run.total_duration_ms ? (run.total_duration_ms / 1000).toFixed(1) : null;
+
+                      // Color scheme by status
+                      const statusColors = {
+                        pass: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700', badgeBg: 'bg-green-100', badgeText: 'text-green-800', icon: <CheckCircle className="w-4 h-4 text-green-600" /> },
+                        partial: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', badgeBg: 'bg-amber-100', badgeText: 'text-amber-800', icon: <AlertCircle className="w-4 h-4 text-amber-600" /> },
+                        fail: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', badgeBg: 'bg-red-100', badgeText: 'text-red-800', icon: <XCircle className="w-4 h-4 text-red-600" /> },
+                        running: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', badgeBg: 'bg-blue-100', badgeText: 'text-blue-800', icon: <RefreshCw className="w-4 h-4 text-blue-600 animate-spin" /> },
+                        timeout: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', badgeBg: 'bg-red-100', badgeText: 'text-red-800', icon: <XCircle className="w-4 h-4 text-red-600" /> },
+                        error: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', badgeBg: 'bg-red-100', badgeText: 'text-red-800', icon: <XCircle className="w-4 h-4 text-red-600" /> },
+                      };
+                      const colors = statusColors[status] || { bg: 'bg-secondary-50', border: 'border-secondary-200', text: 'text-secondary-700', badgeBg: 'bg-secondary-100', badgeText: 'text-secondary-800', icon: <Clock className="w-4 h-4 text-secondary-600" /> };
+
+                      return (
+                        <div
+                          key={run.run_id}
+                          className={`border ${colors.border} ${colors.bg} rounded-lg overflow-hidden`}
+                        >
+                          {/* Summary row (clickable to expand) */}
+                          <button
+                            onClick={() => setE2eExpandedRunId(isExpanded ? null : run.run_id)}
+                            className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/40 transition-colors text-left"
+                          >
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              {isExpanded ? (
+                                <ChevronDown className="w-4 h-4 text-secondary-600 flex-shrink-0" />
+                              ) : (
+                                <ChevronRight className="w-4 h-4 text-secondary-600 flex-shrink-0" />
+                              )}
+                              {colors.icon}
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="text-sm font-semibold text-secondary-900">
+                                    {startedAt ? startedAt.toLocaleString() : 'Unknown time'}
+                                  </span>
+                                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${colors.badgeBg} ${colors.badgeText}`}>
+                                    {status.toUpperCase()}
+                                  </span>
+                                </div>
+                                <div className="text-xs text-secondary-600 mt-0.5">
+                                  {totalCount > 0 && (
+                                    <span>{passedCount}/{totalCount} tests passed</span>
+                                  )}
+                                  {durationSec && <span> &middot; {durationSec}s</span>}
+                                  {run.startedBy && <span> &middot; by {run.startedBy}</span>}
+                                  {run.cleanup_complete === false && (
+                                    <span className="text-amber-700"> &middot; cleanup incomplete</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <span className="text-xs text-secondary-500 ml-2 flex-shrink-0">~$0.50</span>
+                          </button>
+
+                          {/* Expanded details */}
+                          {isExpanded && (
+                            <div className="border-t border-[#e5e7eb] bg-white/60 px-4 py-3">
+                              {tests.length === 0 ? (
+                                <p className="text-xs text-secondary-600 italic">
+                                  {status === 'running' ? 'Tests are still in progress...' : 'No test details available'}
+                                </p>
+                              ) : (
+                                <div className="space-y-2">
+                                  {tests.map((test, idx) => (
+                                    <div
+                                      key={`${run.run_id}-test-${idx}`}
+                                      className="flex items-start gap-2 p-2 rounded border border-[#e5e7eb] bg-white"
+                                    >
+                                      {test.status === 'pass' ? (
+                                        <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                                      ) : (
+                                        <XCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+                                      )}
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center justify-between gap-2">
+                                          <span className="text-sm font-medium text-secondary-900">{test.name}</span>
+                                          {test.duration_ms != null && (
+                                            <span className="text-xs text-secondary-500 flex-shrink-0">
+                                              {(test.duration_ms / 1000).toFixed(1)}s
+                                            </span>
+                                          )}
+                                        </div>
+                                        {test.message && (
+                                          <p className="text-xs text-secondary-700 mt-0.5">{test.message}</p>
+                                        )}
+                                        {test.details && Object.keys(test.details).length > 0 && (
+                                          <div className="mt-1.5 text-xs text-secondary-600 font-mono bg-secondary-50/60 rounded p-1.5 max-h-32 overflow-y-auto">
+                                            {Object.entries(test.details).map(([k, v]) => (
+                                              <div key={k}>
+                                                <span className="text-secondary-500">{k}:</span>{' '}
+                                                <span className="text-secondary-800">
+                                                  {typeof v === 'object' ? JSON.stringify(v).substring(0, 200) : String(v).substring(0, 200)}
+                                                </span>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  ))}
+                                  {run.error_message && (
+                                    <div className="bg-red-50 border border-red-200 rounded p-2 text-xs text-red-800">
+                                      <span className="font-semibold">Run error:</span> {run.error_message}
+                                    </div>
+                                  )}
+                                  {run.timeout_error && (
+                                    <div className="bg-red-50 border border-red-200 rounded p-2 text-xs text-red-800">
+                                      <span className="font-semibold">Timeout:</span> {run.timeout_error}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Info card */}
+              <div className="bg-secondary-50/50 border border-secondary-200 rounded-lg p-4 text-sm text-secondary-700">
+                <p className="font-medium mb-2">What gets tested:</p>
+                <ul className="space-y-1 text-xs ml-4 list-disc">
+                  <li><strong>Source Import</strong> — Extracts a SourceEntry from hardcoded test text and writes it to Firestore</li>
+                  <li><strong>Topic Generation</strong> — Generates 3 topic suggestions from 2 test entries via Claude</li>
+                  <li><strong>Outline Generation</strong> — Produces a detailed outline from the first generated topic</li>
+                  <li><strong>Content Generation</strong> — Runs a 500-word draft end-to-end (skips DALL-E), checks quality report fields</li>
+                  <li><strong>Critical Firestore Queries</strong> — Verifies queries that have failed historically (composite index issues)</li>
+                </ul>
+                <p className="text-xs mt-3 text-secondary-600">
+                  Test data is created under user <code className="bg-white px-1 rounded">e2e_test_user_id</code> with
+                  <code className="bg-white px-1 rounded">isTestUser: true</code> so it won&apos;t pollute admin stats.
+                  All test entries and content jobs are deleted after the run.
+                </p>
               </div>
             </motion.div>
           )}
