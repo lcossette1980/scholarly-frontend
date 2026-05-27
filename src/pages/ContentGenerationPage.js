@@ -44,6 +44,7 @@ const ContentGenerationPage = () => {
     target_audience: 'general_professional',
     include_hook: true,
     include_conclusion: true,
+    generate_images: false,
     citation_style: 'none'
   });
 

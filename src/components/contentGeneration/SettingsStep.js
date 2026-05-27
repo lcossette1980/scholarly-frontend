@@ -295,6 +295,19 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
                 <p className="text-xs text-secondary-500">Add a concluding section</p>
               </div>
             </label>
+
+            <label className="flex items-center space-x-3 p-3 border border-secondary-200 rounded-xl hover:bg-secondary-50 cursor-pointer transition-colors">
+              <input
+                type="checkbox"
+                checked={settings.generate_images || false}
+                onChange={(e) => updateSetting('generate_images', e.target.checked)}
+                className="w-4 h-4 text-primary rounded focus:ring-2 focus:ring-primary"
+              />
+              <div className="flex-1">
+                <span className="text-sm font-medium text-secondary-800">Generate AI Illustrations</span>
+                <p className="text-xs text-secondary-500">DALL-E 3 editorial illustration per section. Adds ~1 min to generation time and ~$0.04 per section in API cost.</p>
+              </div>
+            </label>
           </div>
         </div>
 
