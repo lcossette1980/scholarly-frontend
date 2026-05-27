@@ -69,13 +69,14 @@ const DashboardStats = ({ entries, loading }) => {
       }
     }).length;
 
-    const analysisReady = entries.filter(entry =>
-      entry.narrative_overview ||
-      entry.narrativeOverview ||
-      entry.analysis ||
-      entry.core_findings ||
-      entry.coreFindingsSummary
-    ).length;
+    // Check canonical field (key_arguments) and legacy fallbacks (core_findings)
+    const analysisReady = entries.filter(entry => {
+      const hasAnalysis =
+        (entry.key_arguments && entry.key_arguments.length > 0) ||
+        (entry.core_findings && entry.core_findings.length > 0) ||
+        (entry.interesting_angles && entry.interesting_angles.length > 0);
+      return hasAnalysis;
+    }).length;
 
     return {
       totalEntries: entries.length,
@@ -103,7 +104,7 @@ const DashboardStats = ({ entries, loading }) => {
   const statItems = [
     { title: 'Total Entries', value: stats.totalEntries },
     { title: 'This Month', value: stats.thisMonth, subtitle: stats.thisMonth > 0 ? `${stats.thisMonth} new` : 'No new entries' },
-    { title: 'Analysis Ready', value: stats.analysisReady, subtitle: stats.analysisReady > 0 ? `${Math.round((stats.analysisReady / Math.max(stats.totalEntries, 1)) * 100)}% of total` : 'None analyzed' },
+    { title: 'Analyzed Sources', value: stats.analysisReady, subtitle: stats.analysisReady > 0 ? `${Math.round((stats.analysisReady / Math.max(stats.totalEntries, 1)) * 100)}% of total` : 'None analyzed yet' },
     { title: 'Content Generated', value: stats.generated, subtitle: 'Documents created' },
   ];
 

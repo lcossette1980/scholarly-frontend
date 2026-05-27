@@ -51,7 +51,7 @@ const AdminDashboardPage = () => {
       if (!currentUser || !isAdmin(currentUser)) return;
 
       try {
-        const data = await adminAPI.getStats(currentUser.email);
+        const data = await adminAPI.getStats();
         console.log('Admin stats received:', data);
 
         // Ensure stats has the expected structure
@@ -79,7 +79,7 @@ const AdminDashboardPage = () => {
       if (!currentUser || !isAdmin(currentUser)) return;
 
       try {
-        const data = await adminAPI.getUsers(currentUser.email, 50);
+        const data = await adminAPI.getUsers(50);
         console.log('Users data received:', data);
 
         // Ensure data has the expected structure
@@ -142,7 +142,7 @@ const AdminDashboardPage = () => {
 
       setEntriesLoading(true);
       try {
-        const data = await adminAPI.getAllEntries(currentUser.email, 100, 0, searchQuery || null);
+        const data = await adminAPI.getAllEntries(100, 0, searchQuery || null);
         setEntries(data.entries || []);
       } catch (error) {
         console.error('Error fetching entries:', error);
@@ -157,7 +157,7 @@ const AdminDashboardPage = () => {
 
   const handleMarkRead = async (messageId) => {
     try {
-      await adminAPI.markMessageRead(currentUser.email, messageId);
+      await adminAPI.markMessageRead(messageId);
       toast.success('Message marked as read');
     } catch (error) {
       console.error('Error marking message as read:', error);
@@ -167,7 +167,7 @@ const AdminDashboardPage = () => {
 
   const handleViewEntry = async (entryId) => {
     try {
-      const data = await adminAPI.getEntryDetails(currentUser.email, entryId);
+      const data = await adminAPI.getEntryDetails(entryId);
       setSelectedEntry(data);
     } catch (error) {
       console.error('Error fetching entry details:', error);

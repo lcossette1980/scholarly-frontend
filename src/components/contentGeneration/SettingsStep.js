@@ -1,6 +1,6 @@
 // src/components/contentGeneration/SettingsStep.js
 import React from 'react';
-import { FileText, Target, Compass, Feather, BookOpen, Users } from 'lucide-react';
+import { FileText, Target, Compass, Feather, BookOpen, Users, GraduationCap, Library, FlaskConical, Quote } from 'lucide-react';
 
 const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
   const updateSetting = (key, value) => {
@@ -8,17 +8,25 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
   };
 
   const documentTypes = [
-    { value: 'blog_post', label: 'Blog Post', icon: Feather },
-    { value: 'article', label: 'Article', icon: FileText },
-    { value: 'essay', label: 'Essay', icon: Feather },
-    { value: 'op_ed', label: 'Op-Ed', icon: FileText },
-    { value: 'white_paper', label: 'White Paper', icon: FileText },
-    { value: 'market_brief', label: 'Market Brief', icon: FileText },
-    { value: 'case_study', label: 'Case Study', icon: FileText },
-    { value: 'competitive_analysis', label: 'Competitive Analysis', icon: FileText, description: 'Compare market players with evidence-backed positioning' },
-    { value: 'executive_briefing', label: 'Executive Briefing', icon: FileText, description: 'Decision-ready intelligence for senior leadership' },
-    { value: 'proposal_memo', label: 'Proposal Memo', icon: FileText, description: 'Research-backed case for a specific course of action' },
-    { value: 'industry_brief', label: 'Industry Brief', icon: FileText, description: 'Sector-specific research distilled into actionable intelligence' }
+    // Professional
+    { value: 'article', label: 'Article', icon: FileText, category: 'professional' },
+    { value: 'blog_post', label: 'Blog Post', icon: Feather, category: 'professional' },
+    { value: 'op_ed', label: 'Op-Ed', icon: FileText, category: 'professional' },
+    { value: 'white_paper', label: 'White Paper', icon: FileText, category: 'professional' },
+    { value: 'case_study', label: 'Case Study', icon: FileText, category: 'professional' },
+    { value: 'market_brief', label: 'Market Brief', icon: FileText, category: 'professional' },
+    { value: 'competitive_analysis', label: 'Competitive Analysis', icon: FileText, category: 'professional' },
+    { value: 'executive_briefing', label: 'Executive Briefing', icon: FileText, category: 'professional' },
+    { value: 'proposal_memo', label: 'Proposal Memo', icon: FileText, category: 'professional' },
+    { value: 'industry_brief', label: 'Industry Brief', icon: FileText, category: 'professional' },
+    // Academic
+    { value: 'essay', label: 'Essay', icon: Feather, category: 'academic' },
+    { value: 'research_paper', label: 'Research Paper', icon: GraduationCap, category: 'academic' },
+    { value: 'literature_review', label: 'Literature Review', icon: Library, category: 'academic' },
+    { value: 'annotated_bibliography', label: 'Annotated Bibliography', icon: Quote, category: 'academic' },
+    { value: 'bibliography', label: 'Bibliography', icon: BookOpen, category: 'academic' },
+    { value: 'thesis_chapter', label: 'Thesis Chapter', icon: GraduationCap, category: 'academic' },
+    { value: 'lab_report', label: 'Lab Report', icon: FlaskConical, category: 'academic' },
   ];
 
   const approaches = [
@@ -61,13 +69,41 @@ const SettingsStep = ({ settings, setSettings, onNext, onBack }) => {
       </p>
 
       <div className="space-y-4">
-        {/* Document Type */}
+        {/* Document Type — grouped by category */}
         <div>
           <label className="block text-sm font-semibold uppercase tracking-wide text-secondary-500 mb-2">
             Document Type
           </label>
+
+          {/* Professional types */}
+          <p className="text-xs text-secondary-400 mb-1.5 font-medium">Professional</p>
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-2 mb-3">
+            {documentTypes.filter(t => t.category === 'professional').map(type => {
+              const Icon = type.icon;
+              const isSelected = settings.document_type === type.value;
+              return (
+                <button
+                  key={type.value}
+                  onClick={() => updateSetting('document_type', type.value)}
+                  className={`p-2.5 border-2 rounded-xl transition-all text-center flex items-center justify-center space-x-1.5 ${
+                    isSelected
+                      ? 'border-primary bg-primary/5'
+                      : 'border-secondary-200 hover:border-primary/40'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isSelected ? 'text-primary' : 'text-secondary-400'}`} />
+                  <span className={`text-sm font-medium ${isSelected ? 'text-primary' : 'text-secondary-700'}`}>
+                    {type.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Academic types */}
+          <p className="text-xs text-secondary-400 mb-1.5 font-medium">Academic</p>
           <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
-            {documentTypes.map(type => {
+            {documentTypes.filter(t => t.category === 'academic').map(type => {
               const Icon = type.icon;
               const isSelected = settings.document_type === type.value;
               return (

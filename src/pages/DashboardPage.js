@@ -24,6 +24,7 @@ import { getUserBibliographyEntries } from '../services/bibliography';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import EntryViewModal from '../components/EntryViewModal';
 import OnboardingModal from '../components/OnboardingModal';
+import DashboardStats from '../components/DashboardStats';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 import { documentTemplates } from '../data/templates';
 import { feedsAPI } from '../services/api';
@@ -397,6 +398,9 @@ const DashboardPage = () => {
             </span>
           </div>
         </FadeIn>
+
+        {/* ── Row 1.5: Stats Overview ── */}
+        <DashboardStats entries={entries} loading={loading} />
 
         {/* ── Row 2: Primary Workflow Cards ── */}
         <StaggerChildren className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

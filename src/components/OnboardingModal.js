@@ -12,7 +12,8 @@ import {
   X,
   ArrowRight,
   ArrowLeft,
-  Sparkles
+  Sparkles,
+  GraduationCap
 } from 'lucide-react';
 
 const purposeOptions = [
@@ -41,6 +42,16 @@ const purposeOptions = [
     label: 'Research summaries',
     icon: Search,
   },
+  {
+    id: 'academic-papers',
+    label: 'Academic papers & essays',
+    icon: GraduationCap,
+  },
+  {
+    id: 'bibliographies',
+    label: 'Bibliographies & literature reviews',
+    icon: BookOpen,
+  },
 ];
 
 const roleOptions = [
@@ -64,6 +75,11 @@ const roleOptions = [
     label: 'Researcher / academic',
     icon: BookOpen,
   },
+  {
+    id: 'student',
+    label: 'Student',
+    icon: GraduationCap,
+  },
 ];
 
 const templateRecommendations = {
@@ -72,6 +88,8 @@ const templateRecommendations = {
   'market-analysis': ['Market Report', 'Competitive Analysis', 'Industry Overview'],
   'client-deliverables': ['Client Report', 'Strategy Deck', 'Executive Summary'],
   'research-summaries': ['Literature Review', 'Research Summary', 'Annotated Bibliography'],
+  'academic-papers': ['Academic Essay', 'Research Paper', 'Thesis Chapter'],
+  'bibliographies': ['Annotated Bibliography', 'Bibliography', 'Literature Review'],
 };
 
 const OnboardingModal = ({ isOpen, onComplete }) => {
