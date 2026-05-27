@@ -65,22 +65,19 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold mb-4 text-sm">Product</h4>
               <ul className="space-y-3 text-white/70 text-sm">
+                <li><Link to="/features" className="hover:text-white transition-colors">Features</Link></li>
                 <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link to="/create" className="hover:text-white transition-colors">Create Entry</Link></li>
-                <li><Link to="/sources" className="hover:text-white transition-colors">Source Library</Link></li>
-                <li><Link to="/for/marketing-teams" className="hover:text-white transition-colors">For Marketing Teams</Link></li>
-                <li><Link to="/for/consultants" className="hover:text-white transition-colors">For Consultants</Link></li>
-                <li><Link to="/for/startups" className="hover:text-white transition-colors">For Startups</Link></li>
+                <li><Link to="/docs" className="hover:text-white transition-colors">How It Works</Link></li>
               </ul>
             </div>
 
-            {/* Resources */}
+            {/* Use Cases */}
             <div>
-              <h4 className="font-semibold mb-4 text-sm">Resources</h4>
+              <h4 className="font-semibold mb-4 text-sm">Built For</h4>
               <ul className="space-y-3 text-white/70 text-sm">
-                <li><Link to="/docs" className="hover:text-white transition-colors">Documentation</Link></li>
-                <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><Link to="/ethical-ai" className="hover:text-white transition-colors">Ethical AI Use</Link></li>
+                <li><Link to="/for/marketing-teams" className="hover:text-white transition-colors">Marketing Teams</Link></li>
+                <li><Link to="/for/consultants" className="hover:text-white transition-colors">Consultants</Link></li>
+                <li><Link to="/for/startups" className="hover:text-white transition-colors">Startups</Link></li>
               </ul>
             </div>
 
@@ -88,17 +85,13 @@ const Footer = () => {
             <div>
               <h4 className="font-semibold mb-4 text-sm">Support</h4>
               <ul className="space-y-3 text-white/70 text-sm">
+                <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link to="/ethical-ai" className="hover:text-white transition-colors">Responsible AI</Link></li>
                 <li>
-                  <a href="mailto:support@draftengineapp.com" className="hover:text-white transition-colors flex items-center space-x-2">
-                    <Mail className="w-4 h-4" />
+                  <a href="mailto:support@draftengineapp.com" className="hover:text-white transition-colors inline-flex items-center gap-1.5">
+                    <Mail className="w-3.5 h-3.5" />
                     <span>Email Support</span>
                   </a>
-                </li>
-                <li>
-                  <p>Monday - Friday: 9 AM - 6 PM EST</p>
-                </li>
-                <li>
-                  <p>Response time: Within 24 hours</p>
                 </li>
               </ul>
             </div>
@@ -107,7 +100,7 @@ const Footer = () => {
           {/* Bottom */}
           <div className="border-t border-white/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-white/70 text-sm">
-              &copy; 2024 DraftEngine. All rights reserved.
+              &copy; 2026 DraftEngine. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link to="/privacy" className="text-white/70 hover:text-white text-sm transition-colors">Privacy Policy</Link>

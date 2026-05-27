@@ -47,6 +47,30 @@ const AdminDashboardPage = () => {
   const [e2eHistory, setE2eHistory] = useState([]);
   const [e2eHistoryLoading, setE2eHistoryLoading] = useState(false);
   const [e2eExpandedRunId, setE2eExpandedRunId] = useState(null);
+  const [activityData, setActivityData] = useState(null);
+  const [activityLoading, setActivityLoading] = useState(false);
+  const [activityFilter, setActivityFilter] = useState('all');
+
+  // Load user activity (funnel analysis)
+  const loadActivity = async () => {
+    setActivityLoading(true);
+    try {
+      const data = await adminAPI.getUserActivity();
+      setActivityData(data);
+    } catch (error) {
+      console.error('Activity load error:', error);
+      toast.error('Failed to load user activity');
+    } finally {
+      setActivityLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'activity' && !activityData && !activityLoading) {
+      loadActivity();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
 
   // Fetch e2e test history
   const loadE2EHistory = async () => {
@@ -350,6 +374,7 @@ const AdminDashboardPage = () => {
           {[
             { id: 'overview', label: 'Overview' },
             { id: 'users', label: `Users (${stats?.users?.total || 0})` },
+            { id: 'activity', label: 'User Funnel' },
             { id: 'messages', label: 'Support Messages', badge: unreadCount },
             { id: 'entries', label: 'All Entries' },
             { id: 'health', label: 'System Health' },
@@ -543,6 +568,144 @@ const AdminDashboardPage = () => {
                   </table>
                 </div>
               </div>
+            </motion.div>
+          )}
+
+          {/* User Funnel / Activity Tab */}
+          {activeTab === 'activity' && (
+            <motion.div
+              key="activity"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-secondary-900 mb-1">User Engagement Funnel</h2>
+                  <p className="text-sm text-secondary-600">Where users drop off in your conversion funnel</p>
+                </div>
+                <button
+                  onClick={loadActivity}
+                  disabled={activityLoading}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 disabled:bg-secondary-300 transition-colors text-sm font-medium"
+                >
+                  <RefreshCw className={`w-4 h-4 ${activityLoading ? 'animate-spin' : ''}`} />
+                  Refresh
+                </button>
+              </div>
+
+              {activityLoading && !activityData && (
+                <div className="text-center py-12">
+                  <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto mb-3" />
+                  <p className="text-sm text-secondary-600">Analyzing user activity...</p>
+                </div>
+              )}
+
+              {activityData && (
+                <>
+                  {/* Funnel breakdown */}
+                  <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-card p-6 mb-6">
+                    <h3 className="font-bold text-secondary-900 mb-4">Funnel Stages</h3>
+                    <div className="space-y-3">
+                      {[
+                        { id: '1_signed_up_no_onboarding', label: 'Signed up, never onboarded', color: 'bg-red-100 text-red-800' },
+                        { id: '2_onboarded_no_entry', label: 'Onboarded, never imported a source', color: 'bg-amber-100 text-amber-800' },
+                        { id: '3_imported_no_generation', label: 'Imported sources, never generated', color: 'bg-amber-100 text-amber-800' },
+                        { id: '4_tried_generation_failed', label: 'Tried generation, all failed', color: 'bg-red-100 text-red-800' },
+                        { id: '5_one_successful_generation', label: 'One successful generation', color: 'bg-primary/20 text-primary' },
+                        { id: '6_active_user', label: 'Active user (multiple successes)', color: 'bg-green-100 text-green-800' },
+                      ].map(stage => {
+                        const count = activityData.funnel?.[stage.id] || 0;
+                        const pct = activityData.total > 0 ? Math.round((count / activityData.total) * 100) : 0;
+                        return (
+                          <button
+                            key={stage.id}
+                            onClick={() => setActivityFilter(stage.id === activityFilter ? 'all' : stage.id)}
+                            className={`w-full flex items-center justify-between p-3 rounded-lg border transition-colors ${
+                              activityFilter === stage.id ? 'border-primary bg-primary/5' : 'border-[#e5e7eb] hover:bg-secondary-50'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 flex-1 text-left">
+                              <span className={`px-2 py-1 rounded text-xs font-medium ${stage.color}`}>{count}</span>
+                              <span className="text-sm text-secondary-800">{stage.label}</span>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <div className="w-24 h-2 bg-secondary-200 rounded-full overflow-hidden">
+                                <div className="h-full bg-primary" style={{ width: `${pct}%` }} />
+                              </div>
+                              <span className="text-xs text-secondary-500 w-10 text-right">{pct}%</span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {activityFilter !== 'all' && (
+                      <button
+                        onClick={() => setActivityFilter('all')}
+                        className="mt-3 text-xs text-primary hover:underline"
+                      >
+                        Show all users
+                      </button>
+                    )}
+                  </div>
+
+                  {/* User list */}
+                  <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-card overflow-hidden">
+                    <div className="px-6 py-4 border-b border-[#e5e7eb]">
+                      <h3 className="font-bold text-secondary-900">
+                        {activityFilter === 'all' ? `All Users (${activityData.users.length})` : `Filtered Users`}
+                      </h3>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead className="bg-secondary-50/50">
+                          <tr className="text-left">
+                            <th className="px-4 py-2 text-xs font-semibold text-secondary-600 uppercase">Email</th>
+                            <th className="px-4 py-2 text-xs font-semibold text-secondary-600 uppercase">Role</th>
+                            <th className="px-4 py-2 text-xs font-semibold text-secondary-600 uppercase">Sources</th>
+                            <th className="px-4 py-2 text-xs font-semibold text-secondary-600 uppercase">Docs</th>
+                            <th className="px-4 py-2 text-xs font-semibold text-secondary-600 uppercase">Last Active</th>
+                            <th className="px-4 py-2 text-xs font-semibold text-secondary-600 uppercase">Stage</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#e5e7eb]">
+                          {activityData.users
+                            .filter(u => activityFilter === 'all' || u.funnel_stage === activityFilter)
+                            .slice(0, 100)
+                            .map(u => (
+                              <tr key={u.userId} className="hover:bg-secondary-50/30">
+                                <td className="px-4 py-2 text-secondary-900">
+                                  <div className="font-medium">{u.email || 'no email'}</div>
+                                  <div className="text-xs text-secondary-500">{u.displayName || ''}</div>
+                                </td>
+                                <td className="px-4 py-2 text-secondary-700 text-xs">
+                                  {u.onboardingRole || <span className="text-secondary-400">unset</span>}
+                                </td>
+                                <td className="px-4 py-2 text-secondary-700">{u.entries_count}</td>
+                                <td className="px-4 py-2 text-secondary-700">
+                                  {u.completed_jobs > 0 ? (
+                                    <span className="text-green-700 font-medium">{u.completed_jobs}</span>
+                                  ) : (
+                                    <span className="text-secondary-400">0</span>
+                                  )}
+                                  {u.failed_jobs > 0 && (
+                                    <span className="ml-2 text-red-600 text-xs">({u.failed_jobs} failed)</span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-2 text-xs text-secondary-600">
+                                  {u.last_activity ? new Date(u.last_activity).toLocaleDateString() : '—'}
+                                </td>
+                                <td className="px-4 py-2">
+                                  <span className="text-xs text-secondary-500">{u.funnel_stage?.split('_').slice(1).join(' ') || ''}</span>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
             </motion.div>
           )}
 

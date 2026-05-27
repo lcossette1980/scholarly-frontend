@@ -314,8 +314,8 @@ const DashboardPage = () => {
     const jobItems = recentJobs.map(j => ({
       type: 'document',
       id: j.id,
-      title: j.topic || j.settings?.topic || 'Untitled Document',
-      subtitle: j.wordCount ? `${j.wordCount.toLocaleString()} words` : '',
+      title: j.refinedTitle || j.outline?.topic || j.outline?.title || j.topic || j.settings?.topic || 'Untitled Document',
+      subtitle: j.wordCount ? `${j.wordCount.toLocaleString()} words` : (j.estimatedPages ? `~${j.estimatedPages} pages` : ''),
       date: j.createdAt,
       status: j.status,
       raw: j,

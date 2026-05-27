@@ -90,6 +90,13 @@ export const adminAPI = {
     const api = await createAdminRequest();
     const response = await api.get('/admin/e2e-test-history');
     return response.data;
+  },
+
+  // Per-user activity report with funnel analysis
+  getUserActivity: async () => {
+    const api = await createAdminRequest();
+    const response = await api.get('/admin/user-activity');
+    return response.data;
   }
 };
 
