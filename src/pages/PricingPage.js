@@ -1,7 +1,7 @@
 // src/pages/PricingPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight, GraduationCap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../services/stripe';
 import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from '../components/motion';
@@ -101,6 +101,15 @@ const PricingPage = () => {
     return map[planId] || planId;
   };
 
+  // Academic-friendly recommendation (based on onboarding role/purpose)
+  const isAcademicUser = (() => {
+    const role = userDocument?.onboardingRole;
+    const purpose = userDocument?.onboardingPurpose;
+    const academicRoles = ['researcher', 'student'];
+    const academicPurposes = ['research-summaries', 'academic-papers', 'bibliographies'];
+    return academicRoles.includes(role) || academicPurposes.includes(purpose);
+  })();
+
   return (
     <div className="min-h-screen py-6 md:py-12 bg-mesh relative overflow-hidden">
       <SEO
@@ -120,6 +129,27 @@ const PricingPage = () => {
             </p>
           </div>
         </FadeIn>
+
+        {/* Academic Plan Recommendation */}
+        {currentUser && isAcademicUser && (
+          <FadeIn direction="up">
+            <div className="max-w-5xl mx-auto mb-8">
+              <div className="border border-[#e5e7eb] rounded-lg shadow-card bg-white p-5 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-base font-semibold text-secondary-900 mb-1">
+                    Recommended for academic writers
+                  </h3>
+                  <p className="text-sm text-secondary-600">
+                    <span className="font-medium text-secondary-900">Plus</span> covers most academic workflows — unlimited sources, all 4 import methods (including DOI lookups), research feeds across Semantic Scholar, OpenAlex, and CrossRef, and the Topic & Outline Generator for literature reviews, essays, and research papers.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        )}
 
         {/* Pricing Cards — 3 columns */}
         <StaggerChildren className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">

@@ -1,5 +1,6 @@
 // src/pages/ProfilePage.js
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   User,
   CreditCard,
@@ -14,19 +15,25 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { createCustomerPortalSession, manuallyActivateSubscription, fixSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
 import { getUserBibliographyEntries } from '../services/bibliography';
-import { updateProfile } from 'firebase/auth';
-import { doc, updateDoc } from 'firebase/firestore';
+import { resetPassword } from '../services/auth';
+import { updateProfile, deleteUser } from 'firebase/auth';
+import { doc, updateDoc, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
 import toast from 'react-hot-toast';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { currentUser, userDocument, refreshUserDocument } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
   const [statsLoading, setStatsLoading] = useState(true);
+  const [sendingReset, setSendingReset] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [deleting, setDeleting] = useState(false);
   const [formData, setFormData] = useState({
     displayName: currentUser?.displayName || '',
     researchFocus: userDocument?.preferences?.researchFocus || '',
@@ -134,7 +141,66 @@ const ProfilePage = () => {
     setIsEditing(false);
   };
 
+  const handlePasswordReset = async () => {
+    if (!currentUser?.email) {
+      toast.error('No email address on file');
+      return;
+    }
+    if (!window.confirm(`Send password reset email to ${currentUser.email}?`)) return;
+    setSendingReset(true);
+    try {
+      await resetPassword(currentUser.email);
+      toast.success('Password reset email sent! Check your inbox.');
+    } catch (error) {
+      console.error('Password reset error:', error);
+      toast.error('Failed to send reset email. Please try again.');
+    } finally {
+      setSendingReset(false);
+    }
+  };
 
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText !== 'DELETE') {
+      toast.error('Type DELETE to confirm');
+      return;
+    }
+    setDeleting(true);
+    try {
+      // 1. Delete user's bibliography entries
+      const entriesQuery = query(
+        collection(db, 'bibliography_entries'),
+        where('userId', '==', currentUser.uid)
+      );
+      const entriesSnapshot = await getDocs(entriesQuery);
+      await Promise.all(entriesSnapshot.docs.map(d => deleteDoc(d.ref)));
+
+      // 2. Delete user's content generation jobs
+      const jobsQuery = query(
+        collection(db, 'content_generation_jobs'),
+        where('userId', '==', currentUser.uid)
+      );
+      const jobsSnapshot = await getDocs(jobsQuery);
+      await Promise.all(jobsSnapshot.docs.map(d => deleteDoc(d.ref)));
+
+      // 3. Delete user document
+      await deleteDoc(doc(db, 'users', currentUser.uid));
+
+      // 4. Delete Firebase Auth user (may require recent login)
+      await deleteUser(auth.currentUser);
+
+      toast.success('Account deleted successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Account deletion error:', error);
+      if (error.code === 'auth/requires-recent-login') {
+        toast.error('Please sign out and sign back in, then try again. Account deletion requires recent login.');
+      } else {
+        toast.error('Failed to delete account. Please try again or contact support.');
+      }
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const formatDate = (date) => {
     if (!date) return 'N/A';
@@ -359,6 +425,7 @@ const ProfilePage = () => {
                     <motion.button
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
+                      onClick={() => setShowDeleteModal(true)}
                       className="btn bg-red-600 hover:bg-red-700 text-white"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
@@ -577,19 +644,15 @@ const ProfilePage = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-secondary-700">Two-Factor Auth</span>
-                      <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
-                        Not Setup
-                      </span>
-                    </div>
                     <motion.button
                       whileHover={{ scale: 1.03 }}
                       whileTap={{ scale: 0.97 }}
+                      onClick={handlePasswordReset}
+                      disabled={sendingReset}
                       className="btn btn-outline w-full text-sm"
                     >
                       <Shield className="w-4 h-4 mr-2" />
-                      Change Password
+                      {sendingReset ? 'Sending...' : 'Change Password'}
                     </motion.button>
                   </div>
                 </div>
@@ -598,6 +661,44 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
+            <h3 className="text-lg font-bold text-secondary-900 mb-2">Delete Account</h3>
+            <p className="text-sm text-secondary-700 mb-4">
+              This will permanently delete your account, all your source entries, and all your generated documents. This cannot be undone.
+            </p>
+            <p className="text-sm text-secondary-700 mb-4">
+              Type <strong className="text-red-600">DELETE</strong> to confirm:
+            </p>
+            <input
+              type="text"
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              className="w-full px-4 py-2 border border-secondary-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+              placeholder="Type DELETE"
+              disabled={deleting}
+            />
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => { setShowDeleteModal(false); setDeleteConfirmText(''); }}
+                className="px-4 py-2 text-sm font-medium text-secondary-700 hover:bg-secondary-100 rounded-lg transition-colors"
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                disabled={deleteConfirmText !== 'DELETE' || deleting}
+                className="px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:bg-red-300 disabled:cursor-not-allowed"
+              >
+                {deleting ? 'Deleting...' : 'Permanently Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -69,9 +69,14 @@ const ContentHistoryPage = () => {
   };
 
   const filteredJobs = jobs.filter(job => {
-    const matchesSearch =
-      job.outline?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.settings?.document_type?.toLowerCase().includes(searchTerm.toLowerCase());
+    const search = searchTerm.toLowerCase();
+    const titleMatch = (job.refinedTitle || job.outline?.title || job.outline?.topic || '')
+      .toLowerCase()
+      .includes(search);
+    const typeMatch = (job.settings?.document_type || '')
+      .toLowerCase()
+      .includes(search);
+    const matchesSearch = !searchTerm || titleMatch || typeMatch;
 
     const matchesStatus = filterStatus === 'all' || job.status === filterStatus;
     const matchesTier = filterTier === 'all' || job.tier === filterTier;
@@ -312,22 +317,42 @@ const ContentHistoryPage = () => {
         {filteredJobs.length === 0 ? (
           <FadeIn>
             <div className="card card-floating text-center py-12">
-              <FileText className="w-16 h-16 text-secondary-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-secondary-900 mb-2">
-                {searchTerm || filterStatus !== 'all' || filterTier !== 'all'
-                  ? 'No content found'
-                  : 'No content generated yet'}
-              </h3>
-              <p className="text-secondary-600 mb-6">
-                {searchTerm || filterStatus !== 'all' || filterTier !== 'all'
-                  ? 'Try adjusting your search or filters.'
-                  : 'Generate your first piece of content from your sources.'}
-              </p>
-              {!searchTerm && filterStatus === 'all' && filterTier === 'all' && (
-                <Link to="/content/generate" className="btn btn-primary">
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Generate Content
-                </Link>
+              {(searchTerm || filterStatus !== 'all' || filterTier !== 'all') ? (
+                <>
+                  <Search className="w-16 h-16 text-secondary-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-2">
+                    No documents match your filters
+                  </h3>
+                  <p className="text-secondary-600 mb-6 max-w-md mx-auto">
+                    {searchTerm
+                      ? <>No documents match <span className="font-medium">"{searchTerm}"</span>. Try a different search term or clear your filters.</>
+                      : 'No documents match the selected filters. Try adjusting them.'}
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setFilterStatus('all');
+                      setFilterTier('all');
+                    }}
+                    className="text-sm text-primary font-medium hover:underline"
+                  >
+                    Clear filters
+                  </button>
+                </>
+              ) : (
+                <>
+                  <FileText className="w-16 h-16 text-secondary-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-secondary-900 mb-2">
+                    No content generated yet
+                  </h3>
+                  <p className="text-secondary-600 mb-6 max-w-md mx-auto">
+                    Generate your first document from your source library — essays, white papers, literature reviews, and more.
+                  </p>
+                  <Link to="/content/generate" className="btn btn-primary">
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Generate Content
+                  </Link>
+                </>
               )}
             </div>
           </FadeIn>

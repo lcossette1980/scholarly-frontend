@@ -546,24 +546,50 @@ const BibliographyPage = () => {
           </div>
         ) : filteredEntries.length === 0 ? (
           <FadeIn direction="up">
-            <div className="text-center py-16">
-              <div className="w-20 h-20 bg-secondary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-10 h-10 text-secondary-300" />
-              </div>
-              <p className="text-secondary-500 text-lg">
-                {searchTerm || selectedCategory !== 'all'
-                  ? 'No entries found matching your filters'
-                  : 'No source entries yet'}
-              </p>
-              {!searchTerm && selectedCategory === 'all' && (
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => navigate('/create')}
-                  className="btn btn-primary mt-6"
-                >
-                  Add Your First Source
-                </motion.button>
+            <div className="border border-[#e5e7eb] rounded-lg shadow-card bg-white text-center py-16 px-6">
+              {(searchTerm || selectedCategory !== 'all') ? (
+                <>
+                  <div className="w-16 h-16 rounded-full bg-secondary-100 flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-secondary-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                    No matching sources
+                  </h3>
+                  <p className="text-sm text-secondary-500 mb-6 max-w-md mx-auto">
+                    {searchTerm
+                      ? <>No sources match <span className="font-medium">"{searchTerm}"</span>. Try a different search or clear your filters.</>
+                      : 'No sources match the selected category. Try a different filter.'}
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setSelectedCategory('all');
+                    }}
+                    className="text-sm text-primary font-medium hover:underline"
+                  >
+                    Clear filters
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                    Your library is empty
+                  </h3>
+                  <p className="text-sm text-secondary-500 mb-6 max-w-md mx-auto">
+                    Upload a PDF, paste a URL or DOI, or subscribe to a research feed to start building your source library.
+                  </p>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => navigate('/create')}
+                    className="inline-flex items-center gap-2 bg-primary text-white hover:bg-primary-700 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors"
+                  >
+                    Add your first source
+                  </motion.button>
+                </>
               )}
             </div>
           </FadeIn>

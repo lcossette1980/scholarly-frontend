@@ -1,6 +1,6 @@
 // src/components/contentGeneration/OutlineSelectionStep.js
 import React, { useState } from 'react';
-import { Check, Edit3, Plus, ChevronDown, ChevronUp, X, Save, Trash2 } from 'lucide-react';
+import { Check, Edit3, Plus, ChevronDown, ChevronUp, X, Save, Trash2, Loader } from 'lucide-react';
 
 const OutlineSelectionStep = ({
   outlines,
@@ -9,7 +9,8 @@ const OutlineSelectionStep = ({
   customOutline,
   setCustomOutline,
   onNext,
-  onBack
+  onBack,
+  loading = false
 }) => {
   const [expandedOutline, setExpandedOutline] = useState(null);
   const [creatingCustom, setCreatingCustom] = useState(false);
@@ -122,6 +123,67 @@ const OutlineSelectionStep = ({
   };
 
   const selectedItem = selectedOutline || customOutline;
+
+  // Show skeleton state if outlines haven't loaded yet
+  if ((!outlines || outlines.length === 0) && loading) {
+    return (
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 mb-4">
+          Generating Outlines
+        </h2>
+        <p className="text-gray-600 mb-6">
+          Synthesizing your sources into structured outline options...
+        </p>
+
+        <div className="bg-primary-50 border border-primary-200 rounded-lg p-3 mb-6 flex items-center space-x-3">
+          <Loader className="w-4 h-4 text-primary animate-spin flex-shrink-0" />
+          <p className="text-sm font-medium text-primary-900">
+            Building outline options based on your sources
+          </p>
+        </div>
+
+        {/* Skeleton outline cards */}
+        <div className="space-y-3 mb-6">
+          <h3 className="font-semibold text-gray-700 mb-3">AI-Generated Outlines</h3>
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="border border-gray-200 rounded-lg p-4 bg-white"
+            >
+              <div className="animate-pulse">
+                <div className="flex items-start space-x-3">
+                  <div className="w-5 h-5 rounded border-2 border-gray-200 bg-gray-100 mt-1 flex-shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-2/3" />
+                    <div className="h-3 bg-gray-100 rounded w-1/4" />
+                  </div>
+                  <div className="w-5 h-5 bg-gray-100 rounded" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between pt-6 border-t border-gray-200 mt-6">
+          <button
+            onClick={onBack}
+            className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
+          >
+            &larr; Back
+          </button>
+          <div className="flex items-center space-x-3">
+            <p className="text-sm text-gray-600">Step 2 of 6</p>
+            <button
+              disabled
+              className="px-6 py-2 rounded-lg font-semibold bg-gray-200 text-gray-400 cursor-not-allowed"
+            >
+              Continue to Settings
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

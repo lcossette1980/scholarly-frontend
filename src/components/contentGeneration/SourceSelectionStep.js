@@ -19,6 +19,58 @@ const SourceSelectionStep = ({ entries, selectedSources, setSelectedSources, onN
     entry.authors.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Skeleton overlay while outlines are being generated
+  if (loading) {
+    return (
+      <div>
+        <h2 className="text-2xl font-bold text-secondary-900 mb-4">
+          Generating Outlines
+        </h2>
+        <p className="text-gray-600 mb-6">
+          Analyzing your selected sources and drafting outline options. This usually takes 10-30 seconds.
+        </p>
+
+        <div className="bg-primary-50 border border-primary-200 rounded-lg p-3 mb-4 flex items-center space-x-3">
+          <Loader className="w-4 h-4 text-primary animate-spin flex-shrink-0" />
+          <p className="text-sm font-medium text-primary-900">
+            {selectedSources.length} {selectedSources.length === 1 ? 'source' : 'sources'} being analyzed...
+          </p>
+        </div>
+
+        {/* Skeleton outline preview cards */}
+        <div className="space-y-3 mb-6">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="border border-gray-200 rounded-lg p-4 bg-white"
+            >
+              <div className="animate-pulse space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="w-5 h-5 rounded border-2 border-gray-200 bg-gray-100 flex-shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4" />
+                    <div className="h-3 bg-gray-100 rounded w-1/4" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+          <p className="text-sm text-gray-600">Step 1 of 6</p>
+          <button
+            disabled
+            className="px-6 py-2 rounded-lg font-semibold flex items-center space-x-2 bg-gray-200 text-gray-400 cursor-not-allowed"
+          >
+            <Loader className="w-4 h-4 animate-spin" />
+            <span>Generating Outlines...</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-secondary-900 mb-4">

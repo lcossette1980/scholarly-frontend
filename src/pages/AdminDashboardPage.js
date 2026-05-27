@@ -13,7 +13,8 @@ import {
   ArrowLeft,
   Search,
   Eye,
-  BookOpen
+  BookOpen,
+  XCircle
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adminAPI, isAdmin } from '../services/admin';
@@ -36,6 +37,41 @@ const AdminDashboardPage = () => {
   const [entriesLoading, setEntriesLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [searchQuery, setSearchQuery] = useState('');
+  const [healthResults, setHealthResults] = useState(null);
+  const [healthLoading, setHealthLoading] = useState(false);
+
+  // Run health check
+  const runHealthCheck = async () => {
+    setHealthLoading(true);
+    setHealthResults(null);
+    try {
+      const data = await adminAPI.runHealthCheck();
+      setHealthResults(data);
+      if (data.overall_status === 'healthy') {
+        toast.success('All systems healthy');
+      } else {
+        toast.error(`System status: ${data.overall_status}`);
+      }
+    } catch (error) {
+      console.error('Health check error:', error);
+      toast.error('Failed to run health check');
+      setHealthResults({
+        overall_status: 'error',
+        checks: {},
+        error: error.message
+      });
+    } finally {
+      setHealthLoading(false);
+    }
+  };
+
+  // Auto-run health check when tab opens
+  useEffect(() => {
+    if (activeTab === 'health' && !healthResults && !healthLoading) {
+      runHealthCheck();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
 
   // Check admin access
   useEffect(() => {
@@ -249,7 +285,8 @@ const AdminDashboardPage = () => {
             { id: 'overview', label: 'Overview' },
             { id: 'users', label: `Users (${stats?.users?.total || 0})` },
             { id: 'messages', label: 'Support Messages', badge: unreadCount },
-            { id: 'entries', label: 'All Entries' }
+            { id: 'entries', label: 'All Entries' },
+            { id: 'health', label: 'System Health' }
           ].map((tab) => (
             <motion.button
               key={tab.id}
@@ -779,6 +816,119 @@ const AdminDashboardPage = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Health Check Tab */}
+          {activeTab === 'health' && (
+            <motion.div
+              key="health"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <div className="bg-white rounded-lg border border-[#e5e7eb] shadow-card p-6 mb-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold text-secondary-900 mb-1">System Health Check</h2>
+                    <p className="text-sm text-secondary-600">
+                      Verify that all critical services are operational
+                    </p>
+                  </div>
+                  <button
+                    onClick={runHealthCheck}
+                    disabled={healthLoading}
+                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 disabled:bg-secondary-300 transition-colors text-sm font-medium"
+                  >
+                    <RefreshCw className={`w-4 h-4 ${healthLoading ? 'animate-spin' : ''}`} />
+                    {healthLoading ? 'Running checks...' : 'Run Check'}
+                  </button>
+                </div>
+
+                {healthResults && (
+                  <>
+                    {/* Overall status banner */}
+                    <div className={`rounded-lg p-4 mb-6 flex items-center justify-between ${
+                      healthResults.overall_status === 'healthy'
+                        ? 'bg-green-50 border border-green-200'
+                        : healthResults.overall_status === 'degraded'
+                        ? 'bg-amber-50 border border-amber-200'
+                        : 'bg-red-50 border border-red-200'
+                    }`}>
+                      <div className="flex items-center gap-3">
+                        {healthResults.overall_status === 'healthy' ? (
+                          <CheckCircle className="w-6 h-6 text-green-600" />
+                        ) : (
+                          <AlertCircle className="w-6 h-6 text-amber-600" />
+                        )}
+                        <div>
+                          <p className="font-semibold text-secondary-900">
+                            Overall Status: {healthResults.overall_status.toUpperCase()}
+                          </p>
+                          <p className="text-xs text-secondary-600">
+                            Last checked: {new Date(healthResults.timestamp).toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Individual check results */}
+                    <div className="space-y-3">
+                      {Object.entries(healthResults.checks || {}).map(([service, result]) => (
+                        <div
+                          key={service}
+                          className="flex items-start justify-between p-4 border border-[#e5e7eb] rounded-lg"
+                        >
+                          <div className="flex items-start gap-3 flex-1">
+                            {result.status === 'ok' ? (
+                              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                            ) : result.status === 'warn' ? (
+                              <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                            ) : (
+                              <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-secondary-900 capitalize">
+                                {service.replace(/_/g, ' ')}
+                              </p>
+                              <p className="text-xs text-secondary-600 mt-0.5">{result.message}</p>
+                            </div>
+                          </div>
+                          <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                            result.status === 'ok'
+                              ? 'bg-green-100 text-green-800'
+                              : result.status === 'warn'
+                              ? 'bg-amber-100 text-amber-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}>
+                            {result.status.toUpperCase()}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {healthLoading && !healthResults && (
+                  <div className="text-center py-12">
+                    <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto mb-3" />
+                    <p className="text-sm text-secondary-600">Running health checks across all services...</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Info card */}
+              <div className="bg-secondary-50/50 border border-secondary-200 rounded-lg p-4 text-sm text-secondary-700">
+                <p className="font-medium mb-2">What this checks:</p>
+                <ul className="space-y-1 text-xs ml-4 list-disc">
+                  <li><strong>Firestore</strong> — Read/write to the database</li>
+                  <li><strong>OpenAI</strong> — GPT-4o-mini API (source extraction + DALL-E)</li>
+                  <li><strong>Anthropic</strong> — Claude Sonnet (topics, outlines, content generation)</li>
+                  <li><strong>Haiku</strong> — Claude Haiku (quality review, citations, image prompts)</li>
+                  <li><strong>Stripe</strong> — Payment API connectivity</li>
+                  <li><strong>Firestore Queries</strong> — Critical queries that previously failed (compound index issues)</li>
+                </ul>
               </div>
             </motion.div>
           )}

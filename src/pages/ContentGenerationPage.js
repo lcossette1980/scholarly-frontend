@@ -279,6 +279,7 @@ const ContentGenerationPage = () => {
                   setCustomOutline={setCustomOutline}
                   onNext={nextStep}
                   onBack={prevStep}
+                  loading={loading}
                 />
               )}
 

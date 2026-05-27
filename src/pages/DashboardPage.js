@@ -259,10 +259,11 @@ const DashboardPage = () => {
     fetchJobs();
   }, [currentUser]);
 
-  // Fetch feed item count
+  // Fetch feed item count (refreshes on visibility change and when entries change)
   useEffect(() => {
+    if (!currentUser) return;
+
     const fetchFeedInfo = async () => {
-      if (!currentUser) return;
       try {
         const data = await feedsAPI.getSubscriptions();
         const subs = data.subscriptions || [];
@@ -270,6 +271,8 @@ const DashboardPage = () => {
         if (subs.length > 0) {
           const itemsData = await feedsAPI.getItems();
           setFeedItemCount((itemsData.items || []).length);
+        } else {
+          setFeedItemCount(0);
         }
       } catch (error) {
         // Feeds are optional; silently fail
@@ -278,7 +281,23 @@ const DashboardPage = () => {
     };
 
     fetchFeedInfo();
-  }, [currentUser]);
+
+    // Refresh when the dashboard tab regains focus (e.g., after importing from /feeds)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchFeedInfo();
+      }
+    };
+    const handleFocus = () => fetchFeedInfo();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [currentUser, entries.length]);
 
   // Build merged recent activity timeline
   const recentActivity = React.useMemo(() => {
@@ -513,8 +532,50 @@ const DashboardPage = () => {
                 </div>
               </div>
             ) : recentActivity.length === 0 ? (
-              <div className="p-8 text-center">
-                <p className="text-secondary-500 text-sm">No activity yet. Import your first source to get started.</p>
+              <div className="px-6 py-12 text-center">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-base font-semibold text-secondary-900 mb-1">
+                  Nothing here yet
+                </h3>
+                <p className="text-sm text-secondary-500 mb-5 max-w-sm mx-auto">
+                  Import your first source or generate a document — your recent activity will show up here.
+                </p>
+                <div className="flex items-center justify-center gap-3">
+                  <Link
+                    to="/create"
+                    className={`btn ${canCreate ? 'bg-primary text-white hover:bg-primary-700' : 'bg-secondary-200 text-secondary-400 cursor-not-allowed'} rounded-lg px-4 py-2 text-sm font-medium transition-colors inline-flex items-center gap-1.5`}
+                    onClick={(e) => {
+                      if (!canCreate) {
+                        e.preventDefault();
+                        toast.error('You have reached your limit. Please upgrade your plan.');
+                      }
+                    }}
+                  >
+                    <Upload className="w-3.5 h-3.5" />
+                    Import Sources
+                  </Link>
+                  <button
+                    onClick={() => {
+                      if (!hasEntries) {
+                        toast.error('Import sources first');
+                        return;
+                      }
+                      navigate('/content/generate');
+                    }}
+                    disabled={!hasEntries}
+                    title={!hasEntries ? 'Import sources first' : ''}
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors inline-flex items-center gap-1.5 border ${
+                      hasEntries
+                        ? 'border-primary text-primary hover:bg-primary/5'
+                        : 'border-secondary-200 text-secondary-400 cursor-not-allowed'
+                    }`}
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    Generate Document
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="divide-y divide-[#e5e7eb]">

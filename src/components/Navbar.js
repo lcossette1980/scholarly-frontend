@@ -146,7 +146,7 @@ const Navbar = () => {
                           <span>Settings</span>
                         </Link>
                         <Link
-                          to="/dashboard"
+                          to="/sources"
                           className="flex items-center space-x-2 px-4 py-2 text-sm text-secondary-700 hover:bg-gray-50 transition-colors"
                           onClick={() => setIsProfileOpen(false)}
                         >

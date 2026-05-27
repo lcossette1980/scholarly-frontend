@@ -68,6 +68,13 @@ export const adminAPI = {
     const api = await createAdminRequest();
     const response = await api.get(`/admin/entries/${entryId}`);
     return response.data;
+  },
+
+  // Run functional health check across all critical services
+  runHealthCheck: async () => {
+    const api = await createAdminRequest();
+    const response = await api.get('/admin/health-check');
+    return response.data;
   }
 };
 
