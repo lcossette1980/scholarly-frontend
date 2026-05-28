@@ -224,19 +224,17 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen py-8 bg-mesh">
-      <div className="container mx-auto px-6 max-w-4xl">
+    <div className="min-h-screen py-8 bg-secondary-50/40">
+      <div className="max-w-4xl mx-auto px-6">
         {/* Header */}
-        <FadeIn direction="down">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-secondary-900 mb-2">
-              Profile Settings
-            </h1>
-            <p className="text-secondary-700">
-              Manage your account settings and preferences
-            </p>
-          </div>
-        </FadeIn>
+        <div className="mb-8">
+          <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">
+            Profile settings
+          </h1>
+          <p className="mt-1 text-sm text-secondary-500">
+            Manage your account, subscription, and preferences.
+          </p>
+        </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Profile Information */}
@@ -244,16 +242,11 @@ const ProfilePage = () => {
             <StaggerChildren>
               {/* Basic Information */}
               <StaggerItem>
-                <div className="card card-floating mb-6">
-                  <div className="h-1 bg-gradient-to-r from-primary-400 via-accent-400 to-primary-400 rounded-t-lg -mt-6 -mx-6 mb-6" />
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <User className="w-5 h-5 text-primary" />
-                      </div>
-                      <h2 className="text-xl font-bold text-secondary-900">
-                        Basic Information
-                      </h2>
+                <div className="card mb-6">
+                  <div className="flex items-center justify-between mb-5">
+                    <div>
+                      <h2 className="text-base font-semibold text-secondary-900">Basic information</h2>
+                      <p className="text-sm text-secondary-500 mt-0.5">Update your name and contact email.</p>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -366,14 +359,10 @@ const ProfilePage = () => {
 
               {/* Preferences */}
               <StaggerItem>
-                <div className="card card-floating mb-6">
-                  <div className="flex items-center space-x-3 mb-6">
-                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Settings className="w-5 h-5 text-primary" />
-                    </div>
-                    <h2 className="text-xl font-bold text-secondary-900">
-                      Preferences
-                    </h2>
+                <div className="card mb-6">
+                  <div className="mb-5">
+                    <h2 className="text-base font-semibold text-secondary-900">Preferences</h2>
+                    <p className="text-sm text-secondary-500 mt-0.5">Notifications and display options.</p>
                   </div>
 
                   <div className="space-y-4">
@@ -442,15 +431,8 @@ const ProfilePage = () => {
             <StaggerChildren>
               {/* Subscription Info */}
               <StaggerItem>
-                <div className="card card-floating mb-6">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Crown className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="text-lg font-bold text-secondary-900">
-                      Subscription
-                    </h3>
-                  </div>
+                <div className="card mb-6">
+                  <h3 className="text-base font-semibold text-secondary-900 mb-4">Subscription</h3>
 
                   {userDocument?.subscription && (
                     <div className="space-y-4">
@@ -633,15 +615,8 @@ const ProfilePage = () => {
 
               {/* Account Security */}
               <StaggerItem>
-                <div className="card card-floating">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Shield className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="text-lg font-bold text-secondary-900">
-                      Security
-                    </h3>
-                  </div>
+                <div className="card">
+                  <h3 className="text-base font-semibold text-secondary-900 mb-4">Security</h3>
 
                   <div className="space-y-3">
                     <motion.button

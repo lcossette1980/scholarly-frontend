@@ -359,44 +359,35 @@ const BibliographyPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-mesh py-4 md:py-8">
-      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+    <div className="min-h-screen bg-secondary-50/40 py-8">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Breadcrumb */}
-        <FadeIn direction="up">
-          <div className="mb-4">
-            <div className="flex items-center space-x-2 text-sm">
-              <Link to="/dashboard" className="text-secondary-500 hover:text-primary transition-colors">
-                Dashboard
-              </Link>
-              <span className="text-secondary-300">/</span>
-              <span className="text-secondary-900 font-medium">Source Library</span>
-            </div>
-          </div>
-        </FadeIn>
+        <nav className="flex items-center gap-1.5 text-xs text-secondary-500 mb-6">
+          <Link to="/dashboard" className="hover:text-secondary-900 transition-colors">Dashboard</Link>
+          <span className="text-secondary-300">/</span>
+          <span className="text-secondary-900 font-medium">Source library</span>
+        </nav>
 
         {/* Header */}
-        <FadeIn direction="left">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-4">
-              <motion.button
-                whileHover={{ scale: 1.05, x: -2 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/dashboard')}
-                className="p-2.5 text-secondary-600 hover:text-secondary-900 hover:bg-white rounded-xl transition-colors shadow-sm border border-secondary-100"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </motion.button>
-              <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900">
-                  Source <span className="text-gradient">Library</span>
-                </h1>
-                <p className="text-sm sm:text-base text-secondary-500 mt-1">
-                  Advanced search, bulk operations, and export
-                </p>
-              </div>
+        <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">
+          <div className="flex items-start gap-3">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="mt-1 p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">
+                Source library
+              </h1>
+              <p className="mt-1 text-sm text-secondary-500">
+                Search, filter, and manage your imported sources.
+              </p>
             </div>
           </div>
-        </FadeIn>
+        </div>
 
         {/* Actions Bar */}
         <FadeIn direction="up" delay={0.1}>
