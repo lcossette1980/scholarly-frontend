@@ -413,93 +413,80 @@ const CreateEntryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-mesh py-4 md:py-8">
-      <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+    <div className="min-h-screen bg-secondary-50/40 py-8">
+      <div className="max-w-5xl mx-auto px-6">
         {/* Header */}
-        <FadeIn>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 space-y-4 sm:space-y-0">
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </button>
-              <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900">
-                  Create Source Entry
-                </h1>
-                <p className="text-sm sm:text-base text-secondary-700 hidden sm:block">
-                  Upload a document and generate a comprehensive source summary entry
-                </p>
-              </div>
+        <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">
+          <div className="flex items-start gap-3">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="mt-1 p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">
+                New source entry
+              </h1>
+              <p className="mt-1 text-sm text-secondary-500">
+                Upload a document and we'll extract a structured source summary.
+              </p>
             </div>
-
-            {currentStep !== 'upload' && (
-              <motion.button
-                onClick={resetProcess}
-                className="btn btn-outline"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <X className="w-5 h-5 mr-2" />
-                Start Over
-              </motion.button>
-            )}
           </div>
-        </FadeIn>
 
-        {/* Step Indicator */}
-        <FadeIn delay={0.1}>
-          <div className="flex items-center justify-center mb-10">
-            {steps.map((step, index) => {
-              const isActive = index === stepIndex;
-              const isCompleted = index < stepIndex;
+          {currentStep !== 'upload' && (
+            <button onClick={resetProcess} className="btn btn-secondary btn-sm">
+              <X className="w-3.5 h-3.5" />
+              Start over
+            </button>
+          )}
+        </div>
 
-              return (
-                <React.Fragment key={step.key}>
-                  {/* Step circle */}
-                  <div className="flex flex-col items-center">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
-                        isCompleted
-                          ? 'bg-green-500 text-white'
-                          : isActive
-                          ? 'bg-primary text-white shadow-soft'
-                          : 'border-2 border-secondary-300 text-secondary-400 bg-white'
-                      }`}
-                    >
-                      {isCompleted ? (
-                        <ScaleIn>
-                          <CheckCircle className="w-5 h-5" />
-                        </ScaleIn>
-                      ) : (
-                        index + 1
-                      )}
+        {/* Step indicator */}
+        <div className="mb-6">
+          <div className="rounded-lg border border-secondary-200 bg-white px-5 py-4">
+            <div className="flex items-center">
+              {steps.map((step, index) => {
+                const isActive = index === stepIndex;
+                const isCompleted = index < stepIndex;
+                return (
+                  <React.Fragment key={step.key}>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold transition-colors tabular-nums ${
+                          isCompleted
+                            ? 'bg-primary text-white'
+                            : isActive
+                            ? 'bg-secondary-900 text-white'
+                            : 'bg-secondary-100 text-secondary-500 border border-secondary-200'
+                        }`}
+                      >
+                        {isCompleted ? <CheckCircle className="w-3 h-3" strokeWidth={3} /> : index + 1}
+                      </div>
+                      <span
+                        className={`text-xs font-medium ${
+                          isActive ? 'text-secondary-900' : isCompleted ? 'text-secondary-600' : 'text-secondary-400'
+                        }`}
+                      >
+                        {step.label}
+                      </span>
                     </div>
-                    <span className={`text-xs mt-2 font-medium ${
-                      isActive ? 'text-primary' : isCompleted ? 'text-green-600' : 'text-secondary-400'
-                    }`}>
-                      {step.label}
-                    </span>
-                  </div>
-
-                  {/* Connecting line */}
-                  {index < steps.length - 1 && (
-                    <div className="w-16 sm:w-24 h-1 mx-2 rounded-full overflow-hidden bg-secondary-200 relative -mt-5">
-                      <motion.div
-                        className="h-full bg-primary rounded-full"
-                        initial={{ width: '0%' }}
-                        animate={{ width: isCompleted ? '100%' : isActive ? '50%' : '0%' }}
-                        transition={{ duration: 0.5, ease: 'easeOut' }}
-                      />
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            })}
+                    {index < steps.length - 1 && (
+                      <div className="flex-1 h-px mx-3 bg-secondary-200 relative overflow-hidden">
+                        <div
+                          className={`absolute inset-0 bg-primary transition-all duration-300 ${
+                            isCompleted ? 'w-full' : 'w-0'
+                          }`}
+                        />
+                      </div>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </div>
           </div>
-        </FadeIn>
+        </div>
 
         {/* Step Content with Transitions */}
         <AnimatePresence mode="wait">
@@ -516,19 +503,13 @@ const CreateEntryPage = () => {
                 <div className="space-y-8">
                   {/* Writing Focus */}
                   <div className="card">
-                    <div className="flex items-center space-x-3 mb-6">
-                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Target className="w-5 h-5 text-primary" />
-                      </div>
-                      <h2 className="text-xl font-bold text-secondary-900">
-                        Writing Focus
-                      </h2>
+                    <div className="mb-5">
+                      <h2 className="text-base font-semibold text-secondary-900">Writing focus</h2>
+                      <p className="text-sm text-secondary-500 mt-0.5">Tell us what you're researching so we tailor the analysis.</p>
                     </div>
 
-                    <div className="space-y-2">
-                      <label className="form-label">
-                        Research Focus
-                      </label>
+                    <div>
+                      <label className="form-label">Research focus</label>
                       <input
                         type="text"
                         className="form-input"
@@ -536,41 +517,35 @@ const CreateEntryPage = () => {
                         value={researchFocus}
                         onChange={(e) => setResearchFocus(e.target.value)}
                       />
-                      <p className="text-xs text-secondary-500">
-                        Describe your writing focus. Separate multiple topics with commas.
-                      </p>
+                      <p className="form-hint">Separate multiple topics with commas.</p>
                     </div>
                   </div>
 
                   {/* Import Source */}
                   <div className="card">
-                    <div className="flex items-center space-x-3 mb-6">
-                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Upload className="w-5 h-5 text-primary" />
-                      </div>
-                      <h2 className="text-xl font-bold text-secondary-900">
-                        Import Source
-                      </h2>
+                    <div className="mb-5">
+                      <h2 className="text-base font-semibold text-secondary-900">Import source</h2>
+                      <p className="text-sm text-secondary-500 mt-0.5">Pick how you want to bring your source in.</p>
                     </div>
 
                     {/* Tab Bar */}
-                    <div className="flex border-b border-[#e5e7eb] mb-6">
+                    <div className="flex gap-1 p-1 bg-secondary-100 rounded-md mb-6 w-fit">
                       {[
-                        { id: 'pdf', label: 'Upload PDF', icon: FileText },
-                        { id: 'url', label: 'From URL', icon: Globe },
-                        { id: 'doi', label: 'DOI Lookup', icon: Search },
-                        { id: 'rss', label: 'RSS Feed', icon: Rss }
+                        { id: 'pdf', label: 'PDF', icon: FileText },
+                        { id: 'url', label: 'URL', icon: Globe },
+                        { id: 'doi', label: 'DOI', icon: Search },
+                        { id: 'rss', label: 'RSS', icon: Rss }
                       ].map(tab => (
                         <button
                           key={tab.id}
                           onClick={() => setImportTab(tab.id)}
-                          className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded transition-colors ${
                             importTab === tab.id
-                              ? 'border-primary text-primary'
-                              : 'border-transparent text-secondary-600 hover:text-primary'
+                              ? 'bg-white text-secondary-900 shadow-sm'
+                              : 'text-secondary-600 hover:text-secondary-900'
                           }`}
                         >
-                          <tab.icon className="w-4 h-4" />
+                          <tab.icon className="w-3.5 h-3.5" />
                           <span>{tab.label}</span>
                         </button>
                       ))}
