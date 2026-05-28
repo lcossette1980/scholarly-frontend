@@ -96,29 +96,58 @@ const AdminDashboardPage = () => {
 
   const runVoiceCompliance = async () => {
     const costEstimate = voiceScope === 'all' ? '~$50' : voiceScope === 'voices' ? '~$15' : '~$3';
-    const durationEstimate = voiceScope === 'all' ? '~10 min' : voiceScope === 'voices' ? '~3 min' : '~30 sec';
-    if (!window.confirm(`Run voice compliance with scope='${voiceScope}'?\n\nThis will generate test documents and run assertions.\nEstimated cost: ${costEstimate}\nEstimated duration: ${durationEstimate}`)) {
+    const durationEstimate = voiceScope === 'all' ? '50-75 min' : voiceScope === 'voices' ? '15-25 min' : '3-5 min';
+    if (!window.confirm(`Run voice compliance with scope='${voiceScope}'?\n\nThis will generate real test documents and run assertions in the background.\n\nEstimated cost: ${costEstimate}\nEstimated duration: ${durationEstimate}\n\nResults will stream into the panel as each test completes. Safe to navigate away — the run continues in the background.`)) {
       return;
     }
     setVoiceRunning(true);
     setVoiceResult(null);
-    const loadingId = toast.loading(`Running voice compliance (scope: ${voiceScope})…`);
     try {
-      const data = await adminAPI.runVoiceCompliance({ scope: voiceScope });
-      setVoiceResult(data);
-      toast.dismiss(loadingId);
-      const { passed, failed, errors, total } = data.summary || {};
-      if (failed === 0 && errors === 0) {
-        toast.success(`All ${total} voice tests passed`);
-      } else {
-        toast.error(`${failed} failed, ${errors} errored (${passed}/${total} passed)`);
-      }
-      await loadVoiceHistory();
+      // Kick off the run — returns immediately with run_id
+      const kickoff = await adminAPI.runVoiceCompliance({ scope: voiceScope });
+      const runId = kickoff.run_id;
+      toast.success(`Run ${runId.slice(0, 8)}… started. Polling for progress.`);
+
+      // Poll every 5 seconds until status is no longer 'running'
+      const poll = async () => {
+        try {
+          const state = await adminAPI.getVoiceComplianceRun(runId);
+          setVoiceResult({
+            run_id: runId,
+            overall_status: state.overall_status || state.status,
+            scope: state.scope,
+            summary: state.summary,
+            results: state.results || [],
+            currentStep: state.currentStep,
+            progress: state.progress,
+            status: state.status,
+          });
+          if (state.status === 'running') {
+            setTimeout(poll, 5000);
+          } else {
+            // Done
+            const { passed = 0, failed = 0, errors = 0, total = 0 } = state.summary || {};
+            if (state.status === 'completed' && failed === 0 && errors === 0) {
+              toast.success(`All ${total} voice tests passed`);
+            } else if (state.status === 'failed') {
+              toast.error(`Run failed: ${state.error || 'unknown error'}`);
+            } else {
+              toast.error(`${failed} failed, ${errors} errored (${passed}/${total} passed)`);
+            }
+            setVoiceRunning(false);
+            await loadVoiceHistory();
+          }
+        } catch (e) {
+          console.error('Polling error:', e);
+          toast.error('Lost connection to run. Check Recent Runs.');
+          setVoiceRunning(false);
+          await loadVoiceHistory();
+        }
+      };
+      setTimeout(poll, 3000);  // first poll after 3s to give backend time to set up
     } catch (e) {
-      console.error('Voice compliance error:', e);
-      toast.dismiss(loadingId);
-      toast.error(e?.response?.data?.detail || 'Voice compliance run failed');
-    } finally {
+      console.error('Voice compliance kickoff error:', e);
+      toast.error(e?.response?.data?.detail || 'Failed to start voice compliance run');
       setVoiceRunning(false);
     }
   };
@@ -1611,17 +1640,49 @@ const AdminDashboardPage = () => {
                     <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
                       <div className="flex items-center gap-3">
                         <h3 className="text-sm font-semibold text-secondary-900">Latest run</h3>
-                        <span className={`badge ${voiceResult.overall_status === 'pass' ? 'badge-success' : 'badge-error'}`}>
-                          {voiceResult.overall_status?.toUpperCase()}
+                        <span className={`badge ${voiceResult.status === 'running' ? 'badge-warning' : voiceResult.overall_status === 'pass' ? 'badge-success' : 'badge-error'}`}>
+                          {(voiceResult.status === 'running' ? 'RUNNING' : voiceResult.overall_status?.toUpperCase()) || '?'}
                         </span>
                       </div>
                       <div className="text-xs text-secondary-600 tabular-nums">
-                        <span className="text-success-700 font-medium">{voiceResult.summary?.passed || 0} passed</span>
-                        {(voiceResult.summary?.failed || 0) > 0 && <span className="ml-3 text-error-700 font-medium">{voiceResult.summary?.failed} failed</span>}
-                        {(voiceResult.summary?.errors || 0) > 0 && <span className="ml-3 text-warning-700 font-medium">{voiceResult.summary?.errors} errors</span>}
-                        <span className="ml-3 text-secondary-500">~${voiceResult.summary?.estimated_cost_usd?.toFixed(2) || '0.00'}</span>
+                        {voiceResult.summary && (
+                          <>
+                            <span className="text-success-700 font-medium">{voiceResult.summary?.passed || 0} passed</span>
+                            {(voiceResult.summary?.failed || 0) > 0 && <span className="ml-3 text-error-700 font-medium">{voiceResult.summary?.failed} failed</span>}
+                            {(voiceResult.summary?.errors || 0) > 0 && <span className="ml-3 text-warning-700 font-medium">{voiceResult.summary?.errors} errors</span>}
+                            <span className="ml-3 text-secondary-500">~${voiceResult.summary?.estimated_cost_usd?.toFixed(2) || '0.00'}</span>
+                          </>
+                        )}
                       </div>
                     </div>
+
+                    {/* Progress while running */}
+                    {voiceResult.status === 'running' && (
+                      <div className="mb-4 p-3 bg-warning-50/40 border border-warning-200 rounded-md">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-secondary-700">
+                            <RefreshCw className="w-3 h-3 inline mr-1.5 animate-spin" />
+                            {voiceResult.currentStep || 'Running...'}
+                          </span>
+                          {voiceResult.progress && (
+                            <span className="text-xs text-secondary-500 tabular-nums">
+                              {voiceResult.progress.completed}/{voiceResult.progress.total}
+                            </span>
+                          )}
+                        </div>
+                        {voiceResult.progress && voiceResult.progress.total > 0 && (
+                          <div className="w-full bg-secondary-200 rounded-full h-1 overflow-hidden">
+                            <div
+                              className="bg-primary h-1 transition-all"
+                              style={{ width: `${(voiceResult.progress.completed / voiceResult.progress.total) * 100}%` }}
+                            />
+                          </div>
+                        )}
+                        <p className="mt-2 text-[10px] text-secondary-500">
+                          Each test takes 3-5 min. Safe to navigate away — results stream in as each completes.
+                        </p>
+                      </div>
+                    )}
 
                     <div className="divide-y divide-secondary-100">
                       {(voiceResult.results || []).map((r) => {

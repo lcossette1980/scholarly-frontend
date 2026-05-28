@@ -111,15 +111,23 @@ export const adminAPI = {
     return response.data;
   },
 
-  // Voice compliance: generates a small doc per document type using fixed test
-  // sources, runs structural assertions and Haiku voice-fit, returns matrix.
-  // scope: 'voices' (5 reps), 'all' (~17 types), 'single' (one type via docType)
+  // Voice compliance: KICK OFF a run in the background and return immediately
+  // with the run_id. Use getVoiceComplianceRun(run_id) to poll for progress.
+  // scope: 'voices' (5 reps, ~15-25 min), 'all' (~17 types, ~50-75 min),
+  //        'single' (one type via docType, ~3-5 min)
   runVoiceCompliance: async ({ scope = 'voices', docType = null, fitViaHaiku = true } = {}) => {
     const api = await createAdminRequest();
     const params = { scope, fit_via_haiku: fitViaHaiku };
     if (docType) params.doc_type = docType;
-    // Up to 17 generations × ~30s each. Allow 25 min.
-    const response = await api.post('/admin/run-voice-compliance', null, { params, timeout: 1500000 });
+    // Returns immediately — no long timeout needed
+    const response = await api.post('/admin/run-voice-compliance', null, { params, timeout: 30000 });
+    return response.data;
+  },
+
+  // Poll the current state of a specific run
+  getVoiceComplianceRun: async (runId) => {
+    const api = await createAdminRequest();
+    const response = await api.get(`/admin/voice-compliance-run/${runId}`);
     return response.data;
   },
 
