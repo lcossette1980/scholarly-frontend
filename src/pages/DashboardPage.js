@@ -264,11 +264,16 @@ const DashboardPage = () => {
 
   // Onboarding
   const showOnboarding = currentUser && userDocument && !userDocument.onboardingCompleted && entries.length === 0 && !loading;
-  const handleOnboardingComplete = async (role, purpose) => {
+  const handleOnboardingComplete = async (role, purposes) => {
     try {
+      // purposes is now an array (multi-select). Store the array as the
+      // canonical value; keep the first entry as 'onboardingPurpose' string
+      // for backward-compat reads in older code paths.
+      const purposesArray = Array.isArray(purposes) ? purposes : (purposes ? [purposes] : []);
       await updateDoc(doc(db, 'users', currentUser.uid), {
         onboardingRole: role,
-        onboardingPurpose: purpose,
+        onboardingPurpose: purposesArray[0] || null,
+        onboardingPurposes: purposesArray,
         onboardingCompleted: true,
       });
       await refreshUserDocument();
@@ -276,6 +281,8 @@ const DashboardPage = () => {
     } catch (error) {
       console.error('Error completing onboarding:', error);
       toast.error('Failed to save onboarding preferences');
+      // Re-throw so the modal's catch block re-enables the button
+      throw error;
     }
   };
 

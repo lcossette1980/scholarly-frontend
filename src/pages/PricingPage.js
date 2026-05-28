@@ -95,8 +95,13 @@ const PricingPage = () => {
 
   const isAcademicUser = (() => {
     const role = userDocument?.onboardingRole;
-    const purpose = userDocument?.onboardingPurpose;
-    return ['researcher', 'student'].includes(role) || ['research-summaries', 'academic-papers', 'bibliographies'].includes(purpose);
+    // Handle both the new array shape (onboardingPurposes) and the legacy
+    // single-string shape (onboardingPurpose).
+    const purposes = userDocument?.onboardingPurposes
+      || (userDocument?.onboardingPurpose ? [userDocument.onboardingPurpose] : []);
+    const academicPurposes = ['research-summaries', 'academic-papers', 'bibliographies'];
+    return ['researcher', 'student'].includes(role)
+      || purposes.some((p) => academicPurposes.includes(p));
   })();
 
   return (

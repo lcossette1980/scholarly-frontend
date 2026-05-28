@@ -9,77 +9,28 @@ import {
   Search,
   Target,
   Rocket,
-  X,
   ArrowRight,
   ArrowLeft,
   Sparkles,
-  GraduationCap
+  GraduationCap,
 } from 'lucide-react';
 
 const purposeOptions = [
-  {
-    id: 'thought-leadership',
-    label: 'Thought leadership & articles',
-    icon: FileText,
-  },
-  {
-    id: 'white-papers',
-    label: 'White papers & briefs',
-    icon: BookOpen,
-  },
-  {
-    id: 'market-analysis',
-    label: 'Market & competitive analysis',
-    icon: BarChart3,
-  },
-  {
-    id: 'client-deliverables',
-    label: 'Client deliverables',
-    icon: Briefcase,
-  },
-  {
-    id: 'research-summaries',
-    label: 'Research summaries',
-    icon: Search,
-  },
-  {
-    id: 'academic-papers',
-    label: 'Academic papers & essays',
-    icon: GraduationCap,
-  },
-  {
-    id: 'bibliographies',
-    label: 'Bibliographies & literature reviews',
-    icon: BookOpen,
-  },
+  { id: 'thought-leadership', label: 'Thought leadership & articles', icon: FileText },
+  { id: 'white-papers', label: 'White papers & briefs', icon: BookOpen },
+  { id: 'market-analysis', label: 'Market & competitive analysis', icon: BarChart3 },
+  { id: 'client-deliverables', label: 'Client deliverables', icon: Briefcase },
+  { id: 'research-summaries', label: 'Research summaries', icon: Search },
+  { id: 'academic-papers', label: 'Academic papers & essays', icon: GraduationCap },
+  { id: 'bibliographies', label: 'Bibliographies & literature reviews', icon: BookOpen },
 ];
 
 const roleOptions = [
-  {
-    id: 'marketing',
-    label: 'Marketing team',
-    icon: Target,
-  },
-  {
-    id: 'consultant',
-    label: 'Consultant / analyst',
-    icon: Briefcase,
-  },
-  {
-    id: 'founder',
-    label: 'Founder / operator',
-    icon: Rocket,
-  },
-  {
-    id: 'researcher',
-    label: 'Researcher / academic',
-    icon: BookOpen,
-  },
-  {
-    id: 'student',
-    label: 'Student',
-    icon: GraduationCap,
-  },
+  { id: 'marketing', label: 'Marketing team', icon: Target },
+  { id: 'consultant', label: 'Consultant / analyst', icon: Briefcase },
+  { id: 'founder', label: 'Founder / operator', icon: Rocket },
+  { id: 'researcher', label: 'Researcher / academic', icon: BookOpen },
+  { id: 'student', label: 'Student', icon: GraduationCap },
 ];
 
 const templateRecommendations = {
@@ -94,29 +45,44 @@ const templateRecommendations = {
 
 const OnboardingModal = ({ isOpen, onComplete }) => {
   const [step, setStep] = useState(1);
-  const [selectedPurpose, setSelectedPurpose] = useState(null);
+  const [selectedPurposes, setSelectedPurposes] = useState([]); // now an array
   const [selectedRole, setSelectedRole] = useState(null);
   const [completing, setCompleting] = useState(false);
 
-  const handleComplete = async () => {
-    if (!selectedRole || !selectedPurpose) return;
-    setCompleting(true);
-    setStep(3); // Show welcome screen
+  const togglePurpose = (id) => {
+    setSelectedPurposes((prev) =>
+      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+    );
+  };
+
+  // Just advance — do NOT set completing here, that's what gated the step 3 button
+  const advanceToWelcome = () => {
+    if (!selectedRole || selectedPurposes.length === 0) return;
+    setStep(3);
   };
 
   const handleFinish = async () => {
+    if (completing) return;
+    setCompleting(true);
     try {
-      await onComplete(selectedRole, selectedPurpose);
+      // Pass purposes as an ARRAY. First entry stays as the "primary" purpose
+      // for backward-compatible reads. Full array is the canonical value.
+      await onComplete(selectedRole, selectedPurposes);
     } catch (error) {
       console.error('Error completing onboarding:', error);
-    } finally {
+      // Re-enable the button so the user can retry
       setCompleting(false);
     }
+    // Note: do not setCompleting(false) on success — the modal unmounts after
+    // onComplete (navigate to /create), so the state reset is irrelevant.
   };
 
   if (!isOpen) return null;
 
-  const recommended = templateRecommendations[selectedPurpose] || [];
+  // Recommended templates: union of all selected purposes' recommendations, deduped
+  const recommended = Array.from(
+    new Set(selectedPurposes.flatMap((p) => templateRecommendations[p] || []))
+  );
 
   return (
     <AnimatePresence>
@@ -127,10 +93,8 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {/* Backdrop */}
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-          {/* Modal */}
           <motion.div
             className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -138,7 +102,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ duration: 0.25 }}
           >
-            {/* Progress bar (pinned top, non-scrolling) */}
+            {/* Progress bar (pinned top) */}
             <div className="h-1 bg-[#e5e7eb] flex-shrink-0">
               <motion.div
                 className="h-full bg-[#316094]"
@@ -150,7 +114,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
 
             <div className="p-6 sm:p-8 overflow-y-auto flex-1 min-h-0">
               <AnimatePresence mode="wait">
-                {/* Step 1: Purpose */}
+                {/* Step 1: Purposes (multi-select) */}
                 {step === 1 && (
                   <motion.div
                     key="step1"
@@ -164,21 +128,22 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                         Step 1 of 2
                       </p>
                       <h2 className="text-2xl font-bold text-secondary-900">
-                        What are you creating most often?
+                        What are you creating?
                       </h2>
                       <p className="text-sm text-secondary-500 mt-1">
-                        This helps us tailor your experience.
+                        Pick as many as apply — we'll tailor your templates.
                       </p>
                     </div>
 
                     <div className="space-y-3">
                       {purposeOptions.map((option) => {
                         const Icon = option.icon;
-                        const isSelected = selectedPurpose === option.id;
+                        const isSelected = selectedPurposes.includes(option.id);
                         return (
                           <button
                             key={option.id}
-                            onClick={() => setSelectedPurpose(option.id)}
+                            onClick={() => togglePurpose(option.id)}
+                            type="button"
                             className={`w-full flex items-center space-x-4 p-4 rounded-lg border-2 transition-all text-left ${
                               isSelected
                                 ? 'border-[#316094] bg-[#316094]/5'
@@ -187,44 +152,55 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                           >
                             <div
                               className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                isSelected
-                                  ? 'bg-[#316094] text-white'
-                                  : 'bg-[#f5f6f8] text-secondary-500'
+                                isSelected ? 'bg-[#316094] text-white' : 'bg-[#f5f6f8] text-secondary-500'
                               }`}
                             >
                               <Icon className="w-5 h-5" />
                             </div>
                             <span
-                              className={`font-medium ${
+                              className={`font-medium flex-1 ${
                                 isSelected ? 'text-[#316094]' : 'text-secondary-700'
                               }`}
                             >
                               {option.label}
                             </span>
-                            {isSelected && (
-                              <motion.div
-                                className="ml-auto"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                              >
-                                <div className="w-6 h-6 rounded-full bg-[#316094] flex items-center justify-center">
-                                  <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                  </svg>
-                                </div>
-                              </motion.div>
-                            )}
+                            {/* Checkbox-style indicator (multi-select) */}
+                            <div
+                              className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
+                                isSelected
+                                  ? 'bg-[#316094] border-[#316094]'
+                                  : 'border-secondary-300 bg-white'
+                              }`}
+                            >
+                              {isSelected && (
+                                <svg
+                                  className="w-3 h-3 text-white"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={3}
+                                >
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
                           </button>
                         );
                       })}
                     </div>
 
-                    <div className="mt-8 flex justify-end">
+                    <div className="mt-6 flex items-center justify-between flex-wrap gap-3">
+                      <p className="text-xs text-secondary-500">
+                        {selectedPurposes.length === 0
+                          ? 'Select at least one'
+                          : `${selectedPurposes.length} selected`}
+                      </p>
                       <button
                         onClick={() => setStep(2)}
-                        disabled={!selectedPurpose}
+                        disabled={selectedPurposes.length === 0}
+                        type="button"
                         className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                          selectedPurpose
+                          selectedPurposes.length > 0
                             ? 'bg-[#316094] text-white hover:bg-[#2a5280]'
                             : 'bg-[#e5e7eb] text-secondary-400 cursor-not-allowed'
                         }`}
@@ -236,7 +212,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                   </motion.div>
                 )}
 
-                {/* Step 2: Role */}
+                {/* Step 2: Role (single-select) */}
                 {step === 2 && (
                   <motion.div
                     key="step2"
@@ -253,7 +229,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                         What best describes you?
                       </h2>
                       <p className="text-sm text-secondary-500 mt-1">
-                        We'll personalize your templates and suggestions.
+                        Pick one — we'll personalize your suggestions.
                       </p>
                     </div>
 
@@ -265,6 +241,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                           <button
                             key={option.id}
                             onClick={() => setSelectedRole(option.id)}
+                            type="button"
                             className={`w-full flex items-center space-x-4 p-4 rounded-lg border-2 transition-all text-left ${
                               isSelected
                                 ? 'border-[#316094] bg-[#316094]/5'
@@ -273,49 +250,44 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                           >
                             <div
                               className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                                isSelected
-                                  ? 'bg-[#316094] text-white'
-                                  : 'bg-[#f5f6f8] text-secondary-500'
+                                isSelected ? 'bg-[#316094] text-white' : 'bg-[#f5f6f8] text-secondary-500'
                               }`}
                             >
                               <Icon className="w-5 h-5" />
                             </div>
                             <span
-                              className={`font-medium ${
+                              className={`font-medium flex-1 ${
                                 isSelected ? 'text-[#316094]' : 'text-secondary-700'
                               }`}
                             >
                               {option.label}
                             </span>
-                            {isSelected && (
-                              <motion.div
-                                className="ml-auto"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                              >
-                                <div className="w-6 h-6 rounded-full bg-[#316094] flex items-center justify-center">
-                                  <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                  </svg>
-                                </div>
-                              </motion.div>
-                            )}
+                            {/* Radio-style indicator (single-select) */}
+                            <div
+                              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                                isSelected ? 'border-[#316094]' : 'border-secondary-300'
+                              }`}
+                            >
+                              {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#316094]" />}
+                            </div>
                           </button>
                         );
                       })}
                     </div>
 
-                    <div className="mt-8 flex justify-between">
+                    <div className="mt-8 flex justify-between flex-wrap gap-3">
                       <button
                         onClick={() => setStep(1)}
+                        type="button"
                         className="flex items-center space-x-2 px-4 py-3 text-secondary-600 hover:text-secondary-800 font-medium transition-colors"
                       >
                         <ArrowLeft className="w-4 h-4" />
                         <span>Back</span>
                       </button>
                       <button
-                        onClick={handleComplete}
+                        onClick={advanceToWelcome}
                         disabled={!selectedRole}
+                        type="button"
                         className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-colors ${
                           selectedRole
                             ? 'bg-[#316094] text-white hover:bg-[#2a5280]'
@@ -329,7 +301,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                   </motion.div>
                 )}
 
-                {/* Step 3: Welcome screen */}
+                {/* Step 3: Welcome */}
                 {step === 3 && (
                   <motion.div
                     key="step3"
@@ -366,6 +338,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
                     <button
                       onClick={handleFinish}
                       disabled={completing}
+                      type="button"
                       className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-[#316094] text-white rounded-lg font-medium hover:bg-[#2a5280] transition-colors disabled:opacity-60"
                     >
                       {completing ? (
