@@ -97,6 +97,18 @@ export const adminAPI = {
     const api = await createAdminRequest();
     const response = await api.get('/admin/user-activity');
     return response.data;
+  },
+
+  // Resanitize all bibliography_entries (clean up malformed citations from before the upstream fix)
+  // Pass {apply: true} to actually write changes. Default is dry run.
+  resanitizeBibliography: async ({ apply = false, userId = null, limit = null } = {}) => {
+    const api = await createAdminRequest();
+    const params = { apply };
+    if (userId) params.user_id = userId;
+    if (limit) params.limit = limit;
+    // Migration on a large library can take a while
+    const response = await api.post('/admin/migrate/resanitize-bibliography', null, { params, timeout: 300000 });
+    return response.data;
   }
 };
 

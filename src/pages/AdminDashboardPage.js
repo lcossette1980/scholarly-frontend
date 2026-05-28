@@ -18,7 +18,9 @@ import {
   PlayCircle,
   ChevronDown,
   ChevronRight,
-  Beaker
+  Beaker,
+  Wrench,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adminAPI, isAdmin } from '../services/admin';
@@ -50,6 +52,8 @@ const AdminDashboardPage = () => {
   const [activityData, setActivityData] = useState(null);
   const [activityLoading, setActivityLoading] = useState(false);
   const [activityFilter, setActivityFilter] = useState('all');
+  const [migrationRunning, setMigrationRunning] = useState(false);
+  const [migrationResult, setMigrationResult] = useState(null);
 
   // Load user activity (funnel analysis)
   const loadActivity = async () => {
@@ -62,6 +66,28 @@ const AdminDashboardPage = () => {
       toast.error('Failed to load user activity');
     } finally {
       setActivityLoading(false);
+    }
+  };
+
+  const runResanitizeMigration = async (apply = false) => {
+    if (apply && !window.confirm('Apply changes to ALL bibliography entries? This will rewrite source_info and citation fields for any entry the new sanitizer can improve. (You should run a dry run first.)')) {
+      return;
+    }
+    setMigrationRunning(true);
+    setMigrationResult(null);
+    const loadingId = toast.loading(apply ? 'Applying migration to all entries…' : 'Running dry run…');
+    try {
+      const data = await adminAPI.resanitizeBibliography({ apply });
+      setMigrationResult(data);
+      toast.dismiss(loadingId);
+      const verb = apply ? 'Updated' : 'Would update';
+      toast.success(`${verb} ${data.stats.changed} of ${data.stats.scanned} entries`);
+    } catch (error) {
+      console.error('Migration error:', error);
+      toast.dismiss(loadingId);
+      toast.error(error?.response?.data?.detail || 'Migration failed');
+    } finally {
+      setMigrationRunning(false);
     }
   };
 
@@ -787,6 +813,88 @@ const AdminDashboardPage = () => {
               exit={{ opacity: 0, y: -20 }}
             >
               <div className="space-y-6">
+                {/* Resanitize migration panel */}
+                <div className="rounded-lg border border-secondary-200 bg-white p-5">
+                  <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <div className="w-9 h-9 rounded-md bg-warning-50 border border-warning-200 flex items-center justify-center flex-shrink-0">
+                        <Wrench className="w-4 h-4 text-warning-700" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-sm font-semibold text-secondary-900">Clean up legacy citations</h3>
+                        <p className="text-xs text-secondary-600 mt-0.5 leading-relaxed">
+                          Re-runs the new sanitizer over every <code className="text-xs font-mono bg-secondary-100 px-1 py-0.5 rounded">bibliography_entries</code> doc. Fixes malformed author / year / title fields produced by the old extraction pipeline. Always run a dry run first.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <button
+                        onClick={() => runResanitizeMigration(false)}
+                        disabled={migrationRunning}
+                        className="btn btn-secondary btn-sm"
+                      >
+                        {migrationRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                        Dry run
+                      </button>
+                      <button
+                        onClick={() => runResanitizeMigration(true)}
+                        disabled={migrationRunning}
+                        className="btn btn-primary btn-sm"
+                      >
+                        {migrationRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Wrench className="w-3.5 h-3.5" />}
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+
+                  {migrationResult && (
+                    <div className="mt-4 pt-4 border-t border-secondary-200">
+                      <div className="flex items-center gap-3 flex-wrap mb-3">
+                        <span className={`badge ${migrationResult.mode === 'apply' ? 'badge-success' : 'badge-neutral'}`}>
+                          {migrationResult.mode === 'apply' ? 'Applied' : 'Dry run'}
+                        </span>
+                        <span className="text-xs text-secondary-600 tabular-nums">
+                          Scanned <span className="font-medium text-secondary-900">{migrationResult.stats.scanned}</span>
+                          {' · '}
+                          {migrationResult.mode === 'apply' ? 'Updated' : 'Would update'}{' '}
+                          <span className="font-medium text-secondary-900">{migrationResult.stats.changed}</span>
+                          {' · '}
+                          Unchanged <span className="font-medium text-secondary-900">{migrationResult.stats.unchanged}</span>
+                          {migrationResult.stats.errors > 0 && (
+                            <>{' · '}<span className="text-error-700 font-medium">{migrationResult.stats.errors} errors</span></>
+                          )}
+                        </span>
+                      </div>
+
+                      {migrationResult.sample_diffs && migrationResult.sample_diffs.length > 0 && (
+                        <details className="group">
+                          <summary className="cursor-pointer text-xs text-secondary-700 hover:text-secondary-900 font-medium">
+                            Sample diffs ({migrationResult.sample_diffs.length} shown)
+                          </summary>
+                          <div className="mt-3 space-y-3">
+                            {migrationResult.sample_diffs.map((s, idx) => (
+                              <div key={idx} className="text-xs border border-secondary-200 rounded-md p-3 bg-secondary-50/40">
+                                <p className="font-mono text-secondary-500 mb-2">{s.doc_id}</p>
+                                {s.diffs.map((d, di) => (
+                                  <div key={di} className="mb-2 last:mb-0">
+                                    <p className="text-secondary-500 uppercase tracking-wider text-[10px] font-medium mb-0.5">{d.field}</p>
+                                    <p className="text-error-700 line-through opacity-70 break-words">{d.before || <span className="italic">(empty)</span>}</p>
+                                    <p className="text-success-700 break-words">{d.after}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            ))}
+                          </div>
+                        </details>
+                      )}
+
+                      {migrationResult.note && (
+                        <p className="mt-3 text-xs text-secondary-600 italic">{migrationResult.note}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
                 {/* Search Bar */}
                 <div className="card card-floating">
                   <div className="flex items-center space-x-4">
