@@ -1,9 +1,8 @@
+// src/pages/ForgotPasswordPage.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Mail, CheckCircle, Brain, Shield, Users } from 'lucide-react';
+import { ArrowLeft, Mail, CheckCircle, PenTool, ArrowRight } from 'lucide-react';
 import { resetPassword } from '../services/auth';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ScaleIn } from '../components/motion';
 import toast from 'react-hot-toast';
 
 const ForgotPasswordPage = () => {
@@ -13,22 +12,17 @@ const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!email.trim()) {
       toast.error('Please enter your email address');
       return;
     }
-
     setIsLoading(true);
-
     try {
       await resetPassword(email);
       setEmailSent(true);
       toast.success('Password reset email sent! Check your inbox.');
     } catch (error) {
       console.error('Password reset error:', error);
-
-      // Handle specific Firebase errors
       if (error.code === 'auth/user-not-found') {
         toast.error('No account found with this email address');
       } else if (error.code === 'auth/invalid-email') {
@@ -44,212 +38,105 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel - Brand/Hero (hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden">
-        {/* Decorative orbs */}
-        <div className="gradient-orb w-64 h-64 top-10 -left-20 bg-white/10" />
-        <div className="gradient-orb w-48 h-48 bottom-20 right-10 bg-white/5" />
+    <div className="min-h-screen flex bg-white">
+      {/* Left panel — brand */}
+      <div className="hidden lg:flex lg:w-1/2 bg-secondary-900 relative overflow-hidden flex-col justify-between p-12">
+        <Link to="/" className="inline-flex items-center gap-2.5 group">
+          <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
+            <PenTool className="w-4 h-4 text-white" strokeWidth={2.25} />
+          </div>
+          <span className="text-[15px] font-semibold text-white tracking-tight">DraftEngine</span>
+        </Link>
 
-        <div className="relative z-10 flex flex-col justify-center px-12 xl:px-16 w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-white">DraftEngine</span>
-            </div>
+        <div className="max-w-md">
+          <h2 className="text-3xl font-semibold text-white tracking-tight leading-tight">
+            Let's get you back in.
+          </h2>
+          <p className="mt-4 text-secondary-300 leading-relaxed">
+            We'll send a secure password reset link to your email. The link expires in 1 hour.
+          </p>
+        </div>
 
-            <h2 className="text-3xl xl:text-4xl font-bold text-white mb-4 leading-tight">
-              From Sources to Finished Drafts in Minutes
-            </h2>
-
-            <p className="text-white/70 text-lg mb-8 max-w-md">
-              Don't worry, we'll help you get back into your account quickly and securely.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-8"
-          >
-            <img
-              src="/images/auth_illustration.png"
-              alt="AI Writing Assistant"
-              className="w-full rounded-2xl object-cover"
-              style={{ aspectRatio: '4/3' }}
-              loading="eager"
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex items-center space-x-6"
-          >
-            <div className="flex items-center space-x-2 text-white/70">
-              <Users className="w-4 h-4" />
-              <span className="text-sm">10,000+ writers</span>
-            </div>
-            <div className="flex items-center space-x-2 text-white/70">
-              <Shield className="w-4 h-4" />
-              <span className="text-sm">Secure & Private</span>
-            </div>
-          </motion.div>
+        <div className="flex items-center gap-6 text-xs text-secondary-400">
+          <span>Secure & private</span>
+          <span className="w-1 h-1 rounded-full bg-secondary-700" />
+          <span>Encrypted reset</span>
         </div>
       </div>
 
-      {/* Right Panel - Reset Form */}
-      <div className="w-full lg:w-1/2 bg-mesh flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full">
-          <ScaleIn>
-            {/* Back Link */}
-            <Link
-              to="/login"
-              className="flex items-center text-secondary-700 hover:text-secondary-900 transition-colors mb-8"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Login
-            </Link>
+      {/* Right panel — form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-sm">
+          <Link to="/login" className="inline-flex items-center gap-1.5 text-xs text-secondary-500 hover:text-secondary-900 mb-8 transition-colors">
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to sign in
+          </Link>
 
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-secondary-900">
-                Reset Your Password
-              </h2>
-              <p className="mt-2 text-secondary-700">
-                Enter your email address and we'll send you a link to reset your password
+          <div className="mb-8">
+            <h1 className="text-2xl font-semibold text-secondary-900 tracking-tight">Reset password</h1>
+            <p className="mt-1.5 text-sm text-secondary-600">
+              Enter your email and we'll send a reset link.
+            </p>
+          </div>
+
+          {!emailSent ? (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="email" className="form-label">Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-400 pointer-events-none" />
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="form-input pl-9"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isLoading}
+                  />
+                </div>
+              </div>
+              <button type="submit" disabled={isLoading} className="btn btn-primary w-full">
+                {isLoading ? (
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    Send reset email
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </>
+                )}
+              </button>
+            </form>
+          ) : (
+            <div className="rounded-lg border border-secondary-200 bg-white p-6 text-center">
+              <div className="w-10 h-10 rounded-full bg-success-50 border border-success-200 flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-5 h-5 text-success-600" />
+              </div>
+              <h3 className="text-base font-semibold text-secondary-900 mb-1">Email sent</h3>
+              <p className="text-sm text-secondary-600 mb-5 leading-relaxed">
+                A reset link was sent to <strong className="text-secondary-900">{email}</strong>. Check your inbox.
               </p>
-            </div>
-
-            <AnimatePresence mode="wait">
-              {!emailSent ? (
-                /* Reset Form */
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <form className="space-y-6" onSubmit={handleSubmit}>
-                    <div className="glass-card p-8 rounded-2xl">
-                      <div className="space-y-4">
-                        <motion.div
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.1, duration: 0.4 }}
-                        >
-                          <label htmlFor="email" className="form-label">
-                            Email Address
-                          </label>
-                          <div className="relative">
-                            <input
-                              id="email"
-                              name="email"
-                              type="email"
-                              autoComplete="email"
-                              required
-                              className="form-input pl-10"
-                              placeholder="Enter your email address"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              disabled={isLoading}
-                            />
-                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-secondary-400" />
-                          </div>
-                        </motion.div>
-
-                        <motion.div
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.2, duration: 0.4 }}
-                        >
-                          <motion.button
-                            type="submit"
-                            disabled={isLoading}
-                            className="btn btn-primary w-full"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            {isLoading ? 'Sending...' : 'Send Reset Email'}
-                          </motion.button>
-                        </motion.div>
-                      </div>
-                    </div>
-                  </form>
-                </motion.div>
-              ) : (
-                /* Success State */
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="glass-card p-8 rounded-2xl text-center">
-                    <ScaleIn>
-                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle className="w-8 h-8 text-green-600" />
-                      </div>
-                    </ScaleIn>
-
-                    <h3 className="text-xl font-semibold text-secondary-900 mb-2">
-                      Email Sent Successfully
-                    </h3>
-
-                    <p className="text-secondary-700 mb-6">
-                      We've sent a password reset link to <strong>{email}</strong>.
-                      Please check your inbox and follow the instructions to reset your password.
-                    </p>
-
-                    <div className="space-y-4">
-                      <motion.button
-                        onClick={() => {
-                          setEmailSent(false);
-                          setEmail('');
-                        }}
-                        className="btn btn-outline w-full"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        Send Another Email
-                      </motion.button>
-
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                        <Link to="/login" className="btn btn-primary w-full inline-block text-center">
-                          Back to Login
-                        </Link>
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Help Text */}
-            <div className="text-center mt-6">
-              <p className="text-sm text-secondary-600">
-                Didn't receive the email? Check your spam folder or{' '}
+              <div className="flex flex-col gap-2">
+                <Link to="/login" className="btn btn-primary w-full">Back to sign in</Link>
                 <button
                   onClick={() => {
                     setEmailSent(false);
                     setEmail('');
                   }}
-                  className="text-primary hover:text-primary-600/80 font-medium"
+                  className="btn btn-ghost w-full"
                 >
-                  try again
+                  Send another email
                 </button>
-              </p>
+              </div>
             </div>
-          </ScaleIn>
+          )}
+
+          <p className="mt-6 text-center text-xs text-secondary-500">
+            Didn't receive the email? Check your spam folder.
+          </p>
         </div>
       </div>
     </div>
