@@ -1,114 +1,106 @@
 // src/components/Footer.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { PenTool, Mail, Facebook, Github, Linkedin } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { FadeIn } from './motion';
+import { PenTool, Mail, Github, Linkedin, Facebook } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-primary-700 text-white mt-16">
-      {/* Decorative accent line */}
-      <div className="h-px bg-gradient-to-r from-transparent via-primary-400 to-transparent" />
-
-      <div className="container mx-auto px-6 py-12">
-        <FadeIn direction="up">
-          <div className="grid md:grid-cols-4 gap-8">
-            {/* Brand */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-                  <PenTool className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold">DraftEngine</h3>
-                  <p className="text-xs text-white/70">Research-to-Content Platform</p>
-                </div>
+    <footer className="border-t border-secondary-200 bg-white">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+          {/* Brand */}
+          <div className="col-span-2">
+            <Link to="/" className="inline-flex items-center gap-2.5 mb-4">
+              <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
+                <PenTool className="w-4 h-4 text-white" strokeWidth={2.25} />
               </div>
-              <p className="text-white/70 leading-relaxed text-sm">
-                Turn research into publication-ready content. Source analysis, document generation, citations, and illustrations — built for professionals who publish.
-              </p>
-
-              {/* Social Links */}
-              <div className="flex space-x-4">
-                <motion.a
-                  href="https://www.facebook.com/profile.php?id=61575751506158"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 hover:text-white transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <Facebook className="w-5 h-5" />
-                </motion.a>
-                <motion.a
-                  href="https://github.com/lcossette1980/scholarlyai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 hover:text-white transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <Github className="w-5 h-5" />
-                </motion.a>
-                <motion.a
-                  href="https://www.linkedin.com/in/loren-cossette/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 hover:text-white transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <Linkedin className="w-5 h-5" />
-                </motion.a>
-              </div>
-            </div>
-
-            {/* Product */}
-            <div>
-              <h4 className="font-semibold mb-4 text-sm">Product</h4>
-              <ul className="space-y-3 text-white/70 text-sm">
-                <li><Link to="/features" className="hover:text-white transition-colors">Features</Link></li>
-                <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link to="/docs" className="hover:text-white transition-colors">How It Works</Link></li>
-              </ul>
-            </div>
-
-            {/* Use Cases */}
-            <div>
-              <h4 className="font-semibold mb-4 text-sm">Built For</h4>
-              <ul className="space-y-3 text-white/70 text-sm">
-                <li><Link to="/for/marketing-teams" className="hover:text-white transition-colors">Marketing Teams</Link></li>
-                <li><Link to="/for/consultants" className="hover:text-white transition-colors">Consultants</Link></li>
-                <li><Link to="/for/startups" className="hover:text-white transition-colors">Startups</Link></li>
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4 className="font-semibold mb-4 text-sm">Support</h4>
-              <ul className="space-y-3 text-white/70 text-sm">
-                <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><Link to="/ethical-ai" className="hover:text-white transition-colors">Responsible AI</Link></li>
-                <li>
-                  <a href="mailto:support@draftengineapp.com" className="hover:text-white transition-colors inline-flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5" />
-                    <span>Email Support</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom */}
-          <div className="border-t border-white/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-white/70 text-sm">
-              &copy; 2026 DraftEngine. All rights reserved.
+              <span className="text-[15px] font-semibold text-secondary-900 tracking-tight">DraftEngine</span>
+            </Link>
+            <p className="text-sm text-secondary-600 max-w-xs leading-relaxed">
+              Research-to-content for professionals. Import, generate, publish — with citations and quality review.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link to="/privacy" className="text-white/70 hover:text-white text-sm transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="text-white/70 hover:text-white text-sm transition-colors">Terms of Service</Link>
-              <Link to="/cookies" className="text-white/70 hover:text-white text-sm transition-colors">Cookie Policy</Link>
+
+            <div className="mt-6 flex items-center gap-1">
+              <a
+                href="https://github.com/lcossette1980/scholarlyai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+                aria-label="GitHub"
+              >
+                <Github className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/loren-cossette/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61575751506158"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="mailto:support@draftengineapp.com"
+                className="p-2 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+                aria-label="Email"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
           </div>
-        </FadeIn>
+
+          {/* Product */}
+          <div>
+            <h4 className="text-xs font-semibold text-secondary-900 uppercase tracking-wider mb-4">Product</h4>
+            <ul className="space-y-2.5">
+              <li><Link to="/features" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Features</Link></li>
+              <li><Link to="/pricing" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Pricing</Link></li>
+              <li><Link to="/docs" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">How it works</Link></li>
+              <li><Link to="/feeds" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Research Feeds</Link></li>
+            </ul>
+          </div>
+
+          {/* Use cases */}
+          <div>
+            <h4 className="text-xs font-semibold text-secondary-900 uppercase tracking-wider mb-4">Built for</h4>
+            <ul className="space-y-2.5">
+              <li><Link to="/for/marketing-teams" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Marketing teams</Link></li>
+              <li><Link to="/for/consultants" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Consultants</Link></li>
+              <li><Link to="/for/startups" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Startups</Link></li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h4 className="text-xs font-semibold text-secondary-900 uppercase tracking-wider mb-4">Support</h4>
+            <ul className="space-y-2.5">
+              <li><Link to="/help" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Help center</Link></li>
+              <li><Link to="/ethical-ai" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Responsible AI</Link></li>
+              <li><a href="mailto:support@draftengineapp.com" className="text-sm text-secondary-600 hover:text-secondary-900 transition-colors">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-14 pt-6 border-t border-secondary-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <p className="text-xs text-secondary-500">
+            &copy; 2026 DraftEngine. All rights reserved.
+          </p>
+          <div className="flex items-center gap-5">
+            <Link to="/privacy" className="text-xs text-secondary-500 hover:text-secondary-900 transition-colors">Privacy</Link>
+            <Link to="/terms" className="text-xs text-secondary-500 hover:text-secondary-900 transition-colors">Terms</Link>
+            <Link to="/cookies" className="text-xs text-secondary-500 hover:text-secondary-900 transition-colors">Cookies</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

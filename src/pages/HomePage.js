@@ -3,417 +3,391 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
-  CheckCircle,
-  Download,
+  ArrowUpRight,
+  Check,
+  Sparkles,
+  FileText,
   Cpu,
-  Zap
+  Zap,
+  Download,
+  Rss,
+  Quote,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import HeroCarousel from '../components/HeroCarousel';
-import { FadeIn, StaggerChildren, StaggerItem, AnimatedCounter } from '../components/motion';
+import { FadeIn } from '../components/motion';
 import SEO from '../components/SEO';
 
 const HomePage = () => {
   const { currentUser } = useAuth();
-
-  const pricingCards = [
-    {
-      name: 'Starter',
-      price: '$0',
-      period: '/forever',
-      description: 'Try the full workflow',
-      features: [
-        { text: '5 source entries (lifetime)', bold: false },
-        { text: 'AI source analysis', bold: false },
-        { text: 'Standard export to Word', bold: false },
-        { text: 'Email support', bold: false },
-      ],
-      cta: 'Start Free',
-      ctaLink: '/signup',
-      ctaClass: 'btn btn-outline w-full',
-      note: 'No credit card required',
-      highlight: false,
-    },
-    {
-      name: 'Plus',
-      price: '$9.99',
-      period: '/month',
-      description: 'For regular writing',
-      features: [
-        { text: 'Unlimited source entries', bold: true },
-        { text: 'Topic & Outline Generator', bold: true },
-        { text: 'Research feeds', bold: false },
-        { text: 'All citation styles', bold: false },
-      ],
-      cta: 'Start Trial',
-      ctaLink: '/pricing',
-      ctaClass: 'btn btn-primary w-full',
-      note: 'Cancel anytime, no lock-in',
-      highlight: true,
-    },
-    {
-      name: 'Pro',
-      price: '$19.99',
-      period: '/month',
-      description: 'For power users',
-      features: [
-        { text: 'Everything in Plus', bold: true },
-        { text: 'Premium AI analysis', bold: true },
-        { text: 'All writing approaches', bold: false },
-        { text: 'Priority support', bold: false },
-      ],
-      cta: 'Start Trial',
-      ctaLink: '/pricing',
-      ctaClass: 'btn btn-outline w-full',
-      note: 'Cancel anytime, no lock-in',
-      highlight: false,
-    },
-  ];
+  const ctaTarget = currentUser ? '/create' : '/signup';
+  const ctaLabel = currentUser ? 'Import your first source' : 'Start free';
 
   return (
-    <div className="min-h-screen bg-mesh">
+    <div className="bg-white">
       <SEO
         description="DraftEngine turns research sources into polished, citation-backed professional documents. Import PDFs, URLs, DOIs, and reports. Generate white papers, briefs, and proposals with visible citations and quality review."
         path="/"
       />
-      {/* Hero Section with Carousel */}
-      <section className="relative py-12 lg:py-20 overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
-          <HeroCarousel />
 
-          {/* CTA Area */}
-          <div className="text-center mt-10">
-            <Link
-              to={currentUser ? "/create" : "/signup"}
-              className="btn btn-primary text-sm px-6 py-3 group inline-flex"
-            >
-              {currentUser ? "Import Your First Source" : "Get Started Free"}
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <p className="text-xs text-secondary-400 mt-2">No credit card required</p>
-          </div>
+      {/* ─────────────────── Hero ─────────────────── */}
+      <section className="relative overflow-hidden border-b border-secondary-200">
+        <div className="absolute inset-0 bg-dot-grid opacity-60 pointer-events-none" aria-hidden />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" aria-hidden />
 
-          {/* Trust Indicators */}
+        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-16 lg:pt-28 lg:pb-20">
           <FadeIn direction="up">
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-secondary-500 mt-6">
-              <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-accent" /> Source-backed, not AI-generated</span>
-              <span className="hidden sm:inline text-secondary-300">·</span>
-              <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-accent" /> Visible citations</span>
-              <span className="hidden sm:inline text-secondary-300">·</span>
-              <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-accent" /> Quality-reviewed</span>
-              <span className="hidden sm:inline text-secondary-300">·</span>
-              <span className="flex items-center gap-1"><CheckCircle className="w-3 h-3 text-accent" /> Export-ready</span>
+            <div className="flex justify-center mb-6">
+              <Link to="/feeds" className="eyebrow-brand hover:bg-primary-100 transition-colors group">
+                <Sparkles className="w-3 h-3" />
+                <span>Research Feeds — auto-import new papers</span>
+                <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+              </Link>
             </div>
 
-            {/* Sample Downloads — small, understated */}
-            <div className="flex items-center justify-center gap-4 mt-4">
-              <a href="/example_source_analysis.docx" download className="text-xs text-secondary-400 hover:text-primary transition-colors flex items-center gap-1">
-                <Download className="w-3 h-3" /> Sample Analysis
-              </a>
-              <span className="text-secondary-300">·</span>
-              <a href="/content_example.docx" download className="text-xs text-secondary-400 hover:text-primary transition-colors flex items-center gap-1">
-                <Download className="w-3 h-3" /> Sample Document
-              </a>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+            <h1 className="text-center text-4xl sm:text-5xl lg:text-6xl font-semibold text-secondary-900 max-w-4xl mx-auto leading-[1.05] tracking-tight">
+              Research-to-content for{' '}
+              <span className="text-primary">professionals who publish.</span>
+            </h1>
 
-      {/* Who It's For — right after hero for maximum impact */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <FadeIn direction="up">
-            <h2 className="text-3xl font-bold text-secondary-900 text-center mb-3">Built for Professionals Who Publish</h2>
-            <p className="text-secondary-500 text-center mb-10 max-w-2xl mx-auto">Research-backed content for teams that need credibility, speed, and depth.</p>
-          </FadeIn>
-          <StaggerChildren>
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {[
-                { title: 'Content Marketing Teams', desc: 'Thought leadership grounded in real research — 10x faster than freelancers.', image: '/images/usecase_marketing.png', link: '/for/marketing-teams' },
-                { title: 'Consultants & Analysts', desc: 'White papers and client deliverables in hours, not weeks.', image: '/images/usecase_consulting.png', link: '/for/consultants' },
-                { title: 'Startups & Founders', desc: 'Investor-facing content backed by real market research.', image: '/images/usecase_startup.png', link: '/for/startups' },
-              ].map(uc => (
-                <StaggerItem key={uc.title}>
-                  <Link to={uc.link} className="card card-hover group block h-full">
-                    <img src={uc.image} alt={uc.title} className="w-full h-40 object-cover rounded-lg mb-4" />
-                    <h3 className="text-lg font-bold text-secondary-900 mb-2 group-hover:text-primary transition-colors">{uc.title}</h3>
-                    <p className="text-secondary-600 text-sm mb-3">{uc.desc}</p>
-                    <span className="text-primary text-sm font-medium">Learn more →</span>
-                  </Link>
-                </StaggerItem>
-              ))}
-            </div>
-          </StaggerChildren>
-        </div>
-      </section>
-
-      <div className="section-divider my-16" />
-
-      {/* Quick Stats */}
-      <section className="py-20 lg:py-24">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <StaggerChildren>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                {[
-                  { target: 10000, suffix: '+', label: 'Active Writers' },
-                  { target: 4, suffix: '', label: 'Import Methods' },
-                  { target: 90, suffix: 'sec', label: 'Source Analysis' },
-                  { target: 4.9, suffix: '/5', label: 'User Rating' },
-                ].map((stat) => (
-                  <StaggerItem key={stat.label}>
-                    <div className="text-center">
-                      <p className="text-4xl font-bold text-secondary-900 mb-1">
-                        <AnimatedCounter target={stat.target} suffix={stat.suffix} />
-                      </p>
-                      <p className="text-sm text-secondary-500">{stat.label}</p>
-                    </div>
-                  </StaggerItem>
-                ))}
-              </div>
-            </StaggerChildren>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider my-16" />
-
-      {/* How It Works */}
-      <section className="py-20 lg:py-24">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
-              Three steps to finished content
-            </h2>
-            <p className="text-lg text-secondary-500 max-w-2xl mx-auto">
-              Import your research, generate polished documents, and export — all in one workflow.
+            <p className="mt-6 text-center text-lg text-secondary-600 max-w-2xl mx-auto leading-relaxed">
+              Import PDFs, URLs, DOIs, and feeds. Generate citation-backed documents in minutes — not weeks. Quality-reviewed, source-grounded, export-ready.
             </p>
-          </div>
 
-          <div className="max-w-5xl mx-auto">
-            <StaggerChildren>
-              <div className="grid md:grid-cols-3 gap-8">
-                {[
-                  { step: '01', title: 'Import Your Research', desc: 'Upload PDFs, paste URLs, look up DOIs through CrossRef, or connect RSS feeds to stay current with your field.', image: '/images/step_import.png', imageAlt: 'Import your research' },
-                  { step: '02', title: 'Generate & Review', desc: 'AI writes your document with section-level quality review, auto-generated citations, and DALL-E editorial illustrations. Two quality agents review every draft before you see it.', image: '/images/step_generate.png', imageAlt: 'Generate and review' },
-                  { step: '03', title: 'Publish & Share', desc: 'Export to Word with images, references, and formatting. Get a refined title, meta description, and social media excerpt — ready to publish.', image: '/images/step_export.png', imageAlt: 'Publish and share' },
-                ].map((item) => (
-                  <StaggerItem key={item.step}>
-                    <div className="card-floating text-center h-full flex flex-col">
-                      <img src={item.image} alt={item.imageAlt} className="w-full rounded-lg mb-4" />
-                      <div className="text-xs font-mono font-semibold text-primary/60 mb-4 tracking-widest">
-                        {item.step}
-                      </div>
-                      <h3 className="text-xl font-bold text-secondary-900 mb-3">{item.title}</h3>
-                      <p className="text-secondary-500 leading-relaxed flex-1">{item.desc}</p>
-                    </div>
-                  </StaggerItem>
-                ))}
-              </div>
-            </StaggerChildren>
-          </div>
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link to={ctaTarget} className="btn btn-primary btn-lg group">
+                {ctaLabel}
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link to="/features" className="btn btn-ghost btn-lg group">
+                See how it works
+                <ArrowUpRight className="w-4 h-4 text-secondary-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </div>
 
-          <div className="text-center mt-10">
-            <Link
-              to={currentUser ? "/create" : "/signup"}
-              className="btn btn-primary text-sm px-6 py-3 group inline-flex"
-            >
-              {currentUser ? "Import Sources" : "Get Started Free"}
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider my-16" />
-
-      {/* Pricing Preview */}
-      <section className="py-20 lg:py-24">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
-              Simple, transparent pricing
-            </h2>
-            <p className="text-lg text-secondary-500 max-w-2xl mx-auto">
-              Start free, upgrade when you need more. No contracts, cancel anytime.
+            <p className="mt-4 text-center text-xs text-secondary-500">
+              No credit card · 5 free sources · Cancel anytime
             </p>
-          </div>
+          </FadeIn>
 
-          <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
-            {pricingCards.map((card, index) => (
-              <FadeIn key={card.name} direction="up" delay={index * 0.1}>
-                <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-primary relative' : ''}`}>
-                  {card.highlight && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-secondary-900 mb-2">{card.name}</h3>
-                    <div className="mb-1">
-                      <span className="text-4xl font-bold text-secondary-900">{card.price}</span>
-                      <span className="text-secondary-400 text-sm">{card.period}</span>
-                    </div>
-                    <p className="text-sm text-secondary-500 mb-6">{card.description}</p>
-                    <ul className="space-y-3 mb-8">
-                      {card.features.map((feature, i) => (
-                        <li key={i} className="flex items-start space-x-2 text-sm text-secondary-600">
-                          <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                          <span className={feature.bold ? 'font-semibold text-secondary-900' : ''}>{feature.text}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <Link to={card.ctaLink} className={card.ctaClass}>{card.cta}</Link>
-                  <p className="text-xs text-secondary-400 mt-2 text-center">{card.note}</p>
+          {/* Product screenshot */}
+          <FadeIn direction="up" delay={0.1}>
+            <div className="mt-14 lg:mt-16 max-w-5xl mx-auto">
+              <div className="relative rounded-xl border border-secondary-200 bg-white overflow-hidden shadow-medium">
+                {/* Browser chrome */}
+                <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-secondary-200 bg-secondary-50">
+                  <div className="w-2.5 h-2.5 rounded-full bg-secondary-300" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-secondary-300" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-secondary-300" />
+                  <div className="mx-auto text-xs text-secondary-500 font-mono">draftengineapp.com/dashboard</div>
                 </div>
-              </FadeIn>
+                <img
+                  src="/images/hero_workspace.png"
+                  alt="DraftEngine workspace"
+                  className="w-full"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ─────────────────── Trust strip ─────────────────── */}
+      <section className="border-b border-secondary-200 bg-white">
+        <div className="max-w-6xl mx-auto px-6 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6 text-center">
+            {[
+              { value: '10,000+', label: 'Active writers' },
+              { value: '4', label: 'Import methods' },
+              { value: '90s', label: 'Source analysis' },
+              { value: '4.9/5', label: 'User rating' },
+            ].map((s) => (
+              <div key={s.label}>
+                <div className="text-2xl font-semibold text-secondary-900 tabular-nums tracking-tight">{s.value}</div>
+                <div className="text-xs text-secondary-500 mt-1 uppercase tracking-wide">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────── How it works ─────────────────── */}
+      <section className="py-20 lg:py-28">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-2xl mb-14">
+            <div className="eyebrow mb-4">How it works</div>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+              Three steps from source to published draft.
+            </h2>
+            <p className="mt-3 text-lg text-secondary-600">
+              No more wrangling references, drafting from scratch, or hunting for citations.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-px bg-secondary-200 rounded-xl overflow-hidden border border-secondary-200">
+            {[
+              {
+                step: '01',
+                icon: Download,
+                title: 'Import',
+                desc: 'PDF upload, URL paste, DOI lookup via CrossRef, or RSS feed. Sources get extracted, summarized, and indexed in seconds.',
+              },
+              {
+                step: '02',
+                icon: Cpu,
+                title: 'Generate',
+                desc: 'AI drafts your document with section-level quality review, auto-generated citations, and editorial illustrations.',
+              },
+              {
+                step: '03',
+                icon: FileText,
+                title: 'Publish',
+                desc: 'Export to Word with formatting intact. Refined title, meta description, and social excerpt ready to ship.',
+              },
+            ].map((s) => {
+              const Icon = s.icon;
+              return (
+                <div key={s.step} className="bg-white p-7 lg:p-8">
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="w-9 h-9 rounded-md bg-secondary-100 border border-secondary-200 flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-secondary-700" />
+                    </div>
+                    <span className="text-xs font-mono text-secondary-400 tabular-nums">{s.step}</span>
+                  </div>
+                  <h3 className="text-base font-semibold text-secondary-900 mb-2">{s.title}</h3>
+                  <p className="text-sm text-secondary-600 leading-relaxed">{s.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────── Built for ─────────────────── */}
+      <section className="py-20 lg:py-28 border-t border-secondary-200 bg-secondary-50/40">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-2xl mb-14">
+            <div className="eyebrow mb-4">Built for</div>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+              Teams that publish with credibility.
+            </h2>
+            <p className="mt-3 text-lg text-secondary-600">
+              Used by content teams, consultants, and founders who need research-grade output without research-grade timelines.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { title: 'Marketing teams', desc: 'Thought leadership grounded in real research. 10× faster than freelancers.', link: '/for/marketing-teams', image: '/images/usecase_marketing.png' },
+              { title: 'Consultants', desc: 'White papers and client deliverables in hours, not weeks.', link: '/for/consultants', image: '/images/usecase_consulting.png' },
+              { title: 'Founders', desc: 'Investor-facing content backed by real market research.', link: '/for/startups', image: '/images/usecase_startup.png' },
+            ].map((uc) => (
+              <Link
+                key={uc.title}
+                to={uc.link}
+                className="group relative bg-white border border-secondary-200 rounded-lg overflow-hidden hover:border-secondary-400 transition-colors"
+              >
+                <div className="aspect-[16/10] overflow-hidden bg-secondary-100">
+                  <img src={uc.image} alt="" className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" />
+                </div>
+                <div className="p-5">
+                  <h3 className="text-base font-semibold text-secondary-900 mb-1.5">{uc.title}</h3>
+                  <p className="text-sm text-secondary-600 mb-3 leading-relaxed">{uc.desc}</p>
+                  <div className="flex items-center text-sm font-medium text-primary group-hover:gap-2 gap-1 transition-all">
+                    Learn more
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────── Feature highlight ─────────────────── */}
+      <section className="py-20 lg:py-28 border-t border-secondary-200">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <div className="eyebrow-brand mb-4"><Rss className="w-3 h-3" /> Research Feeds</div>
+              <h2 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+                Stay current without lifting a finger.
+              </h2>
+              <p className="mt-4 text-lg text-secondary-600 leading-relaxed">
+                Subscribe to topics that matter to your work. DraftEngine pulls new papers from Semantic Scholar, OpenAlex, and CrossRef — delivered straight to your library.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  'Subscribe to any topic',
+                  'Three academic databases',
+                  'Auto-delivered to your library',
+                  'Filter by relevance and recency',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-secondary-700">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link to="/feeds" className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:gap-2 transition-all">
+                Explore Research Feeds
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="relative">
+              <div className="rounded-xl border border-secondary-200 overflow-hidden bg-secondary-50">
+                <img src="/images/feature_feeds.png" alt="Research feeds interface" className="w-full" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────── Pricing preview ─────────────────── */}
+      <section className="py-20 lg:py-28 border-t border-secondary-200 bg-secondary-50/40">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-2xl mb-14">
+            <div className="eyebrow mb-4">Pricing</div>
+            <h2 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+              Simple, transparent, no contracts.
+            </h2>
+            <p className="mt-3 text-lg text-secondary-600">
+              Start free, pay only for what you generate.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 max-w-5xl">
+            {[
+              {
+                name: 'Starter',
+                price: '$0',
+                period: 'forever',
+                desc: 'Try the full workflow',
+                features: ['5 source entries', 'AI source analysis', 'Word export', 'Email support'],
+                cta: 'Get started',
+                ctaClass: 'btn btn-secondary w-full',
+                ctaLink: '/signup',
+              },
+              {
+                name: 'Plus',
+                price: '$9.99',
+                period: 'per month',
+                desc: 'For regular writing',
+                features: ['Unlimited source entries', 'Topic & outline generator', 'Pay-per-page generation', 'All citation styles'],
+                cta: 'Start Plus',
+                ctaClass: 'btn btn-primary w-full',
+                ctaLink: '/pricing',
+                featured: true,
+              },
+              {
+                name: 'Pro',
+                price: '$19.99',
+                period: 'per month',
+                desc: 'For power users',
+                features: ['Everything in Plus', '10 pages/mo included', 'Research Feeds', 'Discounted overage'],
+                cta: 'Start Pro',
+                ctaClass: 'btn btn-secondary w-full',
+                ctaLink: '/pricing',
+              },
+            ].map((p) => (
+              <div
+                key={p.name}
+                className={`relative bg-white rounded-lg border ${p.featured ? 'border-secondary-900' : 'border-secondary-200'} p-6 flex flex-col`}
+              >
+                {p.featured && (
+                  <div className="absolute -top-2.5 left-6">
+                    <span className="badge badge-brand bg-primary text-white border-primary">Popular</span>
+                  </div>
+                )}
+                <div className="flex items-baseline justify-between mb-1">
+                  <h3 className="text-base font-semibold text-secondary-900">{p.name}</h3>
+                </div>
+                <div className="mb-1">
+                  <span className="text-3xl font-semibold text-secondary-900 tabular-nums tracking-tight">{p.price}</span>
+                  <span className="text-sm text-secondary-500 ml-1">/ {p.period}</span>
+                </div>
+                <p className="text-sm text-secondary-600 mb-6">{p.desc}</p>
+                <ul className="space-y-2.5 mb-6 flex-1">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-secondary-700">
+                      <Check className="w-3.5 h-3.5 text-primary mt-1 flex-shrink-0" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link to={p.ctaLink} className={p.ctaClass}>{p.cta}</Link>
+              </div>
             ))}
           </div>
 
-          <p className="text-center text-sm text-secondary-400 mt-8">
-            All plans include secure data handling and Word export
-          </p>
-        </div>
-      </section>
-
-      <div className="section-divider my-16" />
-
-      {/* Content Generation Pricing */}
-      <section className="py-20 lg:py-24">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-4">
-              Professional documents from your research
-            </h2>
-            <p className="text-lg text-secondary-500 max-w-2xl mx-auto">
-              Faster than any alternative. A 10-page white paper costs $14.90 with DraftEngine vs. $2,000+ with a freelancer.
-            </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-8">
-            <FadeIn direction="up" delay={0}>
-              <div className="card flex flex-col h-full">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-secondary-900">Standard</h3>
-                </div>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold text-secondary-900">$1.49</span>
-                  <span className="text-secondary-400 text-sm">/page</span>
-                </div>
-                <p className="text-sm text-secondary-500 mb-6">Powered by Claude Sonnet</p>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Quality agents review every section</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>DALL-E editorial illustrations</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Auto-generated citations</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Enhanced title & meta description</span>
-                  </li>
-                </ul>
+          <div className="mt-8 max-w-5xl">
+            <div className="rounded-lg border border-secondary-200 bg-white p-5 flex items-start gap-3">
+              <Zap className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="text-sm text-secondary-900 font-medium mb-1">Per-page generation pricing</p>
+                <p className="text-sm text-secondary-600">
+                  Standard <span className="font-mono text-secondary-900">$1.49/page</span> (Claude Sonnet) · Professional <span className="font-mono text-secondary-900">$2.49/page</span> (Claude Opus) · 500–10,000 words per document
+                </p>
               </div>
-            </FadeIn>
-
-            <FadeIn direction="up" delay={0.1}>
-              <div className="card flex flex-col h-full ring-2 ring-primary relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
-                    Deeper Synthesis
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Cpu className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-secondary-900">Professional</h3>
-                </div>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold text-secondary-900">$2.49</span>
-                  <span className="text-secondary-400 text-sm">/page</span>
-                </div>
-                <p className="text-sm text-secondary-500 mb-6">Powered by Claude Opus</p>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Deeper source synthesis</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Quality agents review every section</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>DALL-E editorial illustrations</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm text-secondary-600">
-                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Auto-generated citations</span>
-                  </li>
-                </ul>
-              </div>
-            </FadeIn>
-          </div>
-
-          <p className="text-center text-sm text-secondary-400 mt-8">
-            500 to 10,000 words per document. Articles, essays, blog posts, and op-eds.
-          </p>
-        </div>
-      </section>
-
-      <div className="section-divider my-16" />
-
-      {/* Final CTA */}
-      <FadeIn direction="up">
-        <section className="py-20 lg:py-24 bg-gradient-brand">
-          <div className="container mx-auto px-6">
-            <div className="max-w-3xl mx-auto text-center text-white">
-              <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-                From Sources to Published Content in Minutes
-              </h2>
-              <p className="text-xl text-white/70 mb-8">
-                Import research, generate documents with citations and illustrations, export to Word.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
-                <Link
-                  to={currentUser ? "/create" : "/signup"}
-                  className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-xl font-semibold text-lg"
-                >
-                  Start Free — No Credit Card Required
-                </Link>
-                <Link
-                  to="/features"
-                  className="border-2 border-white/30 text-white hover:bg-white/10 transition-colors px-8 py-4 rounded-xl font-semibold text-lg"
-                >
-                  Learn More
-                </Link>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/50">
-                <span>5 free entries to start</span>
-                <span>·</span>
-                <span>4 import methods</span>
-                <span>·</span>
-                <span>Cancel anytime</span>
-              </div>
+              <Link to="/pricing" className="btn btn-ghost btn-sm flex-shrink-0">
+                Full pricing
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
           </div>
-        </section>
-      </FadeIn>
+        </div>
+      </section>
+
+      {/* ─────────────────── Quote / proof ─────────────────── */}
+      <section className="py-20 lg:py-28 border-t border-secondary-200">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <Quote className="w-8 h-8 text-secondary-300 mx-auto mb-6" />
+          <blockquote className="text-2xl lg:text-3xl font-medium text-secondary-900 leading-snug tracking-tight">
+            A 10-page white paper costs <span className="text-primary font-semibold">$14.90</span> with DraftEngine. The same document from a freelancer? <span className="text-secondary-500 line-through">$2,000+</span>.
+          </blockquote>
+          <div className="mt-8 flex items-center justify-center gap-4 text-sm text-secondary-500">
+            <a href="/example_source_analysis.docx" download className="inline-flex items-center gap-1.5 hover:text-secondary-900 transition-colors">
+              <Download className="w-3.5 h-3.5" /> Sample analysis
+            </a>
+            <span className="text-secondary-300">·</span>
+            <a href="/content_example.docx" download className="inline-flex items-center gap-1.5 hover:text-secondary-900 transition-colors">
+              <Download className="w-3.5 h-3.5" /> Sample document
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────── Final CTA ─────────────────── */}
+      <section className="border-t border-secondary-200 bg-secondary-900 text-white">
+        <div className="max-w-4xl mx-auto px-6 py-20 lg:py-24 text-center">
+          <h2 className="text-3xl lg:text-5xl font-semibold tracking-tight">
+            Ready to publish?
+          </h2>
+          <p className="mt-4 text-lg text-secondary-300 max-w-xl mx-auto">
+            Import research, generate documents with citations and illustrations, export to Word. All in minutes.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              to={ctaTarget}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white text-secondary-900 hover:bg-secondary-100 rounded-md font-medium text-sm transition-colors"
+            >
+              Start free
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/features"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-secondary-300 hover:text-white rounded-md font-medium text-sm transition-colors"
+            >
+              See all features
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <p className="mt-6 text-xs text-secondary-500">
+            5 free sources · No credit card · Cancel anytime
+          </p>
+        </div>
+      </section>
     </div>
   );
 };
