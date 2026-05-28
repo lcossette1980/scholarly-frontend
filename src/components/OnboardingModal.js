@@ -132,14 +132,14 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
 
           {/* Modal */}
           <motion.div
-            className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden"
+            className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ duration: 0.25 }}
           >
-            {/* Progress bar */}
-            <div className="h-1 bg-[#e5e7eb]">
+            {/* Progress bar (pinned top, non-scrolling) */}
+            <div className="h-1 bg-[#e5e7eb] flex-shrink-0">
               <motion.div
                 className="h-full bg-[#316094]"
                 initial={{ width: '0%' }}
@@ -148,7 +148,7 @@ const OnboardingModal = ({ isOpen, onComplete }) => {
               />
             </div>
 
-            <div className="p-8">
+            <div className="p-6 sm:p-8 overflow-y-auto flex-1 min-h-0">
               <AnimatePresence mode="wait">
                 {/* Step 1: Purpose */}
                 {step === 1 && (
