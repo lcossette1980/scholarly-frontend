@@ -551,42 +551,71 @@ const ReviewEditStepInner = ({ jobId, onBack }) => {
               )}
             </div>
 
-            {reviewItems.map((item, idx) => (
-              <div
-                key={idx}
-                className={`flex items-center justify-between py-3 ${
-                  idx < reviewItems.length - 1 ? 'border-b border-[#e5e7eb]' : ''
-                }`}
-              >
-                <div className="flex items-center space-x-3">
-                  <StatusIcon status={item.status} />
-                  <div>
-                    <p className="text-sm font-medium text-secondary-900">{item.label}</p>
-                    <p className="text-xs text-secondary-500">{item.detail}</p>
+            {reviewItems.map((item, idx) => {
+              const isLongText = typeof item.value === 'string' && item.value.length > 60;
+              return (
+                <div
+                  key={idx}
+                  className={`py-3 ${idx < reviewItems.length - 1 ? 'border-b border-[#e5e7eb]' : ''}`}
+                >
+                  <div className={`flex ${isLongText ? 'flex-col gap-2' : 'items-start justify-between gap-4'}`}>
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <StatusIcon status={item.status} />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-secondary-900">{item.label}</p>
+                        <p className="text-xs text-secondary-500 mt-0.5">{item.detail}</p>
+                        {isLongText && (
+                          <p className="mt-2 text-sm text-secondary-700 leading-relaxed break-words">
+                            {item.value}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {!isLongText && (
+                      <span className="text-sm text-secondary-700 whitespace-nowrap flex-shrink-0">
+                        {typeof item.value === 'string' ? item.value : String(item.value || 'N/A')}
+                      </span>
+                    )}
                   </div>
                 </div>
-                <span className="text-sm text-secondary-500 ml-4 whitespace-nowrap truncate max-w-[120px]">{typeof item.value === 'string' ? item.value : String(item.value || 'N/A')}</span>
-              </div>
-            ))}
+              );
+            })}
 
-            {/* Section score breakdown */}
+            {/* Section score breakdown — click to expand */}
             {qualityReport.sectionScores && qualityReport.sectionScores.length > 0 && (
               <div className="mt-4 pt-4 border-t border-[#e5e7eb]">
-                <p className="text-xs font-medium text-secondary-500 uppercase tracking-wide mb-3">Section Scores</p>
-                <div className="flex items-center space-x-2 flex-wrap gap-y-2">
+                <p className="text-xs font-medium text-secondary-500 uppercase tracking-wide mb-3">
+                  Section Scores
+                  <span className="ml-2 text-secondary-400 normal-case tracking-normal font-normal">click for breakdown</span>
+                </p>
+                <div className="flex items-start gap-2 flex-wrap">
                   {qualityReport.sectionScores.map((item, idx) => {
                     const scoreVal = typeof item === 'number' ? item : (item?.score || item?.overall_score || 0);
-                    const sectionName = typeof item === 'object' ? (item?.section || `S${idx + 1}`) : `S${idx + 1}`;
+                    const sectionName = typeof item === 'object' ? (item?.section || `Section ${idx + 1}`) : `Section ${idx + 1}`;
+                    const subScores = typeof item === 'object' ? (item?.scores || {}) : {};
+                    const hasBreakdown = Object.keys(subScores).length > 0;
                     return (
-                      <div key={idx} className="flex flex-col items-center">
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${getScoreColor(scoreVal)}`}
-                          title={`${sectionName}: ${scoreVal}`}
-                        >
-                          {scoreVal}
-                        </div>
-                        <span className="text-[10px] text-gray-400 mt-1">S{idx + 1}</span>
-                      </div>
+                      <details key={idx} className="group" open={false}>
+                        <summary className="list-none cursor-pointer flex flex-col items-center" title={sectionName}>
+                          <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold transition-transform group-hover:scale-110 ${getScoreColor(scoreVal)}`}>
+                            {scoreVal}
+                          </div>
+                          <span className="text-[10px] text-secondary-500 mt-1 group-open:text-secondary-900 group-open:font-medium">S{idx + 1}</span>
+                        </summary>
+                        {hasBreakdown && (
+                          <div className="mt-2 p-3 bg-secondary-50/60 border border-secondary-200 rounded-md max-w-xs">
+                            <p className="text-xs font-medium text-secondary-900 mb-2 truncate" title={sectionName}>{sectionName}</p>
+                            <div className="space-y-1">
+                              {Object.entries(subScores).map(([key, val]) => (
+                                <div key={key} className="flex items-center justify-between text-xs">
+                                  <span className="text-secondary-600 capitalize">{key.replace(/_/g, ' ')}</span>
+                                  <span className={`font-mono tabular-nums font-medium ${val >= 80 ? 'text-green-700' : val >= 65 ? 'text-yellow-700' : 'text-red-600'}`}>{val}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </details>
                     );
                   })}
                 </div>
