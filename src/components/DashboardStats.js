@@ -3,22 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
-import { motion } from 'framer-motion';
-import { StaggerChildren, StaggerItem, AnimatedCounter } from './motion';
+import { AnimatedCounter } from './motion';
 
 const DashboardStats = ({ entries, loading }) => {
   const { currentUser } = useAuth();
   const [generatedCount, setGeneratedCount] = useState(0);
   const [loadingGenerated, setLoadingGenerated] = useState(true);
 
-  // Fetch generated content count from Firestore
   useEffect(() => {
     const fetchGeneratedCount = async () => {
       if (!currentUser) {
         setLoadingGenerated(false);
         return;
       }
-
       try {
         const jobsRef = collection(db, 'content_generation_jobs');
         const q = query(
@@ -34,67 +31,45 @@ const DashboardStats = ({ entries, loading }) => {
         setLoadingGenerated(false);
       }
     };
-
     fetchGeneratedCount();
   }, [currentUser]);
 
   const calculateStats = () => {
     if (!entries || entries.length === 0) {
-      return {
-        totalEntries: 0,
-        thisMonth: 0,
-        analysisReady: 0,
-        generated: generatedCount
-      };
+      return { totalEntries: 0, thisMonth: 0, analysisReady: 0, generated: generatedCount };
     }
-
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
-
-    const thisMonth = entries.filter(entry => {
+    const thisMonth = entries.filter((entry) => {
       if (!entry.createdAt) return false;
       try {
         let entryDate;
-        if (entry.createdAt.toDate && typeof entry.createdAt.toDate === 'function') {
-          entryDate = entry.createdAt.toDate();
-        } else if (entry.createdAt.seconds) {
-          entryDate = new Date(entry.createdAt.seconds * 1000);
-        } else {
-          entryDate = new Date(entry.createdAt);
-        }
+        if (entry.createdAt.toDate && typeof entry.createdAt.toDate === 'function') entryDate = entry.createdAt.toDate();
+        else if (entry.createdAt.seconds) entryDate = new Date(entry.createdAt.seconds * 1000);
+        else entryDate = new Date(entry.createdAt);
         return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear;
-      } catch (e) {
+      } catch {
         return false;
       }
     }).length;
-
-    // Check canonical field (key_arguments) and legacy fallbacks (core_findings)
-    const analysisReady = entries.filter(entry => {
-      const hasAnalysis =
-        (entry.key_arguments && entry.key_arguments.length > 0) ||
-        (entry.core_findings && entry.core_findings.length > 0) ||
-        (entry.interesting_angles && entry.interesting_angles.length > 0);
-      return hasAnalysis;
-    }).length;
-
-    return {
-      totalEntries: entries.length,
-      thisMonth: thisMonth,
-      analysisReady: analysisReady,
-      generated: generatedCount
-    };
+    const analysisReady = entries.filter((entry) =>
+      (entry.key_arguments && entry.key_arguments.length > 0) ||
+      (entry.core_findings && entry.core_findings.length > 0) ||
+      (entry.interesting_angles && entry.interesting_angles.length > 0)
+    ).length;
+    return { totalEntries: entries.length, thisMonth, analysisReady, generated: generatedCount };
   };
 
   const stats = calculateStats();
 
   if (loading || loadingGenerated) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {[1, 2, 3, 4].map(i => (
-          <div key={i} className="bg-white rounded-xl border border-secondary-200 p-6 loading-shimmer">
-            <div className="h-4 bg-secondary-100 rounded w-20 mb-3"></div>
-            <div className="h-8 bg-secondary-100 rounded w-16"></div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-secondary-200 rounded-lg overflow-hidden border border-secondary-200">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="bg-white p-5">
+            <div className="loading-shimmer h-3 rounded w-20 mb-3" />
+            <div className="loading-shimmer h-7 rounded w-16" />
           </div>
         ))}
       </div>
@@ -102,35 +77,34 @@ const DashboardStats = ({ entries, loading }) => {
   }
 
   const statItems = [
-    { title: 'Total Entries', value: stats.totalEntries },
-    { title: 'This Month', value: stats.thisMonth, subtitle: stats.thisMonth > 0 ? `${stats.thisMonth} new` : 'No new entries' },
-    { title: 'Analyzed Sources', value: stats.analysisReady, subtitle: stats.analysisReady > 0 ? `${Math.round((stats.analysisReady / Math.max(stats.totalEntries, 1)) * 100)}% of total` : 'None analyzed yet' },
-    { title: 'Content Generated', value: stats.generated, subtitle: 'Documents created' },
+    { title: 'Total sources', value: stats.totalEntries, subtitle: null },
+    { title: 'This month', value: stats.thisMonth, subtitle: stats.thisMonth > 0 ? 'new this month' : null },
+    {
+      title: 'Analyzed',
+      value: stats.analysisReady,
+      subtitle: stats.analysisReady > 0 ? `${Math.round((stats.analysisReady / Math.max(stats.totalEntries, 1)) * 100)}% of total` : null,
+    },
+    { title: 'Documents', value: stats.generated, subtitle: stats.generated > 0 ? 'completed' : null },
   ];
 
   return (
-    <StaggerChildren className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-secondary-200 rounded-lg overflow-hidden border border-secondary-200">
       {statItems.map((stat) => (
-        <StaggerItem key={stat.title}>
-          <motion.div
-            whileHover={{ y: -1 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            <div className="bg-white rounded-xl border border-secondary-200 p-6 hover:shadow-md transition-shadow">
-              <p className="text-sm font-medium text-secondary-500 mb-1">{stat.title}</p>
-              <AnimatedCounter
-                target={stat.value}
-                className="text-3xl font-bold text-secondary-900"
-                duration={1}
-              />
-              {stat.subtitle && (
-                <p className="text-xs text-secondary-400 mt-1">{stat.subtitle}</p>
-              )}
-            </div>
-          </motion.div>
-        </StaggerItem>
+        <div key={stat.title} className="bg-white p-5">
+          <p className="text-xs uppercase tracking-wider text-secondary-500 font-medium mb-2">{stat.title}</p>
+          <div className="flex items-baseline gap-2">
+            <AnimatedCounter
+              target={stat.value}
+              className="text-2xl font-semibold text-secondary-900 tabular-nums tracking-tight"
+              duration={0.8}
+            />
+            {stat.subtitle && (
+              <span className="text-xs text-secondary-500">{stat.subtitle}</span>
+            )}
+          </div>
+        </div>
       ))}
-    </StaggerChildren>
+    </div>
   );
 };
 

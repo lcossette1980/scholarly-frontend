@@ -1,10 +1,10 @@
 // src/pages/PricingPage.js
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Check, ArrowRight, GraduationCap } from 'lucide-react';
+import { Check, ArrowRight, GraduationCap, Sparkles, Zap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../services/stripe';
-import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from '../components/motion';
+import { FadeIn } from '../components/motion';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
 
@@ -20,14 +20,11 @@ const PricingPage = () => {
       navigate('/signup');
       return;
     }
-
     if (planId === 'free') {
       navigate('/dashboard');
       return;
     }
-
     setIsLoading(planId);
-
     try {
       const plan = SUBSCRIPTION_PLANS[planId];
       await createCheckoutSession(currentUser.uid, plan.priceId, planId);
@@ -39,10 +36,7 @@ const PricingPage = () => {
     }
   };
 
-  const isCurrentPlan = (planId) => {
-    return userDocument?.subscription?.plan === planId;
-  };
-
+  const isCurrentPlan = (planId) => userDocument?.subscription?.plan === planId;
   const estimatedCost = estimatorPages * (estimatorTier === 'standard' ? 1.49 : 2.49);
 
   const planCards = [
@@ -50,545 +44,425 @@ const PricingPage = () => {
       planId: 'free',
       name: 'Starter',
       price: '$0',
-      period: '/forever',
-      description: 'Try DraftEngine with no commitment',
+      period: 'forever',
+      description: 'Try the full workflow',
       features: [
-        { text: '5 lifetime source entries', bold: false },
-        { text: 'AI source analysis (arguments, angles, passages)', bold: false },
-        { text: 'PDF upload', bold: false },
-        { text: 'Standard export (Word, text)', bold: false },
-        { text: 'Email support', bold: false },
+        '5 lifetime source entries',
+        'AI source analysis',
+        'All 4 import methods',
+        'Word & text export',
+        'Email support',
       ],
-      ctaClass: 'btn btn-outline w-full justify-center',
-      highlight: false,
+      cta: 'Get started',
+      ctaClass: 'btn btn-secondary w-full',
     },
     {
       planId: 'student',
       name: 'Plus',
       price: '$9.99',
-      period: '/month',
-      description: 'For researchers and writers',
+      period: 'per month',
+      description: 'For regular writing',
       features: [
-        { text: 'Unlimited source entries', bold: true },
-        { text: 'All 4 import methods (PDF, URL, DOI, RSS)', bold: true },
-        { text: 'Topic & Outline Generator', bold: true },
-        { text: 'Content generation at full pay-per-page rates', bold: false },
-        { text: 'Email support', bold: false },
+        'Unlimited source entries',
+        'Topic & Outline Generator',
+        'Pay-per-page document generation',
+        'All citation styles',
+        'Email support',
       ],
-      ctaClass: 'btn btn-secondary w-full justify-center',
-      highlight: false,
+      cta: 'Start Plus',
+      ctaClass: 'btn btn-secondary w-full',
     },
     {
       planId: 'researcher',
       name: 'Pro',
       price: '$19.99',
-      period: '/month',
-      description: 'Best value for content publishers',
+      period: 'per month',
+      description: 'Best value for publishers',
       features: [
-        { text: 'Everything in Plus', bold: true },
-        { text: '10 content pages included every month', bold: true },
-        { text: 'Discounted overage: $1/page Standard, $2/page Pro', bold: true },
-        { text: 'Research Feeds (auto-import new papers by topic)', bold: true },
-        { text: 'Priority support', bold: false },
+        'Everything in Plus',
+        '10 pages included monthly ($14.90 value)',
+        'Discounted overage: $1 / $2 per page',
+        'Research Feeds — auto-import papers',
+        'Priority support',
       ],
-      ctaClass: 'btn btn-primary w-full justify-center',
-      highlight: true,
+      cta: 'Start Pro',
+      ctaClass: 'btn btn-primary w-full',
+      featured: true,
     },
   ];
 
-  const getPlanDisplayName = (planId) => {
-    const map = { free: 'Starter', trial: 'Starter', student: 'Plus', researcher: 'Pro' };
-    return map[planId] || planId;
-  };
+  const planNameMap = { free: 'Starter', trial: 'Starter', student: 'Plus', researcher: 'Pro' };
 
-  // Academic-friendly recommendation (based on onboarding role/purpose)
   const isAcademicUser = (() => {
     const role = userDocument?.onboardingRole;
     const purpose = userDocument?.onboardingPurpose;
-    const academicRoles = ['researcher', 'student'];
-    const academicPurposes = ['research-summaries', 'academic-papers', 'bibliographies'];
-    return academicRoles.includes(role) || academicPurposes.includes(purpose);
+    return ['researcher', 'student'].includes(role) || ['research-summaries', 'academic-papers', 'bibliographies'].includes(purpose);
   })();
 
   return (
-    <div className="min-h-screen py-6 md:py-12 bg-mesh relative overflow-hidden">
+    <div className="bg-white">
       <SEO
         title="Pricing Plans"
         description="Simple, transparent pricing for AI-powered writing. Start free with 5 source entries. Plus and Pro plans for unlimited access. Pay-per-use document generation available to all plans."
         path="/pricing"
       />
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        {/* Header */}
-        <FadeIn direction="up">
-          <div className="text-center mb-16">
-            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-secondary-900 mb-6">
-              Simple, Transparent <span className="text-gradient">Pricing</span>
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-secondary-700 max-w-3xl mx-auto leading-relaxed">
-              Choose a plan for source management and analysis. Generate documents on any plan with simple pay-per-use pricing.
-            </p>
-          </div>
-        </FadeIn>
 
-        {/* Academic Plan Recommendation */}
+      {/* Hero */}
+      <section className="border-b border-secondary-200">
+        <div className="max-w-5xl mx-auto px-6 py-16 lg:py-20 text-center">
+          <FadeIn direction="up">
+            <div className="eyebrow mb-4">Pricing</div>
+            <h1 className="text-4xl lg:text-5xl font-semibold text-secondary-900 tracking-tight">
+              Simple, transparent, no contracts.
+            </h1>
+            <p className="mt-4 text-lg text-secondary-600 max-w-2xl mx-auto">
+              Start free, pay only for what you generate. Cancel anytime.
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+        {/* Academic recommendation */}
         {currentUser && isAcademicUser && (
           <FadeIn direction="up">
-            <div className="max-w-5xl mx-auto mb-8">
-              <div className="border border-[#e5e7eb] rounded-lg shadow-card bg-white p-5 flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <GraduationCap className="w-5 h-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-base font-semibold text-secondary-900 mb-1">
-                    Recommended for academic writers
-                  </h3>
-                  <p className="text-sm text-secondary-600">
-                    <span className="font-medium text-secondary-900">Plus</span> covers most academic workflows — unlimited sources, all 4 import methods (including DOI lookups), research feeds across Semantic Scholar, OpenAlex, and CrossRef, and the Topic & Outline Generator for literature reviews, essays, and research papers.
-                  </p>
-                </div>
+            <div className="max-w-5xl mx-auto mb-8 rounded-lg border border-primary-200 bg-primary-50/50 p-4 flex items-start gap-3">
+              <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <GraduationCap className="w-4 h-4 text-primary" />
+              </div>
+              <div className="text-sm">
+                <p className="font-medium text-secondary-900 mb-0.5">Recommended for academic writers</p>
+                <p className="text-secondary-600">
+                  <span className="font-medium text-secondary-900">Plus</span> covers most academic workflows — unlimited sources, all import methods, and the Topic & Outline Generator.
+                </p>
               </div>
             </div>
           </FadeIn>
         )}
 
-        {/* Pricing Cards — 3 columns */}
-        <StaggerChildren className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
+        {/* Plan cards */}
+        <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-12">
           {planCards.map((card) => {
             const isCurrent = isCurrentPlan(card.planId);
             return (
-              <StaggerItem key={card.planId}>
-                <div className={`card flex flex-col h-full ${card.highlight ? 'ring-2 ring-primary relative' : ''}`}>
-                  {card.highlight && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
-                        Most Popular
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-secondary-900 mb-2">{card.name}</h3>
-                    <div className="mb-1">
-                      <span className="text-4xl font-bold text-secondary-900">{card.price}</span>
-                      <span className="text-secondary-400 text-sm">{card.period}</span>
-                    </div>
-                    <p className="text-sm text-secondary-500 mb-6">{card.description}</p>
-                    <ul className="space-y-3 mb-8">
-                      {card.features.map((feature, i) => (
-                        <li key={i} className="flex items-start space-x-2 text-sm text-secondary-600">
-                          <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                          <span className={feature.bold ? 'font-semibold text-secondary-900' : ''}>{feature.text}</span>
-                        </li>
-                      ))}
-                    </ul>
+              <div
+                key={card.planId}
+                className={`relative bg-white rounded-lg border p-6 flex flex-col ${
+                  card.featured ? 'border-secondary-900' : 'border-secondary-200'
+                }`}
+              >
+                {card.featured && (
+                  <div className="absolute -top-2.5 left-6">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded-md bg-primary text-white">
+                      <Sparkles className="w-3 h-3" /> Best value
+                    </span>
                   </div>
-                  <button
-                    onClick={() => handleSubscribe(card.planId)}
-                    disabled={isLoading === card.planId || isCurrent}
-                    className={`${card.ctaClass} ${isCurrent ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    {isLoading === card.planId ? (
-                      <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    ) : isCurrent ? (
-                      'Current Plan'
-                    ) : card.planId === 'free' ? (
-                      'Get Started Free'
-                    ) : (
-                      <>
-                        Upgrade to {card.name}
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </>
-                    )}
-                  </button>
-                  <p className="text-xs text-secondary-400 mt-2 text-center">
-                    {card.planId === 'free' ? 'No credit card required' : 'Cancel anytime, no lock-in'}
-                  </p>
+                )}
+
+                <h3 className="text-base font-semibold text-secondary-900 mb-1">{card.name}</h3>
+                <p className="text-sm text-secondary-600 mb-4">{card.description}</p>
+
+                <div className="flex items-baseline mb-6">
+                  <span className="text-4xl font-semibold text-secondary-900 tabular-nums tracking-tight">{card.price}</span>
+                  <span className="text-sm text-secondary-500 ml-1.5">/ {card.period}</span>
                 </div>
-              </StaggerItem>
+
+                <ul className="space-y-2.5 mb-6 flex-1">
+                  {card.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-secondary-700">
+                      <Check className="w-3.5 h-3.5 text-primary mt-1 flex-shrink-0" strokeWidth={2.5} />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  onClick={() => handleSubscribe(card.planId)}
+                  disabled={isLoading === card.planId || isCurrent}
+                  className={`${card.ctaClass} ${isCurrent ? 'opacity-60 cursor-not-allowed' : ''}`}
+                >
+                  {isLoading === card.planId ? (
+                    <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  ) : isCurrent ? (
+                    'Current plan'
+                  ) : (
+                    <>
+                      {card.cta}
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+                <p className="text-xs text-secondary-500 mt-2 text-center">
+                  {card.planId === 'free' ? 'No credit card required' : 'Cancel anytime'}
+                </p>
+              </div>
             );
           })}
-        </StaggerChildren>
+        </div>
 
-        {/* Current Plan Status */}
+        {/* Current plan status */}
         {currentUser && userDocument?.subscription && (
           <FadeIn direction="up">
-            <div className="card max-w-2xl mx-auto mb-16 bg-primary/5 border-primary/20">
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-secondary-900 mb-2">
-                  Your Current Plan
-                </h3>
-                <p className="text-secondary-700 mb-4">
-                  You're currently on the{' '}
-                  <span className="font-semibold text-primary">
-                    {getPlanDisplayName(userDocument.subscription.plan)}
-                  </span>{' '}
-                  plan
-                </p>
-
+            <div className="max-w-3xl mx-auto mb-16 rounded-lg border border-secondary-200 bg-secondary-50/50 p-5">
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-secondary-500 font-medium mb-1">Current plan</p>
+                  <p className="text-base font-semibold text-secondary-900">
+                    {planNameMap[userDocument.subscription.plan] || userDocument.subscription.plan}
+                  </p>
+                </div>
                 {(userDocument.subscription.plan === 'free' || userDocument.subscription.plan === 'trial') ? (
-                  <div className="bg-white/50 rounded-lg p-4 inline-block">
-                    <p className="text-sm text-secondary-700 mb-1">Lifetime usage</p>
-                    <div className="flex items-center space-x-2">
-                      <div className="flex-1 bg-secondary-200/30 rounded-full h-2 min-w-[200px]">
-                        <div
-                          className="bg-primary h-2 rounded-full transition-all"
-                          style={{
-                            width: `${Math.min(
-                              (userDocument.subscription.entriesUsed / userDocument.subscription.entriesLimit) * 100,
-                              100
-                            )}%`
-                          }}
-                        />
-                      </div>
-                      <span className="text-sm font-medium text-secondary-900">
-                        {userDocument.subscription.entriesUsed} / {userDocument.subscription.entriesLimit}
-                      </span>
+                  <div className="flex items-center gap-3">
+                    <div className="w-40 bg-secondary-200 rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className="bg-primary h-1.5 transition-all"
+                        style={{
+                          width: `${Math.min(
+                            ((userDocument.subscription.entriesUsed || 0) / (userDocument.subscription.entriesLimit || 5)) * 100,
+                            100
+                          )}%`,
+                        }}
+                      />
                     </div>
+                    <span className="text-sm font-medium text-secondary-900 tabular-nums">
+                      {userDocument.subscription.entriesUsed || 0} / {userDocument.subscription.entriesLimit || 5}
+                    </span>
                   </div>
                 ) : (
-                  <div className="bg-white/50 rounded-lg p-4 inline-block">
-                    <p className="text-lg font-semibold text-primary">Unlimited Source Entries</p>
-                    <p className="text-sm text-secondary-700 mt-1">+ Topic & Outline Generator + Research Feeds</p>
-                  </div>
+                  <span className="badge badge-brand">Unlimited sources</span>
                 )}
               </div>
             </div>
           </FadeIn>
         )}
 
-        {/* Section Divider */}
-        <div className="section-divider max-w-3xl mx-auto mb-16" />
-
-        {/* Content Generation Pricing */}
-        <FadeIn direction="up">
-          <div className="max-w-5xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold text-secondary-900 text-center mb-4">
-              AI <span className="text-gradient">Document Generation</span>
+        {/* Per-page generation */}
+        <div className="max-w-5xl mx-auto mb-16">
+          <div className="mb-10">
+            <div className="eyebrow mb-3">Document generation</div>
+            <h2 className="text-3xl font-semibold text-secondary-900 tracking-tight">
+              Pay per page — available on every plan.
             </h2>
-            <p className="text-center text-lg text-secondary-700 mb-2">
-              Professional documents from your research — faster than any alternative
+            <p className="mt-3 text-secondary-600">
+              Choose your tier when you generate. A 10-page white paper costs <span className="font-mono text-secondary-900">$14.90</span> vs. <span className="line-through">$2,000+</span> from a freelancer.
             </p>
-            <p className="text-center text-sm font-medium text-primary mb-2">
-              A 10-page white paper costs $14.90 with DraftEngine vs. $2,000+ with a freelancer.
-            </p>
-            <p className="text-center text-sm text-secondary-500 mb-8">
-              Pay only for what you generate. Available to <strong>all plans</strong>. 1 page = ~250 words. DALL-E illustrations included.
-            </p>
+          </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Standard Tier */}
-              <div className="card flex flex-col h-full">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-secondary-900">Standard</h3>
-                  <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
-                    Claude Sonnet
-                  </span>
-                </div>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold text-secondary-900">$1.49</span>
-                  <span className="text-secondary-600">/page</span>
-                </div>
-                <p className="text-sm text-secondary-700 mb-6">High-quality generation for most writing needs</p>
-                <ul className="space-y-3 flex-1">
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Quality agents review every section (7 dimensions)</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Document Coherence Agent for full-draft review</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>DALL-E 3 editorial illustrations per section</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>APA, MLA, or Chicago citations with reference list</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Refined title, meta description, social excerpt</span>
-                  </li>
-                </ul>
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            <div className="rounded-lg border border-secondary-200 bg-white p-6">
+              <div className="flex items-baseline justify-between mb-3">
+                <h3 className="text-base font-semibold text-secondary-900">Standard</h3>
+                <span className="badge badge-neutral font-mono">Claude Sonnet</span>
               </div>
-
-              {/* Professional Tier */}
-              <div className="card flex flex-col h-full ring-2 ring-primary relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full">
-                    PREMIUM
-                  </span>
-                </div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-bold text-secondary-900">Professional</h3>
-                  <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                    Claude Opus
-                  </span>
-                </div>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold text-secondary-900">$2.49</span>
-                  <span className="text-secondary-600">/page</span>
-                </div>
-                <p className="text-sm text-secondary-700 mb-6">Deeper synthesis and superior prose from our most capable model</p>
-                <ul className="space-y-3 flex-1">
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span className="font-semibold">Everything in Standard, plus:</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Deeper source synthesis and argumentation</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>Superior writing quality and coherence</span>
-                  </li>
-                  <li className="flex items-start space-x-2 text-sm">
-                    <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                    <span>More nuanced source integration</span>
-                  </li>
-                </ul>
+              <div className="mb-4">
+                <span className="text-4xl font-semibold text-secondary-900 tabular-nums tracking-tight">$1.49</span>
+                <span className="text-sm text-secondary-500 ml-1">/ page</span>
               </div>
+              <ul className="space-y-2.5 text-sm text-secondary-700">
+                {[
+                  'Quality agents review every section',
+                  'Document coherence agent',
+                  'DALL-E editorial illustrations',
+                  'APA / MLA / Chicago citations',
+                  'Refined title, meta, social excerpt',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2">
+                    <Check className="w-3.5 h-3.5 text-primary mt-1 flex-shrink-0" strokeWidth={2.5} />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Cost Estimator Widget */}
-            <ScaleIn delay={0.2}>
-              <div className="glass-card mt-8 p-6 md:p-8 rounded-2xl">
-                <h3 className="text-2xl font-bold text-secondary-900 text-center mb-2">
-                  Cost Estimator
-                </h3>
-                <p className="text-center text-secondary-700 mb-6">
-                  Calculate the exact cost for your document before you generate
-                </p>
+            <div className="relative rounded-lg border border-secondary-900 bg-white p-6">
+              <div className="absolute -top-2.5 left-6">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded-md bg-primary text-white">
+                  Deeper synthesis
+                </span>
+              </div>
+              <div className="flex items-baseline justify-between mb-3">
+                <h3 className="text-base font-semibold text-secondary-900">Professional</h3>
+                <span className="badge badge-brand font-mono">Claude Opus</span>
+              </div>
+              <div className="mb-4">
+                <span className="text-4xl font-semibold text-secondary-900 tabular-nums tracking-tight">$2.49</span>
+                <span className="text-sm text-secondary-500 ml-1">/ page</span>
+              </div>
+              <ul className="space-y-2.5 text-sm text-secondary-700">
+                <li className="flex items-start gap-2">
+                  <Check className="w-3.5 h-3.5 text-primary mt-1 flex-shrink-0" strokeWidth={2.5} />
+                  <span className="font-medium text-secondary-900">Everything in Standard, plus:</span>
+                </li>
+                {[
+                  'Deeper source synthesis',
+                  'Superior writing quality',
+                  'More nuanced argumentation',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2">
+                    <Check className="w-3.5 h-3.5 text-primary mt-1 flex-shrink-0" strokeWidth={2.5} />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  {/* Pages Input */}
-                  <div>
-                    <label className="form-label">Number of Pages</label>
-                    <input
-                      type="range"
-                      min="2"
-                      max="40"
-                      value={estimatorPages}
-                      onChange={(e) => setEstimatorPages(Number(e.target.value))}
-                      className="w-full h-2 bg-secondary-200 rounded-lg appearance-none cursor-pointer accent-primary"
-                    />
-                    <div className="flex justify-between text-sm text-secondary-600 mt-2">
-                      <span>2 pages</span>
-                      <span className="font-bold text-primary">{estimatorPages} pages</span>
-                      <span>40 pages</span>
-                    </div>
-                    <p className="text-xs text-secondary-600 mt-2 text-center">
-                      = {estimatorPages * 250} words
-                    </p>
-                  </div>
+          {/* Cost estimator */}
+          <div className="rounded-lg border border-secondary-200 bg-secondary-50/40 p-6 lg:p-8">
+            <div className="flex items-center gap-2 mb-1">
+              <Zap className="w-4 h-4 text-primary" />
+              <h3 className="text-base font-semibold text-secondary-900">Cost estimator</h3>
+            </div>
+            <p className="text-sm text-secondary-600 mb-6">Know the exact cost before you generate.</p>
 
-                  {/* Tier Selection */}
-                  <div>
-                    <label className="form-label">Quality Tier</label>
-                    <div className="space-y-3">
-                      <button
-                        onClick={() => setEstimatorTier('standard')}
-                        className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
-                          estimatorTier === 'standard'
-                            ? 'border-primary bg-primary/5'
-                            : 'border-secondary-300/30 hover:border-secondary-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-semibold text-secondary-900">Standard</p>
-                            <p className="text-xs text-secondary-600">Claude Sonnet — $1.49/page</p>
-                          </div>
-                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                            estimatorTier === 'standard'
-                              ? 'bg-primary border-primary'
-                              : 'border-secondary-300'
-                          }`}>
-                            {estimatorTier === 'standard' && (
-                              <Check className="w-3 h-3 text-white" />
-                            )}
-                          </div>
-                        </div>
-                      </button>
-                      <button
-                        onClick={() => setEstimatorTier('pro')}
-                        className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
-                          estimatorTier === 'pro'
-                            ? 'border-primary bg-primary/5'
-                            : 'border-secondary-300/30 hover:border-secondary-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-semibold text-secondary-900">Professional</p>
-                            <p className="text-xs text-secondary-600">Claude Opus — $2.49/page</p>
-                          </div>
-                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                            estimatorTier === 'pro'
-                              ? 'bg-primary border-primary'
-                              : 'border-secondary-300'
-                          }`}>
-                            {estimatorTier === 'pro' && (
-                              <Check className="w-3 h-3 text-white" />
-                            )}
-                          </div>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
+            <div className="grid md:grid-cols-3 gap-6 items-start">
+              {/* Pages */}
+              <div className="md:col-span-1">
+                <label className="form-label">Pages</label>
+                <input
+                  type="range"
+                  min="2"
+                  max="40"
+                  value={estimatorPages}
+                  onChange={(e) => setEstimatorPages(Number(e.target.value))}
+                  className="w-full h-1.5 bg-secondary-200 rounded-full appearance-none cursor-pointer accent-primary"
+                />
+                <div className="flex justify-between text-xs text-secondary-500 mt-2 tabular-nums">
+                  <span>2</span>
+                  <span className="font-medium text-secondary-900">{estimatorPages} pages · {(estimatorPages * 250).toLocaleString()} words</span>
+                  <span>40</span>
                 </div>
+              </div>
 
-                {/* Cost Display */}
-                <div className="bg-white rounded-xl p-6 text-center border border-secondary-300/30">
-                  <p className="text-sm text-secondary-600 mb-2">Estimated Cost</p>
-                  <p className="text-5xl font-bold text-primary mb-2">
+              {/* Tier */}
+              <div className="md:col-span-1">
+                <label className="form-label">Tier</label>
+                <div className="space-y-2">
+                  {[
+                    { id: 'standard', label: 'Standard', sub: '$1.49 / page · Claude Sonnet' },
+                    { id: 'pro', label: 'Professional', sub: '$2.49 / page · Claude Opus' },
+                  ].map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => setEstimatorTier(t.id)}
+                      className={`w-full p-3 rounded-md border text-left transition-colors ${
+                        estimatorTier === t.id
+                          ? 'border-secondary-900 bg-white'
+                          : 'border-secondary-200 bg-white hover:border-secondary-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <p className="text-sm font-medium text-secondary-900">{t.label}</p>
+                          <p className="text-xs text-secondary-500">{t.sub}</p>
+                        </div>
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                          estimatorTier === t.id ? 'bg-secondary-900 border-secondary-900' : 'border-secondary-300'
+                        }`}>
+                          {estimatorTier === t.id && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cost display */}
+              <div className="md:col-span-1">
+                <label className="form-label">Estimate</label>
+                <div className="rounded-md border border-secondary-200 bg-white p-5 text-center">
+                  <p className="text-4xl font-semibold text-secondary-900 tabular-nums tracking-tight">
                     ${estimatedCost.toFixed(2)}
                   </p>
-                  <p className="text-sm text-secondary-700">
-                    {estimatorPages} pages x ${estimatorTier === 'standard' ? '1.49' : '2.49'} per page
+                  <p className="text-xs text-secondary-500 mt-2 tabular-nums">
+                    {estimatorPages} × ${estimatorTier === 'standard' ? '1.49' : '2.49'}
                   </p>
-                  <div className="mt-4 pt-4 border-t border-secondary-300/30">
-                    <p className="text-xs text-secondary-600">
-                      Pay after generation — 100% refund if generation fails
-                    </p>
-                  </div>
+                  <p className="text-xs text-secondary-500 mt-3 pt-3 border-t border-secondary-200">
+                    100% refund if generation fails
+                  </p>
                 </div>
               </div>
-            </ScaleIn>
-          </div>
-        </FadeIn>
-
-        {/* Section Divider */}
-        <div className="section-divider max-w-3xl mx-auto mb-16" />
-
-        {/* FAQ Section */}
-        <div className="max-w-4xl mx-auto mb-16">
-          <FadeIn direction="up">
-            <h2 className="text-3xl font-bold text-secondary-900 text-center mb-12">
-              Frequently Asked <span className="text-gradient">Questions</span>
-            </h2>
-          </FadeIn>
-
-          <StaggerChildren className="space-y-6">
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  Can free users generate documents?
-                </h3>
-                <p className="text-secondary-700">
-                  Yes. Document generation is pay-per-use and available to all plans, including Starter. You choose Standard ($1.49/page with Claude Sonnet) or Professional ($2.49/page with Claude Opus) each time you generate.
-                </p>
-              </div>
-            </StaggerItem>
-
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  What's included in document generation?
-                </h3>
-                <p className="text-secondary-700">
-                  Every generated document includes quality agent review (section-level and full-document coherence), DALL-E 3 editorial illustrations for each section, auto-generated citations in your chosen style (APA, MLA, or Chicago), a refined title with 3 alternatives, a 150-word meta description, and a social media excerpt. All of this is included in the per-page price.
-                </p>
-              </div>
-            </StaggerItem>
-
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  What citation styles are supported?
-                </h3>
-                <p className="text-secondary-700">
-                  DraftEngine supports APA, MLA, and Chicago citation styles. Inline citation markers are inserted automatically after generation, and a complete reference list is appended to your document.
-                </p>
-              </div>
-            </StaggerItem>
-
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  How do Research Feeds work?
-                </h3>
-                <p className="text-secondary-700">
-                  Subscribe to any research topic and DraftEngine will surface relevant new papers from three academic databases — Semantic Scholar, OpenAlex, and CrossRef. Choose daily or weekly delivery, review what's new, and import papers directly into your source library. Research Feeds are available on Plus and Pro plans.
-                </p>
-              </div>
-            </StaggerItem>
-
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  What's the difference between Plus and Pro?
-                </h3>
-                <p className="text-secondary-700">
-                  Plus ($9.99/mo) gives you unlimited sources, all import methods, and the Topic & Outline Generator. Content generation is pay-per-page at standard rates ($1.49-$2.49/page). Pro ($19.99/mo) adds 10 included content pages every month (worth $14.90), discounted overage pricing ($1/$2 per page), and Research Feeds that auto-import new papers by topic. If you publish even one document a month, Pro pays for itself.
-                </p>
-              </div>
-            </StaggerItem>
-
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  Can I change plans at any time?
-                </h3>
-                <p className="text-secondary-700">
-                  Yes. You can upgrade or downgrade your plan at any time. Changes take effect immediately, and billing is prorated accordingly.
-                </p>
-              </div>
-            </StaggerItem>
-
-            <StaggerItem>
-              <div className="card">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  What payment methods do you accept?
-                </h3>
-                <p className="text-secondary-700">
-                  We accept all major credit cards and PayPal. All payments are processed securely through Stripe.
-                </p>
-              </div>
-            </StaggerItem>
-          </StaggerChildren>
-        </div>
-
-        {/* Section Divider */}
-        <div className="section-divider max-w-3xl mx-auto mb-16" />
-
-        {/* CTA Section */}
-        <FadeIn direction="up">
-          <div className="card max-w-4xl mx-auto text-center bg-gradient-brand text-white">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-              Ready to Transform Your Writing?
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Start free with 5 source entries. Generate documents on any plan. No credit card required.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-              {!currentUser ? (
-                <>
-                  <Link
-                    to="/signup"
-                    className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
-                  >
-                    Start Free — No Credit Card
-                  </Link>
-                  <Link
-                    to="/login"
-                    className="border-2 border-white text-white hover:bg-white hover:text-primary-600 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
-                  >
-                    Sign In
-                  </Link>
-                </>
-              ) : (
-                <Link
-                  to="/create"
-                  className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-4 rounded-lg font-semibold text-lg"
-                >
-                  Create Your First Entry
-                </Link>
-              )}
             </div>
           </div>
-        </FadeIn>
+        </div>
+
+        {/* FAQ */}
+        <div className="max-w-3xl mx-auto mb-16">
+          <h2 className="text-2xl font-semibold text-secondary-900 tracking-tight mb-8 text-center">
+            Frequently asked questions
+          </h2>
+
+          <div className="divide-y divide-secondary-200 border-y border-secondary-200">
+            {[
+              {
+                q: 'Can free users generate documents?',
+                a: 'Yes. Document generation is pay-per-use and available to all plans, including Starter. Choose Standard ($1.49/page) or Professional ($2.49/page) each time you generate.',
+              },
+              {
+                q: 'What\'s included in document generation?',
+                a: 'Every generated document includes quality agent review, full-document coherence review, DALL-E 3 editorial illustrations per section, citations in your chosen style, refined title with alternatives, meta description, and social media excerpt.',
+              },
+              {
+                q: 'What citation styles are supported?',
+                a: 'APA, MLA, and Chicago. Inline markers are inserted automatically and a complete reference list is appended.',
+              },
+              {
+                q: 'How do Research Feeds work?',
+                a: 'Subscribe to any research topic and DraftEngine surfaces new papers from Semantic Scholar, OpenAlex, and CrossRef. Choose daily or weekly delivery and import directly into your library. Available on Plus and Pro.',
+              },
+              {
+                q: 'What\'s the difference between Plus and Pro?',
+                a: 'Plus ($9.99) gives unlimited sources and the Outline Generator. Generation is full pay-per-page. Pro ($19.99) adds 10 included pages monthly ($14.90 value), discounted overage rates, and Research Feeds. Pro pays for itself if you publish even one document a month.',
+              },
+              {
+                q: 'Can I change plans anytime?',
+                a: 'Yes. Upgrades take effect immediately. Downgrades take effect at the next billing cycle. Billing is prorated.',
+              },
+              {
+                q: 'What payment methods do you accept?',
+                a: 'All major credit cards and PayPal, processed securely through Stripe.',
+              },
+            ].map((item) => (
+              <details key={item.q} className="group py-5">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <span className="text-base font-medium text-secondary-900 group-hover:text-primary transition-colors">{item.q}</span>
+                  <span className="ml-4 flex-shrink-0 w-5 h-5 rounded-full border border-secondary-300 flex items-center justify-center text-secondary-500 group-open:rotate-45 transition-transform">
+                    <span className="text-sm leading-none">+</span>
+                  </span>
+                </summary>
+                <p className="mt-3 text-sm text-secondary-600 leading-relaxed">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        {/* Final CTA */}
+        <div className="max-w-4xl mx-auto rounded-xl bg-secondary-900 text-white px-8 py-12 lg:py-14 text-center">
+          <h2 className="text-3xl lg:text-4xl font-semibold tracking-tight">
+            Ready to publish?
+          </h2>
+          <p className="mt-3 text-secondary-300 max-w-xl mx-auto">
+            Start free with 5 source entries. Generate documents on any plan.
+          </p>
+          <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+            {!currentUser ? (
+              <>
+                <Link to="/signup" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-secondary-900 hover:bg-secondary-100 rounded-md font-medium text-sm transition-colors">
+                  Start free
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link to="/login" className="inline-flex items-center gap-2 px-5 py-2.5 text-secondary-300 hover:text-white rounded-md font-medium text-sm transition-colors">
+                  Sign in
+                </Link>
+              </>
+            ) : (
+              <Link to="/create" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-secondary-900 hover:bg-secondary-100 rounded-md font-medium text-sm transition-colors">
+                Create your first entry
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
