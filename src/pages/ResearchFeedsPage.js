@@ -179,32 +179,30 @@ const ResearchFeedsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f6f8]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div className="min-h-screen bg-secondary-50/40">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Page Header */}
-        <FadeIn>
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-[#316094] rounded-lg flex items-center justify-center">
-                <Rss className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Research Feeds</h1>
-                <p className="text-sm text-gray-500">
-                  Discover new research automatically based on your topics
-                </p>
-              </div>
+        <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="badge badge-brand">Pro feature</span>
             </div>
-            <button
-              onClick={handleCheckFeeds}
-              disabled={checkingFeeds || subscriptions.length === 0}
-              className="flex items-center space-x-2 px-4 py-2 bg-[#316094] text-white rounded-lg hover:bg-[#274d78] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
-            >
-              <RefreshCw className={`w-4 h-4 ${checkingFeeds ? 'animate-spin' : ''}`} />
-              <span>{checkingFeeds ? 'Checking...' : 'Check Now'}</span>
-            </button>
+            <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">
+              Research feeds
+            </h1>
+            <p className="mt-1 text-sm text-secondary-500">
+              Auto-import new papers from Semantic Scholar, OpenAlex, and CrossRef.
+            </p>
           </div>
-        </FadeIn>
+          <button
+            onClick={handleCheckFeeds}
+            disabled={checkingFeeds || subscriptions.length === 0}
+            className="btn btn-primary btn-sm"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${checkingFeeds ? 'animate-spin' : ''}`} />
+            {checkingFeeds ? 'Checking…' : 'Check now'}
+          </button>
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Sidebar - Subscriptions */}

@@ -158,54 +158,42 @@ const AnalyzePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-mesh py-8">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <div className="min-h-screen bg-secondary-50/40 py-8">
+      <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
-        <FadeIn direction="left">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-4">
-              <motion.button
-                onClick={() => navigate('/sources')}
-                className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
-                whileHover={{ x: -4 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </motion.button>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-secondary-900">
-                  Idea & Outline Generator
-                </h1>
-                <p className="text-secondary-700">
-                  AI-powered content synthesis for {selectedEntryData.length} selected entries
-                </p>
-              </div>
-            </div>
+        <div className="flex items-start gap-3 mb-8">
+          <button
+            onClick={() => navigate('/sources')}
+            className="mt-1 p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+            aria-label="Back"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <div>
+            <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">
+              Idea & outline generator
+            </h1>
+            <p className="mt-1 text-sm text-secondary-500">
+              Synthesizing {selectedEntryData.length} {selectedEntryData.length === 1 ? 'entry' : 'entries'} into topic suggestions.
+            </p>
           </div>
-        </FadeIn>
+        </div>
 
-        {/* Selected Entries Summary */}
-        <FadeIn delay={0.1}>
-          <div className="glass-card mb-8 bg-gradient-to-br from-primary/5 to-khaki/5">
-            <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                <FileText className="w-6 h-6 text-primary" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-semibold text-secondary-900 mb-2">
-                  Selected Entries ({selectedEntryData.length})
-                </h3>
-                <div className="space-y-1 max-h-32 overflow-y-auto">
-                  {selectedEntryData.map((entry, idx) => (
-                    <div key={idx} className="text-sm text-secondary-700 truncate break-words">
-                      • {entry.citation}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+        {/* Selected entries */}
+        <div className="rounded-lg border border-secondary-200 bg-white mb-8 p-5">
+          <div className="flex items-baseline justify-between mb-3">
+            <h3 className="text-sm font-semibold text-secondary-900">Selected entries</h3>
+            <span className="text-xs text-secondary-500 tabular-nums">{selectedEntryData.length}</span>
           </div>
-        </FadeIn>
+          <div className="space-y-1.5 max-h-32 overflow-y-auto">
+            {selectedEntryData.map((entry, idx) => (
+              <div key={idx} className="flex items-start gap-2 text-sm text-secondary-700">
+                <FileText className="w-3.5 h-3.5 text-secondary-400 mt-1 flex-shrink-0" />
+                <span className="truncate">{entry.citation}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Configuration Section */}
         <AnimatePresence>

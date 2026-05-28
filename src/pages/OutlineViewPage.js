@@ -310,29 +310,27 @@ const OutlineViewPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-mesh py-8">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <div className="min-h-screen bg-secondary-50/40 py-8">
+      <div className="max-w-5xl mx-auto px-6">
         {/* Header */}
-        <FadeIn>
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-4 flex-1">
-              <motion.button
-                onClick={() => navigate('/analyze', { state: { selectedEntries } })}
-                className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
-                whileHover={{ x: -4 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </motion.button>
-              <div className="flex-1">
-                <h1 className="text-2xl md:text-3xl font-bold text-secondary-900">
-                  Detailed Outline
-                </h1>
-                <p className="text-secondary-700 text-sm md:text-base">
-                  Evidence-mapped structure with {outline.sections.length} sections
-                </p>
-              </div>
+        <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">
+          <div className="flex items-start gap-3 flex-1 min-w-0">
+            <button
+              onClick={() => navigate('/analyze', { state: { selectedEntries } })}
+              className="mt-1 p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">
+                Detailed outline
+              </h1>
+              <p className="mt-1 text-sm text-secondary-500">
+                Evidence-mapped structure with <span className="tabular-nums">{outline.sections.length}</span> sections
+              </p>
             </div>
+          </div>
             <motion.button
               onClick={exportToWord}
               disabled={isExporting}
@@ -352,8 +350,7 @@ const OutlineViewPage = () => {
                 </>
               )}
             </motion.button>
-          </div>
-        </FadeIn>
+        </div>
 
         {/* Success Message */}
         <FadeIn delay={0.1}>
