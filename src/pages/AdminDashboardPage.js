@@ -94,17 +94,27 @@ const AdminDashboardPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
-  const runVoiceCompliance = async () => {
-    const costEstimate = voiceScope === 'all' ? '~$50' : voiceScope === 'voices' ? '~$15' : '~$3';
-    const durationEstimate = voiceScope === 'all' ? '50-75 min' : voiceScope === 'voices' ? '15-25 min' : '3-5 min';
-    if (!window.confirm(`Run voice compliance with scope='${voiceScope}'?\n\nThis will generate real test documents and run assertions in the background.\n\nEstimated cost: ${costEstimate}\nEstimated duration: ${durationEstimate}\n\nResults will stream into the panel as each test completes. Safe to navigate away — the run continues in the background.`)) {
+  const runVoiceCompliance = async (scope = 'voices') => {
+    const labels = {
+      voices: { name: '5 voice reps', cost: '~$15', duration: '15-25 min', count: 5 },
+      all:    { name: 'all 17 document types', cost: '~$50', duration: '50-75 min', count: 17 },
+    };
+    const info = labels[scope] || labels.voices;
+    if (!window.confirm(
+      `Run voice compliance on ${info.name}?\n\n` +
+      `This generates ${info.count} real test documents in the background.\n\n` +
+      `Estimated cost: ${info.cost}\n` +
+      `Estimated duration: ${info.duration}\n\n` +
+      `Results stream into the panel as each test completes. Safe to navigate away — the run continues in the background.`
+    )) {
       return;
     }
     setVoiceRunning(true);
     setVoiceResult(null);
+    setVoiceScope(scope);  // keep state in sync for UI labels
     try {
       // Kick off the run — returns immediately with run_id
-      const kickoff = await adminAPI.runVoiceCompliance({ scope: voiceScope });
+      const kickoff = await adminAPI.runVoiceCompliance({ scope });
       const runId = kickoff.run_id;
       toast.success(`Run ${runId.slice(0, 8)}… started. Polling for progress.`);
 
@@ -1600,37 +1610,63 @@ const AdminDashboardPage = () => {
               <div className="space-y-6">
                 {/* Run panel */}
                 <div className="rounded-lg border border-secondary-200 bg-white p-5">
-                  <div className="flex items-start justify-between gap-4 flex-wrap">
-                    <div className="flex items-start gap-3 min-w-0 flex-1">
-                      <div className="w-9 h-9 rounded-md bg-primary/10 border border-primary-100 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="w-4 h-4 text-primary" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-semibold text-secondary-900">Voice compliance suite</h3>
-                        <p className="text-xs text-secondary-600 mt-0.5 leading-relaxed">
-                          Generates a small test document for each document type, then runs structural assertions (citation density, em-dash check, bullet allowance, IMRaD structure) and a Haiku voice-fit judgment. Verifies each voice profile actually produces what it claims to.
-                        </p>
-                      </div>
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="w-9 h-9 rounded-md bg-primary/10 border border-primary-100 flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-primary" />
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <select
-                        value={voiceScope}
-                        onChange={(e) => setVoiceScope(e.target.value)}
-                        disabled={voiceRunning}
-                        className="form-input w-auto text-xs py-1.5"
-                      >
-                        <option value="voices">5 voice reps (~$15)</option>
-                        <option value="all">All 17 types (~$50)</option>
-                      </select>
-                      <button
-                        onClick={runVoiceCompliance}
-                        disabled={voiceRunning}
-                        className="btn btn-primary btn-sm"
-                      >
-                        {voiceRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <PlayCircle className="w-3.5 h-3.5" />}
-                        {voiceRunning ? 'Running…' : 'Run suite'}
-                      </button>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm font-semibold text-secondary-900">Voice compliance suite</h3>
+                      <p className="text-xs text-secondary-600 mt-0.5 leading-relaxed">
+                        Generates real test documents, then runs structural assertions (citation density, em-dash check, bullet allowance, IMRaD structure) and a Haiku voice-fit judgment. Verifies each voice profile actually produces what it claims to.
+                      </p>
                     </div>
+                  </div>
+
+                  {/* Two explicit scope buttons — no dropdown to miss */}
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {/* Quick: 5 voices */}
+                    <button
+                      onClick={() => runVoiceCompliance('voices')}
+                      disabled={voiceRunning}
+                      className="text-left p-4 rounded-md border border-secondary-200 hover:border-primary hover:bg-primary/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-secondary-200 disabled:hover:bg-white"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <span className="text-sm font-semibold text-secondary-900">Quick check</span>
+                        <span className="text-xs font-mono text-secondary-500 tabular-nums whitespace-nowrap">~$15 · 15-25 min</span>
+                      </div>
+                      <p className="text-xs text-secondary-600 leading-relaxed">
+                        5 representative document types, one per voice profile (article / white_paper / research_paper / lab_report / bibliography). Use for routine checks after prompt tweaks.
+                      </p>
+                      <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-primary">
+                        {voiceRunning && voiceScope === 'voices' ? (
+                          <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Running…</>
+                        ) : (
+                          <><PlayCircle className="w-3.5 h-3.5" /> Run 5-voice suite</>
+                        )}
+                      </div>
+                    </button>
+
+                    {/* Full: all 17 types */}
+                    <button
+                      onClick={() => runVoiceCompliance('all')}
+                      disabled={voiceRunning}
+                      className="text-left p-4 rounded-md border-2 border-secondary-900 hover:bg-secondary-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <span className="text-sm font-semibold text-secondary-900">Full coverage</span>
+                        <span className="text-xs font-mono text-secondary-500 tabular-nums whitespace-nowrap">~$50 · 50-75 min</span>
+                      </div>
+                      <p className="text-xs text-secondary-600 leading-relaxed">
+                        All 17 supported document types. Reserve for pre-release verification or after major voice/prompt changes. Long-running — kick off and walk away.
+                      </p>
+                      <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-secondary-900">
+                        {voiceRunning && voiceScope === 'all' ? (
+                          <><RefreshCw className="w-3.5 h-3.5 animate-spin" /> Running…</>
+                        ) : (
+                          <><PlayCircle className="w-3.5 h-3.5" /> Run full 17-type suite</>
+                        )}
+                      </div>
+                    </button>
                   </div>
                 </div>
 
