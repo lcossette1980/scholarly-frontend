@@ -1,133 +1,99 @@
 // src/pages/PrivacyPolicyPage.js
 import React from 'react';
-import { Shield, Lock, Eye, Database, UserCheck, Mail } from 'lucide-react';
-import { FadeIn } from '../components/motion';
 import SEO from '../components/SEO';
 
 const PrivacyPolicyPage = () => {
   return (
-    <div className="min-h-screen py-12 bg-mesh">
+    <div className="min-h-screen bg-white">
       <SEO
         title="Privacy Policy"
         description="DraftEngine privacy policy. How we collect, use, and protect your data."
         path="/privacy"
       />
-      <div className="container mx-auto px-6 max-w-4xl">
-        <div className="h-1 bg-gradient-to-r from-primary-400 via-primary-400 to-primary-400" />
-        <FadeIn direction="up">
-          <div className="text-center mb-12 mt-8">
-            <div className="w-16 h-16 bg-gradient-brand rounded-full flex items-center justify-center mx-auto mb-6">
-              <Shield className="w-8 h-8 text-white" />
+
+      <div className="max-w-3xl mx-auto px-6 py-16 lg:py-20">
+        <div className="mb-12">
+          <div className="eyebrow mb-3">Legal</div>
+          <h1 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+            Privacy Policy
+          </h1>
+          <p className="mt-2 text-sm text-secondary-500">Last updated: December 2024</p>
+        </div>
+
+        <div className="prose prose-secondary max-w-none">
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Information we collect
+            </h2>
+            <div className="space-y-4 text-sm text-secondary-700 leading-relaxed">
+              <p>
+                <strong className="text-secondary-900">Account information.</strong> Name, email address, and authentication data when you create an account.
+              </p>
+              <p>
+                <strong className="text-secondary-900">Usage data.</strong> Information about how you use our service, including source entries created and writing focus areas.
+              </p>
+              <p>
+                <strong className="text-secondary-900">Document content.</strong> PDFs and other source material you upload for analysis. Processed securely and not stored permanently.
+              </p>
             </div>
-            <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-              <span className="text-gradient">Privacy</span> Policy
-            </h1>
-            <p className="text-secondary-700">
-              Last updated: December 2024
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              How we use your information
+            </h2>
+            <ul className="space-y-2 text-sm text-secondary-700 leading-relaxed list-disc pl-5">
+              <li>Provide and improve our source analysis and generation services</li>
+              <li>Process your documents using AI technology</li>
+              <li>Manage your account and subscription</li>
+              <li>Send important service updates and support communications</li>
+              <li>Analyze aggregated usage patterns to improve our models</li>
+            </ul>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Data security
+            </h2>
+            <p className="text-sm text-secondary-700 leading-relaxed">
+              We use industry-standard encryption, secure cloud infrastructure (Firebase / Google Cloud), and follow best practices to protect your data. Documents are processed securely and temporarily — we don't permanently store your uploaded PDFs.
+            </p>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Third-party services
+            </h2>
+            <p className="text-sm text-secondary-700 leading-relaxed mb-3">
+              We use trusted third-party services to provide our functionality:
+            </p>
+            <ul className="space-y-1.5 text-sm text-secondary-700 leading-relaxed list-disc pl-5">
+              <li><strong className="text-secondary-900">Anthropic & OpenAI</strong> — AI-powered analysis and generation</li>
+              <li><strong className="text-secondary-900">Firebase / Google Cloud</strong> — Authentication and storage</li>
+              <li><strong className="text-secondary-900">Stripe</strong> — Secure payment processing</li>
+              <li><strong className="text-secondary-900">Vercel & Render</strong> — Application hosting</li>
+            </ul>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Your rights
+            </h2>
+            <p className="text-sm text-secondary-700 leading-relaxed">
+              You have the right to access, update, or delete your personal information. You can also export your data or request account deletion at any time.
+            </p>
+          </section>
+
+          <div className="mt-12 rounded-lg border border-secondary-200 bg-secondary-50/40 p-5">
+            <h3 className="text-sm font-semibold text-secondary-900 mb-1">Contact us</h3>
+            <p className="text-sm text-secondary-700">
+              For privacy questions or to exercise your rights, email{' '}
+              <a href="mailto:privacy@draftengineapp.com" className="text-primary hover:text-secondary-900 underline transition-colors">
+                privacy@draftengineapp.com
+              </a>.
             </p>
           </div>
-
-          <div className="card card-floating space-y-8">
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Information We <span className="text-gradient">Collect</span>
-              </h2>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <UserCheck className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-secondary-900">Account Information</h3>
-                    <p className="text-secondary-700">Name, email address, and authentication data when you create an account.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Database className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-secondary-900">Usage Data</h3>
-                    <p className="text-secondary-700">Information about how you use our service, including source entries created and writing focus areas.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Eye className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-secondary-900">Document Content</h3>
-                    <p className="text-secondary-700">PDF documents you upload for analysis (processed securely and not stored permanently).</p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                How We Use Your Information
-              </h2>
-              <ul className="space-y-2 text-secondary-800">
-                <li>• Provide and improve our source analysis service</li>
-                <li>• Process your documents using AI technology</li>
-                <li>• Manage your account and subscription</li>
-                <li>• Send important service updates and support communications</li>
-                <li>• Analyze usage patterns to improve our AI models</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Data <span className="text-gradient">Security</span>
-              </h2>
-              <div className="bg-primary/5 border border-primary-600/20 rounded-lg p-6">
-                <div className="flex items-center space-x-3 mb-3">
-                  <Lock className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold text-secondary-900">Enterprise-Grade Security</h3>
-                </div>
-                <p className="text-secondary-800">
-                  We use industry-standard encryption, secure cloud infrastructure (Firebase/Google Cloud),
-                  and follow best practices to protect your data. Documents are processed securely and
-                  temporarily - we don't permanently store your uploaded PDFs.
-                </p>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Third-Party Services
-              </h2>
-              <p className="text-secondary-800 mb-4">
-                We use trusted third-party services to provide our functionality:
-              </p>
-              <ul className="space-y-2 text-secondary-800">
-                <li>• <strong>OpenAI:</strong> For AI-powered text analysis and generation</li>
-                <li>• <strong>Firebase/Google Cloud:</strong> For authentication and data storage</li>
-                <li>• <strong>Stripe:</strong> For secure payment processing</li>
-                <li>• <strong>Vercel:</strong> For application hosting and performance</li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Your Rights
-              </h2>
-              <p className="text-secondary-800 mb-4">
-                You have the right to access, update, or delete your personal information.
-                You can also export your data or request account deletion at any time.
-              </p>
-            </section>
-
-            <section>
-              <div className="bg-secondary-50 border border-secondary-300/30 rounded-lg p-6">
-                <div className="flex items-center space-x-3 mb-3">
-                  <Mail className="w-6 h-6 text-primary" />
-                  <h3 className="font-semibold text-secondary-900">Contact Us</h3>
-                </div>
-                <p className="text-secondary-800">
-                  For privacy questions or to exercise your rights, contact us at{' '}
-                  <a href="mailto:privacy@draftengineapp.com" className="text-primary hover:text-primary-600/80">
-                    privacy@draftengineapp.com
-                  </a>
-                </p>
-              </div>
-            </section>
-          </div>
-        </FadeIn>
+        </div>
       </div>
     </div>
   );

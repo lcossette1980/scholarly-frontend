@@ -728,24 +728,23 @@ const DocsPage = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 bg-mesh">
+    <div className="min-h-screen bg-white">
       <SEO
         title="Documentation"
         description="Learn how to use DraftEngine. Step-by-step guides for uploading sources, generating summaries, creating outlines, and drafting complete content."
         path="/docs"
       />
-      <div className="container mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 py-12 lg:py-16">
         {/* Header */}
-        <FadeIn>
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-              Documentation
-            </h1>
-            <p className="text-xl text-secondary-700">
-              Everything you need to know about using DraftEngine
-            </p>
-          </div>
-        </FadeIn>
+        <div className="mb-10">
+          <div className="eyebrow mb-3">How it works</div>
+          <h1 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+            Learn DraftEngine step by step.
+          </h1>
+          <p className="mt-3 text-lg text-secondary-600 max-w-2xl">
+            Walkthroughs for uploading sources, generating summaries, creating outlines, and drafting full documents.
+          </p>
+        </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar Navigation */}
@@ -756,12 +755,11 @@ const DocsPage = () => {
                   {sections.map((section) => (
                     <motion.button
                       key={section.id}
-                      whileHover={{ x: 4 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setActiveSection(section.id)}
-                      className={`w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-all ${
+                      className={`w-full text-left px-3 py-2 rounded-md flex items-center space-x-2 transition-colors text-sm ${
                         activeSection === section.id
-                          ? 'bg-primary text-white shadow-md shadow-primary/20'
+                          ? 'bg-secondary-100 text-secondary-900 font-medium'
                           : 'hover:bg-secondary-200/20 text-secondary-900'
                       }`}
                     >

@@ -67,15 +67,16 @@ const DocumentationPage = () => {
   );
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="container mx-auto px-6 max-w-7xl">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-6 py-12 lg:py-16">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-            Documentation
+        <div className="mb-10">
+          <div className="eyebrow mb-3">Documentation</div>
+          <h1 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+            Everything you need to use DraftEngine.
           </h1>
-          <p className="text-xl text-secondary-700">
-            Everything you need to integrate and use DraftEngine effectively
+          <p className="mt-3 text-lg text-secondary-600 max-w-2xl">
+            Integration guides, API reference, and best practices.
           </p>
         </div>
 

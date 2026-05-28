@@ -1,8 +1,9 @@
+// src/pages/EmailVerificationPage.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, RefreshCw, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, RefreshCw, CheckCircle, AlertCircle, ArrowRight, PenTool } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { sendEmailVerificationToUser, isEmailVerified } from '../services/auth';
+import { sendEmailVerificationToUser } from '../services/auth';
 import toast from 'react-hot-toast';
 
 const EmailVerificationPage = () => {
@@ -12,37 +13,21 @@ const EmailVerificationPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if email is already verified
     if (currentUser && currentUser.emailVerified) {
       setIsVerified(true);
-      // Redirect to dashboard after a delay
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000);
+      setTimeout(() => navigate('/dashboard'), 2000);
     }
   }, [currentUser, navigate]);
 
-  // Check verification status
   const checkVerificationStatus = async () => {
     if (!currentUser) return;
-    
     try {
-      // Reload the user to get the latest verification status
       await currentUser.reload();
-      
       if (currentUser.emailVerified) {
         setIsVerified(true);
         toast.success('Email verified successfully!');
-        
-        // Refresh the auth context
-        if (refreshUser) {
-          await refreshUser();
-        }
-        
-        // Redirect to dashboard
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1500);
+        if (refreshUser) await refreshUser();
+        setTimeout(() => navigate('/dashboard'), 1500);
       } else {
         toast.error('Email not yet verified. Please check your inbox.');
       }
@@ -54,20 +39,17 @@ const EmailVerificationPage = () => {
 
   const resendVerificationEmail = async () => {
     if (!currentUser) return;
-    
     setIsLoading(true);
-    
     try {
       await sendEmailVerificationToUser();
       toast.success('Verification email sent! Check your inbox.');
     } catch (error) {
       console.error('Error sending verification email:', error);
-      
-      if (error.message.includes('already verified')) {
+      if (error.message?.includes('already verified')) {
         toast.success('Email is already verified!');
         setIsVerified(true);
       } else if (error.code === 'auth/too-many-requests') {
-        toast.error('Too many requests. Please wait a few minutes before trying again.');
+        toast.error('Too many requests. Please wait a few minutes.');
       } else {
         toast.error('Failed to send verification email. Please try again.');
       }
@@ -78,103 +60,87 @@ const EmailVerificationPage = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-pearl flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8 text-center">
-          <div className="card">
-            <AlertCircle className="w-16 h-16 text-primary mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-secondary-900 mb-2">
-              Please Sign In
-            </h2>
-            <p className="text-secondary-700 mb-6">
-              You need to be signed in to verify your email.
-            </p>
-            <Link to="/login" className="btn btn-primary w-full">
-              Go to Login
-            </Link>
+      <div className="min-h-screen bg-white flex items-center justify-center px-6">
+        <div className="w-full max-w-sm text-center">
+          <div className="w-10 h-10 rounded-full bg-warning-50 border border-warning-200 flex items-center justify-center mx-auto mb-5">
+            <AlertCircle className="w-5 h-5 text-warning-700" />
           </div>
+          <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-2">Please sign in</h2>
+          <p className="text-sm text-secondary-600 mb-6">
+            You need to be signed in to verify your email.
+          </p>
+          <Link to="/login" className="btn btn-primary">
+            Go to sign in
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-pearl flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
+      <div className="w-full max-w-md">
+        <Link to="/" className="inline-flex items-center gap-2.5 mb-10 justify-center w-full">
+          <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
+            <PenTool className="w-4 h-4 text-white" strokeWidth={2.25} />
+          </div>
+          <span className="text-[15px] font-semibold text-secondary-900 tracking-tight">DraftEngine</span>
+        </Link>
+
         {!isVerified ? (
-          /* Verification Required */
-          <div className="card text-center">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Mail className="w-8 h-8 text-primary" />
+          <div className="rounded-lg border border-secondary-200 bg-white p-6 text-center">
+            <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary-100 flex items-center justify-center mx-auto mb-5">
+              <Mail className="w-5 h-5 text-primary" />
             </div>
-            
-            <h2 className="text-2xl font-bold text-secondary-900 mb-2">
-              Verify Your Email
-            </h2>
-            
-            <p className="text-secondary-700 mb-6">
-              We've sent a verification email to{' '}
+
+            <h1 className="text-xl font-semibold text-secondary-900 tracking-tight mb-2">
+              Verify your email
+            </h1>
+            <p className="text-sm text-secondary-600 mb-6 leading-relaxed">
+              We've sent a verification link to{' '}
               <strong className="text-secondary-900">{currentUser.email}</strong>.
-              Please check your inbox and click the verification link to continue.
+              Check your inbox to continue.
             </p>
-            
-            <div className="space-y-4">
-              <button
-                onClick={checkVerificationStatus}
-                className="btn btn-primary w-full"
-              >
-                <CheckCircle className="w-4 h-4 mr-2" />
-                I've Verified My Email
+
+            <div className="space-y-2">
+              <button onClick={checkVerificationStatus} className="btn btn-primary w-full">
+                <CheckCircle className="w-3.5 h-3.5" />
+                I've verified my email
               </button>
-              
               <button
                 onClick={resendVerificationEmail}
                 disabled={isLoading}
-                className="btn btn-outline w-full"
+                className="btn btn-secondary w-full"
               >
-                {isLoading ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Resend Verification Email
-                  </>
-                )}
+                <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+                {isLoading ? 'Sending…' : 'Resend verification email'}
               </button>
             </div>
-            
-            <div className="mt-8 pt-6 border-t border-secondary-300/20">
-              <p className="text-sm text-secondary-600 mb-4">
-                Can't find the email? Check your spam folder or make sure you entered the correct email address.
+
+            <div className="mt-6 pt-5 border-t border-secondary-200">
+              <p className="text-xs text-secondary-500 mb-3 leading-relaxed">
+                Can't find it? Check your spam folder or update your email.
               </p>
-              
-              <Link
-                to="/profile"
-                className="text-primary hover:text-primary-600/80 text-sm font-medium"
-              >
-                Update Email Address
+              <Link to="/profile" className="text-xs text-secondary-700 hover:text-secondary-900 font-medium transition-colors">
+                Update email address
               </Link>
             </div>
           </div>
         ) : (
-          /* Verification Success */
-          <div className="card text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-8 h-8 text-green-600" />
+          <div className="rounded-lg border border-secondary-200 bg-white p-6 text-center">
+            <div className="w-10 h-10 rounded-full bg-success-50 border border-success-200 flex items-center justify-center mx-auto mb-5">
+              <CheckCircle className="w-5 h-5 text-success-600" />
             </div>
-            
-            <h2 className="text-2xl font-bold text-secondary-900 mb-2">
-              Email Verified!
-            </h2>
-            
-            <p className="text-secondary-700 mb-6">
-              Your email has been successfully verified. You'll be redirected to your dashboard shortly.
+            <h1 className="text-xl font-semibold text-secondary-900 tracking-tight mb-2">
+              Email verified!
+            </h1>
+            <p className="text-sm text-secondary-600 mb-6">
+              You'll be redirected to your dashboard shortly.
             </p>
-            
             <Link to="/dashboard" className="btn btn-primary w-full">
-              Go to Dashboard
+              Go to dashboard
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         )}

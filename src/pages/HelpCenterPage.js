@@ -378,36 +378,37 @@ const HelpCenterPage = () => {
   );
 
   return (
-    <div className="min-h-screen py-12 bg-mesh">
+    <div className="min-h-screen bg-white">
       <SEO
         title="Help Center"
         description="Get help with DraftEngine. FAQs, account management, billing, writing tips, and support resources for AI-powered content creation."
         path="/help"
       />
-      <div className="container mx-auto px-6 max-w-6xl">
-        {/* Header */}
-        <FadeIn>
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-              Help Center
-            </h1>
-            <p className="text-xl text-secondary-700 mb-8">
-              Find answers and get support for DraftEngine
-            </p>
 
-            {/* Search */}
-            <div className="max-w-md mx-auto relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search for help..."
-                className="form-input pl-10 focus:ring-2 focus:ring-primary/30 focus:shadow-lg focus:shadow-primary/10 transition-shadow"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+      {/* Hero */}
+      <section className="border-b border-secondary-200">
+        <div className="max-w-3xl mx-auto px-6 py-16 lg:py-20 text-center">
+          <div className="eyebrow mb-4">Help center</div>
+          <h1 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+            How can we help?
+          </h1>
+          <p className="mt-3 text-lg text-secondary-600">
+            Find answers and get support for DraftEngine.
+          </p>
+          <div className="mt-7 max-w-md mx-auto relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-400 w-4 h-4 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search articles…"
+              className="form-input pl-9"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-        </FadeIn>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6 py-12 lg:py-16">
 
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Help Categories or Article Content */}

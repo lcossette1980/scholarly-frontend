@@ -1,342 +1,209 @@
 // src/pages/AcademicIntegrityPage.js
 import React from 'react';
-import { Shield, CheckCircle, BookOpen, Search, FileText, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { FadeIn } from '../components/motion';
-import { motion } from 'framer-motion';
+import { Check, X, ArrowRight, FileText, Search, BookOpen } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const AcademicIntegrityPage = () => {
   return (
-    <div className="min-h-screen py-16 lg:py-20 bg-mesh">
+    <div className="bg-white">
       <SEO
-        title="Ethical AI & Source Attribution"
+        title="Responsible AI & Source Attribution"
         description="How DraftEngine handles your sources with integrity. Transparent AI writing, traceable attribution, and best practices for credible content."
         path="/ethical-ai"
       />
-      <div className="container mx-auto px-6">
-        <div className="h-1 bg-gradient-to-r from-primary-400 via-primary-400 to-primary-400 max-w-5xl mx-auto" />
-        <FadeIn direction="up">
-          {/* Header */}
-          <div className="max-w-4xl mx-auto text-center mb-12 mt-8">
-            <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Shield className="w-10 h-10 text-primary" />
+
+      {/* Hero */}
+      <section className="border-b border-secondary-200">
+        <div className="max-w-4xl mx-auto px-6 py-16 lg:py-20 text-center">
+          <div className="eyebrow mb-4">Responsible AI</div>
+          <h1 className="text-4xl lg:text-5xl font-semibold text-secondary-900 tracking-tight leading-[1.1]">
+            How we handle your sources.
+          </h1>
+          <p className="mt-4 text-lg text-secondary-600 max-w-2xl mx-auto">
+            Transparent AI, credible writing. Here's how DraftEngine uses your material to produce content you can stand behind.
+          </p>
+        </div>
+      </section>
+
+      <div className="max-w-4xl mx-auto px-6 py-16 lg:py-20">
+
+        {/* Our approach */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-semibold text-secondary-900 tracking-tight mb-3">
+            Our approach
+          </h2>
+          <p className="text-sm text-secondary-700 leading-relaxed mb-6">
+            DraftEngine is a <strong className="text-secondary-900">writing assistant</strong>, not a replacement for your thinking. We help you work faster while keeping your content credible, original, and grounded in real sources.
+          </p>
+          <div className="grid md:grid-cols-3 gap-px bg-secondary-200 rounded-lg overflow-hidden border border-secondary-200">
+            {[
+              { icon: FileText, title: 'Source-grounded', desc: 'All content is generated from YOUR sources, not AI knowledge. Every claim traces back to something real.' },
+              { icon: Check, title: 'Traceable attribution', desc: 'Sources referenced naturally — by author, research context, or key findings.' },
+              { icon: BookOpen, title: 'Transparent process', desc: 'We show which sources support each section so you can verify and edit.' },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="bg-white p-5">
+                  <div className="w-7 h-7 rounded-md bg-secondary-100 border border-secondary-200 flex items-center justify-center mb-3">
+                    <Icon className="w-3.5 h-3.5 text-secondary-700" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-secondary-900 mb-1.5">{item.title}</h3>
+                  <p className="text-xs text-secondary-600 leading-relaxed">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* How source processing works */}
+        <div className="mb-16">
+          <div className="flex items-center gap-2 mb-3">
+            <Search className="w-5 h-5 text-secondary-500" />
+            <h2 className="text-2xl font-semibold text-secondary-900 tracking-tight">
+              How source processing works
+            </h2>
+          </div>
+          <div className="space-y-5 mt-6">
+            {[
+              { num: '01', title: 'Text extraction', desc: 'When you upload a PDF, we extract the full text while preserving structure and page numbers.' },
+              { num: '02', title: 'Metadata detection', desc: 'AI identifies author names, publication details, key themes, and other metadata to build a rich source profile.' },
+              { num: '03', title: 'Smart summarization', desc: 'Key findings, arguments, and insights are identified directly from the source text — not general knowledge.' },
+              { num: '04', title: 'Key quote extraction', desc: 'Important quotes are pulled with page numbers so you can reference or verify them.' },
+              { num: '05', title: 'Natural attribution', desc: 'Sources are woven naturally into your content — by name, context, and findings.' },
+            ].map((step) => (
+              <div key={step.num} className="flex items-start gap-4 pb-5 border-b border-secondary-100 last:border-0">
+                <span className="text-xs font-mono text-secondary-400 tabular-nums mt-1 flex-shrink-0">{step.num}</span>
+                <div>
+                  <h3 className="text-sm font-semibold text-secondary-900 mb-1">{step.title}</h3>
+                  <p className="text-sm text-secondary-700 leading-relaxed">{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Source integrity */}
+        <div className="mb-16 rounded-lg border border-secondary-200 bg-secondary-50/40 p-6">
+          <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+            Content generation & source integrity
+          </h2>
+          <p className="text-sm text-secondary-700 leading-relaxed mb-5">
+            When you generate content with DraftEngine, every idea is grounded in your uploaded sources.
+          </p>
+          <ul className="space-y-3">
+            {[
+              ['Natural source references', 'Authors and their work are mentioned by name, woven into the narrative.'],
+              ['Source-constrained generation', 'Our AI only draws from information in your uploaded sources — never invents or pulls from the internet.'],
+              ['Multi-source synthesis', 'Each section draws from multiple sources, creating richer arguments.'],
+              ['Verifiable claims', 'Every reference traces back to your sources — fact-check before publishing.'],
+            ].map(([title, desc]) => (
+              <li key={title} className="flex items-start gap-2.5">
+                <Check className="w-3.5 h-3.5 text-primary mt-1 flex-shrink-0" strokeWidth={2.5} />
+                <div className="text-sm">
+                  <strong className="text-secondary-900">{title}.</strong>{' '}
+                  <span className="text-secondary-700">{desc}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* What we don't do */}
+        <div className="mb-16 rounded-lg border border-error-200 bg-error-50/40 p-6">
+          <h2 className="text-xl font-semibold text-error-900 tracking-tight mb-3">
+            What we don't do
+          </h2>
+          <p className="text-sm text-secondary-700 leading-relaxed mb-5">
+            To keep your writing credible, DraftEngine deliberately avoids certain practices.
+          </p>
+          <ul className="space-y-3">
+            {[
+              ['We don\'t fabricate sources', 'Every reference comes from material you uploaded.'],
+              ['We don\'t pull from general knowledge', 'Generation uses only your sources, not Wikipedia or other databases.'],
+              ['We don\'t hide our role', 'We recommend being transparent about AI assistance.'],
+              ['We don\'t replace your thinking', 'Always review, verify, and shape generated content.'],
+            ].map(([title, desc]) => (
+              <li key={title} className="flex items-start gap-2.5">
+                <X className="w-3.5 h-3.5 text-error-600 mt-1 flex-shrink-0" strokeWidth={2.5} />
+                <div className="text-sm">
+                  <strong className="text-secondary-900">{title}.</strong>{' '}
+                  <span className="text-secondary-700">{desc}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Best practices */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-semibold text-secondary-900 tracking-tight mb-6">
+            Best practices
+          </h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="rounded-lg border border-secondary-200 bg-white p-5">
+              <h3 className="text-sm font-semibold text-secondary-900 mb-3 flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-primary" />
+                Do this
+              </h3>
+              <ul className="space-y-2 text-sm text-secondary-700">
+                {[
+                  'Use source summaries to organize your material',
+                  'Verify key claims against the original sources',
+                  'Use generated outlines as a starting framework',
+                  'Revise AI-generated content into your own voice',
+                  'Add your own insights and perspective',
+                  'Fact-check before publishing',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <Check className="w-3 h-3 text-primary mt-1 flex-shrink-0" strokeWidth={2.5} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold text-secondary-900 mb-6">
-              How We Handle <span className="text-gradient">Your Sources</span>
-            </h1>
-            <p className="text-lg text-secondary-800 leading-relaxed">
-              Transparent AI, credible writing. Here's how DraftEngine uses your source material
-              to produce content you can stand behind.
-            </p>
-          </div>
-
-          {/* Main Content */}
-          <div className="max-w-5xl mx-auto space-y-12">
-            {/* Our Approach */}
-            <section className="card card-floating">
-              <h2 className="text-3xl font-bold text-secondary-900 mb-6">
-                Our Approach to <span className="text-gradient">Ethical AI</span> Writing
-              </h2>
-              <p className="text-secondary-800 mb-6 leading-relaxed">
-                DraftEngine is a <strong>writing assistant</strong>, not a replacement for your own thinking.
-                We help you work faster while keeping your content credible, original, and grounded in real sources.
-              </p>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-secondary-50 rounded-lg p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <FileText className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-secondary-900 mb-2">Source-Grounded Content</h3>
-                  <p className="text-sm text-secondary-800">
-                    All content is generated from YOUR uploaded sources, not from general AI knowledge.
-                    Every claim traces back to something real.
-                  </p>
-                </div>
-                <div className="bg-secondary-50 rounded-lg p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <CheckCircle className="w-6 h-6 text-accent" />
-                  </div>
-                  <h3 className="font-bold text-secondary-900 mb-2">Traceable Attribution</h3>
-                  <p className="text-sm text-secondary-800">
-                    Sources are referenced naturally in your content — by author name, research context,
-                    or key findings — so readers know where ideas come from.
-                  </p>
-                </div>
-                <div className="bg-secondary-50 rounded-lg p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <BookOpen className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-secondary-900 mb-2">Transparent Process</h3>
-                  <p className="text-sm text-secondary-800">
-                    We show you which sources support each section so you can verify, edit,
-                    and make the content truly yours.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* How Source Processing Works */}
-            <section className="card card-floating">
-              <div className="flex items-center space-x-3 mb-6">
-                <Search className="w-8 h-8 text-primary" />
-                <h2 className="text-3xl font-bold text-secondary-900">
-                  How <span className="text-gradient">Source Processing</span> Works
-                </h2>
-              </div>
-
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
-                    1
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-secondary-900 mb-2">PDF Text Extraction</h3>
-                    <p className="text-secondary-800">
-                      When you upload a PDF, we extract the full text while preserving structure and page numbers.
-                      This ensures every piece of information can be traced back to its source.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
-                    2
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-secondary-900 mb-2">Metadata Detection</h3>
-                    <p className="text-secondary-800">
-                      Our AI identifies author names, publication details, key themes, and other metadata
-                      to build a rich profile of each source.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
-                    3
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-secondary-900 mb-2">Smart Summarization</h3>
-                    <p className="text-secondary-800">
-                      We identify key findings, arguments, and insights directly from the source text.
-                      All summaries reflect what the material actually says — not general knowledge.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
-                    4
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-secondary-900 mb-2">Key Quote Extraction</h3>
-                    <p className="text-secondary-800">
-                      Important quotes are pulled with page numbers so you can reference or verify them
-                      in your writing. No guessing — just accurate source material.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
-                    5
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-secondary-900 mb-2">Natural Attribution</h3>
-                    <p className="text-secondary-800">
-                      Sources are woven naturally into your content — referenced by name, context, and findings
-                      the way a skilled journalist or essayist would handle them.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Content Generation Integrity */}
-            <section className="card card-floating bg-gradient-to-br from-primary/5 to-secondary-50">
-              <h2 className="text-3xl font-bold text-secondary-900 mb-6">
-                Content Generation & <span className="text-gradient">Source Integrity</span>
-              </h2>
-              <p className="text-secondary-800 mb-6 leading-relaxed">
-                When you generate content with DraftEngine, every idea is grounded in your uploaded sources:
-              </p>
-              <ul className="space-y-4">
-                <li className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-secondary-900">Natural source references:</strong> Authors and their work
-                    are mentioned by name, woven into the narrative the way a great article would handle attribution.
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-secondary-900">Source-constrained generation:</strong> Our AI only
-                    draws from information in your uploaded PDFs — it won't invent sources or pull from the internet.
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-secondary-900">Multi-source synthesis:</strong> Each section draws from
-                    multiple sources, creating richer arguments instead of summarizing one source at a time.
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-secondary-900">Verifiable claims:</strong> Because all content traces back
-                    to your sources, you can fact-check every reference before publishing.
-                  </div>
-                </li>
+            <div className="rounded-lg border border-secondary-200 bg-white p-5">
+              <h3 className="text-sm font-semibold text-secondary-900 mb-3 flex items-center gap-1.5">
+                <X className="w-4 h-4 text-error-600" />
+                Avoid this
+              </h3>
+              <ul className="space-y-2 text-sm text-secondary-700">
+                {[
+                  'Publishing generated content without revision',
+                  'Using sources you haven\'t actually read',
+                  'Claiming AI-generated ideas as entirely original',
+                  'Skipping fact-checking of claims and references',
+                  'Relying on DraftEngine without understanding your topic',
+                  'Ignoring the sources behind each section',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <X className="w-3 h-3 text-error-500 mt-1 flex-shrink-0" strokeWidth={2.5} />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
-            </section>
-
-            {/* What We Don't Do */}
-            <section className="card card-floating border-2 border-red-200 bg-red-50/30">
-              <div className="flex items-center space-x-3 mb-6">
-                <AlertCircle className="w-8 h-8 text-red-600" />
-                <h2 className="text-3xl font-bold text-secondary-900">
-                  What We Don't Do
-                </h2>
-              </div>
-              <p className="text-secondary-800 mb-6">
-                To keep your writing credible, DraftEngine deliberately avoids certain practices:
-              </p>
-              <ul className="space-y-4">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full flex-shrink-0 mt-2" />
-                  <div>
-                    <strong className="text-secondary-900">We don't fabricate sources:</strong> Every reference
-                    comes from material you uploaded. We never generate fake sources or made-up quotes.
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full flex-shrink-0 mt-2" />
-                  <div>
-                    <strong className="text-secondary-900">We don't pull from general knowledge:</strong> Content
-                    generation uses only information from YOUR sources, not Wikipedia or other databases.
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full flex-shrink-0 mt-2" />
-                  <div>
-                    <strong className="text-secondary-900">We don't hide our role:</strong> DraftEngine is an AI
-                    writing tool. We recommend being transparent about AI assistance and always revising
-                    generated content into your own voice before publishing.
-                  </div>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-red-600 rounded-full flex-shrink-0 mt-2" />
-                  <div>
-                    <strong className="text-secondary-900">We don't replace your thinking:</strong> DraftEngine
-                    is a writing assistant. You should always review, verify, and shape any generated content
-                    to reflect your perspective.
-                  </div>
-                </li>
-              </ul>
-            </section>
-
-            {/* Best Practices */}
-            <section className="card card-floating">
-              <h2 className="text-3xl font-bold text-secondary-900 mb-6">
-                Best Practices for Using <span className="text-gradient">DraftEngine</span>
-              </h2>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="border border-secondary-300/30 rounded-lg p-6">
-                  <h3 className="font-bold text-secondary-900 mb-3 flex items-center">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
-                    Do This
-                  </h3>
-                  <ul className="space-y-2 text-sm text-secondary-800">
-                    <li>✓ Use source summaries to organize your material</li>
-                    <li>✓ Verify key claims against the original sources</li>
-                    <li>✓ Use generated outlines as a starting framework</li>
-                    <li>✓ Revise AI-generated content into your own voice</li>
-                    <li>✓ Add your own insights and perspective</li>
-                    <li>✓ Fact-check before publishing</li>
-                  </ul>
-                </div>
-                <div className="border border-red-300 rounded-lg p-6 bg-red-50/20">
-                  <h3 className="font-bold text-secondary-900 mb-3 flex items-center">
-                    <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
-                    Avoid This
-                  </h3>
-                  <ul className="space-y-2 text-sm text-secondary-800">
-                    <li>✗ Publishing generated content without revision</li>
-                    <li>✗ Using sources you haven't actually read</li>
-                    <li>✗ Claiming AI-generated ideas as entirely original</li>
-                    <li>✗ Skipping fact-checking of claims and references</li>
-                    <li>✗ Relying on DraftEngine without understanding your topic</li>
-                    <li>✗ Ignoring the sources behind each section</li>
-                  </ul>
-                </div>
-              </div>
-            </section>
-
-            {/* Source Attribution Approach */}
-            <section className="card card-floating">
-              <h2 className="text-3xl font-bold text-secondary-900 mb-6">
-                How Sources Appear in <span className="text-gradient">Your Content</span>
-              </h2>
-              <p className="text-secondary-800 mb-6">
-                DraftEngine weaves sources naturally into your writing — the way a great essayist or journalist would:
-              </p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">By Name</h4>
-                  <p className="text-sm text-secondary-600">"Zaidi's research reveals..."</p>
-                </div>
-                <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">By Context</h4>
-                  <p className="text-sm text-secondary-600">"The work coming out of MIT..."</p>
-                </div>
-                <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">By Discovery</h4>
-                  <p className="text-sm text-secondary-600">"What De Santis found..."</p>
-                </div>
-                <div className="border border-secondary-300/30 rounded-lg p-4 text-center">
-                  <h4 className="font-bold text-secondary-900 mb-1">By Argument</h4>
-                  <p className="text-sm text-secondary-600">"Herremans makes the case..."</p>
-                </div>
-              </div>
-              <p className="text-sm text-secondary-600 mt-6 text-center">
-                Sources are treated as voices in a conversation, not footnotes — giving your writing
-                credibility without breaking the flow.
-              </p>
-            </section>
-
-            {/* Final Note */}
-            <section className="bg-gradient-brand text-white rounded-2xl p-8 text-center">
-              <h2 className="text-3xl font-bold mb-4">
-                Write Better, Write Honestly
-              </h2>
-              <p className="text-lg mb-6 text-white/90">
-                DraftEngine helps you turn source material into compelling content while keeping
-                every claim grounded and traceable. Use it as your writing partner, not a shortcut.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/signup"
-                    className="bg-white text-primary hover:bg-secondary-50 transition-colors px-8 py-3 rounded-lg font-semibold inline-block"
-                  >
-                    Get Started Free
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/features"
-                    className="border-2 border-white text-white hover:bg-white hover:text-primary-600 transition-colors px-8 py-3 rounded-lg font-semibold inline-block"
-                  >
-                    Explore Features
-                  </Link>
-                </motion.div>
-              </div>
-            </section>
+            </div>
           </div>
-        </FadeIn>
+        </div>
+
+        {/* CTA */}
+        <div className="rounded-xl bg-secondary-900 text-white px-8 py-12 text-center">
+          <h2 className="text-2xl lg:text-3xl font-semibold tracking-tight">
+            Write better, write honestly.
+          </h2>
+          <p className="mt-3 text-secondary-300 max-w-xl mx-auto text-sm">
+            Use DraftEngine as your writing partner, not a shortcut.
+          </p>
+          <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link to="/signup" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-secondary-900 hover:bg-secondary-100 rounded-md font-medium text-sm transition-colors">
+              Get started free
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link to="/features" className="inline-flex items-center gap-2 px-5 py-2.5 text-secondary-300 hover:text-white rounded-md font-medium text-sm transition-colors">
+              Explore features
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,150 +1,98 @@
-// src/pages/TermsOfServicePage.js
+// src/pages/TermsofServicePage.js
 import React from 'react';
-import { FileText, AlertTriangle, CreditCard, Users, Gavel } from 'lucide-react';
-import { FadeIn } from '../components/motion';
 import SEO from '../components/SEO';
 
 const TermsOfServicePage = () => {
   return (
-    <div className="min-h-screen py-12 bg-mesh">
+    <div className="min-h-screen bg-white">
       <SEO
         title="Terms of Service"
         description="DraftEngine terms of service. Usage rules, intellectual property, and legal terms."
         path="/terms"
       />
-      <div className="container mx-auto px-6 max-w-4xl">
-        <div className="h-1 bg-gradient-to-r from-primary-400 via-primary-400 to-primary-400" />
-        <FadeIn direction="up">
-          <div className="text-center mb-12 mt-8">
-            <div className="w-16 h-16 bg-gradient-brand rounded-full flex items-center justify-center mx-auto mb-6">
-              <Gavel className="w-8 h-8 text-white" />
+
+      <div className="max-w-3xl mx-auto px-6 py-16 lg:py-20">
+        <div className="mb-12">
+          <div className="eyebrow mb-3">Legal</div>
+          <h1 className="text-3xl lg:text-4xl font-semibold text-secondary-900 tracking-tight">
+            Terms of Service
+          </h1>
+          <p className="mt-2 text-sm text-secondary-500">Last updated: December 2024</p>
+        </div>
+
+        <div className="prose prose-secondary max-w-none">
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Acceptance of terms
+            </h2>
+            <p className="text-sm text-secondary-700 leading-relaxed">
+              By accessing and using DraftEngine, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
+            </p>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Service description
+            </h2>
+            <p className="text-sm text-secondary-700 leading-relaxed">
+              DraftEngine provides AI-powered source analysis and document generation services. Our service analyzes uploaded source material and generates comprehensive source entries with key arguments, interesting angles, and notable passages — and produces complete documents with citations.
+            </p>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              User responsibilities
+            </h2>
+            <ul className="space-y-2 text-sm text-secondary-700 leading-relaxed list-disc pl-5">
+              <li>Upload only documents you have the right to use and analyze</li>
+              <li>Use generated content for legitimate research and writing purposes</li>
+              <li>Review and verify all AI-generated content before use</li>
+              <li>Comply with your institution's integrity policies</li>
+            </ul>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Subscription and billing
+            </h2>
+            <div className="space-y-4 text-sm text-secondary-700 leading-relaxed">
+              <p>
+                <strong className="text-secondary-900">Payment terms.</strong> Subscriptions are billed monthly and automatically renew. You can cancel anytime through your account settings or by contacting support.
+              </p>
+              <p>
+                <strong className="text-secondary-900">Usage limits.</strong> Each plan includes specific limits on source entries and pages. Pro plans include 10 pages monthly. Unused entries do not roll over.
+              </p>
             </div>
-            <h1 className="text-4xl font-bold text-secondary-900 mb-4">
-              <span className="text-gradient">Terms</span> of Service
-            </h1>
-            <p className="text-secondary-700">
-              Last updated: December 2024
+          </section>
+
+          <section className="mb-10">
+            <div className="rounded-lg border border-warning-200 bg-warning-50 p-5">
+              <h3 className="text-sm font-semibold text-warning-800 mb-2">Important disclaimer</h3>
+              <p className="text-sm text-warning-800 leading-relaxed">
+                AI-generated content should be reviewed and verified before use. DraftEngine is a tool to assist with writing — users are responsible for ensuring accuracy and compliance with applicable standards.
+              </p>
+            </div>
+          </section>
+
+          <section className="mb-10">
+            <h2 className="text-xl font-semibold text-secondary-900 tracking-tight mb-3">
+              Limitation of liability
+            </h2>
+            <p className="text-sm text-secondary-700 leading-relaxed">
+              DraftEngine provides the service "as is" and makes no warranties about accuracy, completeness, or reliability of AI-generated content. We are not liable for any professional or financial consequences of using our service.
+            </p>
+          </section>
+
+          <div className="mt-12 rounded-lg border border-secondary-200 bg-secondary-50/40 p-5">
+            <h3 className="text-sm font-semibold text-secondary-900 mb-1">Contact us</h3>
+            <p className="text-sm text-secondary-700">
+              For questions about these terms, email{' '}
+              <a href="mailto:legal@draftengineapp.com" className="text-primary hover:text-secondary-900 underline transition-colors">
+                legal@draftengineapp.com
+              </a>.
             </p>
           </div>
-
-          <div className="card card-floating space-y-8">
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Acceptance of Terms
-              </h2>
-              <p className="text-secondary-800">
-                By accessing and using DraftEngine, you accept and agree to be bound by these Terms of Service.
-                If you do not agree to these terms, please do not use our service.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Service <span className="text-gradient">Description</span>
-              </h2>
-              <div className="flex items-start space-x-3">
-                <FileText className="w-5 h-5 text-primary mt-1" />
-                <div>
-                  <p className="text-secondary-800">
-                    DraftEngine provides AI-powered source analysis and document generation services.
-                    Our service analyzes uploaded PDF documents and generates comprehensive source entries
-                    with key arguments, interesting angles, and notable passages.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                User Responsibilities
-              </h2>
-              <ul className="space-y-3 text-secondary-800">
-                <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Upload only documents you have the right to use and analyze</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Use generated content for legitimate research and writing purposes</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Review and verify all AI-generated content before use</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <span className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></span>
-                  <span>Comply with your institution's integrity policies</span>
-                </li>
-              </ul>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Subscription and <span className="text-gradient">Billing</span>
-              </h2>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <CreditCard className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-secondary-900">Payment Terms</h3>
-                    <p className="text-secondary-700">
-                      Subscriptions are billed monthly and automatically renew. You can cancel anytime
-                      through your account settings or contact support.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Users className="w-5 h-5 text-primary mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-secondary-900">Usage Limits</h3>
-                    <p className="text-secondary-700">
-                      Each plan includes a monthly limit on source entries. Unused entries do not roll over.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-                <div className="flex items-start space-x-3">
-                  <AlertTriangle className="w-6 h-6 text-yellow-600 mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-yellow-800 mb-2">Important Disclaimer</h3>
-                    <p className="text-yellow-700">
-                      AI-generated content should be reviewed and verified before use. DraftEngine is a tool
-                      to assist with writing - users are responsible for ensuring accuracy and compliance
-                      with applicable standards.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Limitation of Liability
-              </h2>
-              <p className="text-secondary-800">
-                DraftEngine provides the service "as is" and makes no warranties about accuracy,
-                completeness, or reliability of AI-generated content. We are not liable for any
-                professional, or financial consequences of using our service.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-                Contact Information
-              </h2>
-              <p className="text-secondary-800">
-                For questions about these terms, please contact us at{' '}
-                <a href="mailto:legal@draftengineapp.com" className="text-primary hover:text-primary-600/80">
-                  legal@draftengineapp.com
-                </a>
-              </p>
-            </section>
-          </div>
-        </FadeIn>
+        </div>
       </div>
     </div>
   );
