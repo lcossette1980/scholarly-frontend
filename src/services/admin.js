@@ -109,6 +109,24 @@ export const adminAPI = {
     // Migration on a large library can take a while
     const response = await api.post('/admin/migrate/resanitize-bibliography', null, { params, timeout: 300000 });
     return response.data;
+  },
+
+  // Voice compliance: generates a small doc per document type using fixed test
+  // sources, runs structural assertions and Haiku voice-fit, returns matrix.
+  // scope: 'voices' (5 reps), 'all' (~17 types), 'single' (one type via docType)
+  runVoiceCompliance: async ({ scope = 'voices', docType = null, fitViaHaiku = true } = {}) => {
+    const api = await createAdminRequest();
+    const params = { scope, fit_via_haiku: fitViaHaiku };
+    if (docType) params.doc_type = docType;
+    // Up to 17 generations × ~30s each. Allow 25 min.
+    const response = await api.post('/admin/run-voice-compliance', null, { params, timeout: 1500000 });
+    return response.data;
+  },
+
+  getVoiceComplianceHistory: async () => {
+    const api = await createAdminRequest();
+    const response = await api.get('/admin/voice-compliance-history');
+    return response.data;
   }
 };
 

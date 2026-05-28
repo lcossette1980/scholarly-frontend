@@ -54,6 +54,12 @@ const AdminDashboardPage = () => {
   const [activityFilter, setActivityFilter] = useState('all');
   const [migrationRunning, setMigrationRunning] = useState(false);
   const [migrationResult, setMigrationResult] = useState(null);
+  const [voiceRunning, setVoiceRunning] = useState(false);
+  const [voiceResult, setVoiceResult] = useState(null);
+  const [voiceHistory, setVoiceHistory] = useState([]);
+  const [voiceHistoryLoading, setVoiceHistoryLoading] = useState(false);
+  const [voiceExpandedDocType, setVoiceExpandedDocType] = useState(null);
+  const [voiceScope, setVoiceScope] = useState('voices');
 
   // Load user activity (funnel analysis)
   const loadActivity = async () => {
@@ -66,6 +72,54 @@ const AdminDashboardPage = () => {
       toast.error('Failed to load user activity');
     } finally {
       setActivityLoading(false);
+    }
+  };
+
+  const loadVoiceHistory = async () => {
+    setVoiceHistoryLoading(true);
+    try {
+      const data = await adminAPI.getVoiceComplianceHistory();
+      setVoiceHistory(data.runs || []);
+    } catch (e) {
+      console.error('Voice history error:', e);
+    } finally {
+      setVoiceHistoryLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'voice' && voiceHistory.length === 0 && !voiceHistoryLoading) {
+      loadVoiceHistory();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+
+  const runVoiceCompliance = async () => {
+    const costEstimate = voiceScope === 'all' ? '~$50' : voiceScope === 'voices' ? '~$15' : '~$3';
+    const durationEstimate = voiceScope === 'all' ? '~10 min' : voiceScope === 'voices' ? '~3 min' : '~30 sec';
+    if (!window.confirm(`Run voice compliance with scope='${voiceScope}'?\n\nThis will generate test documents and run assertions.\nEstimated cost: ${costEstimate}\nEstimated duration: ${durationEstimate}`)) {
+      return;
+    }
+    setVoiceRunning(true);
+    setVoiceResult(null);
+    const loadingId = toast.loading(`Running voice compliance (scope: ${voiceScope})…`);
+    try {
+      const data = await adminAPI.runVoiceCompliance({ scope: voiceScope });
+      setVoiceResult(data);
+      toast.dismiss(loadingId);
+      const { passed, failed, errors, total } = data.summary || {};
+      if (failed === 0 && errors === 0) {
+        toast.success(`All ${total} voice tests passed`);
+      } else {
+        toast.error(`${failed} failed, ${errors} errored (${passed}/${total} passed)`);
+      }
+      await loadVoiceHistory();
+    } catch (e) {
+      console.error('Voice compliance error:', e);
+      toast.dismiss(loadingId);
+      toast.error(e?.response?.data?.detail || 'Voice compliance run failed');
+    } finally {
+      setVoiceRunning(false);
     }
   };
 
@@ -404,7 +458,8 @@ const AdminDashboardPage = () => {
             { id: 'messages', label: 'Support Messages', badge: unreadCount },
             { id: 'entries', label: 'All Entries' },
             { id: 'health', label: 'System Health' },
-            { id: 'e2e', label: 'E2E Tests' }
+            { id: 'e2e', label: 'E2E Tests' },
+            { id: 'voice', label: 'Voice Compliance' }
           ].map((tab) => (
             <motion.button
               key={tab.id}
@@ -1506,6 +1561,179 @@ const AdminDashboardPage = () => {
                   Test data is created under user <code className="bg-white px-1 rounded">e2e_test_user_id</code> with
                   <code className="bg-white px-1 rounded">isTestUser: true</code> so it won&apos;t pollute admin stats.
                   All test entries and content jobs are deleted after the run.
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'voice' && (
+            <motion.div key="voice" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+              <div className="space-y-6">
+                {/* Run panel */}
+                <div className="rounded-lg border border-secondary-200 bg-white p-5">
+                  <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <div className="w-9 h-9 rounded-md bg-primary/10 border border-primary-100 flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-sm font-semibold text-secondary-900">Voice compliance suite</h3>
+                        <p className="text-xs text-secondary-600 mt-0.5 leading-relaxed">
+                          Generates a small test document for each document type, then runs structural assertions (citation density, em-dash check, bullet allowance, IMRaD structure) and a Haiku voice-fit judgment. Verifies each voice profile actually produces what it claims to.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <select
+                        value={voiceScope}
+                        onChange={(e) => setVoiceScope(e.target.value)}
+                        disabled={voiceRunning}
+                        className="form-input w-auto text-xs py-1.5"
+                      >
+                        <option value="voices">5 voice reps (~$15)</option>
+                        <option value="all">All 17 types (~$50)</option>
+                      </select>
+                      <button
+                        onClick={runVoiceCompliance}
+                        disabled={voiceRunning}
+                        className="btn btn-primary btn-sm"
+                      >
+                        {voiceRunning ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <PlayCircle className="w-3.5 h-3.5" />}
+                        {voiceRunning ? 'Running…' : 'Run suite'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Current run result */}
+                {voiceResult && (
+                  <div className="rounded-lg border border-secondary-200 bg-white p-5">
+                    <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-sm font-semibold text-secondary-900">Latest run</h3>
+                        <span className={`badge ${voiceResult.overall_status === 'pass' ? 'badge-success' : 'badge-error'}`}>
+                          {voiceResult.overall_status?.toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="text-xs text-secondary-600 tabular-nums">
+                        <span className="text-success-700 font-medium">{voiceResult.summary?.passed || 0} passed</span>
+                        {(voiceResult.summary?.failed || 0) > 0 && <span className="ml-3 text-error-700 font-medium">{voiceResult.summary?.failed} failed</span>}
+                        {(voiceResult.summary?.errors || 0) > 0 && <span className="ml-3 text-warning-700 font-medium">{voiceResult.summary?.errors} errors</span>}
+                        <span className="ml-3 text-secondary-500">~${voiceResult.summary?.estimated_cost_usd?.toFixed(2) || '0.00'}</span>
+                      </div>
+                    </div>
+
+                    <div className="divide-y divide-secondary-100">
+                      {(voiceResult.results || []).map((r) => {
+                        const isExpanded = voiceExpandedDocType === r.doc_type;
+                        const overall = r.overall;
+                        const overallColor = overall === 'PASS' ? 'badge-success' : overall === 'FAIL' ? 'badge-error' : 'badge-warning';
+                        return (
+                          <div key={r.doc_type} className="py-3">
+                            <button
+                              onClick={() => setVoiceExpandedDocType(isExpanded ? null : r.doc_type)}
+                              className="w-full flex items-center gap-3 text-left"
+                            >
+                              {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-secondary-400 flex-shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-secondary-400 flex-shrink-0" />}
+                              <span className={`badge ${overallColor} flex-shrink-0`}>{overall}</span>
+                              <span className="text-sm font-medium text-secondary-900 flex-shrink-0 min-w-[140px]">{r.doc_type}</span>
+                              <span className="text-xs text-secondary-500 font-mono uppercase tracking-wider">{r.voice}</span>
+                              {r.structural && (
+                                <span className="text-xs text-secondary-500 ml-auto tabular-nums">
+                                  {r.structural.passed}/{r.structural.total} assertions
+                                  {r.structural.warnings > 0 && <span className="text-warning-600 ml-1">({r.structural.warnings}w)</span>}
+                                </span>
+                              )}
+                              {r.voice_fit?.score != null && (
+                                <span className={`text-xs tabular-nums ml-2 ${r.voice_fit.score >= 80 ? 'text-success-700' : r.voice_fit.score >= 60 ? 'text-warning-700' : 'text-error-700'}`}>
+                                  fit: {r.voice_fit.score}
+                                </span>
+                              )}
+                            </button>
+
+                            {isExpanded && (
+                              <div className="mt-3 ml-6 space-y-3">
+                                {r.error && (
+                                  <div className="rounded-md border border-error-200 bg-error-50/40 p-3 text-xs text-error-800">
+                                    <strong>Error:</strong> {r.error}
+                                  </div>
+                                )}
+                                {r.voice_fit && (
+                                  <div className="text-xs">
+                                    <p className="font-medium text-secondary-900 mb-0.5">Voice-fit judgment</p>
+                                    <p className="text-secondary-700"><span className="font-mono">{r.voice_fit.judgment}</span> ({r.voice_fit.score}/100) — {r.voice_fit.reason}</p>
+                                  </div>
+                                )}
+                                {r.structural?.assertions && (
+                                  <div>
+                                    <p className="text-xs font-medium text-secondary-900 mb-1.5">Structural assertions</p>
+                                    <div className="space-y-1">
+                                      {r.structural.assertions.map((a, i) => (
+                                        <div key={i} className="flex items-start gap-2 text-xs">
+                                          {a.passed ? (
+                                            <CheckCircle className="w-3 h-3 text-success-600 mt-0.5 flex-shrink-0" />
+                                          ) : (
+                                            <XCircle className={`w-3 h-3 mt-0.5 flex-shrink-0 ${a.severity === 'warning' ? 'text-warning-600' : 'text-error-600'}`} />
+                                          )}
+                                          <span className={`font-mono ${a.passed ? 'text-secondary-600' : 'text-secondary-900 font-medium'}`}>{a.name}</span>
+                                          {a.detail && <span className="text-secondary-500">— {a.detail}</span>}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                                {r.sample && (
+                                  <details className="text-xs">
+                                    <summary className="cursor-pointer text-secondary-700 hover:text-secondary-900 font-medium">Sample output ({r.word_count} words total)</summary>
+                                    <div className="mt-2 p-3 bg-secondary-50/60 border border-secondary-200 rounded-md whitespace-pre-wrap text-secondary-700 leading-relaxed max-h-64 overflow-y-auto">
+                                      {r.sample}
+                                    </div>
+                                  </details>
+                                )}
+                                {r.job_id && (
+                                  <p className="text-[10px] font-mono text-secondary-400">job_id: {r.job_id}</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* History */}
+                <div className="rounded-lg border border-secondary-200 bg-white p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-secondary-900">Recent runs</h3>
+                    <button onClick={loadVoiceHistory} className="text-xs text-secondary-500 hover:text-secondary-900 inline-flex items-center gap-1">
+                      <RefreshCw className={`w-3 h-3 ${voiceHistoryLoading ? 'animate-spin' : ''}`} />
+                      Refresh
+                    </button>
+                  </div>
+                  {voiceHistory.length === 0 ? (
+                    <p className="text-xs text-secondary-500">{voiceHistoryLoading ? 'Loading…' : 'No runs yet. Click "Run suite" to start.'}</p>
+                  ) : (
+                    <div className="divide-y divide-secondary-100">
+                      {voiceHistory.map((run) => (
+                        <div key={run.run_id} className="py-2 flex items-center gap-3 text-xs">
+                          <span className={`badge ${run.overall_status === 'pass' ? 'badge-success' : 'badge-error'} flex-shrink-0`}>{(run.overall_status || run.status || '?').toUpperCase()}</span>
+                          <span className="text-secondary-500 font-mono">{run.scope}</span>
+                          <span className="text-secondary-700 tabular-nums">
+                            {run.summary?.passed || 0}/{run.summary?.total || 0} passed
+                          </span>
+                          <span className="text-secondary-500 tabular-nums">~${run.summary?.estimated_cost_usd?.toFixed(2) || '0.00'}</span>
+                          <span className="text-secondary-400 ml-auto tabular-nums">{run.startedAt ? new Date(run.startedAt).toLocaleString() : '—'}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <p className="text-xs text-secondary-500">
+                  Voice compliance generates real documents using fixed test sources under
+                  <code className="bg-secondary-100 px-1 rounded mx-0.5">e2e_test_user_id</code>. Each generation costs ~$3.
+                  Use the 5-voice scope for routine checks; reserve the all-17 scope for pre-release verification.
                 </p>
               </div>
             </motion.div>
