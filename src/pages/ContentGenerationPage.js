@@ -89,14 +89,25 @@ const ContentGenerationPage = () => {
         currentUser.uid,
         { outputType: settings.document_type, numTopics: 3 }
       );
+      // Topic suggestions now return structure as either string[] (legacy)
+      // OR {heading, role, what_this_adds}[] (new). Normalize so the outline
+      // selection step + content generator both see role / what_this_adds.
       const generatedOutlines = response.topics.map((topic) => ({
         id: `outline-${Date.now()}-${Math.random()}`,
         title: topic.title,
-        sections: topic.suggested_structure.map((section) => ({
-          heading: section,
-          description: '',
-          key_points: [],
-        })),
+        central_tension: topic.central_tension || '',
+        sections: (topic.suggested_structure || []).map((section) => {
+          if (typeof section === 'string') {
+            return { heading: section, description: '', key_points: [] };
+          }
+          return {
+            heading: section.heading || '',
+            description: section.what_this_adds || '',
+            key_points: [],
+            role: section.role || null,
+            what_this_adds: section.what_this_adds || null,
+          };
+        }),
       }));
       setOutlines(generatedOutlines);
       return true;

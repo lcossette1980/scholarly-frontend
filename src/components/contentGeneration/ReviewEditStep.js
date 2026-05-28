@@ -640,12 +640,20 @@ const ReviewEditStepInner = ({ jobId, onBack }) => {
 
           {/* Source List */}
           <div className="mb-4 space-y-2">
-            {jobData.sourceList.map((source, idx) => (
-              <div key={idx} className="flex items-start space-x-2 text-sm">
-                <span className="bg-primary/10 text-primary text-xs font-mono font-bold px-2 py-0.5 rounded min-w-[28px] text-center">{idx + 1}</span>
-                <span className="text-secondary-700">{source.author} ({source.year}). <span className="italic">{source.title}</span></span>
-              </div>
-            ))}
+            {jobData.sourceList.map((source, idx) => {
+              const author = source.author || 'Unknown';
+              const year = source.year && source.year !== 'Unknown' ? source.year : 'n.d.';
+              const title = source.title && source.title !== 'Unknown' ? source.title : 'Untitled';
+              const pub = source.publication && source.publication !== 'Unknown' ? source.publication : null;
+              return (
+                <div key={idx} className="flex items-start space-x-2 text-sm">
+                  <span className="bg-primary/10 text-primary text-xs font-mono font-bold px-2 py-0.5 rounded min-w-[28px] text-center">{idx + 1}</span>
+                  <span className="text-secondary-700">
+                    {author} ({year}). <span className="italic">{title}</span>{pub ? `. ${pub}` : ''}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
           {/* Section to Source Mapping */}

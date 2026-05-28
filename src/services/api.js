@@ -187,17 +187,21 @@ export const analysisAPI = {
     return response.data;
   },
 
-  // Generate detailed outline for a topic
-  generateOutline: async (entryIds, userId, topicTitle, depth = 'detailed') => {
-    const response = await api.post('/analyze/generate-outline', {
+  // Generate detailed outline for a topic. Optionally pass central_tension +
+  // suggested_structure from the topic-generation step so the outline
+  // preserves the planned argument arc.
+  generateOutline: async (entryIds, userId, topicTitle, depth = 'detailed', { centralTension = null, suggestedStructure = null } = {}) => {
+    const payload = {
       entry_ids: entryIds,
       user_id: userId,
       topic_title: topicTitle,
-      depth: depth
-    }, {
-      timeout: 90000 // 90 seconds for outline generation
+      depth: depth,
+    };
+    if (centralTension) payload.central_tension = centralTension;
+    if (suggestedStructure) payload.suggested_structure = suggestedStructure;
+    const response = await api.post('/analyze/generate-outline', payload, {
+      timeout: 90000
     });
-
     return response.data;
   }
 };

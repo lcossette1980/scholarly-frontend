@@ -338,16 +338,29 @@ const OutlineSelectionStep = ({
                           </button>
                         </div>
                       ) : (
-                        <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700">
-                          {outline.sections.map((section, idx) => (
-                            <li key={idx}>
-                              <span className="font-medium">{section.heading}</span>
-                              {section.description && (
-                                <p className="ml-5 mt-1 text-xs text-gray-500">{section.description}</p>
-                              )}
-                            </li>
-                          ))}
-                        </ol>
+                        <>
+                          <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700">
+                            {outline.sections.map((section, idx) => (
+                              <li key={idx}>
+                                <span className="font-medium">{section.heading}</span>
+                                {section.role && (
+                                  <span className="ml-2 inline-block px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-secondary-100 text-secondary-600 rounded">
+                                    {section.role}
+                                  </span>
+                                )}
+                                {section.description && (
+                                  <p className="ml-5 mt-1 text-xs text-gray-500">{section.description}</p>
+                                )}
+                              </li>
+                            ))}
+                          </ol>
+                          {outline.central_tension && (
+                            <div className="mt-3 pt-3 border-t border-secondary-200">
+                              <p className="text-[10px] font-mono uppercase tracking-wider text-secondary-500 mb-1">Central tension</p>
+                              <p className="text-xs text-secondary-700 italic">{outline.central_tension}</p>
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
                   )}
