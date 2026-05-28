@@ -189,8 +189,9 @@ export const analysisAPI = {
 
   // Generate detailed outline for a topic. Optionally pass central_tension +
   // suggested_structure from the topic-generation step so the outline
-  // preserves the planned argument arc.
-  generateOutline: async (entryIds, userId, topicTitle, depth = 'detailed', { centralTension = null, suggestedStructure = null } = {}) => {
+  // preserves the planned argument arc. Pass documentType so the backend
+  // routes to the correct voice profile (editorial/business/academic/etc).
+  generateOutline: async (entryIds, userId, topicTitle, depth = 'detailed', { centralTension = null, suggestedStructure = null, documentType = null } = {}) => {
     const payload = {
       entry_ids: entryIds,
       user_id: userId,
@@ -199,6 +200,7 @@ export const analysisAPI = {
     };
     if (centralTension) payload.central_tension = centralTension;
     if (suggestedStructure) payload.suggested_structure = suggestedStructure;
+    if (documentType) payload.document_type = documentType;
     const response = await api.post('/analyze/generate-outline', payload, {
       timeout: 90000
     });
