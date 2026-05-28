@@ -4,24 +4,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   FileText,
-  Calendar,
   Download,
   Trash2,
   Eye,
-  Filter,
   Search,
   CheckCircle,
   Clock,
   XCircle,
-  Sparkles
+  Sparkles,
+  ChevronRight,
+  Plus,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import toast from 'react-hot-toast';
 import { exportGeneratedContent } from '../utils/contentExportUtils';
-import { FadeIn, StaggerChildren, StaggerItem, AnimatedCounter } from '../components/motion';
-import { motion } from 'framer-motion';
 
 const ContentHistoryPage = () => {
   const { currentUser } = useAuth();
@@ -34,6 +32,7 @@ const ContentHistoryPage = () => {
 
   useEffect(() => {
     fetchJobs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   const fetchJobs = async () => {
@@ -41,24 +40,16 @@ const ContentHistoryPage = () => {
       setLoading(false);
       return;
     }
-
     try {
       const jobsRef = collection(db, 'content_generation_jobs');
-      const q = query(
-        jobsRef,
-        where('userId', '==', currentUser.uid)
-      );
+      const q = query(jobsRef, where('userId', '==', currentUser.uid));
       const snapshot = await getDocs(q);
-
-      const jobsData = snapshot.docs.map(d => ({
+      const jobsData = snapshot.docs.map((d) => ({
         id: d.id,
         ...d.data(),
-        createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate() : new Date(d.data().createdAt || 0)
+        createdAt: d.data().createdAt?.toDate ? d.data().createdAt.toDate() : new Date(d.data().createdAt || 0),
       }));
-
-      // Sort by createdAt descending (avoids Firestore composite index requirement)
       jobsData.sort((a, b) => b.createdAt - a.createdAt);
-
       setJobs(jobsData);
     } catch (error) {
       console.error('Error fetching jobs:', error);
@@ -68,44 +59,34 @@ const ContentHistoryPage = () => {
     }
   };
 
-  const filteredJobs = jobs.filter(job => {
+  const filteredJobs = jobs.filter((job) => {
     const search = searchTerm.toLowerCase();
-    const titleMatch = (job.refinedTitle || job.outline?.title || job.outline?.topic || '')
-      .toLowerCase()
-      .includes(search);
-    const typeMatch = (job.settings?.document_type || '')
-      .toLowerCase()
-      .includes(search);
+    const titleMatch = (job.refinedTitle || job.outline?.title || job.outline?.topic || '').toLowerCase().includes(search);
+    const typeMatch = (job.settings?.document_type || '').toLowerCase().includes(search);
     const matchesSearch = !searchTerm || titleMatch || typeMatch;
-
     const matchesStatus = filterStatus === 'all' || job.status === filterStatus;
     const matchesTier = filterTier === 'all' || job.tier === filterTier;
-
     return matchesSearch && matchesStatus && matchesTier;
   });
 
   const handleDelete = async (jobId) => {
-    if (!window.confirm('Are you sure you want to delete this generation? This action cannot be undone.')) {
-      return;
-    }
-
+    if (!window.confirm('Delete this generation? This cannot be undone.')) return;
     try {
       await deleteDoc(doc(db, 'content_generation_jobs', jobId));
-      setJobs(jobs.filter(j => j.id !== jobId));
-      toast.success('Generation deleted successfully');
+      setJobs(jobs.filter((j) => j.id !== jobId));
+      toast.success('Generation deleted');
     } catch (error) {
       console.error('Error deleting job:', error);
       toast.error('Failed to delete generation');
     }
   };
 
-  const getDocTitle = (job) => {
-    return (job.refinedTitle || job.outline?.topic || job.outline?.title || 'Generated Content')
+  const getDocTitle = (job) =>
+    (job.refinedTitle || job.outline?.topic || job.outline?.title || 'Generated Content')
       .replace(/[^a-zA-Z0-9\s-]/g, '')
       .trim()
       .replace(/\s+/g, '-')
       .substring(0, 60);
-  };
 
   const handleDownloadTxt = (job) => {
     const blob = new Blob([job.content], { type: 'text/plain' });
@@ -130,366 +111,254 @@ const ContentHistoryPage = () => {
     }
   };
 
-  const handleView = (job) => {
-    navigate(`/content/view/${job.id}`);
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="w-5 h-5 text-green-600" />;
-      case 'processing':
-        return <Clock className="w-5 h-5 text-primary animate-spin" />;
-      case 'failed':
-        return <XCircle className="w-5 h-5 text-red-600" />;
-      default:
-        return <Clock className="w-5 h-5 text-secondary-400" />;
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-100 text-green-800';
-      case 'processing':
-        return 'bg-primary/10 text-primary';
-      case 'failed':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-secondary-100 text-secondary-700';
-    }
+  const StatusBadge = ({ status }) => {
+    const config = {
+      completed: { icon: CheckCircle, label: 'Completed', className: 'badge-success' },
+      processing: { icon: Clock, label: 'Processing', className: 'badge-warning' },
+      generating: { icon: Clock, label: 'Generating', className: 'badge-warning' },
+      failed: { icon: XCircle, label: 'Failed', className: 'badge-error' },
+    };
+    const { icon: Icon, label, className } = config[status] || config.processing;
+    return (
+      <span className={`badge ${className}`}>
+        <Icon className="w-3 h-3" />
+        {label}
+      </span>
+    );
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-secondary-50/40">
         <div className="text-center">
-          <Sparkles className="w-16 h-16 text-primary mx-auto mb-4 animate-pulse" />
-          <p className="text-secondary-700">Loading your content history...</p>
+          <Sparkles className="w-8 h-8 text-primary mx-auto mb-3 animate-pulse" />
+          <p className="text-sm text-secondary-600">Loading…</p>
         </div>
       </div>
     );
   }
 
+  const totalWords = jobs.filter((j) => j.status === 'completed').reduce((sum, j) => sum + (j.wordCount || 0), 0);
+
   return (
-    <div className="min-h-screen py-4 md:py-8 bg-mesh">
-      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
+    <div className="min-h-screen bg-secondary-50/40">
+      <div className="max-w-6xl mx-auto px-6 py-8">
+
         {/* Breadcrumb */}
-        <div className="mb-4">
-          <div className="flex items-center space-x-2 text-sm">
-            <Link to="/dashboard" className="text-secondary-600 hover:text-secondary-900 transition-colors">
-              Dashboard
-            </Link>
-            <span className="text-secondary-400">/</span>
-            <span className="text-secondary-900 font-medium">Content History</span>
-          </div>
-        </div>
+        <nav className="flex items-center gap-1.5 text-xs text-secondary-500 mb-6">
+          <Link to="/dashboard" className="hover:text-secondary-900 transition-colors">Dashboard</Link>
+          <ChevronRight className="w-3 h-3 text-secondary-300" />
+          <span className="text-secondary-900 font-medium">Documents</span>
+        </nav>
 
         {/* Header */}
-        <FadeIn direction="left">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-4">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => navigate('/dashboard')}
-                className="p-2 text-secondary-600 hover:text-secondary-900 hover:bg-secondary-200/10 rounded-lg transition-colors"
-              >
-                <ArrowLeft className="w-6 h-6" />
-              </motion.button>
-              <div>
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary-900">
-                  Content History
-                </h1>
-                <p className="text-sm sm:text-base text-secondary-700">
-                  View, download, and manage your generated content
-                </p>
-              </div>
+        <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">
+          <div className="flex items-start gap-3">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="mt-1 p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">Documents</h1>
+              <p className="text-sm text-secondary-500 mt-1">View, download, and manage your generated content</p>
             </div>
           </div>
-        </FadeIn>
+          <Link to="/content/generate" className="btn btn-primary btn-sm">
+            <Plus className="w-3.5 h-3.5" />
+            Generate document
+          </Link>
+        </div>
+
+        {/* Stats strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-secondary-200 rounded-lg overflow-hidden border border-secondary-200 mb-6">
+          {[
+            { label: 'Total', value: jobs.length },
+            { label: 'Completed', value: jobs.filter((j) => j.status === 'completed').length },
+            { label: 'In progress', value: jobs.filter((j) => j.status === 'processing' || j.status === 'generating').length },
+            { label: 'Total words', value: totalWords.toLocaleString() },
+          ].map((s) => (
+            <div key={s.label} className="bg-white p-4">
+              <p className="text-xs uppercase tracking-wider text-secondary-500 font-medium mb-1">{s.label}</p>
+              <p className="text-xl font-semibold text-secondary-900 tabular-nums tracking-tight">{s.value}</p>
+            </div>
+          ))}
+        </div>
 
         {/* Filters */}
-        <FadeIn>
-          <div className="card card-floating mb-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-              {/* Search */}
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder="Search by title or type..."
-                  className="form-input pl-10"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-
-              {/* Filters */}
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
-                  <Filter className="w-5 h-5 text-secondary-600" />
-                  <select
-                    className="form-input min-w-0"
-                    value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
-                  >
-                    <option value="all">All Status</option>
-                    <option value="completed">Completed</option>
-                    <option value="processing">Processing</option>
-                    <option value="failed">Failed</option>
-                  </select>
-                </div>
-
-                <select
-                  className="form-input min-w-0"
-                  value={filterTier}
-                  onChange={(e) => setFilterTier(e.target.value)}
-                >
-                  <option value="all">All Tiers</option>
-                  <option value="standard">Standard</option>
-                  <option value="pro">Pro</option>
-                </select>
-              </div>
-            </div>
+        <div className="rounded-lg border border-secondary-200 bg-white p-3 mb-6 flex flex-wrap items-center gap-2">
+          <div className="relative flex-1 min-w-[200px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search by title or type…"
+              className="form-input pl-9"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-        </FadeIn>
+          <select
+            className="form-input min-w-0 w-auto"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="all">All status</option>
+            <option value="completed">Completed</option>
+            <option value="processing">Processing</option>
+            <option value="failed">Failed</option>
+          </select>
+          <select
+            className="form-input min-w-0 w-auto"
+            value={filterTier}
+            onChange={(e) => setFilterTier(e.target.value)}
+          >
+            <option value="all">All tiers</option>
+            <option value="standard">Standard</option>
+            <option value="pro">Pro</option>
+          </select>
+        </div>
 
-        {/* Stats Summary */}
-        <StaggerChildren>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <StaggerItem>
-              <div className="card card-floating">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-secondary-600">Total Generated</p>
-                    <p className="text-2xl font-bold text-secondary-900">
-                      <AnimatedCounter value={jobs.length} />
-                    </p>
-                  </div>
-                  <FileText className="w-8 h-8 text-primary" />
-                </div>
-              </div>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="card card-floating">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-secondary-600">Completed</p>
-                    <p className="text-2xl font-bold text-green-600">
-                      <AnimatedCounter value={jobs.filter(j => j.status === 'completed').length} />
-                    </p>
-                  </div>
-                  <CheckCircle className="w-8 h-8 text-green-600" />
-                </div>
-              </div>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="card card-floating">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-secondary-600">Processing</p>
-                    <p className="text-2xl font-bold text-primary">
-                      <AnimatedCounter value={jobs.filter(j => j.status === 'processing').length} />
-                    </p>
-                  </div>
-                  <Clock className="w-8 h-8 text-primary" />
-                </div>
-              </div>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="card card-floating">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-secondary-600">Total Words</p>
-                    <p className="text-2xl font-bold text-secondary-900">
-                      <AnimatedCounter value={jobs.filter(j => j.status === 'completed').reduce((sum, j) => sum + (j.wordCount || 0), 0)} />
-                    </p>
-                  </div>
-                  <Sparkles className="w-8 h-8 text-primary" />
-                </div>
-              </div>
-            </StaggerItem>
-          </div>
-        </StaggerChildren>
-
-        {/* Jobs List */}
+        {/* Jobs list */}
         {filteredJobs.length === 0 ? (
-          <FadeIn>
-            <div className="card card-floating text-center py-12">
-              {(searchTerm || filterStatus !== 'all' || filterTier !== 'all') ? (
-                <>
-                  <Search className="w-16 h-16 text-secondary-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-secondary-900 mb-2">
-                    No documents match your filters
-                  </h3>
-                  <p className="text-secondary-600 mb-6 max-w-md mx-auto">
-                    {searchTerm
-                      ? <>No documents match <span className="font-medium">"{searchTerm}"</span>. Try a different search term or clear your filters.</>
-                      : 'No documents match the selected filters. Try adjusting them.'}
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSearchTerm('');
-                      setFilterStatus('all');
-                      setFilterTier('all');
-                    }}
-                    className="text-sm text-primary font-medium hover:underline"
-                  >
-                    Clear filters
-                  </button>
-                </>
-              ) : (
-                <>
-                  <FileText className="w-16 h-16 text-secondary-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-secondary-900 mb-2">
-                    No content generated yet
-                  </h3>
-                  <p className="text-secondary-600 mb-6 max-w-md mx-auto">
-                    Generate your first document from your source library — essays, white papers, literature reviews, and more.
-                  </p>
-                  <Link to="/content/generate" className="btn btn-primary">
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Generate Content
-                  </Link>
-                </>
-              )}
-            </div>
-          </FadeIn>
+          <div className="rounded-lg border border-secondary-200 bg-white py-14 text-center">
+            {searchTerm || filterStatus !== 'all' || filterTier !== 'all' ? (
+              <>
+                <div className="w-10 h-10 rounded-md bg-secondary-100 flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-5 h-5 text-secondary-400" />
+                </div>
+                <h3 className="text-base font-semibold text-secondary-900 mb-1">No documents match</h3>
+                <p className="text-sm text-secondary-500 mb-5 max-w-sm mx-auto">
+                  Try a different search term or clear your filters.
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchTerm('');
+                    setFilterStatus('all');
+                    setFilterTier('all');
+                  }}
+                  className="btn btn-secondary btn-sm"
+                >
+                  Clear filters
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="w-10 h-10 rounded-md bg-secondary-100 flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-5 h-5 text-secondary-400" />
+                </div>
+                <h3 className="text-base font-semibold text-secondary-900 mb-1">No documents yet</h3>
+                <p className="text-sm text-secondary-500 mb-5 max-w-sm mx-auto">
+                  Generate your first document from your source library.
+                </p>
+                <Link to="/content/generate" className="btn btn-primary btn-sm">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Generate document
+                </Link>
+              </>
+            )}
+          </div>
         ) : (
-          <StaggerChildren>
-            <div className="space-y-4">
-              {filteredJobs.map(job => (
-                <StaggerItem key={job.id}>
-                  <div className={`card card-floating hover:shadow-md transition-shadow ${job.status === 'processing' ? 'animate-pulse' : ''}`}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        {/* Header */}
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center space-x-3">
-                            {getStatusIcon(job.status)}
-                            <div>
-                              <h3 className="text-lg font-semibold text-secondary-900">
-                                {job.outline?.title || 'Untitled'}
-                              </h3>
-                              <div className="flex items-center space-x-2 mt-1">
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(job.status)}`}>
-                                  {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
-                                </span>
-                                <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium capitalize">
-                                  {job.tier} Tier
-                                </span>
-                                <span className="px-2 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs font-medium capitalize">
-                                  {job.settings?.document_type?.replace('_', ' ')}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Details */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
-                          <div>
-                            <p className="text-xs text-secondary-600">Word Count</p>
-                            <p className="text-sm font-medium text-secondary-900">
-                              {job.wordCount?.toLocaleString() || 'N/A'}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-secondary-600">Pages</p>
-                            <p className="text-sm font-medium text-secondary-900">
-                              {job.estimatedPages || 'N/A'}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-secondary-600">Cost</p>
-                            <p className="text-sm font-medium text-secondary-900">
-                              ${job.estimatedCost?.toFixed(2) || '0.00'}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-secondary-600">Created</p>
-                            <p className="text-sm font-medium text-secondary-900">
-                              {job.createdAt.toLocaleDateString()}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Progress for processing jobs */}
-                        {job.status === 'processing' && (
-                          <div className="mb-3">
-                            <div className="flex items-center justify-between text-sm mb-1">
-                              <span className="text-secondary-700">{job.currentSection || 'Processing...'}</span>
-                              <span className="text-primary font-medium">{job.progress || 0}%</span>
-                            </div>
-                            <div className="w-full bg-secondary-200 rounded-full h-2">
-                              <div
-                                className="bg-primary h-2 rounded-full transition-all"
-                                style={{ width: `${job.progress || 0}%` }}
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Error message for failed jobs */}
-                        {job.status === 'failed' && job.errorMessage && (
-                          <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                            <p className="text-sm text-red-800">{job.errorMessage}</p>
-                          </div>
+          <div className="rounded-lg border border-secondary-200 bg-white overflow-hidden divide-y divide-secondary-100">
+            {filteredJobs.map((job) => (
+              <div
+                key={job.id}
+                className={`p-5 transition-colors ${job.status === 'processing' || job.status === 'generating' ? 'bg-warning-50/30' : 'hover:bg-secondary-50/40'}`}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    {/* Title row */}
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <button
+                        onClick={() => navigate(`/content/view/${job.id}`)}
+                        className="text-left min-w-0 flex-1"
+                        disabled={job.status !== 'completed'}
+                      >
+                        <h3 className="text-base font-semibold text-secondary-900 truncate group-hover:text-primary transition-colors">
+                          {job.refinedTitle || job.outline?.title || job.outline?.topic || 'Untitled'}
+                        </h3>
+                      </button>
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        <StatusBadge status={job.status} />
+                        {job.tier && <span className="badge badge-brand capitalize">{job.tier}</span>}
+                        {job.settings?.document_type && (
+                          <span className="badge badge-neutral capitalize">
+                            {job.settings.document_type.replace('_', ' ')}
+                          </span>
                         )}
                       </div>
-
-                      {/* Actions */}
-                      {job.status === 'completed' && (
-                        <div className="flex items-center space-x-2 ml-4">
-                          <motion.button
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => handleView(job)}
-                            className="p-2 text-secondary-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                            title="View"
-                            aria-label="View content"
-                          >
-                            <Eye className="w-5 h-5" />
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => handleDownloadTxt(job)}
-                            className="p-2 text-secondary-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                            title="Download TXT"
-                            aria-label="Download as TXT file"
-                          >
-                            <Download className="w-5 h-5" />
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => handleDownloadWord(job)}
-                            className="p-2 text-secondary-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                            title="Download Word"
-                            aria-label="Download as Word document"
-                          >
-                            <FileText className="w-5 h-5" />
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => handleDelete(job.id)}
-                            className="p-2 text-secondary-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                            title="Delete"
-                            aria-label="Delete content"
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </motion.button>
-                        </div>
-                      )}
                     </div>
+
+                    {/* Meta */}
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-secondary-500 tabular-nums">
+                      <span>{job.wordCount?.toLocaleString() || '—'} words</span>
+                      <span>{job.estimatedPages || '—'} pages</span>
+                      <span>${job.estimatedCost?.toFixed(2) || '0.00'}</span>
+                      <span>{job.createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    </div>
+
+                    {/* Progress bar */}
+                    {(job.status === 'processing' || job.status === 'generating') && (
+                      <div className="mt-3">
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-secondary-700">{job.currentSection || 'Processing…'}</span>
+                          <span className="text-secondary-900 font-medium tabular-nums">{job.progress || 0}%</span>
+                        </div>
+                        <div className="w-full bg-secondary-200 rounded-full h-1 overflow-hidden">
+                          <div
+                            className="bg-primary h-1 transition-all"
+                            style={{ width: `${job.progress || 0}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Error */}
+                    {job.status === 'failed' && job.errorMessage && (
+                      <div className="mt-3 p-3 bg-error-50 border border-error-200 rounded-md">
+                        <p className="text-xs text-error-800">{job.errorMessage}</p>
+                      </div>
+                    )}
                   </div>
-                </StaggerItem>
-              ))}
-            </div>
-          </StaggerChildren>
+
+                  {/* Actions */}
+                  {job.status === 'completed' && (
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <button
+                        onClick={() => navigate(`/content/view/${job.id}`)}
+                        className="p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+                        title="View"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDownloadTxt(job)}
+                        className="p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+                        title="TXT"
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDownloadWord(job)}
+                        className="p-1.5 text-secondary-500 hover:text-secondary-900 hover:bg-secondary-100 rounded-md transition-colors"
+                        title="Word"
+                      >
+                        <FileText className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(job.id)}
+                        className="p-1.5 text-secondary-500 hover:text-error-600 hover:bg-error-50 rounded-md transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

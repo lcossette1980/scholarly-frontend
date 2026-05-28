@@ -1,9 +1,8 @@
 // src/pages/ContentGenerationPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FadeIn, ScaleIn } from '../components/motion';
 import { useAuth } from '../context/AuthContext';
 import { getUserBibliographyEntries } from '../services/bibliography';
 import { analysisAPI } from '../services/api';
@@ -19,23 +18,13 @@ import toast from 'react-hot-toast';
 const ContentGenerationPage = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-
-  // Wizard state
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(true);
-
-  // User's bibliography entries
   const [entries, setEntries] = useState([]);
-
-  // Step 1: Source Selection
   const [selectedSources, setSelectedSources] = useState([]);
-
-  // Step 2: Outline Selection
   const [outlines, setOutlines] = useState([]);
   const [selectedOutline, setSelectedOutline] = useState(null);
   const [customOutline, setCustomOutline] = useState(null);
-
-  // Step 3: Settings
   const [settings, setSettings] = useState({
     document_type: 'article',
     target_words: 2500,
@@ -45,41 +34,32 @@ const ContentGenerationPage = () => {
     include_hook: true,
     include_conclusion: true,
     generate_images: false,
-    citation_style: 'none'
+    citation_style: 'none',
   });
-
-  // Step 4: Pricing
   const [selectedTier, setSelectedTier] = useState('standard');
-
-  // Step 5: Generation
   const [jobId, setJobId] = useState(null);
 
-  // Load user's bibliography entries on mount
   useEffect(() => {
     const loadEntries = async () => {
       try {
         setLoading(true);
         const result = await getUserBibliographyEntries(currentUser.uid, 100);
-
         if (result.success) {
-          // Transform entries to include parsed citation data
-          const transformedEntries = result.entries.map(entry => {
+          const transformedEntries = result.entries.map((entry) => {
             const citation = entry.citation || {};
             return {
               id: entry.id,
-              title: typeof citation === 'string' ? citation : (citation.title || 'Untitled'),
-              authors: typeof citation === 'string' ? '' : (citation.authors || 'Unknown Author'),
-              year: typeof citation === 'string' ? '' : (citation.year || ''),
+              title: typeof citation === 'string' ? citation : citation.title || 'Untitled',
+              authors: typeof citation === 'string' ? '' : citation.authors || 'Unknown Author',
+              year: typeof citation === 'string' ? '' : citation.year || '',
               journal: entry.researchFocus || '',
               researchFocus: entry.researchFocus || '',
               narrativeOverview: entry.narrative_overview || '',
               coreFindingsSummary: entry.core_findings || '',
-              createdAt: entry.createdAt
+              createdAt: entry.createdAt,
             };
           });
-
           setEntries(transformedEntries);
-
           if (transformedEntries.length === 0) {
             toast.error('You need to create source entries first');
             navigate('/create');
@@ -94,38 +74,30 @@ const ContentGenerationPage = () => {
         setLoading(false);
       }
     };
-
-    if (currentUser) {
-      loadEntries();
-    }
+    if (currentUser) loadEntries();
   }, [currentUser, navigate]);
 
-  // Generate outlines from selected sources
   const generateOutlines = async () => {
     if (selectedSources.length < 2) {
       toast.error('Please select at least 2 sources for topic generation');
       return false;
     }
-
     try {
       setLoading(true);
       const response = await analysisAPI.generateTopics(
-        selectedSources.map(s => s.id),
+        selectedSources.map((s) => s.id),
         currentUser.uid,
         { outputType: settings.document_type, numTopics: 3 }
       );
-
-      // Convert topics to outlines
-      const generatedOutlines = response.topics.map(topic => ({
+      const generatedOutlines = response.topics.map((topic) => ({
         id: `outline-${Date.now()}-${Math.random()}`,
         title: topic.title,
-        sections: topic.suggested_structure.map((section, idx) => ({
+        sections: topic.suggested_structure.map((section) => ({
           heading: section,
           description: '',
-          key_points: []
-        }))
+          key_points: [],
+        })),
       }));
-
       setOutlines(generatedOutlines);
       return true;
     } catch (error) {
@@ -137,47 +109,39 @@ const ContentGenerationPage = () => {
     }
   };
 
-  // Navigate between steps
   const nextStep = async () => {
-    // Validation for each step
     if (currentStep === 1) {
       if (selectedSources.length === 0) {
         toast.error('Please select at least one source');
         return;
       }
-      // Generate outlines when moving from step 1 to step 2
       const success = await generateOutlines();
       if (!success) return;
     }
-
     if (currentStep === 2) {
       if (!selectedOutline && !customOutline) {
         toast.error('Please select or create an outline');
         return;
       }
     }
-
-    setCurrentStep(curr => Math.min(curr + 1, 6));
+    setCurrentStep((curr) => Math.min(curr + 1, 6));
   };
 
-  const prevStep = () => {
-    setCurrentStep(curr => Math.max(curr - 1, 1));
-  };
+  const prevStep = () => setCurrentStep((curr) => Math.max(curr - 1, 1));
 
-  // Step progress
   const steps = [
-    { number: 1, name: 'Sources', completed: currentStep > 1 },
-    { number: 2, name: 'Outline', completed: currentStep > 2 },
-    { number: 3, name: 'Settings', completed: currentStep > 3 },
-    { number: 4, name: 'Pricing', completed: currentStep > 4 },
-    { number: 5, name: 'Generate', completed: currentStep > 5 },
-    { number: 6, name: 'Review', completed: false }
+    { number: 1, name: 'Sources' },
+    { number: 2, name: 'Outline' },
+    { number: 3, name: 'Settings' },
+    { number: 4, name: 'Pricing' },
+    { number: 5, name: 'Generate' },
+    { number: 6, name: 'Review' },
   ];
 
   if (loading && entries.length === 0) {
     return (
-      <div className="min-h-screen bg-mesh py-8">
-        <div className="container mx-auto px-6">
+      <div className="min-h-screen bg-secondary-50/40 py-8">
+        <div className="max-w-5xl mx-auto px-6">
           <LoadingSkeleton variant="form" />
         </div>
       </div>
@@ -185,81 +149,80 @@ const ContentGenerationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-mesh py-8">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <div className="min-h-screen bg-secondary-50/40 py-8">
+      <div className="max-w-5xl mx-auto px-6">
+
         {/* Header */}
-        <FadeIn direction="down">
-          <div className="mb-8">
-            <motion.button
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center space-x-2 text-secondary-600 hover:text-secondary-900 mb-4 transition-colors"
-              whileHover={{ x: -4 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Dashboard</span>
-            </motion.button>
+        <div className="mb-8">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="inline-flex items-center gap-1.5 text-xs text-secondary-500 hover:text-secondary-900 mb-4 transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to dashboard
+          </button>
+          <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 tracking-tight">
+            Generate document
+          </h1>
+          <p className="mt-1 text-sm text-secondary-500">
+            Turn your sources into a polished, citation-backed document.
+          </p>
+        </div>
 
-            <h1 className="text-4xl font-bold text-secondary-900 mb-2">
-              AI Content Generator
-            </h1>
-            <p className="text-secondary-700">
-              Transform your sources into compelling, polished content
-            </p>
-          </div>
-        </FadeIn>
-
-        {/* Progress Steps */}
-        <FadeIn delay={0.1}>
-          <div className="mb-8">
+        {/* Progress steps */}
+        <div className="mb-6">
+          <div className="rounded-lg border border-secondary-200 bg-white px-5 py-4">
             <div className="flex items-center justify-between">
-              {steps.map((step, idx) => (
-                <React.Fragment key={step.number}>
-                  <div className="flex flex-col items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
-                      step.completed
-                        ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
-                        : currentStep === step.number
-                        ? 'bg-gradient-to-br from-primary to-charcoal text-white shadow-lg shadow-primary/30'
-                        : 'bg-secondary-200 text-secondary-400'
-                    }`}>
-                      {step.completed ? (
-                        <ScaleIn>
-                          <CheckCircle className="w-4 h-4" />
-                        </ScaleIn>
-                      ) : step.number}
+              {steps.map((step, idx) => {
+                const isComplete = currentStep > step.number;
+                const isActive = currentStep === step.number;
+                return (
+                  <React.Fragment key={step.number}>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold transition-colors tabular-nums ${
+                          isComplete
+                            ? 'bg-primary text-white'
+                            : isActive
+                            ? 'bg-secondary-900 text-white'
+                            : 'bg-secondary-100 text-secondary-500 border border-secondary-200'
+                        }`}
+                      >
+                        {isComplete ? <Check className="w-3 h-3" strokeWidth={3} /> : step.number}
+                      </div>
+                      <span
+                        className={`text-xs font-medium whitespace-nowrap hidden sm:inline ${
+                          isActive ? 'text-secondary-900' : isComplete ? 'text-secondary-600' : 'text-secondary-400'
+                        }`}
+                      >
+                        {step.name}
+                      </span>
                     </div>
-                    <span className={`text-xs mt-2 font-medium ${
-                      currentStep === step.number ? 'text-primary' : step.completed ? 'text-green-600' : 'text-secondary-400'
-                    }`}>
-                      {step.name}
-                    </span>
-                  </div>
-                  {idx < steps.length - 1 && (
-                    <div className="flex-1 h-1 mx-2 rounded-full overflow-hidden bg-secondary-200">
-                      <motion.div
-                        className="h-full bg-green-500 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{ width: step.completed ? '100%' : '0%' }}
-                        transition={{ duration: 0.5, ease: 'easeInOut' }}
-                      />
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
+                    {idx < steps.length - 1 && (
+                      <div className="flex-1 h-px mx-3 bg-secondary-200 relative overflow-hidden">
+                        <div
+                          className={`absolute inset-0 bg-primary transition-all duration-300 ${
+                            isComplete ? 'w-full' : 'w-0'
+                          }`}
+                        />
+                      </div>
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
-        </FadeIn>
+        </div>
 
-        {/* Step Content */}
-        <div className="glass-card rounded-xl p-5">
+        {/* Step content */}
+        <div className="rounded-lg border border-secondary-200 bg-white p-6 lg:p-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.15 }}
             >
               {currentStep === 1 && (
                 <SourceSelectionStep
@@ -270,7 +233,6 @@ const ContentGenerationPage = () => {
                   loading={loading}
                 />
               )}
-
               {currentStep === 2 && (
                 <OutlineSelectionStep
                   outlines={outlines}
@@ -283,7 +245,6 @@ const ContentGenerationPage = () => {
                   loading={loading}
                 />
               )}
-
               {currentStep === 3 && (
                 <SettingsStep
                   settings={settings}
@@ -292,7 +253,6 @@ const ContentGenerationPage = () => {
                   onBack={prevStep}
                 />
               )}
-
               {currentStep === 4 && (
                 <PricingConfirmationStep
                   selectedSources={selectedSources}
@@ -305,14 +265,12 @@ const ContentGenerationPage = () => {
                   setJobId={setJobId}
                 />
               )}
-
               {currentStep === 5 && (
                 <GenerationProgressStep
                   jobId={jobId}
                   onComplete={() => setCurrentStep(6)}
                 />
               )}
-
               {currentStep === 6 && (
                 <ReviewEditStep
                   jobId={jobId}
