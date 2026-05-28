@@ -1635,7 +1635,7 @@ const AdminDashboardPage = () => {
                         <span className="text-xs font-mono text-secondary-500 tabular-nums whitespace-nowrap">~$15 · 15-25 min</span>
                       </div>
                       <p className="text-xs text-secondary-600 leading-relaxed">
-                        5 representative document types, one per voice profile (article / white_paper / research_paper / lab_report / bibliography). Use for routine checks after prompt tweaks.
+                        5 representative document types, one per voice profile (article / white_paper / research_paper / lab_report / bibliography). Default settings (tone=professional, approach=balanced). Use for routine checks after prompt tweaks.
                       </p>
                       <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-primary">
                         {voiceRunning && voiceScope === 'voices' ? (
@@ -1657,7 +1657,7 @@ const AdminDashboardPage = () => {
                         <span className="text-xs font-mono text-secondary-500 tabular-nums whitespace-nowrap">~$50 · 50-75 min</span>
                       </div>
                       <p className="text-xs text-secondary-600 leading-relaxed">
-                        All 17 supported document types. Reserve for pre-release verification or after major voice/prompt changes. Long-running — kick off and walk away.
+                        All 17 document types with <strong>smart coverage</strong>: each test uses a different voice-appropriate tone / approach / citation style, distributed so every tone (7), approach (3), and citation style (4) gets exercised. Reserve for pre-release verification. Kick off and walk away.
                       </p>
                       <div className="mt-3 flex items-center gap-1.5 text-xs font-medium text-secondary-900">
                         {voiceRunning && voiceScope === 'all' ? (
@@ -1725,27 +1725,40 @@ const AdminDashboardPage = () => {
                         const isExpanded = voiceExpandedDocType === r.doc_type;
                         const overall = r.overall;
                         const overallColor = overall === 'PASS' ? 'badge-success' : overall === 'FAIL' ? 'badge-error' : 'badge-warning';
+                        // Build a settings descriptor string for at-a-glance visibility
+                        const settingsLabel = [
+                          r.tone && r.tone !== 'professional' ? r.tone : null,
+                          r.approach && r.approach !== 'balanced' ? r.approach : null,
+                          r.citation_style && r.citation_style !== 'none' ? r.citation_style.toUpperCase() : null,
+                        ].filter(Boolean).join(' · ');
                         return (
-                          <div key={r.doc_type} className="py-3">
+                          <div key={`${r.doc_type}-${r.tone || 'pro'}-${r.approach || 'bal'}`} className="py-3">
                             <button
                               onClick={() => setVoiceExpandedDocType(isExpanded ? null : r.doc_type)}
-                              className="w-full flex items-center gap-3 text-left"
+                              className="w-full flex items-center gap-3 text-left flex-wrap"
                             >
                               {isExpanded ? <ChevronDown className="w-3.5 h-3.5 text-secondary-400 flex-shrink-0" /> : <ChevronRight className="w-3.5 h-3.5 text-secondary-400 flex-shrink-0" />}
                               <span className={`badge ${overallColor} flex-shrink-0`}>{overall}</span>
                               <span className="text-sm font-medium text-secondary-900 flex-shrink-0 min-w-[140px]">{r.doc_type}</span>
-                              <span className="text-xs text-secondary-500 font-mono uppercase tracking-wider">{r.voice}</span>
-                              {r.structural && (
-                                <span className="text-xs text-secondary-500 ml-auto tabular-nums">
-                                  {r.structural.passed}/{r.structural.total} assertions
-                                  {r.structural.warnings > 0 && <span className="text-warning-600 ml-1">({r.structural.warnings}w)</span>}
+                              <span className="text-xs text-secondary-500 font-mono uppercase tracking-wider flex-shrink-0">{r.voice}</span>
+                              {settingsLabel && (
+                                <span className="text-[10px] text-secondary-500 bg-secondary-100 px-1.5 py-0.5 rounded font-mono">
+                                  {settingsLabel}
                                 </span>
                               )}
-                              {r.voice_fit?.score != null && (
-                                <span className={`text-xs tabular-nums ml-2 ${r.voice_fit.score >= 80 ? 'text-success-700' : r.voice_fit.score >= 60 ? 'text-warning-700' : 'text-error-700'}`}>
-                                  fit: {r.voice_fit.score}
-                                </span>
-                              )}
+                              <div className="ml-auto flex items-center gap-2 flex-shrink-0">
+                                {r.structural && (
+                                  <span className="text-xs text-secondary-500 tabular-nums">
+                                    {r.structural.passed}/{r.structural.total} assertions
+                                    {r.structural.warnings > 0 && <span className="text-warning-600 ml-1">({r.structural.warnings}w)</span>}
+                                  </span>
+                                )}
+                                {r.voice_fit?.score != null && (
+                                  <span className={`text-xs tabular-nums ${r.voice_fit.score >= 80 ? 'text-success-700' : r.voice_fit.score >= 60 ? 'text-warning-700' : 'text-error-700'}`}>
+                                    fit: {r.voice_fit.score}
+                                  </span>
+                                )}
+                              </div>
                             </button>
 
                             {isExpanded && (
