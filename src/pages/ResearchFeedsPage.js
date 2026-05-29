@@ -94,7 +94,19 @@ const ResearchFeedsPage = () => {
       setNewTopic('');
       await loadSubscriptions();
     } catch (error) {
-      toast.error('Failed to subscribe');
+      // Surface the actual backend error message instead of generic 'Failed to subscribe'
+      const detail = error?.response?.data?.detail;
+      const status = error?.response?.status;
+      console.error('Subscribe error:', status, detail, error);
+      if (status === 403) {
+        toast.error(detail || 'Research Feeds require a Pro subscription');
+      } else if (status === 404) {
+        toast.error('User account not found — try signing out and back in');
+      } else if (detail) {
+        toast.error(detail);
+      } else {
+        toast.error('Failed to subscribe');
+      }
     } finally {
       setSubscribing(false);
     }
