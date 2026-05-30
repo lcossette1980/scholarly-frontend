@@ -307,11 +307,12 @@ const HomePage = () => {
             <div className="eyebrow mb-6 text-secondary-400 border-secondary-700">
               The math
             </div>
-            <h2 className="text-3xl lg:text-5xl font-semibold tracking-tight leading-tight">
-              A 10-page white paper{' '}
-              <span className="text-white whitespace-nowrap">
-                costs <span className="text-primary-300">$14.90</span>
-              </span>
+            {/* Explicit text-white needed: index.css has a global h2 color
+                rule (text-secondary-900) that would otherwise render this
+                headline near-black on near-black. */}
+            <h2 className="text-white text-3xl lg:text-5xl font-semibold tracking-tight leading-tight">
+              A 10-page white paper costs{' '}
+              <span className="text-primary-300 whitespace-nowrap">$14.90</span>
               <br className="hidden sm:block" /> with DraftEngine.
             </h2>
             <p className="mt-6 text-xl text-secondary-300 leading-relaxed">

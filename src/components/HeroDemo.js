@@ -1,22 +1,24 @@
 // src/components/HeroDemo.js
 //
 // The "receipts" demo. A generated paragraph cycles through its citations;
-// every few seconds the active citation pulses and a side panel slides in
-// showing the EXACT passage in the source it was drawn from, highlighted.
+// every few seconds the active citation pulses and a source panel reveals
+// the EXACT passage in the source it was drawn from, highlighted.
 //
-// This is the homepage's single most important visual asset: it makes
-// DraftEngine's actual differentiator (citations stay traceable, nothing
-// invented) instantly legible without the visitor having to read marketing
-// copy. The animation loop runs autoplay; users can also click a citation
-// directly to scrub to it.
+// LAYOUT-STABILITY NOTE (v2):
+// The previous version animated the source panel's WIDTH (0% → 46%), which
+// caused the left paragraph pane (`flex-1`) to reflow each cycle. The
+// paragraph re-wrapped narrower → taller → the demo container grew → the
+// whole page below shifted with the animation cycle. Awful UX.
+//
+// This version uses a FIXED 2-column grid where both panes are always
+// present at their final size. The source panel just toggles opacity +
+// translateX; nothing ever resizes. The outer container also has a
+// fixed-height grid so vertical reflow is impossible.
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, X } from 'lucide-react';
 
-// One paragraph of "generated" content with two citations. Both source
-// excerpts are written to look like the real extract panel users see when
-// they click a citation inside a generated draft.
 const PARAGRAPH_FRAGMENTS = [
   { type: 'text', text: 'In remote-first organizations, asynchronous communication isn’t just a perk — it’s the operating system. Doist found that teams maintaining strict async defaults reported ' },
   { type: 'cite', id: 1, text: '41% fewer interrupt cycles per week' },
@@ -40,17 +42,13 @@ const SOURCES = {
   },
 };
 
-const CYCLE_MS = 4200; // total time per citation in the loop
+const CYCLE_MS = 4200;
 
 const HeroDemo = () => {
-  // null = panel closed (paragraph full width). Number = which citation is active.
   const [activeCitation, setActiveCitation] = useState(1);
-  // userInteracted pauses the autoplay loop so a curious visitor doesn't
-  // get yanked off the citation they just clicked.
   const [userInteracted, setUserInteracted] = useState(false);
   const timerRef = useRef(null);
 
-  // Autoplay: rotate through citations on a fixed cadence.
   useEffect(() => {
     if (userInteracted) return;
     timerRef.current = setInterval(() => {
@@ -59,7 +57,6 @@ const HeroDemo = () => {
     return () => clearInterval(timerRef.current);
   }, [userInteracted]);
 
-  // On hover, pause autoplay; resume after pointer leaves.
   const onPointerEnter = () => {
     if (timerRef.current) clearInterval(timerRef.current);
   };
@@ -73,7 +70,6 @@ const HeroDemo = () => {
   const handleCitationClick = (id) => {
     setUserInteracted(true);
     setActiveCitation(id);
-    // Resume autoplay after 10s of inactivity
     if (timerRef.current) clearInterval(timerRef.current);
     setTimeout(() => setUserInteracted(false), 10000);
   };
@@ -86,7 +82,7 @@ const HeroDemo = () => {
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
     >
-      {/* Browser-style chrome */}
+      {/* Browser chrome */}
       <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-secondary-200 bg-secondary-50">
         <div className="w-2.5 h-2.5 rounded-full bg-secondary-300" />
         <div className="w-2.5 h-2.5 rounded-full bg-secondary-300" />
@@ -96,15 +92,12 @@ const HeroDemo = () => {
         </div>
       </div>
 
-      {/* Two-pane workspace: paragraph on the left, source panel on the right */}
-      <div className="flex min-h-[440px] sm:min-h-[420px]">
-        {/* LEFT — generated paragraph */}
-        <motion.div
-          layout
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 p-6 sm:p-10 flex flex-col"
-        >
-          {/* Tiny header so it reads as a real document, not a screenshot */}
+      {/* Two-pane workspace — FIXED grid, FIXED height. Nothing here is
+          allowed to change size at runtime. The panel slides in/out via
+          opacity + translateX only. */}
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_minmax(0,360px)] h-[480px] sm:h-[460px]">
+        {/* LEFT — generated paragraph (fixed column width) */}
+        <div className="p-6 sm:p-10 flex flex-col border-b md:border-b-0 md:border-r border-secondary-200 overflow-hidden">
           <div className="flex items-center gap-2 mb-5 text-[11px] uppercase tracking-wider text-secondary-400 font-medium">
             <FileText className="w-3 h-3" />
             <span>Async at Scale · Draft · Editorial voice</span>
@@ -114,7 +107,7 @@ const HeroDemo = () => {
             Why async-first teams keep their best people longer
           </h3>
 
-          <p className="text-[15px] sm:text-base text-secondary-800 leading-[1.75]">
+          <p className="text-[15px] sm:text-base text-secondary-800 leading-[1.75] overflow-y-auto">
             {PARAGRAPH_FRAGMENTS.map((frag, idx) => {
               if (frag.type === 'text') return <span key={idx}>{frag.text}</span>;
               const isActive = activeCitation === frag.id;
@@ -131,7 +124,6 @@ const HeroDemo = () => {
                   ].join(' ')}
                 >
                   {frag.text}
-                  {/* Superscript citation marker */}
                   <sup
                     className={[
                       'ml-0.5 text-[10px] font-semibold tabular-nums transition-colors',
@@ -140,7 +132,6 @@ const HeroDemo = () => {
                   >
                     [{frag.id}]
                   </sup>
-                  {/* Pulse ring when active */}
                   {isActive && (
                     <motion.span
                       aria-hidden
@@ -155,25 +146,23 @@ const HeroDemo = () => {
             })}
           </p>
 
-          {/* Footnote / nudge so the interaction is discoverable */}
-          <p className="mt-6 text-xs text-secondary-400">
+          <p className="mt-6 text-xs text-secondary-400 flex-shrink-0">
             Click any citation to see the exact source passage.
           </p>
-        </motion.div>
+        </div>
 
-        {/* RIGHT — source panel */}
-        <AnimatePresence mode="wait">
-          {source && (
-            <motion.aside
-              key={activeCitation}
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: '46%', opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="border-l border-secondary-200 bg-secondary-50/50 overflow-hidden flex-shrink-0"
-            >
-              <div className="p-5 sm:p-6 h-full flex flex-col">
-                {/* Panel header */}
+        {/* RIGHT — source panel (FIXED column, contents toggle opacity) */}
+        <div className="relative bg-secondary-50/50 overflow-hidden">
+          <AnimatePresence mode="wait">
+            {source && (
+              <motion.aside
+                key={activeCitation}
+                initial={{ opacity: 0, x: 18 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 18 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0 p-5 sm:p-6 flex flex-col"
+              >
                 <div className="flex items-start justify-between mb-4">
                   <div className="min-w-0">
                     <div className="text-[10px] uppercase tracking-wider text-secondary-400 font-medium mb-1">
@@ -201,28 +190,31 @@ const HeroDemo = () => {
                   <div className="text-[10px] font-mono text-secondary-300 uppercase tracking-wider mb-3">
                     — excerpt
                   </div>
-                  <motion.p
-                    key={source.quote}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: 0.15 }}
-                    className="text-[13px] leading-[1.7] text-secondary-800"
-                  >
+                  <p className="text-[13px] leading-[1.7] text-secondary-800">
                     <span className="bg-yellow-200/60 px-0.5 rounded-sm">
                       {source.quote}
                     </span>
-                  </motion.p>
+                  </p>
                 </div>
 
-                {/* Traceability footer */}
                 <div className="mt-4 flex items-center gap-2 text-[11px] text-secondary-500">
                   <span className="inline-block w-1 h-1 rounded-full bg-success-500" />
                   <span>Citation {activeCitation} · {source.paragraphLabel}</span>
                 </div>
-              </div>
-            </motion.aside>
+              </motion.aside>
+            )}
+          </AnimatePresence>
+
+          {/* Placeholder text shown when no citation is active (keeps the
+              column from looking empty after the user closes the panel) */}
+          {!source && (
+            <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+              <p className="text-xs text-secondary-400 max-w-[200px] leading-relaxed">
+                Click a citation on the left to reveal its source passage here.
+              </p>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
       </div>
     </div>
   );
