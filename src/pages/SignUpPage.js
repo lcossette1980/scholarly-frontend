@@ -96,41 +96,49 @@ const SignUpPage = () => {
 
       {/* Left panel — brand */}
       <div className="hidden lg:flex lg:w-1/2 bg-secondary-900 relative overflow-hidden flex-col justify-between p-12">
-        <Link to="/" className="inline-flex items-center gap-2.5 group">
+        {/* Subtle dot grid to match the home hero treatment */}
+        <div className="absolute inset-0 bg-dot-grid opacity-[0.08] pointer-events-none" aria-hidden />
+
+        <Link to="/" className="relative inline-flex items-center gap-2.5 group">
           <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">
             <PenTool className="w-4 h-4 text-white" strokeWidth={2.25} />
           </div>
           <span className="text-[15px] font-semibold text-white tracking-tight">DraftEngine</span>
         </Link>
 
-        <div className="max-w-md">
-          <h2 className="text-3xl font-semibold text-white tracking-tight leading-tight">
-            Start free in under 60 seconds.
+        <div className="relative max-w-md">
+          {/* explicit text-white required — index.css globally sets h2 to
+              text-secondary-900 which is invisible on this dark background */}
+          <h2 className="text-white text-3xl font-semibold tracking-tight leading-tight">
+            Your sources. Your citations. <span className="text-primary-300">Your draft.</span>
           </h2>
           <p className="mt-4 text-secondary-300 leading-relaxed">
-            Five source entries to start. No credit card required. Cancel anytime.
+            Drop in PDFs, URLs, DOIs, or RSS feeds. DraftEngine extracts the
+            arguments and drafts a fully cited document in your voice. Every
+            reference traces back to a source in your library.
           </p>
           <ul className="mt-8 space-y-3 text-sm">
             {[
-              'Import from PDFs, URLs, DOIs, and feeds',
-              'AI-generated documents with citations',
-              'Quality-reviewed by editorial agents',
-              'Export to Word with formatting intact',
+              'Import from PDFs, URLs, DOIs, and RSS feeds',
+              'Page-numbered quotes extracted automatically',
+              'Five voices for five different document types',
+              'No hallucinated citations, ever',
             ].map((f) => (
               <li key={f} className="flex items-start gap-2.5 text-secondary-300">
-                <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                <Check className="w-4 h-4 text-primary-300 mt-0.5 flex-shrink-0" />
                 <span>{f}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="flex items-center gap-6 text-xs text-secondary-400">
-          <span>10,000+ writers</span>
-          <span className="w-1 h-1 rounded-full bg-secondary-700" />
-          <span>Secure & private</span>
+        {/* Verifiable claims only — no fabricated "10,000+ writers". */}
+        <div className="relative flex items-center gap-6 text-xs text-secondary-400">
+          <span>5 free sources</span>
           <span className="w-1 h-1 rounded-full bg-secondary-700" />
           <span>No credit card</span>
+          <span className="w-1 h-1 rounded-full bg-secondary-700" />
+          <span>Cancel anytime</span>
         </div>
       </div>
 
@@ -148,7 +156,9 @@ const SignUpPage = () => {
 
           <div className="mb-8">
             <h1 className="text-2xl font-semibold text-secondary-900 tracking-tight">Create your account</h1>
-            <p className="mt-1.5 text-sm text-secondary-600">Free forever. No credit card required.</p>
+            <p className="mt-1.5 text-sm text-secondary-600">
+              5 free sources to start. No card. Cancel anytime.
+            </p>
           </div>
 
           <button
