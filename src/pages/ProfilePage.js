@@ -13,7 +13,7 @@ import {
   Crown,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { createCustomerPortalSession, manuallyActivateSubscription, fixSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
+import { createCustomerPortalSession, fixSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
 import { getUserBibliographyEntries } from '../services/bibliography';
 import { resetPassword } from '../services/auth';
 import { updateProfile, deleteUser } from 'firebase/auth';
@@ -22,6 +22,7 @@ import { auth, db } from '../services/firebase';
 import toast from 'react-hot-toast';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -215,6 +216,7 @@ const ProfilePage = () => {
   if (!userDocument) {
     return (
       <div className="min-h-screen flex items-center justify-center">
+      <SEO title="Profile" noIndex={true} />
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-secondary-700">Loading profile...</p>
@@ -225,6 +227,7 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen py-8 bg-secondary-50/40">
+      <SEO title="Profile" noIndex={true} />
       <div className="max-w-4xl mx-auto px-6">
         {/* Header */}
         <div className="mb-8">
@@ -498,50 +501,9 @@ const ProfilePage = () => {
                         </div>
                       )}
 
-                      {/* Temporary manual activation for debugging */}
-                      {process.env.NODE_ENV === 'development' && userDocument.subscription.plan === 'trial' && (
-                        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                          <p className="text-sm text-yellow-800 mb-2">Debug: Manual Subscription Activation</p>
-                          <div className="flex space-x-2">
-                            <button
-                              onClick={async () => {
-                                try {
-                                  setIsLoading(true);
-                                  await manuallyActivateSubscription(currentUser.uid, 'student');
-                                  await refreshUserDocument();
-                                  toast.success('Plus subscription activated!');
-                                } catch (error) {
-                                  toast.error('Failed to activate subscription');
-                                } finally {
-                                  setIsLoading(false);
-                                }
-                              }}
-                              className="btn btn-sm btn-outline"
-                              disabled={isLoading}
-                            >
-                              Activate Plus
-                            </button>
-                            <button
-                              onClick={async () => {
-                                try {
-                                  setIsLoading(true);
-                                  await manuallyActivateSubscription(currentUser.uid, 'researcher');
-                                  await refreshUserDocument();
-                                  toast.success('Pro subscription activated!');
-                                } catch (error) {
-                                  toast.error('Failed to activate subscription');
-                                } finally {
-                                  setIsLoading(false);
-                                }
-                              }}
-                              className="btn btn-sm btn-outline"
-                              disabled={isLoading}
-                            >
-                              Activate Pro
-                            </button>
-                          </div>
-                        </div>
-                      )}
+                      {/* Manual subscription activation removed — only the Stripe
+                          webhook can grant a paid plan. Use Fix My Subscription
+                          (which re-syncs from Stripe) if your plan didn't activate. */}
                     </div>
                   )}
                 </div>

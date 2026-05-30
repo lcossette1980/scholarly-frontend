@@ -20,6 +20,7 @@ import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/fire
 import { db } from '../services/firebase';
 import toast from 'react-hot-toast';
 import { exportGeneratedContent } from '../utils/contentExportUtils';
+import SEO from '../components/SEO';
 
 const ContentHistoryPage = () => {
   const { currentUser } = useAuth();
@@ -142,6 +143,7 @@ const ContentHistoryPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40">
+      <SEO title="Generation history" noIndex={true} />
       <div className="max-w-6xl mx-auto px-6 py-8">
 
         {/* Breadcrumb */}

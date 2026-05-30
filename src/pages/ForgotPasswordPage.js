@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Mail, CheckCircle, PenTool, ArrowRight } from 'lucide-react';
 import { resetPassword } from '../services/auth';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -39,6 +40,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className="min-h-screen flex bg-white">
+      <SEO title="Reset your password" description="Reset your DraftEngine password." path="/forgot-password" noIndex={true} />
       {/* Left panel — brand */}
       <div className="hidden lg:flex lg:w-1/2 bg-secondary-900 relative overflow-hidden flex-col justify-between p-12">
         <Link to="/" className="inline-flex items-center gap-2.5 group">

@@ -16,6 +16,7 @@ import { useAuth } from '../context/AuthContext';
 import { analysisAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel } from 'docx';
+import SEO from '../components/SEO';
 
 const OutlineViewPage = () => {
   const navigate = useNavigate();
@@ -284,6 +285,7 @@ const OutlineViewPage = () => {
   if (isGenerating) {
     return (
       <div className="min-h-screen bg-mesh flex items-center justify-center py-8">
+        <SEO title="Outline" noIndex={true} />
         <FadeIn>
           <div className="text-center space-y-6">
             <ScaleIn>
@@ -311,6 +313,7 @@ const OutlineViewPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40 py-8">
+      <SEO title="Outline" noIndex={true} />
       <div className="max-w-5xl mx-auto px-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">

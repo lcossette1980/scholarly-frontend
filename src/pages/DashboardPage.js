@@ -29,6 +29,7 @@ import DashboardStats from '../components/DashboardStats';
 import { documentTemplates } from '../data/templates';
 import { feedsAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const iconMap = { FileText, BookOpen, BarChart3, TrendingUp, Target, Globe };
 
@@ -98,7 +99,7 @@ const DashboardPage = () => {
               await refreshUserDocument();
               await new Promise((resolve) => setTimeout(resolve, 500));
 
-              const { checkSubscriptionStatus, forceSyncSubscription, manuallyActivateSubscription } = await import('../services/stripe');
+              const { checkSubscriptionStatus, forceSyncSubscription } = await import('../services/stripe');
               let backendStatus = await checkSubscriptionStatus(currentUser.uid);
 
               if (!backendStatus?.subscription) {
@@ -108,15 +109,11 @@ const DashboardPage = () => {
                 }
               }
 
-              if (!backendStatus?.subscription && planId && i === maxRetries - 1) {
-                try {
-                  const manualSubscription = await manuallyActivateSubscription(currentUser.uid, planId);
-                  backendStatus = { subscription: manualSubscription };
-                  localStorage.removeItem('pendingSubscription');
-                  toast.warning('Subscription activated manually. If this persists, please contact support.');
-                } catch (e) {
-                  console.error('Manual activation failed:', e);
-                }
+              // Manual client-side activation was removed for security. If
+              // sync still fails after all retries, the user must contact
+              // support — only the Stripe webhook can mint a subscription now.
+              if (!backendStatus?.subscription && i === maxRetries - 1) {
+                toast.error('Payment received but activation is delayed. Please contact support if your plan does not appear within a few minutes.');
               }
 
               const { getUserDocument } = await import('../services/auth');
@@ -336,6 +333,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40">
+      <SEO title="Dashboard" noIndex={true} />
       <div className="max-w-6xl mx-auto px-6 py-8 lg:py-10">
 
         {/* Header */}

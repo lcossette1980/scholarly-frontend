@@ -16,6 +16,7 @@ import { FadeIn, StaggerChildren, StaggerItem, ScaleIn } from '../components/mot
 import { useAuth } from '../context/AuthContext';
 import { analysisAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const AnalyzePage = () => {
   const navigate = useNavigate();
@@ -159,6 +160,7 @@ const AnalyzePage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40 py-8">
+      <SEO title="Generate topics" noIndex={true} />
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="flex items-start gap-3 mb-8">

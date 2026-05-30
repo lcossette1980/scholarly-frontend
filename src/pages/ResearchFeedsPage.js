@@ -16,6 +16,7 @@ import { useAuth } from '../context/AuthContext';
 import { feedsAPI } from '../services/api';
 import { FadeIn } from '../components/motion';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const SOURCE_COLORS = {
   'Semantic Scholar': 'bg-blue-100 text-blue-800',
@@ -192,6 +193,7 @@ const ResearchFeedsPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40">
+      <SEO title="Research Feeds" noIndex={true} />
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Page Header */}
         <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">

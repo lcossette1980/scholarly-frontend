@@ -29,6 +29,7 @@ import LoadingSkeleton from '../components/LoadingSkeleton';
 import toast from 'react-hot-toast';
 import { exportToBibliography } from '../utils/exportUtils';
 import { Document, Packer, Paragraph, TextRun, AlignmentType } from 'docx';
+import SEO from '../components/SEO';
 
 const BibliographyPage = () => {
   const { currentUser, userDocument } = useAuth();
@@ -360,6 +361,7 @@ const BibliographyPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40 py-8">
+      <SEO title="Sources" noIndex={true} />
       <div className="max-w-7xl mx-auto px-6">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-secondary-500 mb-6">

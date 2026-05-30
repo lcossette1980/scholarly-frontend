@@ -2,10 +2,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const NotFoundPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-6">
+      <SEO title="Page not found" description="The page you're looking for doesn't exist." noIndex={true} />
       <div className="max-w-md text-center">
         <p className="text-7xl font-semibold text-secondary-200 tracking-tight tabular-nums mb-2">404</p>
         <h1 className="text-2xl font-semibold text-secondary-900 tracking-tight mb-3">

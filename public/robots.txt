@@ -1,11 +1,36 @@
 # https://www.robotstxt.org/robotstxt.html
+# DraftEngine — public marketing pages indexable; user-area routes blocked.
+
 User-agent: *
+Allow: /
+
+# Authenticated app surfaces (private user data)
 Disallow: /dashboard
 Disallow: /create
 Disallow: /profile
+Disallow: /sources
 Disallow: /bibliography
 Disallow: /analyze
 Disallow: /content/
+Disallow: /feeds
 Disallow: /admin
+Disallow: /verify-email
+Disallow: /forgot-password
+
+# Common bot traps — never crawl query-string variants we use for state
+Disallow: /*?success=
+Disallow: /*?canceled=
+Disallow: /*?token=
+
+# Specific bad-actor blocks
+User-agent: GPTBot
+Disallow: /dashboard
+Disallow: /sources
+Disallow: /content/
+
+User-agent: CCBot
+Disallow: /dashboard
+Disallow: /sources
+Disallow: /content/
 
 Sitemap: https://www.draftengineapp.com/sitemap.xml

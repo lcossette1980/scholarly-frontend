@@ -28,6 +28,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FadeIn, ScaleIn } from '../components/motion';
 import toast from 'react-hot-toast';
 import { exportToBibliography } from '../utils/exportUtils';
+import SEO from '../components/SEO';
 
 const CreateEntryPage = () => {
   const [currentStep, setCurrentStep] = useState('upload');
@@ -414,6 +415,7 @@ const CreateEntryPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40 py-8">
+      <SEO title="New source" noIndex={true} />
       <div className="max-w-5xl mx-auto px-6">
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-8 flex-wrap">

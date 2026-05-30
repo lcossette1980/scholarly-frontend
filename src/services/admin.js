@@ -139,6 +139,14 @@ export const adminAPI = {
 };
 
 // Admin auth helper
-export const isAdmin = (user) => {
-  return user?.email === 'loren.cossette@gmail.com';
+// Checks both the hardcoded founder email (fallback) and the Firestore
+// is_admin field. Backend does the authoritative check; this is purely
+// for UI rendering (show/hide admin nav).
+const ADMIN_EMAILS = ['loren.cossette@gmail.com'];
+
+export const isAdmin = (user, userDocument) => {
+  if (!user) return false;
+  if (ADMIN_EMAILS.includes(user.email)) return true;
+  if (userDocument?.is_admin === true) return true;
+  return false;
 };

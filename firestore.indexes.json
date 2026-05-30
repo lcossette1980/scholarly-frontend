@@ -1,0 +1,32 @@
+{
+  "indexes": [
+    {
+      "_comment": "/content/history endpoint: list a user's jobs newest-first",
+      "collectionGroup": "content_generation_jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userEmail", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "_comment": "/admin/support-messages?unread_only=true: unread messages newest-first",
+      "collectionGroup": "support_messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "read", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "_comment": "E2E test cleanup: find/delete test bibliography entries for the seed user",
+      "collectionGroup": "bibliography_entries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "isTestEntry", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

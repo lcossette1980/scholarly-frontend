@@ -75,54 +75,36 @@ export const SUBSCRIPTION_PLANS = {
 // Create checkout session
 export const createCheckoutSession = async (userId, priceId, planId) => {
   try {
-    // Debug: Log ALL environment variables to see what's happening
-    console.log('Full environment check:', {
-      allEnvVars: process.env,
-      studentPriceId: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID,
-      researcherPriceId: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID,
-      planId,
-      priceIdPassed: priceId,
-      priceIdType: typeof priceId,
-      priceIdFromPlan: SUBSCRIPTION_PLANS[planId]?.priceId
-    });
-
     // Get the price ID from the plan if not provided
     const finalPriceId = priceId || SUBSCRIPTION_PLANS[planId]?.priceId;
-    
+
     // Enhanced validation
     if (!finalPriceId || finalPriceId === 'undefined' || finalPriceId === '') {
-      console.error('Price ID validation failed:', {
-        finalPriceId,
-        planId,
-        planData: SUBSCRIPTION_PLANS[planId],
-        environmentVars: {
-          student: process.env.REACT_APP_STRIPE_STUDENT_PRICE_ID,
-          researcher: process.env.REACT_APP_STRIPE_RESEARCHER_PRICE_ID
-        }
-      });
-      throw new Error(`Invalid price ID for plan ${planId}. Price ID: "${finalPriceId}". Please check your environment configuration.`);
+      console.error('Price ID validation failed for plan:', planId);
+      throw new Error(`Invalid price ID for plan ${planId}. Please check your environment configuration.`);
     }
-
-    console.log('Using price ID:', finalPriceId);
 
     // Use backend API to create checkout session
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-    console.log('Creating checkout session with:', {
-      apiUrl,
-      userId,
-      planId,
-      priceId: finalPriceId
-    });
-    
+
+    // Build authenticated request — Stripe routes now require auth (C1/C6 hardening)
+    const { auth } = await import('./firebase');
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error('You must be signed in to subscribe.');
+    }
+    const token = await currentUser.getIdToken();
+
     const response = await fetch(`${apiUrl}/create-checkout-session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
         user_id: userId,
         plan: planId,
-        price_id: finalPriceId, // Add price_id to the request
+        price_id: finalPriceId,
         success_url: `${window.location.origin}/dashboard?success=true&plan=${planId}&userId=${userId}`,
         cancel_url: `${window.location.origin}/pricing?canceled=true`
       })
@@ -134,10 +116,8 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
     }
 
     const data = await response.json();
-    
+
     if (data.checkout_url) {
-      console.log('Checkout session created successfully:', data.checkout_url);
-      
       // Store pending subscription info in localStorage as backup
       localStorage.setItem('pendingSubscription', JSON.stringify({
         userId,
@@ -145,7 +125,7 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
         priceId: finalPriceId,
         timestamp: Date.now()
       }));
-      
+
       // Redirect to Stripe Checkout
       window.location.assign(data.checkout_url);
       return data.checkout_url;
@@ -163,10 +143,19 @@ export const createCustomerPortalSession = async (userId) => {
   try {
     // Use backend API to create portal session
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+    const { auth } = await import('./firebase');
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error('You must be signed in to manage your subscription.');
+    }
+    const token = await currentUser.getIdToken();
+
     const response = await fetch(`${apiUrl}/create-portal-session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
         user_id: userId,
@@ -180,9 +169,8 @@ export const createCustomerPortalSession = async (userId) => {
     }
 
     const data = await response.json();
-    
+
     if (data.url) {
-      console.log('Portal session created successfully:', data.url);
       // Redirect to Customer Portal
       window.location.assign(data.url);
       return data.url;
@@ -209,15 +197,28 @@ export const updateUserSubscription = async (userId, subscriptionData) => {
   }
 };
 
+// Helper to build authenticated fetch headers for Stripe routes
+const _authHeaders = async () => {
+  const { auth } = await import('./firebase');
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    throw new Error('You must be signed in.');
+  }
+  const token = await currentUser.getIdToken();
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  };
+};
+
 // Check subscription status from backend
 export const checkSubscriptionStatus = async (userId, skipFallback = false) => {
   try {
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const headers = await _authHeaders();
     const response = await fetch(`${apiUrl}/check-subscription/${userId}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      headers,
     });
 
     if (!response.ok) {
@@ -226,13 +227,12 @@ export const checkSubscriptionStatus = async (userId, skipFallback = false) => {
     }
 
     const data = await response.json();
-    console.log('Subscription status from backend:', data);
-    
+
     // If backend returns subscription data, update Firestore
     if (data.subscription) {
       await updateUserSubscription(userId, data.subscription);
     }
-    
+
     return data;
   } catch (error) {
     console.error('Error checking subscription status:', error);
@@ -244,21 +244,16 @@ export const checkSubscriptionStatus = async (userId, skipFallback = false) => {
 // Force sync subscription from Stripe (for webhook failures)
 export const forceSyncSubscription = async (userId) => {
   try {
-    console.log('Force syncing subscription for user:', userId);
-    
-    // First try the backend sync endpoint
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const headers = await _authHeaders();
     const response = await fetch(`${apiUrl}/force-sync-subscription/${userId}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      headers,
     });
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Force sync response:', data);
-      
+
       if (data.subscription) {
         // Update Firestore with the synced data
         await updateUserSubscription(userId, data.subscription);
@@ -273,32 +268,11 @@ export const forceSyncSubscription = async (userId) => {
   }
 };
 
-// Manually activate subscription after successful payment (temporary fix for webhook issues)
-export const manuallyActivateSubscription = async (userId, planId) => {
-  try {
-    const plan = SUBSCRIPTION_PLANS[planId];
-    if (!plan) throw new Error('Invalid plan');
-    
-    const subscriptionData = {
-      plan: planId,
-      status: 'active',
-      entriesUsed: 0,
-      entriesLimit: plan.entriesLimit,
-      entriesRemaining: plan.entriesLimit,
-      isLifetime: false,
-      periodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
-      updatedAt: new Date().toISOString()
-    };
-    
-    console.log('Manually activating subscription:', subscriptionData);
-    await updateUserSubscription(userId, subscriptionData);
-    
-    return subscriptionData;
-  } catch (error) {
-    console.error('Error manually activating subscription:', error);
-    throw error;
-  }
-};
+// REMOVED: manuallyActivateSubscription
+// This client-side function let any signed-in user grant themselves a paid
+// plan by writing directly to Firestore. Subscription grants must happen
+// via Stripe webhook only. If the webhook fails, use forceSyncSubscription
+// (which re-reads truth from Stripe) instead.
 
 // Check if user can create more entries
 export const canCreateEntry = (user) => {
@@ -334,11 +308,10 @@ export const canAccessFeature = (user, feature) => {
 export const fixSubscription = async (userId) => {
   try {
     const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const headers = await _authHeaders();
     const response = await fetch(`${API_URL}/fix-subscription/${userId}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
     });
 
     const data = await response.json();

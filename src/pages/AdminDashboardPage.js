@@ -29,6 +29,7 @@ import { collection, query, where, onSnapshot, orderBy } from 'firebase/firestor
 import { db } from '../services/firebase';
 import { FadeIn, StaggerChildren, StaggerItem, AnimatedCounter } from '../components/motion';
 import { motion, AnimatePresence } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const AdminDashboardPage = () => {
   const { currentUser } = useAuth();
@@ -442,6 +443,7 @@ const AdminDashboardPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
+        <SEO title="Admin" noIndex={true} />
         <div className="text-center">
           <RefreshCw className="w-8 h-8 text-primary animate-spin mx-auto mb-4" />
           <p className="text-secondary-700">Loading admin dashboard...</p>
@@ -452,6 +454,7 @@ const AdminDashboardPage = () => {
 
   return (
     <div className="min-h-screen py-8 bg-mesh">
+      <SEO title="Admin" noIndex={true} />
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}
         <FadeIn>

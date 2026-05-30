@@ -7,6 +7,7 @@ import { db } from '../services/firebase';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { exportGeneratedContent } from '../utils/contentExportUtils';
+import SEO from '../components/SEO';
 
 const ContentViewPage = () => {
   const { jobId } = useParams();
@@ -143,6 +144,7 @@ const ContentViewPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40">
+      <SEO title="Document" noIndex={true} />
       <div className="max-w-4xl mx-auto px-6 py-8">
 
         {/* Breadcrumb */}

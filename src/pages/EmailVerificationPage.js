@@ -5,6 +5,7 @@ import { Mail, RefreshCw, CheckCircle, AlertCircle, ArrowRight, PenTool } from '
 import { useAuth } from '../context/AuthContext';
 import { sendEmailVerificationToUser } from '../services/auth';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const EmailVerificationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,6 +62,7 @@ const EmailVerificationPage = () => {
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-6">
+        <SEO title="Verify your email" noIndex={true} />
         <div className="w-full max-w-sm text-center">
           <div className="w-10 h-10 rounded-full bg-warning-50 border border-warning-200 flex items-center justify-center mx-auto mb-5">
             <AlertCircle className="w-5 h-5 text-warning-700" />
@@ -80,6 +82,7 @@ const EmailVerificationPage = () => {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-6">
+      <SEO title="Verify your email" noIndex={true} />
       <div className="w-full max-w-md">
         <Link to="/" className="inline-flex items-center gap-2.5 mb-10 justify-center w-full">
           <div className="w-7 h-7 bg-primary rounded-md flex items-center justify-center">

@@ -14,6 +14,7 @@ import GenerationProgressStep from '../components/contentGeneration/GenerationPr
 import ReviewEditStep from '../components/contentGeneration/ReviewEditStep';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const ContentGenerationPage = () => {
   const navigate = useNavigate();
@@ -152,6 +153,7 @@ const ContentGenerationPage = () => {
   if (loading && entries.length === 0) {
     return (
       <div className="min-h-screen bg-secondary-50/40 py-8">
+        <SEO title="Generate content" noIndex={true} />
         <div className="max-w-5xl mx-auto px-6">
           <LoadingSkeleton variant="form" />
         </div>
@@ -161,6 +163,7 @@ const ContentGenerationPage = () => {
 
   return (
     <div className="min-h-screen bg-secondary-50/40 py-8">
+      <SEO title="Generate content" noIndex={true} />
       <div className="max-w-5xl mx-auto px-6">
 
         {/* Header */}
