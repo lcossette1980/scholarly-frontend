@@ -39,6 +39,11 @@ import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../services/stripe';
 import { FadeIn } from '../components/motion';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
+import {
+  trackPricingCtaClick,
+  trackCheckoutStart,
+  trackEstimatorChange,
+} from '../services/analytics';
 
 const PricingPage = () => {
   const [isLoading, setIsLoading] = useState(null);
@@ -48,6 +53,7 @@ const PricingPage = () => {
   const navigate = useNavigate();
 
   const handleSubscribe = async (planId) => {
+    trackPricingCtaClick(planId, 'pricing_page');
     if (!currentUser) {
       navigate('/signup');
       return;
@@ -59,6 +65,9 @@ const PricingPage = () => {
     setIsLoading(planId);
     try {
       const plan = SUBSCRIPTION_PLANS[planId];
+      // Fire BEFORE the await so we capture intent even if Stripe
+      // redirect fails or the user kills the tab.
+      trackCheckoutStart(planId, 'pricing');
       await createCheckoutSession(currentUser.uid, plan.priceId, planId);
     } catch (error) {
       console.error('Error creating checkout session:', error);
@@ -372,7 +381,13 @@ const PricingPage = () => {
                   min="2"
                   max="40"
                   value={estimatorPages}
-                  onChange={(e) => setEstimatorPages(Number(e.target.value))}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    setEstimatorPages(v);
+                    // Sample tracking so we get signal without spamming
+                    // the analytics endpoint on every slider tick.
+                    if (v % 5 === 0) trackEstimatorChange(v, estimatorTier);
+                  }}
                   className="w-full h-1.5 bg-secondary-200 rounded-full appearance-none cursor-pointer accent-primary"
                 />
                 <div className="flex justify-between text-xs text-secondary-500 mt-2 tabular-nums">
@@ -403,7 +418,10 @@ const PricingPage = () => {
                   ].map((t) => (
                     <button
                       key={t.id}
-                      onClick={() => setEstimatorTier(t.id)}
+                      onClick={() => {
+                        setEstimatorTier(t.id);
+                        trackEstimatorChange(estimatorPages, t.id);
+                      }}
                       className={`w-full p-3 rounded-md border text-left transition-colors ${
                         estimatorTier === t.id
                           ? 'border-secondary-900 bg-white'

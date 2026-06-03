@@ -6,6 +6,11 @@ import { signUp, signInWithGoogle } from '../services/auth';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
+import {
+  trackSignupView,
+  trackSignupSubmit,
+  trackSignupSuccess,
+} from '../services/analytics';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -29,6 +34,16 @@ const SignUpPage = () => {
     }
   }, [currentUser, navigate]);
 
+  // Track signup page view exactly once on mount. The pageview from
+  // Vercel Analytics also fires, but this lets us tag the source
+  // (utm or referrer) so we can see WHERE signup-page visitors come
+  // from in the funnel breakdown.
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const utm = params.get('utm_source') || params.get('ref');
+    trackSignupView(utm || (document.referrer ? 'internal' : 'direct'));
+  }, []);
+
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const validateForm = () => {
@@ -46,6 +61,10 @@ const SignUpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+    // Track intent the moment they click submit, before the network call.
+    // Lets us see attempt-vs-success ratios in the dashboard (a big delta
+    // here means signup is failing silently, which is a P0 bug).
+    trackSignupSubmit('email');
     setIsLoading(true);
     try {
       const { error, emailVerificationSent } = await signUp(
@@ -56,6 +75,7 @@ const SignUpPage = () => {
       if (error) {
         toast.error(error);
       } else {
+        trackSignupSuccess('email');
         if (emailVerificationSent) {
           toast.success('Account created! Please verify your email.');
           navigate('/verify-email', { replace: true });
@@ -73,6 +93,7 @@ const SignUpPage = () => {
   };
 
   const handleGoogleSignUp = async () => {
+    trackSignupSubmit('google');
     setIsLoading(true);
     try {
       const { error } = await signInWithGoogle();
@@ -80,6 +101,10 @@ const SignUpPage = () => {
         toast.error(error);
         setIsLoading(false);
       }
+      // Google success fires after redirect — handled by the
+      // useEffect watcher on currentUser that triggers trackSignupSuccess
+      // via the auth context. We don't fire it here because the page
+      // unmounts mid-flow.
     } catch (error) {
       toast.error('An unexpected error occurred');
       setIsLoading(false);
