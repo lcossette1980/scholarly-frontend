@@ -102,7 +102,7 @@ const DocsPage = () => {
               <CheckCircle className="w-5 h-5 text-accent mt-0.5" />
               <div>
                 <p className="font-semibold text-secondary-900">2. Import a source (PDF, URL, DOI, or RSS)</p>
-                <p className="text-secondary-700 text-sm">Upload PDFs (up to 10MB), paste URLs, enter DOIs, or subscribe to RSS feeds.</p>
+                <p className="text-secondary-700 text-sm">Upload PDFs (up to 50MB), paste URLs, enter DOIs, or subscribe to RSS feeds.</p>
               </div>
             </div>
 
@@ -146,7 +146,7 @@ const DocsPage = () => {
           <h3 className="text-xl font-semibold text-secondary-900">Supported File Types</h3>
           <ul className="list-disc list-inside space-y-2 text-secondary-800">
             <li>PDF files (recommended)</li>
-            <li>Maximum file size: 10MB</li>
+            <li>Maximum file size: 50MB</li>
             <li>Text-based PDFs work best (not scanned images)</li>
           </ul>
         </div>
@@ -170,7 +170,7 @@ const DocsPage = () => {
               <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold">2</div>
               <div className="flex-1">
                 <h4 className="font-semibold text-secondary-900 mb-2">Upload Your PDF</h4>
-                <p className="text-secondary-700 mb-3">Drag and drop your file or click to browse. The upload area accepts PDF files up to 10MB.</p>
+                <p className="text-secondary-700 mb-3">Drag and drop your file or click to browse. The upload area accepts PDF files up to 50MB.</p>
                 <div className="bg-primary/10 border-2 border-dashed border-primary-600/30 rounded-lg p-6 text-center">
                   <Upload className="w-12 h-12 text-primary mx-auto mb-2" />
                   <p className="text-secondary-700">Drag & drop or click to upload</p>
@@ -195,7 +195,7 @@ const DocsPage = () => {
               <p className="font-semibold text-secondary-900 mb-1">Common Issues</p>
               <ul className="text-secondary-700 text-sm space-y-1">
                 <li>• Ensure your PDF isn't password-protected</li>
-                <li>• Check that the file is under 10MB</li>
+                <li>• Check that the file is under 50MB</li>
                 <li>• Text-based PDFs work better than scanned images</li>
                 <li>• Clear browser cache if upload fails repeatedly</li>
               </ul>

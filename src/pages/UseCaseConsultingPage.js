@@ -20,11 +20,11 @@ const UseCaseConsultingPage = () => {
   ];
 
   const features = [
-    'White Paper, Market Brief, Case Study types',
-    'Executive and Analytical writing tones',
+    'White Paper, Market Brief, Case Study, Industry Brief types',
+    'Executive, Analytical, and Authoritative tones',
     'Auto-generated reference list (APA, MLA, Chicago)',
-    'Document Coherence Agent checks argument arc',
-    'DALL-E editorial illustrations',
+    'Coherence agent checks the full argument arc',
+    'Page-numbered quotes from every source',
     'Word export ready for client delivery',
   ];
 
@@ -132,7 +132,7 @@ const UseCaseConsultingPage = () => {
           <div className="rounded-lg border border-secondary-200 bg-secondary-50/40 p-6">
             <div className="eyebrow mb-3">Sample workflow</div>
             <p className="text-secondary-700 leading-relaxed mb-3">
-              You receive a client brief on emerging market trends. Import 12 industry reports and analyst papers. DraftEngine analyzes each in 90 seconds. You generate a 15-page white paper with APA citations, executive summary, and DALL-E illustrations — in under 45 minutes. Deliver to the client the same afternoon.
+              You receive a client brief on emerging market trends. Import 12 industry reports and analyst papers. DraftEngine analyzes each in about 90 seconds. You generate a 15-page white paper with APA citations that trace back to every source, executive summary, and refined social excerpt — in under 45 minutes. Deliver to the client the same afternoon.
             </p>
             <div className="flex items-baseline gap-2">
               <span className="text-xs text-secondary-500">Total cost</span>
@@ -141,9 +141,9 @@ const UseCaseConsultingPage = () => {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* CTA — explicit text-white on h2 to defeat global heading-color reset */}
         <div className="rounded-xl bg-secondary-900 text-white px-8 py-12 lg:py-14 text-center max-w-4xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-semibold tracking-tight">
+          <h2 className="text-white text-3xl lg:text-4xl font-semibold tracking-tight">
             Deliver faster. Win more business.
           </h2>
           <p className="mt-3 text-secondary-300 max-w-xl mx-auto">

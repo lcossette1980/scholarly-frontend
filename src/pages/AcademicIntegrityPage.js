@@ -38,9 +38,9 @@ const AcademicIntegrityPage = () => {
           </p>
           <div className="grid md:grid-cols-3 gap-px bg-secondary-200 rounded-lg overflow-hidden border border-secondary-200">
             {[
-              { icon: FileText, title: 'Source-grounded', desc: 'All content is generated from YOUR sources, not AI knowledge. Every claim traces back to something real.' },
-              { icon: Check, title: 'Traceable attribution', desc: 'Sources referenced naturally — by author, research context, or key findings.' },
-              { icon: BookOpen, title: 'Transparent process', desc: 'We show which sources support each section so you can verify and edit.' },
+              { icon: FileText, title: 'Source-grounded', desc: 'Every claim in your draft is built from a source YOU uploaded. We do not draw from the open internet or model training data.' },
+              { icon: Check, title: 'Traceable citations', desc: 'Every citation links back to the exact passage in your source, with page numbers when available. Click any citation in your draft to see the original.' },
+              { icon: BookOpen, title: 'Transparent process', desc: 'We surface which sources support each section so you can verify, edit, and stand behind the result.' },
             ].map((item) => {
               const Icon = item.icon;
               return (
@@ -69,8 +69,8 @@ const AcademicIntegrityPage = () => {
               { num: '01', title: 'Text extraction', desc: 'When you upload a PDF, we extract the full text while preserving structure and page numbers.' },
               { num: '02', title: 'Metadata detection', desc: 'AI identifies author names, publication details, key themes, and other metadata to build a rich source profile.' },
               { num: '03', title: 'Smart summarization', desc: 'Key findings, arguments, and insights are identified directly from the source text — not general knowledge.' },
-              { num: '04', title: 'Key quote extraction', desc: 'Important quotes are pulled with page numbers so you can reference or verify them.' },
-              { num: '05', title: 'Natural attribution', desc: 'Sources are woven naturally into your content — by name, context, and findings.' },
+              { num: '04', title: 'Page-numbered quote extraction', desc: 'Important passages are pulled with their page numbers so you can verify them against the original at any time.' },
+              { num: '05', title: 'Traceable attribution', desc: 'Sources appear in your draft as proper citations (APA, MLA, or Chicago) that link back to the exact source passage they came from.' },
             ].map((step) => (
               <div key={step.num} className="flex items-start gap-4 pb-5 border-b border-secondary-100 last:border-0">
                 <span className="text-xs font-mono text-secondary-400 tabular-nums mt-1 flex-shrink-0">{step.num}</span>
@@ -93,10 +93,10 @@ const AcademicIntegrityPage = () => {
           </p>
           <ul className="space-y-3">
             {[
-              ['Natural source references', 'Authors and their work are mentioned by name, woven into the narrative.'],
-              ['Source-constrained generation', 'Our AI only draws from information in your uploaded sources — never invents or pulls from the internet.'],
-              ['Multi-source synthesis', 'Each section draws from multiple sources, creating richer arguments.'],
-              ['Verifiable claims', 'Every reference traces back to your sources — fact-check before publishing.'],
+              ['Source-constrained generation', 'Our AI only draws from information in the documents you uploaded. It never invents references or pulls from the internet at draft time.'],
+              ['Page-numbered citations', 'Every citation in your draft links back to the exact passage in the source, with the page number when available.'],
+              ['Multi-source synthesis', 'Each section draws from multiple sources you provided, creating richer arguments without overweighting any single piece.'],
+              ['Verifiable claims', 'Hover or click any citation in your generated draft to see the original passage. Fact-check before you publish.'],
             ].map(([title, desc]) => (
               <li key={title} className="flex items-start gap-2.5">
                 <Check className="w-3.5 h-3.5 text-primary mt-1 flex-shrink-0" strokeWidth={2.5} />
@@ -186,10 +186,10 @@ const AcademicIntegrityPage = () => {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* CTA — explicit text-white on h2 to defeat global heading-color reset */}
         <div className="rounded-xl bg-secondary-900 text-white px-8 py-12 text-center">
-          <h2 className="text-2xl lg:text-3xl font-semibold tracking-tight">
-            Write better, write honestly.
+          <h2 className="text-white text-2xl lg:text-3xl font-semibold tracking-tight">
+            Write better. Write honestly.
           </h2>
           <p className="mt-3 text-secondary-300 max-w-xl mx-auto text-sm">
             Use DraftEngine as your writing partner, not a shortcut.

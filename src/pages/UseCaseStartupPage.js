@@ -141,9 +141,9 @@ const UseCaseStartupPage = () => {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* CTA — explicit text-white on h2 to defeat global heading-color reset */}
         <div className="rounded-xl bg-secondary-900 text-white px-8 py-12 lg:py-14 text-center max-w-4xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-semibold tracking-tight">
+          <h2 className="text-white text-3xl lg:text-4xl font-semibold tracking-tight">
             Skip the content team.
           </h2>
           <p className="mt-3 text-secondary-300 max-w-xl mx-auto">

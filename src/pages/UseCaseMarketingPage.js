@@ -15,17 +15,17 @@ const UseCaseMarketingPage = () => {
   const steps = [
     { num: '01', title: 'Import', text: 'Industry reports, analyst papers, and competitor research in seconds.' },
     { num: '02', title: 'Analyze', text: 'AI extracts arguments, angles, and quotable passages from every source.' },
-    { num: '03', title: 'Generate', text: 'Articles and white papers with inline citations and editorial illustrations.' },
+    { num: '03', title: 'Generate', text: 'Articles and white papers with inline citations that trace back to your sources.' },
     { num: '04', title: 'Review', text: 'Quality agents review every section before you see it.' },
   ];
 
   const features = [
     '4 import methods (PDF, URL, DOI, RSS)',
     'APA, MLA, Chicago citations auto-generated',
-    'DALL-E editorial illustrations per section',
-    'Quality review agents on every document',
-    'Research Feeds — subscribe to industry topics',
-    'Word export with images and references',
+    'Page-numbered quote extraction from every source',
+    'Quality + coherence agents review every document',
+    'Research Feeds — auto-import new industry papers (Pro)',
+    'Optional AI illustrations per section',
   ];
 
   return (
@@ -132,7 +132,7 @@ const UseCaseMarketingPage = () => {
           <div className="rounded-lg border border-secondary-200 bg-secondary-50/40 p-6">
             <div className="eyebrow mb-3">Sample workflow</div>
             <p className="text-secondary-700 leading-relaxed mb-3">
-              Your content lead imports 8 industry reports. DraftEngine analyzes each in 90 seconds. She generates topics, picks the strongest angle, and produces a 2,500-word thought leadership article with APA citations and editorial illustrations — in under 30 minutes.
+              Your content lead drops in 8 industry reports. DraftEngine analyzes each in about 90 seconds. She picks the strongest angle, generates a 2,500-word thought leadership article with APA citations that trace back to every source, and ships it before lunch.
             </p>
             <div className="flex items-baseline gap-2">
               <span className="text-xs text-secondary-500">Total cost</span>
@@ -141,9 +141,9 @@ const UseCaseMarketingPage = () => {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* CTA — explicit text-white on h2 to defeat global heading-color reset */}
         <div className="rounded-xl bg-secondary-900 text-white px-8 py-12 lg:py-14 text-center max-w-4xl mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-semibold tracking-tight">
+          <h2 className="text-white text-3xl lg:text-4xl font-semibold tracking-tight">
             Start publishing today.
           </h2>
           <p className="mt-3 text-secondary-300 max-w-xl mx-auto">
