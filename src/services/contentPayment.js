@@ -1,4 +1,5 @@
 // src/services/contentPayment.js
+import { auth } from './firebase';
 /**
  * Content Generation Payment Service
  *
@@ -16,6 +17,23 @@
  */
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+/**
+ * Headers for the payment endpoints. The backend acts as the user in this
+ * Firebase ID token (it no longer trusts user_id in the body), so a missing
+ * token means a 401. Throws if nobody is signed in.
+ */
+const authHeaders = async () => {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    throw new Error('Please sign in again to continue.');
+  }
+  const token = await currentUser.getIdToken();
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+};
 
 /**
  * Creates a Stripe Payment Intent for content generation
@@ -39,9 +57,7 @@ export const createPaymentIntent = async (userId, tier, estimatedPages, jobMetad
   try {
     const response = await fetch(`${API_URL}/api/content/create-payment-intent`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: await authHeaders(),
       body: JSON.stringify({
         user_id: userId,
         tier: tier,
@@ -106,9 +122,7 @@ export const verifyAndCreateJob = async (
   try {
     const response = await fetch(`${API_URL}/api/content/verify-and-create-job`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: await authHeaders(),
       body: JSON.stringify({
         payment_intent_id: paymentIntentId,
         user_id: userId,
