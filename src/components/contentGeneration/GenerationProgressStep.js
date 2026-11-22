@@ -1,5 +1,6 @@
 // src/components/contentGeneration/GenerationProgressStep.js
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Loader, CheckCircle, XCircle, FileText, Sparkles } from 'lucide-react';
 import { contentGenerationAPI } from '../../services/api';
 import toast from 'react-hot-toast';
@@ -13,9 +14,17 @@ const getPhaseLabel = (progress, currentSection) => {
   return 'Generating illustrations...';
 };
 
-const GenerationProgressStep = ({ jobId, onComplete }) => {
+const SUPPORT_EMAIL = 'support@draftengineapp.com';
+// After a failure the refund lands a few seconds later; keep polling briefly
+// so the failure screen can say whether the money is on its way back.
+const REFUND_WAIT_POLLS = 5;
+const FAILED_STATUSES = ['failed', 'failed_refunded'];
+
+const GenerationProgressStep = ({ jobId, onComplete, onRetry }) => {
+  const navigate = useNavigate();
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
+  const [failedJob, setFailedJob] = useState(null);
 
   useEffect(() => {
     if (!jobId) {
@@ -23,6 +32,7 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
       return;
     }
 
+    let pollsSinceFailure = 0;
     // Poll for status every 3 seconds
     const pollInterval = setInterval(async () => {
       try {
@@ -34,10 +44,17 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
           clearInterval(pollInterval);
           toast.success('Content generated successfully!');
           setTimeout(() => onComplete(), 1000);
-        } else if (jobStatus.status === 'failed') {
-          clearInterval(pollInterval);
-          setError(jobStatus.error_message || 'Generation failed');
-          toast.error('Content generation failed');
+        } else if (FAILED_STATUSES.includes(jobStatus.status)) {
+          const refundSettled =
+            jobStatus.status === 'failed_refunded' ||
+            jobStatus.payment_status !== 'paid' ||
+            pollsSinceFailure >= REFUND_WAIT_POLLS;
+          pollsSinceFailure += 1;
+          if (refundSettled) {
+            clearInterval(pollInterval);
+            setFailedJob(jobStatus);
+            toast.error('Content generation failed');
+          }
         }
       } catch (err) {
         console.error('Error polling status:', err);
@@ -47,6 +64,63 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
 
     return () => clearInterval(pollInterval);
   }, [jobId, onComplete]);
+
+  if (failedJob) {
+    const refunded =
+      failedJob.status === 'failed_refunded' ||
+      failedJob.payment_status === 'refunded' ||
+      failedJob.payment_status === 'refund_pending';
+    const amount =
+      typeof failedJob.amount_paid === 'number'
+        ? `$${failedJob.amount_paid.toFixed(2)}`
+        : null;
+    const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+      'Failed draft'
+    )}&body=${encodeURIComponent(`Job ID: ${jobId}`)}`;
+    return (
+      <div className="text-center py-12">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <XCircle className="w-8 h-8 text-red-600" />
+        </div>
+        <h3 className="text-xl font-bold text-secondary-900 mb-2">
+          We couldn't generate this draft
+        </h3>
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+          {refunded ? (
+            <>
+              Your payment{amount ? ` of ${amount}` : ''} is being refunded
+              automatically. It usually appears on your statement within 5–10
+              business days.
+            </>
+          ) : (
+            <>
+              Contact{' '}
+              <a href={mailto} className="text-primary font-medium hover:underline">
+                {SUPPORT_EMAIL}
+              </a>{' '}
+              and we'll sort it out.
+            </>
+          )}
+        </p>
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-700"
+          >
+            Back to dashboard
+          </button>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="px-6 py-2 rounded-lg font-semibold text-secondary-700 border border-secondary-300 hover:bg-secondary-50"
+            >
+              Try again
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     return (

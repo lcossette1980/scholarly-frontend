@@ -283,6 +283,7 @@ const ContentGenerationPage = () => {
                 <GenerationProgressStep
                   jobId={jobId}
                   onComplete={() => setCurrentStep(6)}
+                  onRetry={() => setCurrentStep(2)}
                 />
               )}
               {currentStep === 6 && (

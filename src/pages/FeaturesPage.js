@@ -164,9 +164,9 @@ const FeaturesPage = () => {
     },
     {
       icon: ShieldCheck,
-      title: '100% refund on failure',
+      title: 'Fair-failure refunds',
       description:
-        "If generation can't finish, your charge is refunded automatically. You never pay for a broken job.",
+        "If generation can't finish, you're refunded automatically. If a section fails, we regenerate it or refund you.",
     },
   ];
 
