@@ -128,7 +128,7 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Free / Starter Plan - $0",
-          text: "Perfect for trying DraftEngine. Includes 5 source summary entries with no credit card required. Test our AI analysis, import from PDF or URL, and see if the platform meets your needs."
+          text: "Starter (free): import up to 5 sources, generate topics and outlines (5 per day), and pay per page for drafts ($1.49 Standard / $2.49 Professional). No credit card required."
         },
         {
           subtitle: "Plus Plan - $9.99/month",

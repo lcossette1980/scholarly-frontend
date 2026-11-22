@@ -30,6 +30,7 @@ import { documentTemplates } from '../data/templates';
 import { feedsAPI } from '../services/api';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
+import SourceLimitCard from '../components/SourceLimitCard';
 
 const iconMap = { FileText, BookOpen, BarChart3, TrendingUp, Target, Globe };
 
@@ -381,19 +382,14 @@ const DashboardPage = () => {
               {entries.length} {entries.length === 1 ? 'source' : 'sources'} in your library. Add PDFs, URLs, DOIs, or RSS feeds.
             </p>
             <div className="mt-auto">
-              <Link
-                to="/create"
-                className={`btn btn-primary ${!canCreate ? 'opacity-50 pointer-events-none' : ''}`}
-                onClick={(e) => {
-                  if (!canCreate) {
-                    e.preventDefault();
-                    toast.error('You have reached your limit. Please upgrade your plan.');
-                  }
-                }}
-              >
-                <Plus className="w-3.5 h-3.5" />
-                Add source
-              </Link>
+              {canCreate ? (
+                <Link to="/create" className="btn btn-primary">
+                  <Plus className="w-3.5 h-3.5" />
+                  Add source
+                </Link>
+              ) : (
+                <SourceLimitCard userId={currentUser?.uid} />
+              )}
             </div>
           </div>
 

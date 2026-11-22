@@ -1,12 +1,31 @@
 // src/components/contentGeneration/PricingConfirmationStep.js
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Check, Zap, Sparkles, Lock, Crown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { createPaymentIntent, verifyAndCreateJob } from '../../services/contentPayment';
 import { contentGenerationAPI } from '../../services/api';
 import { isAdmin } from '../../services/admin';
 import PaymentModal from './PaymentModal';
+import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../../services/stripe';
+import { trackPricingStepViewed, trackProAltClicked } from '../../services/analytics';
+
 import toast from 'react-hot-toast';
+
+// Pro ($19.99/mo) includes 10 pages a month, then $1.00 / $2.00 per page
+// (backend get_page_pricing). Plus pays the same per-page price as Starter,
+// so it isn't offered here.
+const PRO_MONTHLY = 19.99;
+const PRO_INCLUDED_PAGES = 10;
+const PRO_PAGE_PRICE = { standard: 1.0, pro: 2.0 };
+// Show Pro when it's cheaper for this draft or within ~$10 of paying once.
+const PRO_ALT_MARGIN = 10;
+
+export function proAlternative(pages, tierId, payOnceTotal) {
+  const proDraftCost =
+    Math.max(0, pages - PRO_INCLUDED_PAGES) * (PRO_PAGE_PRICE[tierId] ?? PRO_PAGE_PRICE.standard);
+  const show = PRO_MONTHLY + proDraftCost - payOnceTotal <= PRO_ALT_MARGIN;
+  return { show, proDraftCost, proPagePrice: PRO_PAGE_PRICE[tierId] ?? PRO_PAGE_PRICE.standard };
+}
 
 const PricingConfirmationStep = ({
   selectedSources,
@@ -18,8 +37,9 @@ const PricingConfirmationStep = ({
   onBack,
   setJobId
 }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, userDocument } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [proBusy, setProBusy] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentClientSecret, setPaymentClientSecret] = useState('');
 
@@ -62,6 +82,31 @@ const PricingConfirmationStep = ({
 
   const selectedTierData = tiers.find(t => t.id === selectedTier);
   const totalCost = (estimatedPages * selectedTierData.pricePerPage).toFixed(2);
+  const plan = userDocument?.subscription?.plan || 'free';
+  const proAlt = proAlternative(estimatedPages, selectedTier, Number(totalCost));
+  const showProAlt = proAlt.show && plan !== 'researcher' && !isAdmin(currentUser);
+  const viewTracked = useRef(false);
+
+  useEffect(() => {
+    if (viewTracked.current) return;
+    viewTracked.current = true;
+    trackPricingStepViewed(estimatedPages, selectedTier, plan, showProAlt);
+  }, [estimatedPages, selectedTier, plan, showProAlt]);
+
+  const handleStartPro = async () => {
+    setProBusy(true);
+    trackProAltClicked();
+    try {
+      await createCheckoutSession(
+        currentUser.uid,
+        SUBSCRIPTION_PLANS.researcher.priceId,
+        'researcher'
+      );
+    } catch (error) {
+      toast.error(error.message || 'Failed to start checkout');
+      setProBusy(false);
+    }
+  };
 
   const handleConfirmAndPay = async () => {
     try {
@@ -300,6 +345,27 @@ const PricingConfirmationStep = ({
               If generation fails for any reason, you'll receive an automatic 100% refund.
             </p>
           </div>
+        </div>
+      )}
+
+      {/* 2B2: the honest alternative — only when Pro is cheaper or close */}
+      {showProAlt && (
+        <div className="border border-secondary-200 rounded-lg p-4 mb-6">
+          <p className="text-sm font-semibold text-secondary-900">
+            Or go Pro: 10 pages included every month
+          </p>
+          <p className="text-xs text-secondary-600 mt-1">
+            Then ${proAlt.proPagePrice.toFixed(2)}/page. This draft would cost $
+            {proAlt.proDraftCost.toFixed(2)} on Pro (plus $19.99/month).
+          </p>
+          <button
+            type="button"
+            onClick={handleStartPro}
+            disabled={proBusy || loading}
+            className="btn btn-secondary btn-sm mt-3"
+          >
+            {proBusy ? 'Starting…' : 'Start Pro, $19.99/month'}
+          </button>
         </div>
       )}
 

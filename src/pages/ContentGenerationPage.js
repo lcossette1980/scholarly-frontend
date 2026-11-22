@@ -15,10 +15,11 @@ import ReviewEditStep from '../components/contentGeneration/ReviewEditStep';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
+import { trackOutlineGenerated } from '../services/analytics';
 
 const ContentGenerationPage = () => {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, userDocument } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [entries, setEntries] = useState([]);
@@ -111,10 +112,12 @@ const ContentGenerationPage = () => {
         }),
       }));
       setOutlines(generatedOutlines);
+      trackOutlineGenerated(userDocument?.subscription?.plan || 'free');
       return true;
     } catch (error) {
       console.error('Error generating outlines:', error);
-      toast.error('Failed to generate outlines');
+      // The API layer already showed the 5-per-day message for a 429.
+      if (error.response?.status !== 429) toast.error('Failed to generate outlines');
       return false;
     } finally {
       setLoading(false);

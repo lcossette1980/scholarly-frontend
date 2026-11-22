@@ -383,7 +383,7 @@ const HomePage = () => {
                     Try the full workflow.
                   </div>
                   <ul className="space-y-2 text-sm text-secondary-700 mb-6">
-                    {['5 source entries', 'AI source analysis', 'Word + PDF export'].map((f) => (
+                    {['5 source entries', 'Topics & outlines (5/day)', 'AI source analysis', 'Word + PDF export'].map((f) => (
                       <li key={f} className="flex gap-2">
                         <Check className="w-3.5 h-3.5 text-secondary-500 mt-1 flex-shrink-0" />
                         <span>{f}</span>
