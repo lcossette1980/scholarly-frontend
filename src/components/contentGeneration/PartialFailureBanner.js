@@ -67,7 +67,7 @@ const PartialFailureBanner = ({
           <a
             href={mailto}
             onClick={() => trackSupportMailtoClicked('partial_failure')}
-            className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+            className="btn btn-secondary btn-sm mt-3 inline-flex items-center gap-1.5 min-h-[24px]"
           >
             <Mail className="w-4 h-4" />
             Email support

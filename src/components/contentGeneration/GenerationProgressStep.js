@@ -26,6 +26,7 @@ const GenerationProgressStep = ({ jobId, onComplete, onRetry }) => {
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
   const [failedJob, setFailedJob] = useState(null);
+  const [finishing, setFinishing] = useState(false);
 
   useEffect(() => {
     if (!jobId) {
@@ -51,10 +52,10 @@ const GenerationProgressStep = ({ jobId, onComplete, onRetry }) => {
             jobStatus.payment_status !== 'paid' ||
             pollsSinceFailure >= REFUND_WAIT_POLLS;
           pollsSinceFailure += 1;
+          setFinishing(true);
           if (refundSettled) {
             clearInterval(pollInterval);
             setFailedJob(jobStatus);
-            toast.error('Content generation failed');
           }
         }
       } catch (err) {
@@ -80,49 +81,56 @@ const GenerationProgressStep = ({ jobId, onComplete, onRetry }) => {
     )}&body=${encodeURIComponent(`Job ID: ${jobId}`)}`;
     return (
       <div className="text-center py-12">
-        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <XCircle className="w-8 h-8 text-red-600" />
+        <div className="w-16 h-16 bg-error-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <XCircle className="w-8 h-8 text-error-600" aria-hidden="true" />
         </div>
-        <h3 className="text-xl font-bold text-secondary-900 mb-2">
-          We couldn't generate this draft
-        </h3>
-        <p className="text-gray-600 mb-6 max-w-md mx-auto">
-          {refunded ? (
-            <>
-              Your payment{amount ? ` of ${amount}` : ''} is being refunded
-              automatically. It usually appears on your statement within 5–10
-              business days.
-            </>
-          ) : (
-            <>
-              Contact{' '}
-              <a
-                href={mailto}
-                onClick={() => trackSupportMailtoClicked('failed_job')}
-                className="text-primary font-medium hover:underline"
-              >
-                {SUPPORT_EMAIL}
-              </a>{' '}
-              and we'll sort it out.
-            </>
-          )}
-        </p>
+        <div role="alert">
+          <h3 className="text-xl font-bold text-secondary-900 mb-2">
+            We couldn't generate this draft
+          </h3>
+          <p className="text-secondary-600 mb-6 max-w-md mx-auto">
+            {refunded ? (
+              <>
+                Your payment{amount ? ` of ${amount}` : ''} is being refunded
+                automatically. It usually appears on your statement within 5–10
+                business days.
+              </>
+            ) : (
+              <>
+                Contact{' '}
+                <a
+                  href={mailto}
+                  onClick={() => trackSupportMailtoClicked('failed_job')}
+                  className="text-primary font-medium hover:underline"
+                >
+                  {SUPPORT_EMAIL}
+                </a>{' '}
+                and we'll sort it out.
+              </>
+            )}
+          </p>
+        </div>
         <div className="flex items-center justify-center gap-3">
           <button
             onClick={() => navigate('/dashboard')}
-            className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary-700"
+            className="btn btn-primary"
           >
             Back to dashboard
           </button>
           {onRetry && (
             <button
               onClick={onRetry}
-              className="px-6 py-2 rounded-lg font-semibold text-secondary-700 border border-secondary-300 hover:bg-secondary-50"
+              className="btn btn-secondary"
             >
               Try again
             </button>
           )}
         </div>
+        {onRetry && (
+          <p className="form-hint mt-3">
+            Trying again starts a new order. You'll see the price before paying.
+          </p>
+        )}
       </div>
     );
   }
@@ -148,7 +156,9 @@ const GenerationProgressStep = ({ jobId, onComplete, onRetry }) => {
   const progress = status?.progress || 0;
   const currentSection = status?.current_section || 'Initializing...';
   const completedSections = status?.completed_sections || [];
-  const phaseLabel = getPhaseLabel(progress, currentSection);
+  const phaseLabel = finishing
+    ? 'Finishing up…'
+    : getPhaseLabel(progress, currentSection);
 
   return (
     <div>
