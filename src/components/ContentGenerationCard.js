@@ -34,7 +34,7 @@ const ContentGenerationCard = ({ entries }) => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
               <div>
                 <p className="text-xs font-semibold text-secondary-800">5-10 page papers</p>
-                <p className="text-xs text-secondary-500">In under 5 minutes</p>
+                <p className="text-xs text-secondary-500">In a few minutes</p>
               </div>
               <div>
                 <p className="text-xs font-semibold text-secondary-800">Natural attribution</p>
