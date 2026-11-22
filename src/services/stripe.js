@@ -112,7 +112,15 @@ export const createCheckoutSession = async (userId, priceId, planId) => {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ detail: 'Failed to create checkout session' }));
-      throw new Error(errorData.detail || 'Failed to create checkout session');
+      const detail = errorData.detail;
+      // Structured errors (409 ALREADY_SUBSCRIBED / CHECKOUT_IN_PROGRESS)
+      // carry a code the UI acts on; plain errors stay strings.
+      if (detail && typeof detail === 'object') {
+        const err = new Error(detail.message || 'Failed to create checkout session');
+        err.code = detail.code;
+        throw err;
+      }
+      throw new Error(detail || 'Failed to create checkout session');
     }
 
     const data = await response.json();
