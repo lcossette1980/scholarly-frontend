@@ -24,7 +24,7 @@
 //   - We use OpenAlex + CrossRef in Research Feeds (not Semantic
 //     Scholar — that integration was deprecated). Keep FAQ accurate.
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Check,
@@ -35,7 +35,11 @@ import {
   X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { SUBSCRIPTION_PLANS, createCheckoutSession } from '../services/stripe';
+import {
+  SUBSCRIPTION_PLANS,
+  createCheckoutSession,
+  createCustomerPortalSession,
+} from '../services/stripe';
 import { FadeIn } from '../components/motion';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
@@ -47,6 +51,9 @@ import {
 
 const PricingPage = () => {
   const [isLoading, setIsLoading] = useState(null);
+  // Blocks a second click while the first checkout request or redirect is
+  // in flight (a double click once created two subscriptions).
+  const checkoutInFlight = useRef(false);
   const [estimatorPages, setEstimatorPages] = useState(10);
   const [estimatorTier, setEstimatorTier] = useState('standard');
   const { currentUser, userDocument } = useAuth();
@@ -62,6 +69,8 @@ const PricingPage = () => {
       navigate('/dashboard');
       return;
     }
+    if (checkoutInFlight.current) return;
+    checkoutInFlight.current = true;
     setIsLoading(planId);
     try {
       const plan = SUBSCRIPTION_PLANS[planId];
@@ -69,10 +78,24 @@ const PricingPage = () => {
       // redirect fails or the user kills the tab.
       trackCheckoutStart(planId, 'pricing');
       await createCheckoutSession(currentUser.uid, plan.priceId, planId);
+      // Redirecting to Stripe: keep the buttons disabled until the page leaves.
     } catch (error) {
-      console.error('Error creating checkout session:', error);
-      toast.error('Failed to start checkout process');
-    } finally {
+      if (error.code === 'ALREADY_SUBSCRIBED') {
+        toast('You already have a plan. Manage or change it here.');
+        try {
+          await createCustomerPortalSession(currentUser.uid);
+          return; // redirecting to the billing portal
+        } catch (portalError) {
+          console.error('Error opening billing portal:', portalError);
+          toast.error('Could not open the billing portal. Please try again.');
+        }
+      } else if (error.code === 'CHECKOUT_IN_PROGRESS') {
+        toast(error.message);
+      } else {
+        console.error('Error creating checkout session:', error);
+        toast.error('Failed to start checkout process');
+      }
+      checkoutInFlight.current = false;
       setIsLoading(null);
     }
   };
@@ -289,7 +312,7 @@ const PricingPage = () => {
 
                 <button
                   onClick={() => handleSubscribe(card.planId)}
-                  disabled={isLoadingThis || isCurrent}
+                  disabled={!!isLoading || isCurrent}
                   className={`${
                     card.featured ? 'btn btn-primary w-full' : 'btn btn-secondary w-full'
                   } ${isCurrent ? 'opacity-60 cursor-not-allowed' : ''}`}
@@ -700,6 +723,7 @@ const PricingPage = () => {
                   <td className="px-5 py-4 text-center">
                     <button
                       onClick={() => handleSubscribe('free')}
+                      disabled={!!isLoading}
                       className="text-xs font-medium text-secondary-700 hover:text-secondary-900 inline-flex items-center gap-1"
                     >
                       Start free <ArrowRight className="w-3 h-3" />
@@ -708,6 +732,7 @@ const PricingPage = () => {
                   <td className="px-5 py-4 text-center">
                     <button
                       onClick={() => handleSubscribe('student')}
+                      disabled={!!isLoading}
                       className="text-xs font-medium text-secondary-700 hover:text-secondary-900 inline-flex items-center gap-1"
                     >
                       Start Plus <ArrowRight className="w-3 h-3" />
@@ -716,6 +741,7 @@ const PricingPage = () => {
                   <td className="px-5 py-4 text-center bg-primary/[0.04]">
                     <button
                       onClick={() => handleSubscribe('researcher')}
+                      disabled={!!isLoading}
                       className="text-xs font-semibold text-primary hover:text-primary-700 inline-flex items-center gap-1"
                     >
                       Start Pro <ArrowRight className="w-3 h-3" />
