@@ -65,7 +65,7 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "Step 1: Import Your Source",
-          text: "Click the 'Create Entry' button from your dashboard. You can import sources in four ways:\n\n• Upload a PDF file (up to 50MB)\n• Paste a URL to extract content from web articles\n• Enter a DOI to pull metadata from CrossRef\n• Subscribe to an RSS feed to automatically discover new sources\n\nSupported source types include papers, journal articles, blog posts, and web documents."
+          text: "Click the 'Create Entry' button from your dashboard. You can import sources in four ways:\n\n• Upload a PDF file (up to 10MB)\n• Paste a URL to extract content from web articles\n• Enter a DOI to pull metadata from CrossRef\n• Subscribe to an RSS feed to automatically discover new sources\n\nSupported source types include papers, journal articles, blog posts, and web documents."
         },
         {
           subtitle: "Step 2: Set Your Focus",
@@ -103,7 +103,7 @@ const HelpCenterPage = () => {
       content: [
         {
           subtitle: "PDF Upload",
-          text: "Upload PDF files up to 50MB in size. Ensure your PDF is text-based (not just scanned images), remove any password protection, and check that all pages are properly formatted. Simply drag and drop your file or click to browse."
+          text: "Upload PDF files up to 10MB in size. Ensure your PDF is text-based (not just scanned images), remove any password protection, and check that all pages are properly formatted. Simply drag and drop your file or click to browse."
         },
         {
           subtitle: "URL Import",
@@ -340,11 +340,11 @@ const HelpCenterPage = () => {
   const faqs = [
     {
       question: "How accurate is the AI-generated content?",
-      answer: "Our AI uses advanced language models to produce high-quality content. Generated documents are reviewed by editorial AI agents for accuracy, coherence, and quality. We still recommend reviewing all generated content before publishing."
+      answer: "Our AI uses advanced language models to produce high-quality content. Generated documents are checked by AI review passes for coherence and quality. Always review and verify generated content before you publish or submit it."
     },
     {
       question: "What import methods do you support?",
-      answer: "DraftEngine supports four import methods: PDF upload (up to 50MB), URL import (paste any web link), DOI lookup (pull metadata from CrossRef), and RSS feed subscriptions (automatically discover new sources from journals and blogs)."
+      answer: "DraftEngine supports four import methods: PDF upload (up to 10MB), URL import (paste any web link), DOI lookup (pull metadata from CrossRef), and RSS feed subscriptions (automatically discover new sources from journals and blogs)."
     },
     {
       question: "Can I edit the generated source summary entries?",

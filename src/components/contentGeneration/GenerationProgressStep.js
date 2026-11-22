@@ -150,7 +150,6 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
         <h3 className="font-semibold text-gray-700 mb-3">Did you know?</h3>
         <p className="text-sm text-gray-600">
           On average, it takes a person <strong>4-6 hours</strong> to write a 2,500-word document manually.
-          With DraftEngine, you're getting it done in under 5 minutes!
         </p>
       </div>
 

@@ -68,8 +68,8 @@ const HomePage = () => {
             <p className="mt-6 text-center text-lg text-secondary-600 max-w-2xl mx-auto leading-relaxed">
               Drop in PDFs, URLs, DOIs, or RSS feeds. DraftEngine extracts the
               arguments, pulls page-numbered quotes, and drafts a fully cited
-              document in your voice. Every reference traces back to a source in
-              your library. Nothing invented.
+              document in your voice. Every citation traces to a source you
+              uploaded.
             </p>
 
             {/* Single primary CTA — no split-CTA dilution */}
@@ -118,9 +118,9 @@ const HomePage = () => {
                 detail: 'Essays to bibliographies',
               },
               {
-                value: '0',
-                label: 'Hallucinated citations',
-                detail: 'Every ref is your source',
+                value: '✓',
+                label: 'Source-traced citations',
+                detail: 'Every citation traces to a source you uploaded',
               },
             ].map((s) => (
               <div key={s.label} className="text-left">

@@ -147,7 +147,7 @@ const SignUpPage = () => {
               'Import from PDFs, URLs, DOIs, and RSS feeds',
               'Page-numbered quotes extracted automatically',
               'Five voices for five different document types',
-              'No hallucinated citations, ever',
+              'Every citation traces to a source you uploaded',
             ].map((f) => (
               <li key={f} className="flex items-start gap-2.5 text-secondary-300">
                 <Check className="w-4 h-4 text-primary-300 mt-0.5 flex-shrink-0" />

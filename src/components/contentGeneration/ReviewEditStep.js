@@ -690,7 +690,7 @@ const ReviewEditStepInner = ({ jobId, onBack }) => {
             <div className="flex items-center space-x-4 text-xs text-green-700">
               <span>Sources attributed</span>
               <span>Properly formatted</span>
-              <span>Ready to use</span>
+              <span>Review before you use it</span>
             </div>
           </div>
         </div>

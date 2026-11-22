@@ -273,7 +273,6 @@ const PricingConfirmationStep = ({
           <span className="font-bold text-lg text-secondary-900">Total</span>
           <div className="text-right">
             <span className="font-bold text-2xl text-secondary-900">${totalCost}</span>
-            <p className="text-xs text-gray-600">Pay after generation</p>
           </div>
         </div>
       </div>

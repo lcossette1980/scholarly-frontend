@@ -43,7 +43,7 @@ const FeaturesPage = () => {
       image: '/images/feature_import.png',
       icon: Upload,
       bullets: [
-        'PDF up to 50MB',
+        'PDF up to 10MB',
         'URL with article text extraction',
         'DOI via CrossRef API',
         'RSS feeds with cherry-pick',

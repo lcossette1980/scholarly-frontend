@@ -95,7 +95,7 @@ const PaymentForm = ({ onSuccess, onError, totalCost, tier, onCancel }) => {
         <div className="flex justify-between items-center text-sm">
           <span className="text-secondary-600">Quality Tier:</span>
           <span className="font-medium text-secondary-900">
-            {tier === 'pro' ? 'Professional (GPT-4 Turbo)' : 'Standard (GPT-4o)'}
+            {tier === 'pro' ? 'Professional' : 'Standard'}
           </span>
         </div>
       </div>
