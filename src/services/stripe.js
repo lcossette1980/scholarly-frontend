@@ -15,11 +15,11 @@ export const SUBSCRIPTION_PLANS = {
     entriesLimit: 5,
     features: [
       '5 source entries (lifetime)',
-      'Basic AI analysis',
-      'Standard export format',
+      'Topics & outlines (5 per day)',
+      'Pay per page for drafts ($1.49 Standard / $2.49 Professional)',
       'Email support'
     ],
-    allowedFeatures: ['bibliography']
+    allowedFeatures: ['bibliography', 'topic_outline']
   },
   free: {
     id: 'free',
@@ -28,11 +28,11 @@ export const SUBSCRIPTION_PLANS = {
     entriesLimit: 5,
     features: [
       '5 source entries (lifetime)',
-      'Basic AI analysis',
-      'Standard export format',
+      'Topics & outlines (5 per day)',
+      'Pay per page for drafts ($1.49 Standard / $2.49 Professional)',
       'Email support'
     ],
-    allowedFeatures: ['bibliography']
+    allowedFeatures: ['bibliography', 'topic_outline']
   },
   student: {
     id: 'student',

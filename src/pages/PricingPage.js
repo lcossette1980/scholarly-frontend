@@ -122,6 +122,7 @@ const PricingPage = () => {
       perPageNote: 'Per-page generation available at $1.49 / $2.49',
       features: [
         '5 lifetime source entries',
+        'Topics & outlines (5 per day)',
         'AI source analysis with page-numbered quotes',
         'All four import methods (PDF, URL, DOI, RSS)',
         'Word & PDF export',
@@ -646,8 +647,8 @@ const PricingPage = () => {
                   ['Import methods (PDF, URL, DOI, RSS)', true, true, true],
                   ['AI source analysis (arguments, quotes, angles)', true, true, true],
                   ['Page-numbered quote extraction', true, true, true],
-                  ['Topic generator', false, true, true],
-                  ['Outline generator', false, true, true],
+                  ['Topic generator', '5 / day*', true, true],
+                  ['Outline generator', '5 / day*', true, true],
                   ['Voice profiles (5 voices)', false, true, true],
                   ['Document types (17 supported)', false, true, true],
                   ['Citation styles (APA, MLA, Chicago)', true, true, true],
@@ -725,6 +726,9 @@ const PricingPage = () => {
               </tfoot>
             </table>
           </div>
+          <p className="text-xs text-secondary-500 mt-2">
+            * Starter: 5 topic or outline generations per day, combined.
+          </p>
         </div>
 
         {/* ─────────────────── 6. FAQ ─────────────────── */}
@@ -757,7 +761,7 @@ const PricingPage = () => {
               },
               {
                 q: "What's the real difference between Plus and Pro?",
-                a: 'Plus ($9.99) gives you unlimited sources, the topic & outline generator, and pay-per-page generation. Pro ($19.99) adds 10 included generation pages monthly ($14.90 value), discounted overage rates, and Research Feeds. If you generate more than 7–8 pages a month, Pro is cheaper than Plus.',
+                a: 'Plus ($9.99) gives you unlimited sources, unlimited topic & outline generation (Starter gets 5 a day), and pay-per-page generation. Pro ($19.99) adds 10 included generation pages monthly ($14.90 value), discounted overage rates, and Research Feeds. If you generate more than 7–8 pages a month, Pro is cheaper than Plus.',
               },
               {
                 q: 'What if a generation fails?',

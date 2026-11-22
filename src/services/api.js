@@ -57,8 +57,11 @@ api.interceptors.response.use(
       toast.error("You don't have permission for this action.");
     } else if (error.response?.status === 429) {
       console.error('Rate limited:', error.response?.data);
-      error.userMessage = 'Too many requests. Please wait a moment and try again.';
-      toast.error('Too many requests. Please wait a moment and try again.');
+      const detail = error.response?.data?.detail;
+      error.userMessage =
+        (detail && typeof detail === 'object' && detail.message) ||
+        'Too many requests. Please wait a moment and try again.';
+      toast.error(error.userMessage);
     } else if (error.response?.status === 502 || error.response?.status === 503) {
       console.error('Backend service unavailable:', error.response?.data?.message || error.message);
       error.userMessage = 'Our service is temporarily unavailable. Please try again in a few minutes.';

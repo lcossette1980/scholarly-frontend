@@ -96,3 +96,21 @@ export const trackContentGenerationStart = (tier, pages) =>
 /** Document generation job completed successfully. */
 export const trackContentGenerationComplete = (tier, pages, durationMs) =>
   safeTrack('content_generation_complete', { tier, pages, durationMs });
+
+/** 2B2: a topics/outline generation succeeded (plan: free|student|researcher). */
+export const trackOutlineGenerated = (plan) =>
+  safeTrack('outline_generated', { plan });
+
+/** 2B2: the pay-per-page step was shown. */
+export const trackPricingStepViewed = (pages, tier, plan, proAltShown) =>
+  safeTrack('pricing_step_viewed', { pages, tier, plan, pro_alt_shown: proAltShown });
+
+/** 2B2: the user chose "Start Pro" on the pricing step. */
+export const trackProAltClicked = () => safeTrack('pro_alt_clicked', {});
+
+/** 2B2: Starter hit the 5-source limit. */
+export const trackSourceLimitReached = () => safeTrack('source_limit_reached', {});
+
+/** Upsell click (offer: plus|pro, location e.g. source_limit). */
+export const trackUpsellCtaClicked = (offer, location) =>
+  safeTrack('upsell_cta_clicked', { offer, location });
