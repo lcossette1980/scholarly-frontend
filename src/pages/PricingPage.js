@@ -515,7 +515,7 @@ const PricingPage = () => {
             </div>
             <p className="text-xs text-secondary-500 mt-6 pt-6 border-t border-secondary-200 flex items-center gap-2">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-success-500" />
-              100% refund if generation fails. You're never charged for a broken job.
+              If your draft can't be generated, you're refunded automatically. If a section fails, we'll regenerate it or refund you.
             </p>
           </div>
         </div>
@@ -656,7 +656,7 @@ const PricingPage = () => {
                   ['Research Feeds (OpenAlex + CrossRef)', false, false, true],
                   ['Word + PDF + text export', true, true, true],
                   ['Email support', true, true, 'Priority'],
-                  ['100% refund on generation failures', true, true, true],
+                  ['Automatic refund if generation fails', true, true, true],
                 ].map((row, i) => (
                   <tr key={i} className="hover:bg-secondary-50/30 transition-colors">
                     <td className="px-5 py-3.5 text-secondary-700">{row[0]}</td>
@@ -761,7 +761,7 @@ const PricingPage = () => {
               },
               {
                 q: 'What if a generation fails?',
-                a: "You get a 100% automatic refund. If our watchdog can't finish your draft for any reason, you're never charged. Your Stripe receipt and the refund happen in the same minute.",
+                a: "If more than half of your draft can't be generated, or the job doesn't finish, you're refunded automatically, usually within minutes on our side. If one or two sections fail, the rest of your draft is delivered, and you can email support@draftengineapp.com to have those sections regenerated or refunded.",
               },
               {
                 q: 'Can I change plans anytime?',

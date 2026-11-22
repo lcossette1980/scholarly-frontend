@@ -96,3 +96,11 @@ export const trackContentGenerationStart = (tier, pages) =>
 /** Document generation job completed successfully. */
 export const trackContentGenerationComplete = (tier, pages, durationMs) =>
   safeTrack('content_generation_complete', { tier, pages, durationMs });
+
+/** A5: a completed draft is shown with some sections as support placeholders. */
+export const trackDraftPartialFailureShown = (failed, total) =>
+  safeTrack('draft_partial_failure_shown', { failed, total });
+
+/** A5: user clicked a support mailto (context: partial_failure | failed_job). */
+export const trackSupportMailtoClicked = (context) =>
+  safeTrack('support_mailto_clicked', { context });

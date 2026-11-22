@@ -4,6 +4,7 @@ import { Download, Edit3, Save, X, Check, FileText, Home, File, Copy, ChevronDow
 import { contentGenerationAPI } from '../../services/api';
 import { exportGeneratedContent } from '../../utils/contentExportUtils';
 import toast from 'react-hot-toast';
+import PartialFailureBanner from './PartialFailureBanner';
 
 // Error boundary wrapper to catch render crashes
 class ReviewEditStepErrorBoundary extends React.Component {
@@ -325,6 +326,13 @@ const ReviewEditStepInner = ({ jobId, onBack }) => {
           )}
         </div>
       </div>
+
+      <PartialFailureBanner
+        failedSections={jobData?.failed_sections}
+        totalSections={jobData?.outline?.sections?.length}
+        jobId={jobId}
+        title={jobData?.refinedTitle || jobData?.outline?.title}
+      />
 
       {/* Refined Title */}
       <div className="mb-6">

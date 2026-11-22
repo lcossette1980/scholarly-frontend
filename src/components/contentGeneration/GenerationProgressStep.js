@@ -1,8 +1,10 @@
 // src/components/contentGeneration/GenerationProgressStep.js
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Loader, CheckCircle, XCircle, FileText, Sparkles } from 'lucide-react';
 import { contentGenerationAPI } from '../../services/api';
 import toast from 'react-hot-toast';
+import { trackSupportMailtoClicked } from '../../services/analytics';
 
 const getPhaseLabel = (progress, currentSection) => {
   if (progress <= 10) return 'Preparing sources...';
@@ -13,9 +15,18 @@ const getPhaseLabel = (progress, currentSection) => {
   return 'Generating illustrations...';
 };
 
-const GenerationProgressStep = ({ jobId, onComplete }) => {
+const SUPPORT_EMAIL = 'support@draftengineapp.com';
+// After a failure the refund lands a few seconds later; keep polling briefly
+// so the failure screen can say whether the money is on its way back.
+const REFUND_WAIT_POLLS = 5;
+const FAILED_STATUSES = ['failed', 'failed_refunded'];
+
+const GenerationProgressStep = ({ jobId, onComplete, onRetry }) => {
+  const navigate = useNavigate();
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
+  const [failedJob, setFailedJob] = useState(null);
+  const [finishing, setFinishing] = useState(false);
 
   useEffect(() => {
     if (!jobId) {
@@ -23,6 +34,7 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
       return;
     }
 
+    let pollsSinceFailure = 0;
     // Poll for status every 3 seconds
     const pollInterval = setInterval(async () => {
       try {
@@ -34,10 +46,17 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
           clearInterval(pollInterval);
           toast.success('Content generated successfully!');
           setTimeout(() => onComplete(), 1000);
-        } else if (jobStatus.status === 'failed') {
-          clearInterval(pollInterval);
-          setError(jobStatus.error_message || 'Generation failed');
-          toast.error('Content generation failed');
+        } else if (FAILED_STATUSES.includes(jobStatus.status)) {
+          const refundSettled =
+            jobStatus.status === 'failed_refunded' ||
+            jobStatus.payment_status !== 'paid' ||
+            pollsSinceFailure >= REFUND_WAIT_POLLS;
+          pollsSinceFailure += 1;
+          setFinishing(true);
+          if (refundSettled) {
+            clearInterval(pollInterval);
+            setFailedJob(jobStatus);
+          }
         }
       } catch (err) {
         console.error('Error polling status:', err);
@@ -47,6 +66,74 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
 
     return () => clearInterval(pollInterval);
   }, [jobId, onComplete]);
+
+  if (failedJob) {
+    const refunded =
+      failedJob.status === 'failed_refunded' ||
+      failedJob.payment_status === 'refunded' ||
+      failedJob.payment_status === 'refund_pending';
+    const amount =
+      typeof failedJob.amount_paid === 'number'
+        ? `$${failedJob.amount_paid.toFixed(2)}`
+        : null;
+    const mailto = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
+      'Failed draft'
+    )}&body=${encodeURIComponent(`Job ID: ${jobId}`)}`;
+    return (
+      <div className="text-center py-12">
+        <div className="w-16 h-16 bg-error-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <XCircle className="w-8 h-8 text-error-600" aria-hidden="true" />
+        </div>
+        <div role="alert">
+          <h3 className="text-xl font-bold text-secondary-900 mb-2">
+            We couldn't generate this draft
+          </h3>
+          <p className="text-secondary-600 mb-6 max-w-md mx-auto">
+            {refunded ? (
+              <>
+                Your payment{amount ? ` of ${amount}` : ''} is being refunded
+                automatically. It usually appears on your statement within 5–10
+                business days.
+              </>
+            ) : (
+              <>
+                Contact{' '}
+                <a
+                  href={mailto}
+                  onClick={() => trackSupportMailtoClicked('failed_job')}
+                  className="text-primary font-medium hover:underline"
+                >
+                  {SUPPORT_EMAIL}
+                </a>{' '}
+                and we'll sort it out.
+              </>
+            )}
+          </p>
+        </div>
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="btn btn-primary"
+          >
+            Back to dashboard
+          </button>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="btn btn-secondary"
+            >
+              Try again
+            </button>
+          )}
+        </div>
+        {onRetry && (
+          <p className="form-hint mt-3">
+            Trying again starts a new order. You'll see the price before paying.
+          </p>
+        )}
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -69,7 +156,9 @@ const GenerationProgressStep = ({ jobId, onComplete }) => {
   const progress = status?.progress || 0;
   const currentSection = status?.current_section || 'Initializing...';
   const completedSections = status?.completed_sections || [];
-  const phaseLabel = getPhaseLabel(progress, currentSection);
+  const phaseLabel = finishing
+    ? 'Finishing up…'
+    : getPhaseLabel(progress, currentSection);
 
   return (
     <div>

@@ -297,7 +297,7 @@ const PricingConfirmationStep = ({
             <p className="text-sm font-medium text-primary-900 mb-1">Secure Payment Before Generation</p>
             <p className="text-xs text-primary-700">
               You'll pay <strong>${totalCost}</strong> before generation starts.
-              If generation fails for any reason, you'll receive an automatic 100% refund.
+              If your draft can't be generated, you're refunded automatically. If a section fails, email support and we'll regenerate it or refund you.
             </p>
           </div>
         </div>

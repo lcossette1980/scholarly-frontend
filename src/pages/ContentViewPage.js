@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { exportGeneratedContent } from '../utils/contentExportUtils';
 import SEO from '../components/SEO';
+import PartialFailureBanner from '../components/contentGeneration/PartialFailureBanner';
 
 const ContentViewPage = () => {
   const { jobId } = useParams();
@@ -219,6 +220,13 @@ const ContentViewPage = () => {
             )}
           </div>
         </div>
+
+        <PartialFailureBanner
+          failedSections={job.failedSections}
+          totalSections={job.outline?.sections?.length}
+          jobId={job.id}
+          title={job.refinedTitle || job.outline?.title}
+        />
 
         {/* Stats strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-secondary-200 rounded-lg overflow-hidden border border-secondary-200 mb-6">
