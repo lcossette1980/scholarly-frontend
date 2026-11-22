@@ -2,8 +2,12 @@
 // A5: shown on a completed draft when some sections ended as a support
 // placeholder. The charge stands for those jobs; support regenerates or
 // refunds the missing sections.
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AlertTriangle, Mail } from 'lucide-react';
+import {
+  trackDraftPartialFailureShown,
+  trackSupportMailtoClicked,
+} from '../../services/analytics';
 
 const SUPPORT_EMAIL = 'support@draftengineapp.com';
 
@@ -14,7 +18,15 @@ const PartialFailureBanner = ({
   title,
 }) => {
   const failed = (failedSections || []).filter(Boolean);
-  if (failed.length === 0) return null;
+  const failedCount = failed.length;
+
+  useEffect(() => {
+    if (failedCount > 0) {
+      trackDraftPartialFailureShown(failedCount, totalSections || null);
+    }
+  }, [failedCount, totalSections]);
+
+  if (failedCount === 0) return null;
 
   const n = failed.length;
   const total = totalSections && totalSections >= n ? totalSections : null;
@@ -54,6 +66,7 @@ const PartialFailureBanner = ({
           </ul>
           <a
             href={mailto}
+            onClick={() => trackSupportMailtoClicked('partial_failure')}
             className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
           >
             <Mail className="w-4 h-4" />

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Loader, CheckCircle, XCircle, FileText, Sparkles } from 'lucide-react';
 import { contentGenerationAPI } from '../../services/api';
 import toast from 'react-hot-toast';
+import { trackSupportMailtoClicked } from '../../services/analytics';
 
 const getPhaseLabel = (progress, currentSection) => {
   if (progress <= 10) return 'Preparing sources...';
@@ -95,7 +96,11 @@ const GenerationProgressStep = ({ jobId, onComplete, onRetry }) => {
           ) : (
             <>
               Contact{' '}
-              <a href={mailto} className="text-primary font-medium hover:underline">
+              <a
+                href={mailto}
+                onClick={() => trackSupportMailtoClicked('failed_job')}
+                className="text-primary font-medium hover:underline"
+              >
                 {SUPPORT_EMAIL}
               </a>{' '}
               and we'll sort it out.
