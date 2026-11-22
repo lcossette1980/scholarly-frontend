@@ -17,13 +17,25 @@
 //   - Property values must be primitives (string / number / boolean) —
 //     Vercel Analytics drops objects silently
 //
-// Failure mode: track() is safe to call before the SDK has loaded; it
-// queues. If the env var isn't set or the user has a blocker, we just
-// swallow the error.
+// Failure mode: track() alone silently drops events fired before
+// <Analytics /> mounts, so safeTrack creates the queue first
+// (ensureVercelQueue). If the user has a blocker, we just swallow the error.
 
 import { track as vercelTrack } from '@vercel/analytics/react';
 
 const isProd = process.env.NODE_ENV === 'production';
+
+// <Analytics /> (App.js) creates window.va in an effect that runs after the
+// page's own effects, so events fired on a fresh load (e.g. signup_view on
+// a direct /signup visit) were silently dropped. Create the library's queue
+// first; the injected script drains window.vaq. Same shape as the library's
+// own initQueue, and a no-op once window.va exists.
+export function ensureVercelQueue() {
+  if (typeof window === 'undefined' || window.va) return;
+  window.va = function va(...params) {
+    (window.vaq = window.vaq || []).push(params);
+  };
+}
 
 function safeTrack(eventName, properties = {}) {
   try {
@@ -34,6 +46,7 @@ function safeTrack(eventName, properties = {}) {
       console.log('[analytics]', eventName, properties);
       return;
     }
+    ensureVercelQueue();
     vercelTrack(eventName, properties);
   } catch (e) {
     // Never let analytics throw into the UI.
