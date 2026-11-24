@@ -16,8 +16,8 @@ import { useAuth } from '../context/AuthContext';
 import { createCustomerPortalSession, fixSubscription, SUBSCRIPTION_PLANS } from '../services/stripe';
 import { getUserBibliographyEntries } from '../services/bibliography';
 import { resetPassword } from '../services/auth';
-import { updateProfile, deleteUser } from 'firebase/auth';
-import { doc, updateDoc, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
+import { updateProfile, signOut } from 'firebase/auth';
+import { doc, updateDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
 import toast from 'react-hot-toast';
 import { FadeIn, StaggerChildren, StaggerItem } from '../components/motion';
@@ -167,27 +167,17 @@ const ProfilePage = () => {
     }
     setDeleting(true);
     try {
-      // 1. Delete user's bibliography entries
-      const entriesQuery = query(
-        collection(db, 'bibliography_entries'),
-        where('userId', '==', currentUser.uid)
-      );
-      const entriesSnapshot = await getDocs(entriesQuery);
-      await Promise.all(entriesSnapshot.docs.map(d => deleteDoc(d.ref)));
-
-      // 2. Delete user's content generation jobs
-      const jobsQuery = query(
-        collection(db, 'content_generation_jobs'),
-        where('userId', '==', currentUser.uid)
-      );
-      const jobsSnapshot = await getDocs(jobsQuery);
-      await Promise.all(jobsSnapshot.docs.map(d => deleteDoc(d.ref)));
-
-      // 3. Delete user document
-      await deleteDoc(doc(db, 'users', currentUser.uid));
-
-      // 4. Delete Firebase Auth user (may require recent login)
-      await deleteUser(auth.currentUser);
+      // Server-side: deletes the Firebase Auth user first, then sources,
+      // generation jobs and the user doc. (Client deletes + a failed
+      // deleteUser used to leave a signed-in user who got a fresh trial.)
+      const token = await currentUser.getIdToken();
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/account`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error(`Account deletion failed (${response.status})`);
+      await signOut(auth).catch(() => {});
 
       toast.success('Account deleted successfully');
       navigate('/');

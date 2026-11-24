@@ -42,7 +42,9 @@ service cloud.firestore {
         && s.status == 'active'
         && s.entriesUsed == 0
         && s.entriesLimit == 5
-        && s.entriesRemaining == 5;
+        && s.entriesRemaining == 5
+        && s.isLifetime == true
+        && s.periodEnd == null;
     }
 
     // ---- users/{uid} ------------------------------------------------------
@@ -66,8 +68,10 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys()
              .hasOnly(clientUpdatableUserKeys());
 
-      // Account deletion (ProfilePage).
-      allow delete: if isOwner(userId);
+      // No client delete: account deletion runs on the backend
+      // (DELETE /api/account), which removes the Firebase Auth user first.
+      // A client delete + re-create used to reset the free limits.
+      allow delete: if false;
     }
 
     // ---- bibliography_entries (sources) ----------------------------------

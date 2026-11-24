@@ -19,7 +19,7 @@ import {
   Rss
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { canCreateEntry, incrementEntriesUsed } from '../services/stripe';
+import { canCreateEntry } from '../services/stripe';
 import { saveBibliographyEntry } from '../services/bibliography';
 import { sanitizeBibliographyContent, cleanMarkdownFormatting } from '../utils/sanitization';
 import SampleProjectCard from '../components/SampleProjectCard';
@@ -346,8 +346,7 @@ const CreateEntryPage = () => {
       );
 
       if (saveResult.success) {
-        // Increment user's entries used
-        await incrementEntriesUsed(currentUser.uid);
+        // The backend counted this source when the import started.
 
         setCurrentStep('preview');
         setIsLoading(false);
