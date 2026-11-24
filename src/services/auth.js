@@ -505,63 +505,25 @@ export const debugUserDocument = async (uid) => {
   }
 };
 
-// Fix user document with missing subscription data
+// Fill in a missing/incomplete subscription. Server-side since the P0 rules
+// change (2026-11-23): clients can no longer write subscription fields. The
+// backend only fills missing keys with trial defaults; it never upgrades.
 export const fixUserSubscription = async (uid) => {
   if (!uid) return null;
-  
+  const currentUser = auth.currentUser;
+  if (!currentUser || currentUser.uid !== uid) return null;
   try {
-    // Ensure user is authenticated
-    const currentUser = auth.currentUser;
-    if (!currentUser || currentUser.uid !== uid) {
-      throw new Error('User not authenticated or UID mismatch');
-    }
-    
-    const userRef = doc(db, 'users', uid);
-    const userSnap = await getDoc(userRef);
-    
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      
-      // Check if subscription is missing or incomplete
-      if (!userData.subscription || 
-          userData.subscription.entriesLimit === undefined || 
-          userData.subscription.entriesUsed === undefined) {
-        
-        console.log('Fixing user subscription data...');
-        
-        const fixedSubscription = {
-          plan: 'trial',
-          status: 'active',
-          entriesUsed: userData.subscription?.entriesUsed || 0,
-          entriesLimit: 5,
-          entriesRemaining: Math.max(0, 5 - (userData.subscription?.entriesUsed || 0)),
-          isLifetime: true,
-          periodEnd: null,
-          ...userData.subscription // Keep any existing data
-        };
-        
-        await setDoc(userRef, {
-          ...userData,
-          subscription: fixedSubscription,
-          updatedAt: serverTimestamp()
-        });
-        
-        console.log('User subscription fixed:', fixedSubscription);
-        return fixedSubscription;
-      } else {
-        console.log('User subscription is already correct:', userData.subscription);
-        return userData.subscription;
-      }
-    } else {
-      console.log('User document does not exist, creating new one...');
-      const user = auth.currentUser;
-      if (user) {
-        await createUserDocument(user);
-        return { plan: 'trial', status: 'active', entriesUsed: 0, entriesLimit: 5, entriesRemaining: 5, isLifetime: true, periodEnd: null };
-      }
-    }
+    const token = await currentUser.getIdToken();
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    const response = await fetch(`${apiUrl}/api/account/ensure-subscription`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    });
+    if (!response.ok) throw new Error(`ensure-subscription failed: ${response.status}`);
+    const data = await response.json();
+    return data.subscription || null;
   } catch (error) {
     console.error('Error fixing user subscription:', error);
-    throw error;
+    return null;
   }
 };

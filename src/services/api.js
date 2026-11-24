@@ -53,8 +53,12 @@ api.interceptors.response.use(
       }, 1500);
     } else if (error.response?.status === 403) {
       console.error('Forbidden:', error.response?.data);
-      error.userMessage = "You don't have permission for this action.";
-      toast.error("You don't have permission for this action.");
+      const detail = error.response?.data?.detail;
+      // The backend now enforces the free 5-source limit (code: source_limit).
+      error.userMessage =
+        (detail && typeof detail === 'object' && detail.message) ||
+        "You don't have permission for this action.";
+      toast.error(error.userMessage);
     } else if (error.response?.status === 429) {
       console.error('Rate limited:', error.response?.data);
       error.userMessage = 'Too many requests. Please wait a moment and try again.';

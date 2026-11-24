@@ -1,0 +1,12 @@
+{
+  "name": "draftengine-firestore-rules-tests",
+  "private": true,
+  "description": "Emulator tests for ../../firestore.rules (P0 2026-11-23). Run: npm install && npx firebase-tools@14.9.0 emulators:exec --only firestore --project demo-draftengine 'npm test'",
+  "scripts": {
+    "test": "node --test rules.test.js"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "6.0.0",
+    "firebase": "13.2.0"
+  }
+}

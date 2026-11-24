@@ -1,150 +1,139 @@
-// Firestore Security Rules for ScholarlyAI
-// Deploy these rules to your Firebase project:
-// firebase deploy --only firestore:rules
+// Firestore Security Rules for DraftEngine (scholarlyai-33fca)
+// Deploy: firebase deploy --only firestore:rules
+//
+// P0 2026-11-23: rules are OR'd, so a broad `allow read, write: if isOwner`
+// let any signed-in user write ANY field of their own user doc (is_admin,
+// subscription.plan, usage counters). Clients may now write only profile and
+// onboarding fields. Everything the backend trusts (subscription*, is_admin,
+// outlineUsage, usage/credit counters, Stripe ids) is server-only (Admin SDK).
 
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Helper functions
-    function isAuthenticated() {
+
+    function signedIn() {
       return request.auth != null;
     }
-    
+
     function isOwner(userId) {
-      return isAuthenticated() && request.auth.uid == userId;
+      return signedIn() && request.auth.uid == userId;
     }
-    
-    function isValidUserData() {
-      return request.resource.data.keys().hasAll(['displayName', 'email', 'subscription', 'preferences']) &&
-             request.resource.data.displayName is string &&
-             request.resource.data.email is string &&
-             request.resource.data.subscription is map &&
-             request.resource.data.preferences is map;
+
+    // Matches backend ADMIN_EMAILS (main.py). Used only for reading support messages.
+    function isAdminEmail() {
+      return signedIn()
+        && request.auth.token.email in ['loren.cossette@gmail.com']
+        && request.auth.token.email_verified == true;
     }
-    
-    function isValidSubscriptionData() {
-      let subscription = request.resource.data.subscription;
-      return subscription.keys().hasAll(['plan', 'status', 'entriesUsed', 'entriesLimit', 'entriesRemaining']) &&
-             subscription.plan in ['trial', 'student', 'researcher', 'institution'] &&
-             subscription.status in ['active', 'canceled', 'past_due', 'incomplete'] &&
-             subscription.entriesUsed is int &&
-             subscription.entriesLimit is int &&
-             subscription.entriesRemaining is int &&
-             subscription.entriesUsed >= 0 &&
-             subscription.entriesLimit > 0 &&
-             subscription.entriesRemaining >= 0;
+
+    // Fields a client may write on its own user doc after creation.
+    function clientUpdatableUserKeys() {
+      return ['displayName', 'photoURL', 'preferences', 'updatedAt',
+              'onboardingRole', 'onboardingPurpose', 'onboardingPurposes',
+              'onboardingCompleted'];
     }
-    
-    function isValidBibliographyEntry() {
-      return request.resource.data.keys().hasAll(['userId', 'researchFocus', 'citation']) &&
-             request.resource.data.userId is string &&
-             request.resource.data.researchFocus is string &&
-             request.resource.data.citation is string &&
-             request.resource.data.userId == request.auth.uid;
+
+    // The exact trial subscription createUserDocument() writes (src/services/auth.js).
+    function isTrialDefault(s) {
+      return s is map
+        && s.keys().hasOnly(['plan', 'status', 'entriesUsed', 'entriesLimit',
+                             'entriesRemaining', 'isLifetime', 'periodEnd'])
+        && s.plan == 'trial'
+        && s.status == 'active'
+        && s.entriesUsed == 0
+        && s.entriesLimit == 5
+        && s.entriesRemaining == 5
+        && s.isLifetime == true
+        && s.periodEnd == null;
     }
-    
-    // Users collection
+
+    // ---- users/{uid} ------------------------------------------------------
     match /users/{userId} {
-      // Users can read and write their own documents
-      allow read, write: if isOwner(userId);
-      
-      // Additional validation for writes
-      allow write: if isOwner(userId) && 
-                      isValidUserData() && 
-                      isValidSubscriptionData();
-      
-      // Create operation - allow user to create their own document
-      allow create: if isOwner(userId) && 
-                       isValidUserData() && 
-                       isValidSubscriptionData();
-      
-      // Update operation - users can update their own data
-      allow update: if isOwner(userId) && 
-                       isValidUserData() && 
-                       isValidSubscriptionData() &&
-                       // Ensure userId cannot be changed
-                       request.resource.data.diff(resource.data).affectedKeys()
-                         .hasOnly(['displayName', 'subscription', 'preferences', 'updatedAt']);
+      allow read: if isOwner(userId);
+
+      // First sign-in: profile fields + the trial default only.
+      allow create: if isOwner(userId)
+        && request.resource.data.keys().hasOnly(
+             ['displayName', 'email', 'photoURL', 'createdAt', 'subscription',
+              'preferences', 'updatedAt', 'onboardingRole', 'onboardingPurpose',
+              'onboardingPurposes', 'onboardingCompleted'])
+        && (!('subscription' in request.resource.data)
+            || isTrialDefault(request.resource.data.subscription))
+        && (!('email' in request.resource.data)
+            || request.resource.data.email == request.auth.token.email);
+
+      // Profile + onboarding only. subscription*, is_admin, outlineUsage,
+      // usage counters and Stripe ids are written by the backend.
+      allow update: if isOwner(userId)
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(clientUpdatableUserKeys());
+
+      // No client delete: account deletion runs on the backend
+      // (DELETE /api/account), which removes the Firebase Auth user first.
+      // A client delete + re-create used to reset the free limits.
+      allow delete: if false;
     }
-    
-    // Bibliography entries collection
+
+    // ---- bibliography_entries (sources) ----------------------------------
+    match /bibliography_entries/{entryId} {
+      allow read, delete: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if signedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId;
+    }
+
+    // Legacy collection name (kept as before).
     match /bibliography/{entryId} {
-      // Users can only access their own bibliography entries
-      allow read, write: if isAuthenticated() && 
-                            resource.data.userId == request.auth.uid;
-      
-      // Create operation - validate entry structure
-      allow create: if isAuthenticated() && 
-                       isValidBibliographyEntry();
-      
-      // Update operation - ensure userId cannot be changed
-      allow update: if isAuthenticated() && 
-                       resource.data.userId == request.auth.uid &&
-                       request.resource.data.userId == request.auth.uid &&
-                       // Prevent changing userId
-                       request.resource.data.userId == resource.data.userId;
-      
-      // Delete operation
-      allow delete: if isAuthenticated() && 
-                       resource.data.userId == request.auth.uid;
+      allow read, delete: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if signedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId;
     }
-    
-    // Usage logs collection (for analytics and monitoring)
+
+    // ---- content_generation_jobs: read/delete own; backend writes --------
+    match /content_generation_jobs/{jobId} {
+      allow read, delete: if signedIn() && resource.data.userId == request.auth.uid;
+      allow create, update: if false;
+    }
+
+    // ---- support_messages: users send, the admin reads -------------------
+    match /support_messages/{messageId} {
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.keys().hasOnly(
+             ['userId', 'userEmail', 'userName', 'subject', 'message',
+              'category', 'read', 'priority', 'createdAt'])
+        && request.resource.data.read == false;
+      allow read: if isAdminEmail();
+      allow update, delete: if false;
+    }
+
+    // ---- logs (create own; never read from the client) -------------------
     match /usage_logs/{logId} {
-      // Only allow creating usage logs for authenticated users
-      allow create: if isAuthenticated() && 
-                       request.resource.data.userId == request.auth.uid;
-      
-      // No read, update, or delete permissions for users
-      // These should be managed server-side only
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
       allow read, update, delete: if false;
     }
-    
-    // Error logs collection (for error monitoring)
     match /error_logs/{logId} {
-      // Only allow creating error logs for authenticated users
-      allow create: if isAuthenticated() && 
-                       request.resource.data.userId == request.auth.uid;
-      
-      // No read, update, or delete permissions for users
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
       allow read, update, delete: if false;
     }
-    
-    // Admin collection (for admin-only operations)
+
+    // ---- server-only ------------------------------------------------------
     match /admin/{document=**} {
-      // Deny all access to admin collection from client
-      // Admin operations should be performed server-side only
       allow read, write: if false;
     }
-    
-    // System configuration (read-only for clients)
     match /config/{document} {
-      // Allow reading system configuration
-      allow read: if isAuthenticated();
-      
-      // Deny all write operations from client
+      allow read: if signedIn();
       allow write: if false;
     }
-    
-    // Content generation jobs collection
-    match /content_generation_jobs/{jobId} {
-      // Users can read their own jobs
-      allow read: if isAuthenticated() &&
-                     resource.data.userId == request.auth.uid;
-
-      // Users cannot directly create, update, or delete jobs
-      // Jobs are created and managed by backend Cloud Functions only
-      allow create, update, delete: if false;
-    }
-
-    // Stripe webhook logs (server-side only)
     match /stripe_logs/{logId} {
-      // Deny all client access
       allow read, write: if false;
     }
 
-    // Default deny rule for any other collections
+    // Everything else (monthly_page_reservations, stripe_webhook_events,
+    // feed collections, …) is backend-only.
     match /{document=**} {
       allow read, write: if false;
     }
