@@ -6,6 +6,11 @@ import { createPaymentIntent, verifyAndCreateJob } from '../../services/contentP
 import { contentGenerationAPI } from '../../services/api';
 import { isAdmin } from '../../services/admin';
 import PaymentModal from './PaymentModal';
+import {
+  savePendingPaidJob,
+  clearPendingPaidJob,
+  paymentIntentIdFromSecret,
+} from '../../services/pendingPaidJob';
 import toast from 'react-hot-toast';
 
 const PricingConfirmationStep = ({
@@ -104,6 +109,18 @@ const PricingConfirmationStep = ({
         jobMetadata
       );
 
+      // Save the job request before confirming: a 3D Secure redirect
+      // reloads the page, and the wizard resumes from this on return.
+      savePendingPaidJob({
+        paymentIntentId:
+          paymentData.payment_intent_id ||
+          paymentIntentIdFromSecret(paymentData.client_secret),
+        sources: selectedSources,
+        outline,
+        settings,
+        tier: selectedTier,
+      });
+
       // Store client secret for Stripe Elements
       setPaymentClientSecret(paymentData.client_secret);
 
@@ -135,6 +152,7 @@ const PricingConfirmationStep = ({
         throw new Error('Invalid response from server - no job ID received');
       }
 
+      clearPendingPaidJob();
       setJobId(response.job_id);
       setShowPaymentModal(false);
       toast.success('Payment successful! Starting generation...');

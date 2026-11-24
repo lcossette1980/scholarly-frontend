@@ -1,5 +1,5 @@
 // src/pages/ContentGenerationPage.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -15,6 +15,8 @@ import ReviewEditStep from '../components/contentGeneration/ReviewEditStep';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
+import { verifyAndCreateJob } from '../services/contentPayment';
+import { planResume, clearPendingPaidJob } from '../services/pendingPaidJob';
 
 const ContentGenerationPage = () => {
   const navigate = useNavigate();
@@ -39,6 +41,59 @@ const ContentGenerationPage = () => {
   });
   const [selectedTier, setSelectedTier] = useState('standard');
   const [jobId, setJobId] = useState(null);
+
+  // 3D Secure return: Stripe redirects back here with ?payment_intent=…&
+  // redirect_status=…. Resume the paid job saved before the redirect.
+  const resumeHandled = useRef(false);
+  useEffect(() => {
+    if (!currentUser || resumeHandled.current) return;
+    const plan = planResume(window.location.search);
+    if (plan.action === 'none') return;
+    resumeHandled.current = true;
+    window.history.replaceState(null, '', window.location.pathname);
+
+    const restore = (r) => {
+      setSelectedSources(r.sources || []);
+      setSelectedOutline(r.outline || null);
+      if (r.settings) setSettings(r.settings);
+      if (r.tier) setSelectedTier(r.tier);
+    };
+    const supportMessage = `We couldn't start your draft after payment. Email support@draftengineapp.com with payment ${plan.paymentIntentId} and we'll sort it out.`;
+
+    if (plan.action === 'resume') {
+      (async () => {
+        try {
+          const r = plan.record;
+          const response = await verifyAndCreateJob(
+            plan.paymentIntentId,
+            currentUser.uid,
+            (r.sources || []).map((s) => s.id),
+            r.outline,
+            r.settings,
+            r.tier
+          );
+          if (!response || !response.job_id) throw new Error('no job id');
+          clearPendingPaidJob();
+          restore(r);
+          setJobId(response.job_id);
+          setCurrentStep(5);
+          toast.success('Payment confirmed. Starting your draft...');
+        } catch (error) {
+          console.error('Resume after 3D Secure failed:', error);
+          toast.error(supportMessage, { duration: 15000 });
+        }
+      })();
+    } else if (plan.action === 'retry') {
+      if (plan.record) {
+        restore(plan.record);
+        setCurrentStep(4);
+      }
+      toast.error("Your bank didn't confirm the payment. You weren't charged.");
+    } else if (plan.action === 'support') {
+      toast.error(supportMessage, { duration: 15000 });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
 
   useEffect(() => {
     const loadEntries = async () => {
