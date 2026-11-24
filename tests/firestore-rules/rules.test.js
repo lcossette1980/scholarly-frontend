@@ -84,7 +84,12 @@ test('owner reads and deletes own doc; others cannot', async () => {
   await assertSucceeds(getDoc(doc(alice(), 'users/alice')));
   await assertFails(getDoc(doc(bob(), 'users/alice')));
   await assertFails(updateDoc(doc(bob(), 'users/alice'), { displayName: 'x' }));
-  await assertSucceeds(deleteDoc(doc(alice(), 'users/alice')));
+  await assertFails(deleteDoc(doc(alice(), 'users/alice'))); // backend deletes accounts now
+});
+
+test('trial create must be the exact default (isLifetime, periodEnd)', async () => {
+  await assertFails(setDoc(doc(bob(), 'users/bob'), { displayName: 'B', email: 'bob@example.test', subscription: { ...TRIAL, isLifetime: false } }));
+  await assertFails(setDoc(doc(bob(), 'users/bob'), { displayName: 'B', email: 'bob@example.test', subscription: { ...TRIAL, periodEnd: '2099-01-01' } }));
 });
 
 test('bibliography_entries: own CRUD only', async () => {

@@ -316,19 +316,5 @@ export const fixSubscription = async (userId) => {
   }
 };
 
-// Count one added source. Server-side since the P0 rules change (2026-11-23):
-// clients can no longer write subscription.entriesUsed.
-export const incrementEntriesUsed = async () => {
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-  const response = await fetch(`${apiUrl}/api/account/source-added`, {
-    method: 'POST',
-    headers: await _authHeaders(),
-  });
-  if (!response.ok) {
-    throw new Error(`Could not record the new source (${response.status})`);
-  }
-  const data = await response.json();
-  return data.entriesUsed;
-};
 
 export default stripePromise;
