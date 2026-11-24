@@ -1,7 +1,5 @@
 // src/services/stripe.js (FIXED VERSION)
 import { loadStripe } from '@stripe/stripe-js';
-import { doc, updateDoc, serverTimestamp, getDoc, increment } from 'firebase/firestore';
-import { db } from './firebase';
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
@@ -191,19 +189,6 @@ export const createCustomerPortalSession = async (userId) => {
   }
 };
 
-// Update user subscription in Firestore
-export const updateUserSubscription = async (userId, subscriptionData) => {
-  try {
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-      subscription: subscriptionData,
-      updatedAt: serverTimestamp()
-    });
-  } catch (error) {
-    console.error('Error updating user subscription:', error);
-    throw error;
-  }
-};
 
 // Helper to build authenticated fetch headers for Stripe routes
 const _authHeaders = async () => {
@@ -236,11 +221,8 @@ export const checkSubscriptionStatus = async (userId, skipFallback = false) => {
 
     const data = await response.json();
 
-    // If backend returns subscription data, update Firestore
-    if (data.subscription) {
-      await updateUserSubscription(userId, data.subscription);
-    }
-
+    // The backend already wrote any change to users/{uid}.subscription
+    // (clients can't write it since the P0 rules change).
     return data;
   } catch (error) {
     console.error('Error checking subscription status:', error);
@@ -263,8 +245,7 @@ export const forceSyncSubscription = async (userId) => {
       const data = await response.json();
 
       if (data.subscription) {
-        // Update Firestore with the synced data
-        await updateUserSubscription(userId, data.subscription);
+        // The backend already wrote the synced subscription to Firestore.
         return { success: true, subscription: data.subscription };
       }
     }
@@ -335,27 +316,19 @@ export const fixSubscription = async (userId) => {
   }
 };
 
-// Increment user's entries used
-export const incrementEntriesUsed = async (userId) => {
-  try {
-    const userRef = doc(db, 'users', userId);
-    const userSnap = await getDoc(userRef);
-    
-    if (userSnap.exists()) {
-      // Use atomic increment to prevent race conditions with simultaneous uploads
-      await updateDoc(userRef, {
-        'subscription.entriesUsed': increment(1),
-        'subscription.entriesRemaining': increment(-1),
-        updatedAt: serverTimestamp()
-      });
-
-      const updatedSnap = await getDoc(userRef);
-      return updatedSnap.data()?.subscription?.entriesUsed || 1;
-    }
-  } catch (error) {
-    console.error('Error incrementing entries used:', error);
-    throw error;
+// Count one added source. Server-side since the P0 rules change (2026-11-23):
+// clients can no longer write subscription.entriesUsed.
+export const incrementEntriesUsed = async () => {
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  const response = await fetch(`${apiUrl}/api/account/source-added`, {
+    method: 'POST',
+    headers: await _authHeaders(),
+  });
+  if (!response.ok) {
+    throw new Error(`Could not record the new source (${response.status})`);
   }
+  const data = await response.json();
+  return data.entriesUsed;
 };
 
 export default stripePromise;
